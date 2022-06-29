@@ -6,9 +6,14 @@
     xmlns:local="clr-namespace:WordLists"
     Shell.FlyoutBehavior="Flyout"
     xmlns:UIComponents="clr-namespace:WordListsUI;assembly=WordListsUI"
+    xmlns:generator="clr-namespace:WordListsUI.ListGeneratorPage;assembly=WordListsUI"
+    xmlns:welcome="clr-namespace:WordListsUI.WelcomePage;assembly=WordListsUI"
+    xmlns:training="clr-namespace:WordListsUI.WordTrainingPage;assembly=WordListsUI"
+    xmlns:info="clr-namespace:WordListsUI.AppInfoPage;assembly=WordListsUI"
     >
 
     <!-- Welcome page -->
+    
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
@@ -17,19 +22,24 @@
 
     <!-- Word training page -->
     <ShellContent 
-        Title="Header"
-        ContentTemplate="{DataTemplate UIComponents:Header}"
-        Route="Header"
+        Title="Training"
+        ContentTemplate="{DataTemplate training:WordTrainingPage}"
+        Route="Training"
         />
     
     <!-- Word list generator page -->
     <ShellContent
         Title="List generator"
+        ContentTemplate="{DataTemplate generator:ListGeneratorPage}"
+        Route="ListGenerator"
         />
 
     <!-- App information page -->
     <ShellContent
         Title="About"
+        ContentTemplate="{DataTemplate info:AppInfoPage}"
         />
+
+    
 
 </Shell>

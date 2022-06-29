@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WordListsUI.WordTrainingPage.FlipCard.FlipCard" 
+             BackgroundColor="Aqua"
+      >
+    <ContentView.Content>
+        <Grid x:Name="baseGrid"  
+         
+          >
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Tapped="Flip"/>
+            </Grid.GestureRecognizers>
+            <Label x:Name="top" Text="Hei"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="Center" 
+                BackgroundColor="Red"
+                />
+            <Label x:Name="bottom" Text="Hello" 
+                IsVisible="false"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="Center"
+                BackgroundColor="Green" 
+                />
+        </Grid>
+    </ContentView.Content>
+        
+</ContentView>

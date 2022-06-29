@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WordListsUI.WordTrainingPage.WordTrainingPage"
+             xmlns:flipper="clr-namespace:WordListsUI.WordTrainingPage.FlipCard"
+             Title="Train words" >
+    <ContentPage.Content>
+        <Grid>
+            
+            <Frame x:Name="testGrid"
+                   RotationX="0"
+                   HeightRequest="200"
+                   WidthRequest="300"
+                   BackgroundColor="AliceBlue" 
+                   Margin="2"
+                   HasShadow="True"
+                   CornerRadius="20"
+                   BorderColor="Transparent"
+                   IsClippedToBounds="True"
+                   >
+                <Frame.Shadow>
+                    <Shadow Brush="Black"
+                            Offset="20,20"
+                            Radius="40"
+                            Opacity="0.8" />
+
+                </Frame.Shadow>
+            
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Flip"/>
+                </Frame.GestureRecognizers>
+
+                <Label TextColor="DimGray"
+                       LineBreakMode="WordWrap"
+                       x:Name="testGridText"
+                       IsVisible="true"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       />
+            </Frame>
+
+          
+
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordLists", "WordLists\WordLists.csproj", "{7D59E4AF-E91D-45FE-AC7A-23D346B8CA7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordListsUI", "WordListsUI\WordListsUI.csproj", "{15700DCF-A155-4540-9882-E6925CD69173}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordListsUI", "WordListsUI\WordListsUI.csproj", "{15700DCF-A155-4540-9882-E6925CD69173}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

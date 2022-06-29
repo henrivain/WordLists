@@ -18,16 +18,39 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Header.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
+	  <Compile Update="WordTrainingPage\FlipElement\FlipCardPage.xaml.cs">
+	    <DependentUpon>FlipCardPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="ListGeneratorPage\" />
-	  <Folder Include="AppInfoPage\" />
-	  <Folder Include="WelcomePage\" />
-	  <Folder Include="WordTrainingPage\" />
+	  <MauiXaml Update="AppInfoPage\AppInfoPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="WordTrainingPage\FlipCard\FlipCard.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="WordTrainingPage\FlipElement\FlipElementBackSide.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="WordTrainingPage\FlipElement\FlipElementTopSide.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="WordTrainingPage\FlipElement\FlipCardPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Header.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ListGeneratorPage\ListGeneratorPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="WelcomePage\welcomePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="WordTrainingPage\WordTrainingPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
