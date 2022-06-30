@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordLists", "WordLists\Word
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordListsUI", "WordListsUI\WordListsUI.csproj", "{15700DCF-A155-4540-9882-E6925CD69173}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordDataAccessLibrary", "WordDataAccessLibrary\WordDataAccessLibrary.csproj", "{EBD07D95-7C91-404C-BC02-A8EBE4F6DE0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{15700DCF-A155-4540-9882-E6925CD69173}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15700DCF-A155-4540-9882-E6925CD69173}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15700DCF-A155-4540-9882-E6925CD69173}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBD07D95-7C91-404C-BC02-A8EBE4F6DE0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBD07D95-7C91-404C-BC02-A8EBE4F6DE0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBD07D95-7C91-404C-BC02-A8EBE4F6DE0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBD07D95-7C91-404C-BC02-A8EBE4F6DE0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
