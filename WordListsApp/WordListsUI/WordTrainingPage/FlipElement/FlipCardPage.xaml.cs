@@ -18,9 +18,6 @@ public partial class FlipCardPage : ContentView
 		{
 			Rotate = -180;
 			await card.RotateYTo(Rotate, 250);
-			//card.FrontSide.IsVisible = false;
-			//card.BackSide.IsVisible = true;
-			//card.BackSide.RotationY = -180;
 			card.Content = card.BackSide;
 			return;
 		}

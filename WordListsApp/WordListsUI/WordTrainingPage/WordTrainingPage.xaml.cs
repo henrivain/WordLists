@@ -3,7 +3,6 @@ using WordListsUI.WordTrainingPage.FlipCardControl;
 
 namespace WordListsUI.WordTrainingPage;
 
-[XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class WordTrainingPage : ContentPage
 {
 	public WordTrainingPage()
@@ -11,13 +10,29 @@ public partial class WordTrainingPage : ContentPage
 		InitializeComponent();
 	}
 
-	private void FlipCard_Loaded(object sender, EventArgs e)
+	private bool ShowNativeWordByDefault = true;
+
+
+
+    private async void Button_Clicked(object sender, EventArgs e)
 	{
-		flipper.WordPair = new()
-		{
-			NativeLanguageWord = "this is changed top side", 
-			ForeignLanguageWord = "this is changed bottom side"
-		};
-		_ = flipper.ShowBottomSide();
+		await flipper.TranslateTo(-50, 0, 125, Easing.Linear);
+		ShowDefaultSideWithoutAnimation();
+		flipper.TranslationX = 50;
+		await flipper.TranslateTo(0, 0, 125, Easing.Linear);
+
+		//SlideOutInAnimation animation = new(flipper);
+		//animation.Run();
+
 	}
+
+	private void ShowDefaultSideWithoutAnimation()
+	{
+        if (ShowNativeWordByDefault)
+        {
+            flipper.ShowTopSideWithoutAnimation();
+			return;
+        }
+		flipper.ShowBottomSideWithoutAnimation();
+    }
 }

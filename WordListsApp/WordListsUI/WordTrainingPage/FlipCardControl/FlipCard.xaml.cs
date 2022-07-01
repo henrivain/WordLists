@@ -1,5 +1,3 @@
-using WordDataAccessLibrary;
-
 namespace WordListsUI.WordTrainingPage.FlipCardControl;
 
 public partial class FlipCard : ContentView
@@ -7,67 +5,37 @@ public partial class FlipCard : ContentView
 	public FlipCard()
 	{
 		InitializeComponent();
-        SetSideText();
+        UpdateText();
 	}
-
     public FlipCard(string topText, string bottomText) : this()
     {
         TopSideText = topText;
         BottomSideText = bottomText;
     }
+    protected bool ShowingTopSide { get; set; } = true;
 
-    public FlipCard(WordPair pair, bool showNativeWord)
+    #region TextHandling
+
+    protected virtual Task ShowTopSide()
     {
-        WordPair = pair;
-        ShowingTopSide = showNativeWord;
-        SetSideText();
+        ShowingTopSide = true;
+        UpdateText();
+        return Task.CompletedTask;
     }
-
-
-    public static readonly BindableProperty TopTextProperty =
-        BindableProperty.Create(
-            nameof(TopSideText),
-            typeof(string),
-            typeof(FlipCard),
-            "my top text",
-            BindingMode.Default
-            );
-
-    public static readonly BindableProperty BottomTextProperty =
-        BindableProperty.Create(
-            nameof(BottomSideText),
-            typeof(string),
-            typeof(FlipCard),
-            "my bottom text",
-            BindingMode.Default
-            );
-
-    WordPair _wordPair;
-    public WordPair WordPair 
+    protected virtual Task ShowBottomSide()
     {
-        get => _wordPair;
-        set
-        {
-            _wordPair = value;
-            ResetSideTextsFromWordPair(value);
-        }
+        ShowingTopSide = false;
+        UpdateText();
+        return Task.CompletedTask;
     }
-
-    private void ResetSideTextsFromWordPair(WordPair pair)
-    {
-        if (pair is null) return;
-        TopSideText = pair.NativeLanguageWord;
-        BottomSideText = pair.ForeignLanguageWord;
-    }
-    private bool ShowingTopSide { get; set; } = true;
-    public uint AnimationSpeed { get; set; } = 175;
+    protected void UpdateText() => testGridText.Text = ShowingTopSide ? TopSideText : BottomSideText;
     public string TopSideText
     {
         get => (string)GetValue(TopTextProperty);
         set
         {
             SetValue(TopTextProperty, value);
-            SetSideText();
+            UpdateText();
         }
     }
     public string BottomSideText
@@ -76,51 +44,20 @@ public partial class FlipCard : ContentView
         set
         {
             SetValue(BottomTextProperty, value);
-            SetSideText();
+            UpdateText();
         }
     }
-    public async Task ShowTopSide()
-    {
-        if (ShowingTopSide) return;
-        ShowingTopSide = true;
-        await FlipUp();
-    }
-    public async Task ShowBottomSide()
-    {
-        if (ShowingTopSide is false) return;
-        ShowingTopSide = false;
-        await FlipDown();
-    }
 
+    public static readonly BindableProperty TopTextProperty =
+        BindableProperty.Create(nameof(TopSideText), typeof(string), typeof(FlipCard), "my top text");
 
-    private void SetSideText()
-    {
-        testGridText.Text = ShowingTopSide ? TopSideText : BottomSideText;
-    }
-    private async void Flip(object sender, EventArgs e)
+    public static readonly BindableProperty BottomTextProperty =
+        BindableProperty.Create(nameof(BottomSideText), typeof(string), typeof(FlipCard), "my bottom text");
+    #endregion
+
+    protected virtual void Tapped(object sender, EventArgs e) 
     {
         ShowingTopSide = !ShowingTopSide;
-        if (ShowingTopSide)
-        {
-            await FlipUp();
-            return;
-        }
-        await FlipDown();
+        UpdateText();
     }
-    private async Task FlipUp()
-    {
-        await testGrid.RotateXTo(90, AnimationSpeed, Easing.Linear);
-        SetSideText();
-        testGrid.RotationX = -90;
-        await testGrid.RotateXTo(0, AnimationSpeed, Easing.Linear);
-    }
-    private async Task FlipDown()
-    {
-        await testGrid.RotateXTo(-90, AnimationSpeed, Easing.Linear);
-        SetSideText();
-        testGrid.RotationX = 90;
-        await testGrid.RotateXTo(0, AnimationSpeed, Easing.Linear);
-    }
-
-
 }

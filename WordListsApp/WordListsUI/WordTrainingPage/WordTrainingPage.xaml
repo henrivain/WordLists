@@ -3,15 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.WordTrainingPage.WordTrainingPage"
              xmlns:flipper="clr-namespace:WordListsUI.WordTrainingPage.FlipCardControl"
-             Title="Train words" BackgroundColor="White">
+             Title="Train words" BackgroundColor="Azure">
     <ContentPage.Content>
         <Grid x:Name="parentGrid">
-            <flipper:FlipCard x:Name="flipper" 
-                              HeightRequest="200"
-                              WidthRequest="300"
-                              Loaded="FlipCard_Loaded"
-                              TopSideText="hello "
-                              />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.6*"/>
+                <RowDefinition Height="1.2*"/>
+                <RowDefinition Height="1.5*"/>
+            </Grid.RowDefinitions>
+            <Label Text="Unter uns 3" FontSize="Large" VerticalOptions="Start" HorizontalOptions="Start" Margin="20"/>
+            <Label Text="Introduction" FontSize="Medium" VerticalOptions="Start" HorizontalOptions="Start" Margin="40,50"/>
+
+            <flipper:WordPairFlipCard x:Name="flipper" Grid.Row="1" VerticalOptions="Fill"
+                                      Margin="40,0"
+                                      />
+            <Grid Grid.Row="2">
+                <Button Text="Click me!"
+                    Clicked="Button_Clicked" 
+                    VerticalOptions="End" 
+                    HorizontalOptions="Center"
+                    HeightRequest="50"
+                    WidthRequest="100"
+                    />
+            </Grid>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

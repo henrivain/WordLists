@@ -4,10 +4,10 @@
              x:Class="WordListsUI.WordTrainingPage.FlipCardControl.FlipCard"
              >
     <ContentView.GestureRecognizers>
-        <TapGestureRecognizer Tapped="Flip"/>
+        <TapGestureRecognizer Tapped="Tapped"/>
     </ContentView.GestureRecognizers>
 
-    <Border x:Name="testGrid"
+    <Border x:Name="baseElement"
             BackgroundColor="AliceBlue" 
             Stroke="Transparent"
             >
@@ -15,17 +15,21 @@
             <Shadow Brush="Black"
                     Radius="60"
                     Opacity="0.2" 
+                    Offset="0,0"
                     />
         </Border.Shadow>
         <Border.StrokeShape>
             <RoundRectangle CornerRadius="20"/>
         </Border.StrokeShape>
         <Label TextColor="DimGray"
+               FontSize="Medium"
                LineBreakMode="WordWrap"
+               Text="place holder text"
                x:Name="testGridText"
                HorizontalTextAlignment="Center"
                VerticalTextAlignment="Center"
                >
         </Label>
+
     </Border>
 </ContentView>

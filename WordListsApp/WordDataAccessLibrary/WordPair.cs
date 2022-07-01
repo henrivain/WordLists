@@ -9,9 +9,9 @@ using SQLite;
 namespace WordDataAccessLibrary;
 public class WordPair
 {
-    public string NativeLanguageWord { get; set; } = string.Empty;
+    public string NativeLanguageWord { get; set; } = "native word";
     
-    public string ForeignLanguageWord { get; set; } = string.Empty;
+    public string ForeignLanguageWord { get; set; } = "foreign word";
     
     public WordLearnState WordLearnState { get; set; } = WordLearnState.NeverHeard;
 
