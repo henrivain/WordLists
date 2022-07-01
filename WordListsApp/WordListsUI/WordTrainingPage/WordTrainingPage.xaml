@@ -4,27 +4,65 @@
              x:Class="WordListsUI.WordTrainingPage.WordTrainingPage"
              xmlns:flipper="clr-namespace:WordListsUI.WordTrainingPage.FlipCardControl"
              Title="Train words" BackgroundColor="Azure">
+    <ContentPage.Resources>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="TextColor" Value="Black"/>
+        </Style>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid x:Name="parentGrid">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.6*"/>
-                <RowDefinition Height="1.2*"/>
-                <RowDefinition Height="1.5*"/>
-            </Grid.RowDefinitions>
-            <Label Text="Unter uns 3" FontSize="Large" VerticalOptions="Start" HorizontalOptions="Start" Margin="20"/>
-            <Label Text="Introduction" FontSize="Medium" VerticalOptions="Start" HorizontalOptions="Start" Margin="40,50"/>
+        <Grid ColumnDefinitions="1*, auto">
+            
+            <Grid x:Name="parentGrid" Loaded="ParentGrid_Loaded">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.6*"/>
+                    <RowDefinition Height="1.2*"/>
+                    <RowDefinition Height="1.5*"/>
+                </Grid.RowDefinitions>
+                <Label Text="Unter uns 3" FontAttributes="Bold" FontSize="Large" VerticalOptions="Start" HorizontalOptions="Start" Margin="20"/>
+                <Label Text="Introduction" FontSize="Medium" VerticalOptions="Start" HorizontalOptions="Start" Margin="40,50"/>
 
-            <flipper:WordPairFlipCard x:Name="flipper" Grid.Row="1" VerticalOptions="Fill"
+                <flipper:WordPairFlipCard x:Name="flipper" Grid.Row="1" VerticalOptions="Fill"
                                       Margin="40,0"
                                       />
-            <Grid Grid.Row="2">
-                <Button Text="Click me!"
-                    Clicked="Button_Clicked" 
-                    VerticalOptions="End" 
-                    HorizontalOptions="Center"
-                    HeightRequest="50"
-                    WidthRequest="100"
-                    />
+                <Grid Grid.Row="2" Margin="0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="0.2*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ImageButton Source="arrow.svg" 
+                             HeightRequest="40" 
+                             WidthRequest="40"
+                             VerticalOptions="Start"
+                             HorizontalOptions="End"
+                             CornerRadius="20"
+                             Grid.Column="0"
+                             Padding="2"
+                             Clicked="Button_LastCard"
+                             Margin="20,10"
+                             Rotation="180"
+                             />
+
+                    <Label Text="1/1"
+                       Grid.Column="1"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Start"
+                       Margin="0,20"
+                       />
+
+                    <ImageButton Source="arrow.svg" 
+                             HeightRequest="40" 
+                             WidthRequest="40"
+                             VerticalOptions="Start"
+                             HorizontalOptions="Start"
+                             CornerRadius="20"
+                             Grid.Column="2"
+                             Padding="2"
+                             Clicked="Button_NextCard"
+                             Margin="20,10"
+                             />
+                </Grid>
             </Grid>
         </Grid>
     </ContentPage.Content>

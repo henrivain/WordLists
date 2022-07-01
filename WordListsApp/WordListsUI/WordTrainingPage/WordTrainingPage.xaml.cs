@@ -14,18 +14,7 @@ public partial class WordTrainingPage : ContentPage
 
 
 
-    private async void Button_Clicked(object sender, EventArgs e)
-	{
-		await flipper.TranslateTo(-50, 0, 125, Easing.Linear);
-		ShowDefaultSideWithoutAnimation();
-		flipper.TranslationX = 50;
-		await flipper.TranslateTo(0, 0, 125, Easing.Linear);
-
-		//SlideOutInAnimation animation = new(flipper);
-		//animation.Run();
-
-	}
-
+ 
 	private void ShowDefaultSideWithoutAnimation()
 	{
         if (ShowNativeWordByDefault)
@@ -34,5 +23,31 @@ public partial class WordTrainingPage : ContentPage
 			return;
         }
 		flipper.ShowBottomSideWithoutAnimation();
+    }
+
+	private async void Button_LastCard(object sender, EventArgs e)
+	{
+        SlideAnimation animation = new(flipper);
+        await animation.ToMaxRight();
+        ShowDefaultSideWithoutAnimation();
+        await animation.FromMaxLeftToMiddle();
+    }
+
+	private async void Button_NextCard(object sender, EventArgs e)
+	{
+        SlideAnimation animation = new(flipper);
+        await animation.ToMaxLeft();
+        ShowDefaultSideWithoutAnimation();
+        await animation.FromMaxRightToMiddle();
+    }
+
+   
+
+
+    private void ParentGrid_Loaded(object sender, EventArgs e)
+    {
+#if WINDOWS
+        parentGrid.MaximumWidthRequest = 500;
+#endif
     }
 }

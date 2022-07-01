@@ -17,25 +17,26 @@ internal class SlideAnimation
     public uint Length { get; set; } = 125;
 
 
-    public async void ToMaxLeft()
+    public async Task ToMaxLeft()
     {
         await Element.TranslateTo(-MaxOffsetFromMiddle, 0, Length, Easing.Linear);
     }
     
-    public async void ToMaxRight()
+    public async Task ToMaxRight()
     {
         await Element.TranslateTo(MaxOffsetFromMiddle, 0, Length, Easing.Linear);
     }
 
-    public async void FromMaxRightToMiddle()
+    public async Task FromMaxLeftToMiddle()
+    {
+        Element.TranslationX = -MaxOffsetFromMiddle;
+        await Element.TranslateTo(0, 0, Length, Easing.Linear);
+    }
+
+    public async Task FromMaxRightToMiddle()
     {
         Element.TranslationX = MaxOffsetFromMiddle;
         await Element.TranslateTo(0, 0, Length, Easing.Linear);
     }
 
-    public async void FromMaxLeftToMiddle()
-    {
-        Element.TranslationX = -MaxOffsetFromMiddle;
-        await Element.TranslateTo(0, 0, Length, Easing.Linear);
-    }
 }
