@@ -8,5 +8,8 @@
         <Button Text="Luo leikepöydältä" HorizontalOptions="Center"></Button>
 <!-- Long click will open new menu where you can edit input -->
         
+        
+        
+        
     </VerticalStackLayout>
 </ContentPage>

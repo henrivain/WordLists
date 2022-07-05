@@ -3,7 +3,7 @@
 namespace WordListsUI.WordTrainingPage.FlipCardControl;
 public class WordPairFlipCard : AnimatedFlipCard
 {
-    public WordPairFlipCard() : base() => WordPair = new();
+    public WordPairFlipCard() : base() => WordPair = new(string.Empty, string.Empty);
 
     public WordPairFlipCard(WordPair pair, bool showNativeWord = true) : base()
     {

@@ -52,16 +52,17 @@
                        />
 
                     <ImageButton Source="arrow.svg" 
-                             HeightRequest="40" 
-                             WidthRequest="40"
-                             VerticalOptions="Start"
-                             HorizontalOptions="Start"
-                             CornerRadius="20"
-                             Grid.Column="2"
-                             Padding="2"
-                             Clicked="Button_NextCard"
-                             Margin="20,10"
-                             />
+                                 HeightRequest="40" 
+                                 WidthRequest="40"
+                                 VerticalOptions="Start"
+                                 HorizontalOptions="Start"
+                                 CornerRadius="20"
+                                 Grid.Column="2"
+                                 Padding="2"
+                                 Clicked="Button_NextCard"
+                                 Margin="20,10"
+                                 />
+                    
                 </Grid>
             </Grid>
         </Grid>
