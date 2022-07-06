@@ -136,7 +136,7 @@ public static class WordCollectionService
     #if DEBUG
         return "WordListsDataDebug.db";
     #else
-        return "WordListsDataDebug.db";
+        return "WordListsData.db";
     #endif
     }
     #endregion

@@ -121,9 +121,9 @@ public partial class OtavaParserTests
 
         List<WordPair> wordPairs = parser.GetList();
 
-        Assert.AreEqual((uint)0, wordPairs[0].IndexInVocalbulary);
-        Assert.AreEqual((uint)1, wordPairs[1].IndexInVocalbulary);
-        Assert.AreEqual((uint)2, wordPairs[2].IndexInVocalbulary);
+        Assert.AreEqual(0, wordPairs[0].IndexInVocalbulary);
+        Assert.AreEqual(1, wordPairs[1].IndexInVocalbulary);
+        Assert.AreEqual(2, wordPairs[2].IndexInVocalbulary);
     }
 
 
