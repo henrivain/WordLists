@@ -1,4 +1,4 @@
-﻿// Copyright 2021 Henri Vainio 
+﻿// Copyright 2022 Henri Vainio 
 
 namespace WordDataAccessLibrary;
 public enum WordLearnState

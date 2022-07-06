@@ -6,10 +6,6 @@ namespace WordDataAccessLibraryTests;
 [TestClass]
 public partial class OtavaParserTests
 {
-  
-
-
-     
       [TestMethod]
     public void OneLineParsing()
     {

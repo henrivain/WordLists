@@ -81,6 +81,10 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+
 
 	<ItemGroup>
 	  <ProjectReference Include="..\WordListsUI\WordListsUI.csproj" />

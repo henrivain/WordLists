@@ -9,7 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordListsUI", "WordListsUI\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordDataAccessLibrary", "WordDataAccessLibrary\WordDataAccessLibrary.csproj", "{EBD07D95-7C91-404C-BC02-A8EBE4F6DE0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordDataAccessLibraryTests", "WordDataAccessLibraryTests\WordDataAccessLibraryTests.csproj", "{CB28E336-19C5-47E3-8003-1090C07C74BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordDataAccessLibraryTests", "WordDataAccessLibraryTests\WordDataAccessLibraryTests.csproj", "{CB28E336-19C5-47E3-8003-1090C07C74BB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{68D0BD24-AED1-460B-8C8D-DB7FDC976BE4}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

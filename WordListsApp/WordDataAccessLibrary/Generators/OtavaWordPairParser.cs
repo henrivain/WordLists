@@ -46,7 +46,7 @@ public class OtavaWordPairParser  : IWordPairParser
                 {
                     ForeignLanguageWord = lines[i],
                     NativeLanguageWord = lines[i + 1],
-                    IndexInVocalbulary = (uint)Math.Round((double)i / 2)
+                    IndexInVocalbulary = (int)Math.Round((double)i / 2)
                 });
         }
         return result;
