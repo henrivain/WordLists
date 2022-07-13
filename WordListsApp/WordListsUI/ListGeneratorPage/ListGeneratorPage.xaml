@@ -13,10 +13,11 @@
     </ContentPage.BindingContext>
     <VerticalStackLayout >
         <Button Text="Luo leikepöydältä" HorizontalOptions="Center" Clicked="Button_Clicked"></Button>
-<!-- Long click will open new menu where you can edit input -->
-        <!--<Label Text="{Binding Str}"/>-->
+        
         <CollectionView ItemsLayout="VerticalList"
                         ItemsSource="{Binding WordPairs}"
+                        BackgroundColor="Red"
+                        ItemSizingStrategy="MeasureAllItems"
                         >
             <!-- IsGrouped="True" crashes -->
             <CollectionView.EmptyView>
@@ -26,11 +27,22 @@
                        />
             </CollectionView.EmptyView>
             <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid ColumnDefinitions="1*, 1*" x:DataType="{x:Type wordData:WordPair}" 
-                          HorizontalOptions="CenterAndExpand">
-                        <Label Text="{Binding NativeLanguageWord}" Grid.Column="0"/>
-                        <Label Text="{Binding ForeignLanguageWord}" Grid.Column="1"/>
+                <DataTemplate >
+                    <Grid BackgroundColor="Red" ColumnDefinitions="5*, *, 5*" 
+                            x:DataType="{x:Type wordData:WordPair}" 
+                            >
+                        <Label Text="{Binding NativeLanguageWord}" 
+                            LineBreakMode="WordWrap"
+                            Grid.Column="0"
+                            HorizontalTextAlignment="Start"
+                            HorizontalOptions="End"
+                            />
+                        <Label Text="{Binding ForeignLanguageWord}" 
+                            LineBreakMode="WordWrap"
+                            Grid.Column="2"
+                            HorizontalTextAlignment="Start"
+                            HorizontalOptions="Start"
+                            />
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

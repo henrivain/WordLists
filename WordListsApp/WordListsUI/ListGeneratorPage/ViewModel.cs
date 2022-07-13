@@ -16,11 +16,10 @@ namespace WordListsUI.ListGeneratorPage;
 [INotifyPropertyChanged]
 public partial class ViewModel
 {
-
     [ObservableProperty]
     List<WordPair> wordPairs = GetTestData().WordPairs;
 
-   
+    
 
 
 
