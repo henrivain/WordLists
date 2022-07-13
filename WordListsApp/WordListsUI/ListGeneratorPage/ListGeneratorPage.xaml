@@ -3,13 +3,37 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.ListGeneratorPage.ListGeneratorPage"
              Title="ListGeneratorPage"
+             xmlns:local="clr-namespace:WordListsUI.ListGeneratorPage"
+             xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
+             
+             x:DataType="{x:Type local:ViewModel}"
              >
+    <ContentPage.BindingContext>
+        <local:ViewModel></local:ViewModel>
+    </ContentPage.BindingContext>
     <VerticalStackLayout >
         <Button Text="Luo leikepöydältä" HorizontalOptions="Center" Clicked="Button_Clicked"></Button>
 <!-- Long click will open new menu where you can edit input -->
+        <!--<Label Text="{Binding Str}"/>-->
         <CollectionView ItemsLayout="VerticalList"
-                        
+                        ItemsSource="{Binding WordPairs}"
                         >
+            <!-- IsGrouped="True" crashes -->
+            <CollectionView.EmptyView>
+                <Label Padding="12" 
+                       Text="Import text from clipboard to generate new list" 
+                       HorizontalOptions="Center"
+                       />
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="1*, 1*" x:DataType="{x:Type wordData:WordPair}" 
+                          HorizontalOptions="CenterAndExpand">
+                        <Label Text="{Binding NativeLanguageWord}" Grid.Column="0"/>
+                        <Label Text="{Binding ForeignLanguageWord}" Grid.Column="1"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
         </CollectionView>
         
         

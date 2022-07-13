@@ -18,6 +18,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Mvvm" Version="7.1.2" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\WordDataAccessLibrary\WordDataAccessLibrary.csproj" />
 	</ItemGroup>
 

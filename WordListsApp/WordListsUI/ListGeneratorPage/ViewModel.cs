@@ -1,19 +1,30 @@
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit;
 using WordDataAccessLibrary;
-using WordDataAccessLibrary.DataBaseActions;
-using WordDataAccessLibrary.Generators;
 
 namespace WordListsUI.ListGeneratorPage;
 
-[XamlCompilation(XamlCompilationOptions.Compile)]
-public partial class ListGeneratorPage : ContentPage
-{
-	public ListGeneratorPage()
-	{
-		InitializeComponent();
-	}
 
-    List<WordPair> WordPairs = new();
+
+
+[INotifyPropertyChanged]
+public partial class ViewModel
+{
+
+    [ObservableProperty]
+    List<WordPair> wordPairs = GetTestData().WordPairs;
+
+   
+
+
+
+
 
     private static WordCollection GetTestData() => new()
     {
@@ -61,14 +72,4 @@ public partial class ListGeneratorPage : ContentPage
         }
     };
 
-
-    private async void Button_Clicked(object sender, EventArgs e)
-	{
-        string vocalbulary = await Clipboard.Default.GetTextAsync();
-        
-        if (vocalbulary is null) return;
-
-        OtavaWordPairParser parser = new(vocalbulary);
-        WordPairs = parser.GetList();
-	}
 }
