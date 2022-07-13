@@ -4,14 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WordDataAccessLibraryTests;
-
-[TestClass]
+namespace WordDataTests;
 public partial class WordCollectionTests
 {
-    [TestMethod]
-    public void Test()
-    {
-
-    }
 }

@@ -1,133 +1,130 @@
-using WordDataAccessLibrary.Generators;
 using WordDataAccessLibrary;
+using WordDataAccessLibrary.Generators;
 
-namespace WordDataAccessLibraryTests;
+namespace WordDataTests;
 
-[TestClass]
 public partial class OtavaParserTests
 {
-      [TestMethod]
+    [Fact]
     public void OneLineParsing()
     {
         OtavaWordPairParser parser = new(TestDataOneLine);
 
         List<WordPair> wordPairs = parser.GetList();
 
-        Assert.AreEqual(1, wordPairs.Count);
+        Assert.Single(wordPairs);
     }
 
-    [TestMethod]
+    [Fact]
     public void TwoLineParsing()
     {
         OtavaWordPairParser parser = new(TestDataTwoLines);
 
         List<WordPair> wordPairs = parser.GetList();
 
-        Assert.AreEqual(2, wordPairs.Count);
+        Assert.Equal(2, wordPairs.Count);
     }
 
-    [TestMethod]
+    [Fact]
     public void ThreeLinesParsing()
     {
         OtavaWordPairParser parser = new(TestDataManyLinesPronunciation);
 
         List<WordPair> wordPairs = parser.GetList();
 
-        Assert.AreEqual(3, wordPairs.Count);
+        Assert.Equal(3, wordPairs.Count);
     }
 
-    [TestMethod]
+    [Fact]
     public void DoesNotContainPronunciation()
     {
         OtavaWordPairParser parser = new(TestDataManyLinesPronunciation);
 
         List<WordPair> wordPairs = parser.GetList();
 
-        Assert.IsFalse(wordPairs.Any(x => ContainsStartBracket(x)));
-        Assert.IsFalse(wordPairs.Any(x => ContainsEndBracket(x)));
+        Assert.DoesNotContain(wordPairs, x => ContainsStartBracket(x));
+        Assert.DoesNotContain(wordPairs, x => ContainsEndBracket(x));
     }
 
-    [TestMethod]
+    [Fact]
     public void OutputMatches_UsingOneLine()
     {
         OtavaWordPairParser parser = new(TestDataOneLine);
 
         List<WordPair> wordPairs = parser.GetList();
 
-        Assert.AreEqual("bad hair day", wordPairs[0].ForeignLanguageWord);
-        Assert.AreEqual("tosi huono päivä", wordPairs[0].NativeLanguageWord);
+        Assert.Equal("bad hair day", wordPairs[0].ForeignLanguageWord);
+        Assert.Equal("tosi huono päivä", wordPairs[0].NativeLanguageWord);
     }
-    
-    
-    [TestMethod]
+
+
+    [Fact]
     public void OutputMatches_UsingThreeLinesAndPronunciation()
     {
         OtavaWordPairParser parser = new(TestDataManyLinesPronunciation);
 
         List<WordPair> wordPairs = parser.GetList();
 
-        Assert.AreEqual("bad hair day", wordPairs[0].ForeignLanguageWord);
-        Assert.AreEqual("tosi huono päivä", wordPairs[0].NativeLanguageWord);
-        Assert.AreEqual("fleeting", wordPairs[1].ForeignLanguageWord);
-        Assert.AreEqual("ohikiitävä", wordPairs[1].NativeLanguageWord);
-        Assert.AreEqual("principal", wordPairs[2].ForeignLanguageWord);
-        Assert.AreEqual("rehtori", wordPairs[2].NativeLanguageWord);
+        Assert.Equal("bad hair day", wordPairs[0].ForeignLanguageWord);
+        Assert.Equal("tosi huono päivä", wordPairs[0].NativeLanguageWord);
+        Assert.Equal("fleeting", wordPairs[1].ForeignLanguageWord);
+        Assert.Equal("ohikiitävä", wordPairs[1].NativeLanguageWord);
+        Assert.Equal("principal", wordPairs[2].ForeignLanguageWord);
+        Assert.Equal("rehtori", wordPairs[2].NativeLanguageWord);
     }
-    
-    [TestMethod]
+
+    [Fact]
     public void Empty()
     {
         OtavaWordPairParser parser = new(string.Empty);
 
         List<WordPair> wordPairs = parser.GetList();
 
-        Assert.AreEqual(0, wordPairs.Count);
+        Assert.Empty(wordPairs);
     }
-    
-    [TestMethod]
+
+    [Fact]
     public void Null()
     {
         OtavaWordPairParser parser = new(null);
-
         List<WordPair> wordPairs = parser.GetList();
-
-        Assert.AreEqual(0, wordPairs.Count);
+        Assert.Empty(wordPairs);
     }
 
-    [TestMethod]
+    [Fact]
     public void OneLine()
     {
         OtavaWordPairParser parser = new("this is one line");
 
         List<WordPair> wordPairs = parser.GetList();
 
-        Assert.AreEqual(0, wordPairs.Count);
+        Assert.Empty(wordPairs);
     }
-    
-    [TestMethod]
+
+    [Fact]
     public void OddNumberOfLines()
     {
         OtavaWordPairParser parser = new("1\n2\r3");
 
         List<WordPair> wordPairs = parser.GetList();
 
-        Assert.AreEqual(1, wordPairs.Count);
+        Assert.Single(wordPairs);
     }
 
-    [TestMethod]
+    [Fact]
     public void LineIndexing()
     {
         OtavaWordPairParser parser = new(TestDataManyLinesPronunciation);
 
         List<WordPair> wordPairs = parser.GetList();
 
-        Assert.AreEqual(0, wordPairs[0].IndexInVocalbulary);
-        Assert.AreEqual(1, wordPairs[1].IndexInVocalbulary);
-        Assert.AreEqual(2, wordPairs[2].IndexInVocalbulary);
+        Assert.Equal(0, wordPairs[0].IndexInVocalbulary);
+        Assert.Equal(1, wordPairs[1].IndexInVocalbulary);
+        Assert.Equal(2, wordPairs[2].IndexInVocalbulary);
     }
 
 
-    [TestMethod]
+    [Fact]
     public void BiggerDataSet()
     {
         string data = "end up\r\n\r\npäätyä\r\n\r\nemergency room [imördensi rum]" +
@@ -141,6 +138,6 @@ public partial class OtavaParserTests
 
         List<WordPair> wordPairs = parser.GetList();
 
-        Assert.AreEqual(10, wordPairs.Count);
+        Assert.Equal(10, wordPairs.Count);
     }
 }

@@ -1,12 +1,10 @@
-﻿// Copyright 2022 Henri Vainio 
+﻿using WordDataAccessLibrary;
 
-using WordDataAccessLibrary;
-
-namespace WordDataAccessLibraryTests;
+namespace WordDataTests;
 public partial class OtavaParserTests
 {
     private readonly string TestDataOneLine =
-    "bad hair day\r\n\r\ntosi huono päivä";
+   "bad hair day\r\n\r\ntosi huono päivä";
 
     private readonly string TestDataTwoLines =
         "bad hair day\r\n\r\ntosi huono päivä\r\n\r\nfleeting \r\n\r\nohikiitävä";

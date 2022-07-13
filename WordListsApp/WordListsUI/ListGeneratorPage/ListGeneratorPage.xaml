@@ -7,7 +7,10 @@
     <VerticalStackLayout >
         <Button Text="Luo leikepöydältä" HorizontalOptions="Center" Clicked="Button_Clicked"></Button>
 <!-- Long click will open new menu where you can edit input -->
-        
+        <CollectionView ItemsLayout="VerticalList"
+                        
+                        >
+        </CollectionView>
         
         
         

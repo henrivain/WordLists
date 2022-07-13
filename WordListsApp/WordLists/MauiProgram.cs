@@ -1,4 +1,5 @@
-﻿using Microsoft.Maui.Controls.Compatibility.Hosting;
+﻿using CommunityToolkit.Maui;
+using Microsoft.Maui.Controls.Compatibility.Hosting;
 
 namespace WordLists;
 
@@ -9,6 +10,7 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
+			.UseMauiCommunityToolkit()
             .UseMauiCompatibility()
             .ConfigureFonts(fonts =>
 			{

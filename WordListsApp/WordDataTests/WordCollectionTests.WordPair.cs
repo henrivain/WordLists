@@ -5,11 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using WordDataAccessLibrary;
 
-namespace WordDataAccessLibraryTests;
-
+namespace WordDataTests;
 public partial class WordCollectionTests
 {
-    [TestMethod]
+    [Fact]
     public void WordPair_HasSameWords()
     {
         string native = "a tree";
@@ -21,14 +20,14 @@ public partial class WordCollectionTests
             ForeignLanguageWord = foreign
         };
 
-        Assert.AreEqual(native, pair.NativeLanguageWord);
-        Assert.AreEqual(foreign, pair.ForeignLanguageWord);
+        Assert.Equal(native, pair.NativeLanguageWord);
+        Assert.Equal(foreign, pair.ForeignLanguageWord);
     }
 
-    [TestMethod]
+    [Fact]
     public void WordPair_NativeWordFailsOnNull()
     {
-        Assert.ThrowsException<ArgumentNullException>(() =>
+        Assert.Throws<ArgumentNullException>(() =>
         {
             WordPair pair = new()
             {
@@ -38,10 +37,10 @@ public partial class WordCollectionTests
         });
     }
 
-    [TestMethod]
+    [Fact]
     public void WordPair_ForeignWordFailsOnNull()
     {
-        Assert.ThrowsException<ArgumentNullException>(() =>
+        Assert.Throws<ArgumentNullException>(() =>
         {
             WordPair pair = new()
             {
@@ -51,7 +50,7 @@ public partial class WordCollectionTests
         });
     }
 
-    [TestMethod]
+    [Fact]
     public void WordPair_LearnStateEnumMatchWordLearnStateId()
     {
         WordPair pair = new()
@@ -61,10 +60,10 @@ public partial class WordCollectionTests
             LearnState = WordLearnState.MightKnow
         };
 
-        Assert.AreEqual((int)WordLearnState.MightKnow, pair.WordLearnStateId);
+        Assert.Equal((int)WordLearnState.MightKnow, pair.WordLearnStateId);
     }
 
-    [TestMethod]
+    [Fact]
     public void WordPair_RemembersNormalIndexInVocalbulary()
     {
         int index = 3;
@@ -77,10 +76,10 @@ public partial class WordCollectionTests
             IndexInVocalbulary = index
         };
 
-        Assert.AreEqual(index, pair.IndexInVocalbulary);
+        Assert.Equal(index, pair.IndexInVocalbulary);
     }
 
-    [TestMethod]
+    [Fact]
     public void WordPair_IndexInVocalbularyCanBeMinusOne()
     {
         int index = -1;
@@ -93,15 +92,15 @@ public partial class WordCollectionTests
             IndexInVocalbulary = index
         };
 
-        Assert.AreEqual(index, pair.IndexInVocalbulary);
+        Assert.Equal(index, pair.IndexInVocalbulary);
     }
 
-    [TestMethod]
+    [Fact]
     public void WordPair_IndexInVocalbularyThrowsException_IfSmallerThanMinusOne()
     {
         int index = -2;
-
-        Assert.ThrowsException<ArgumentException>(() =>
+        
+        Assert.Throws<ArgumentException>(() =>
         {
             WordPair pair = new()
             {

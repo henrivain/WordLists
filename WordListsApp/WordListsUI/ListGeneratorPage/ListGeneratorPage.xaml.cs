@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using WordDataAccessLibrary;
 using WordDataAccessLibrary.DataBaseActions;
+using WordDataAccessLibrary.Generators;
 
 namespace WordListsUI.ListGeneratorPage;
 
@@ -10,6 +11,8 @@ public partial class ListGeneratorPage : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    List<WordPair> WordPairs = new();
 
     private static WordCollection GetTestData() => new()
     {
@@ -57,13 +60,14 @@ public partial class ListGeneratorPage : ContentPage
         }
     };
 
+
     private async void Button_Clicked(object sender, EventArgs e)
 	{
-        var d = GetTestData();
-        int id = await WordCollectionService.AddWordCollection(d);
-        var n = await WordCollectionService.GetWordCollection(id);
-        Debug.WriteLine(n.Owner.Name);
+        string vocalbulary = await Clipboard.Default.GetTextAsync();
+        
+        if (vocalbulary is null) return;
 
-
+        OtavaWordPairParser parser = new(vocalbulary);
+        WordPairs = parser.GetList();
 	}
 }
