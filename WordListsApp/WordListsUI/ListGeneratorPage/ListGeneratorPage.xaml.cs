@@ -3,6 +3,7 @@ using WordDataAccessLibrary;
 using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.Generators;
 using WordListsViewModels;
+using Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;
 
 namespace WordListsUI.ListGeneratorPage;
 
@@ -13,6 +14,7 @@ public partial class ListGeneratorPage : ContentPage
 	{
         BindingContext = model;
 		InitializeComponent();
+		hh.On<Microsoft.Maui.Controls.PlatformConfiguration.Windows>().SetAccessKey("D");
 	}
 
     public IListGeneratorViewModel ViewModel => (IListGeneratorViewModel)BindingContext;

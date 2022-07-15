@@ -5,6 +5,7 @@
              Title="ListGeneratorPage"
              xmlns:viewModel="clr-namespace:WordListsViewModels;assembly=WordListsViewModels"
              xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
+             xmlns:windows="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;assembly=Microsoft.Maui.Controls"
              x:DataType="{x:Type viewModel:ListGeneratorViewModel}"
              x:Name="listGeneratorView"
              >
@@ -13,6 +14,7 @@
             <Button Text="Luo leikepöydältä" 
                     HorizontalOptions="Center" 
                     Command="{Binding GeneratePairsCommand}"
+                    x:Name="hh"
                     />
 
             <Button Text="FlipPairs" 
@@ -20,21 +22,21 @@
                     Command="{Binding FlipSides}"
                     />
 
-            <Entry Text="{Binding CollectionName}" 
+            <Entry Placeholder="{Binding CollectionName}" 
                    SemanticProperties.Hint="Collection name"
                    MaxLength="32"
                    Margin="5"
                    />
 
 
-            <Editor Text="{Binding Description}"
-                   SemanticProperties.Hint="Description: tell about collection, max 256 chars"
-                   MaxLength="256"
-                   Margin="5"
-                   AutoSize="TextChanges"
-                   />
+            <Editor Placeholder="{Binding Description}"
+                    SemanticProperties.Hint="Description: tell about collection, max 256 chars"
+                    MaxLength="256"
+                    Margin="5"
+                    AutoSize="TextChanges"
+                    />
 
-            <Entry Text="{Binding LanguageHeaders}"
+            <Entry Placeholder="{Binding LanguageHeaders}"
                    SemanticProperties.Hint="Collection languages: example fi-en or ge-sw"
                    SemanticProperties.Description="Collection "
                    MaxLength="16"

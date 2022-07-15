@@ -18,6 +18,8 @@ namespace WordListsViewModels;
 [INotifyPropertyChanged]
 public partial class ListGeneratorViewModel : IListGeneratorViewModel
 {
+    bool CanOverWriteDatabase = false;
+    
 
     [ObservableProperty]
     List<WordPair> wordPairs = new();
@@ -87,9 +89,17 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     public IAsyncRelayCommand SaveCollection => new AsyncRelayCommand(
         async () =>
         {
+            // not enabled for saving currently room for laptop
             //await WordCollectionService.AddWordCollection(GetDataAsWordCollection());
+
+            // implement save on top of old instance if that saved
+            if (WordPairs.Count is 0)
+            {
+                Debug.WriteLine($"{nameof(SaveCollection)}: Can't add empty word collection");
+                return;
+            }
             await Task.Delay(1);
-            Debug.WriteLine($"{nameof(SaveCollection)} is not enabled");
+            Debug.WriteLine($"{nameof(SaveCollection)} is not currently enabled");
         });
 
     public IRelayCommand FlipSides => new RelayCommand(() =>
