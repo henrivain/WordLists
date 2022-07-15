@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace WordDataAccessLibrary.Generators;
 
-public class OtavaWordPairParser  : IWordPairParser
+public class OtavaWordPairParser : IWordPairParser
 {
     public OtavaWordPairParser(string vocabularyList)
     {
@@ -21,7 +21,7 @@ public class OtavaWordPairParser  : IWordPairParser
     }
     private static string[] CleanLines(string[] lines)
     {
-        return lines.Select(x => RemovePronunciation(x))
+        return lines.Select(RemovePronunciation)
                     .Where(x => string.IsNullOrWhiteSpace(x) is false)
                     .Select(x => x.Trim())
                     .ToArray();
@@ -44,8 +44,9 @@ public class OtavaWordPairParser  : IWordPairParser
             result.Add(
                 new()
                 {
-                    ForeignLanguageWord = lines[i],
-                    NativeLanguageWord = lines[i + 1],
+                    // in otava books foreign language is first and native second
+                    ForeignLanguageWord = lines[i + 1],
+                    NativeLanguageWord = lines[i],
                     IndexInVocalbulary = (int)Math.Round((double)i / 2)
                 });
         }

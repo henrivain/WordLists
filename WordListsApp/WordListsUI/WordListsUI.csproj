@@ -23,6 +23,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\WordDataAccessLibrary\WordDataAccessLibrary.csproj" />
+	  <ProjectReference Include="..\WordListsViewModels\WordListsViewModels.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
