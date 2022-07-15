@@ -88,6 +88,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\WordListsUI\WordListsUI.csproj" />
+	  <ProjectReference Include="..\WordListsViewModels\WordListsViewModels.csproj" />
 	</ItemGroup>
 
 </Project>
