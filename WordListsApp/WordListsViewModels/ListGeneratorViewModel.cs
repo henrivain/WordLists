@@ -1,26 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm;
-using WordDataAccessLibrary;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
+using WordDataAccessLibrary;
+using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DeviceAccess;
 using WordDataAccessLibrary.Generators;
 using WordDataAccessLibrary.Helpers;
-using WordDataAccessLibrary.DataBaseActions;
 
 namespace WordListsViewModels;
 
 [INotifyPropertyChanged]
 public partial class ListGeneratorViewModel : IListGeneratorViewModel
 {
-    bool CanOverWriteDatabase = false;
-    
-
     [ObservableProperty]
     List<WordPair> wordPairs = new();
 
@@ -37,7 +28,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         async () =>
         {
             string text = await ClipBoardAccess.GetStringAsync();
-            SetWordPairsFromString(text);
+            ParseAndSetWordPairsFromString(text);
         });
 
     public IAsyncRelayCommand SaveCollection => new AsyncRelayCommand(
@@ -49,7 +40,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
                 Debug.WriteLine($"{nameof(SaveCollection)}: Can't add empty word collection");
                 return;
             }
-            await WordCollectionService.AddWordCollection(GetDataAsWordCollection());
+            await WordCollectionService.AddWordCollection(GetData());
         });
 
     public IRelayCommand FlipSides => new RelayCommand(() =>
@@ -57,25 +48,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         WordPairs = WordListFlipper.FlipWordPair(WordPairs);
     });
 
-    private void SetWordPairsFromString(string text)
-    {
-        WordPairs = UseParser switch
-        {
-            Parser.Otava => new OtavaWordPairParser(text).GetList(),
-
-            _ => throw new NotImplementedException($"Parser {UseParser} is not implemented")
-        };
-    }
-
-
-    public Parser UseParser { get; set; } = Parser.Otava;
-
-    public enum Parser
-    {
-        Otava
-    }
-
-    public WordCollection GetDataAsWordCollection()
+    public WordCollection GetData()
     {
         return new()
         {
@@ -89,9 +62,20 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         };
     }
 
-    public void SaveToDatabase()
+    public Parser UseParser { get; set; } = Parser.Otava;
+
+    public enum Parser
     {
-        throw new NotImplementedException();
+        Otava
+    }
+
+    private void ParseAndSetWordPairsFromString(string pairs)
+    {
+        WordPairs = UseParser switch
+        {
+            Parser.Otava => new OtavaWordPairParser(pairs).GetList(),
+            _ => throw new NotImplementedException($"Parser {UseParser} is not implemented")
+        };
     }
 }
 

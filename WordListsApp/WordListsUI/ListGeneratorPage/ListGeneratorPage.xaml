@@ -22,10 +22,11 @@
                     Command="{Binding FlipSides}"
                     />
 
-            <Entry Text="{Binding CollectionName}"
+            <Entry Placeholder="Title"
+                   Text="{Binding CollectionName}"
                    Focused="ITextInput_Focused"
                    SemanticProperties.Hint="Collection name"
-                   MaxLength="32"
+                   MaxLength="24"
                    Margin="5"
                    />
 
@@ -38,7 +39,8 @@
                     AutoSize="TextChanges"
                     />
 
-            <Entry Text="{Binding LanguageHeaders}"
+            <Entry Placeholder="Languages"
+                   Text="{Binding LanguageHeaders}"
                    Focused="ITextInput_Focused"
                    SemanticProperties.Hint="Collection languages: example fi-en or ge-sw"
                    SemanticProperties.Description="Collection "

@@ -16,7 +16,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordDataTests", "WordDataTests\WordDataTests.csproj", "{D3EE2DB1-03B3-4F2D-84E5-032C970D9790}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordListsViewModels", "WordListsViewModels\WordListsViewModels.csproj", "{2BACFEA6-BE91-4923-966C-57EBC9719F05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordListsViewModels", "WordListsViewModels\WordListsViewModels.csproj", "{2BACFEA6-BE91-4923-966C-57EBC9719F05}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{AC1754A4-454D-43B3-966F-5B323561E1C4}"
+	ProjectSection(SolutionItems) = preProject
+		Colors.xml = Colors.xml
+		RoadMap.xml = RoadMap.xml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

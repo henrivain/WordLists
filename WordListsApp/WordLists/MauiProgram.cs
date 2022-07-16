@@ -1,5 +1,6 @@
 ﻿using Microsoft.Maui.Controls.Compatibility.Hosting;
 using WordListsUI.ListGeneratorPage;
+using WordListsUI.WordTrainingPage;
 using WordListsViewModels;
 
 namespace WordLists;
@@ -19,9 +20,10 @@ public static class MauiProgram
 			});
 		// injectin appshell will make app buggy and starts to change visual element visibility
 		builder.Services.AddTransient<ListGeneratorPage>();
+		builder.Services.AddTransient<WordTrainingPage>();
 		builder.Services.AddTransient<IListGeneratorViewModel, ListGeneratorViewModel>();
+		builder.Services.AddSingleton<IWordTrainingViewModel, WordTrainingViewModel>();
 
-		builder.Services.AddTransient<IListGeneratorViewModel, ListGeneratorViewModel>();
 
 		return builder.Build();
 	}

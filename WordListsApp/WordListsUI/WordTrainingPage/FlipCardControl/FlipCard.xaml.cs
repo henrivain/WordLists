@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace WordListsUI.WordTrainingPage.FlipCardControl;
 
 public partial class FlipCard : ContentView
@@ -28,7 +30,11 @@ public partial class FlipCard : ContentView
         UpdateText();
         return Task.CompletedTask;
     }
-    protected void UpdateText() => testGridText.Text = ShowingTopSide ? TopSideText : BottomSideText;
+    protected void UpdateText()
+    {
+        //textField.Text = ShowingTopSide ? TopSideText : BottomSideText;
+    }
+
     public string TopSideText
     {
         get => (string)GetValue(TopTextProperty);
@@ -59,5 +65,15 @@ public partial class FlipCard : ContentView
     {
         ShowingTopSide = !ShowingTopSide;
         UpdateText();
+    }
+
+    private void Grid_SizeChanged(object sender, EventArgs e)
+    {
+        Debug.WriteLine($"Grid {((Grid)sender).Width}");
+    }
+
+    private void ContentView_SizeChanged(object sender, EventArgs e)
+    {
+        Debug.WriteLine($"Content view {((ContentView)sender).Width}");
     }
 }

@@ -1,16 +1,20 @@
 using Microsoft.Maui.Controls;
 using WordListsUI.WordTrainingPage.FlipCardControl;
+using WordListsViewModels;
 
 namespace WordListsUI.WordTrainingPage;
 
 public partial class WordTrainingPage : ContentPage
 {
-	public WordTrainingPage()
+	public WordTrainingPage(IWordTrainingViewModel model)
 	{
+        BindingContext = model;
 		InitializeComponent();
 	}
 
-	private bool ShowNativeWordByDefault = true;
+    public IWordTrainingViewModel Model => (IWordTrainingViewModel)BindingContext;
+
+	public bool ShowNativeWordByDefault { get; set; } = true;
 
 
 
@@ -44,10 +48,5 @@ public partial class WordTrainingPage : ContentPage
    
 
 
-    private void ParentGrid_Loaded(object sender, EventArgs e)
-    {
-#if WINDOWS
-        parentGrid.MaximumWidthRequest = 500;
-#endif
-    }
+
 }

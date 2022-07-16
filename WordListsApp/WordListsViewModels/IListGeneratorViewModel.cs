@@ -1,14 +1,11 @@
-﻿using System.ComponentModel;
+﻿using CommunityToolkit.Mvvm.Input;
+using System.ComponentModel;
 using WordDataAccessLibrary;
 
 namespace WordListsViewModels;
 public interface IListGeneratorViewModel
 {
     event PropertyChangedEventHandler? PropertyChanged;
-
-    WordCollection GetDataAsWordCollection();
-
-    void SaveToDatabase();
 
     List<WordPair> WordPairs { get; set; }
 
@@ -17,5 +14,14 @@ public interface IListGeneratorViewModel
     string Description { get; set; }
 
     string LanguageHeaders { get; set; }
+
+    IAsyncRelayCommand GeneratePairsCommand { get; }
+    
+    IAsyncRelayCommand SaveCollection { get; }
+
+    IRelayCommand FlipSides { get; }
+    
+    WordCollection GetData();
+
 
 }
