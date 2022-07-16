@@ -22,21 +22,24 @@
                     Command="{Binding FlipSides}"
                     />
 
-            <Entry Placeholder="{Binding CollectionName}" 
+            <Entry Text="{Binding CollectionName}"
+                   Focused="ITextInput_Focused"
                    SemanticProperties.Hint="Collection name"
                    MaxLength="32"
                    Margin="5"
                    />
 
-
+            <!-- Focused ui changes do not work currently (Might be bug) -->
             <Editor Placeholder="{Binding Description}"
+                    Focused="ITextInput_Focused"
                     SemanticProperties.Hint="Description: tell about collection, max 256 chars"
                     MaxLength="256"
                     Margin="5"
                     AutoSize="TextChanges"
                     />
 
-            <Entry Placeholder="{Binding LanguageHeaders}"
+            <Entry Text="{Binding LanguageHeaders}"
+                   Focused="ITextInput_Focused"
                    SemanticProperties.Hint="Collection languages: example fi-en or ge-sw"
                    SemanticProperties.Description="Collection "
                    MaxLength="16"

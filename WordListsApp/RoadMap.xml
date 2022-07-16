@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Versions>
+	<Completed>
+		<!-- Here are all versions that are completed and released to github -->
+		<InRelease>
+			<!-- Update released -->
+		</InRelease>
+		<UnReleased>
+			<!-- Update not released -->
+		</UnReleased>
+	</Completed>
+	<Coming>
+		<!-- Most certainly coming features-->
+		<TODO>
+			<WordCollections>
+				<GetByLanguageHeaders/>
+				<GetByName/>
+			</WordCollections>
+		</TODO>
+	</Coming>
+	
+	<UnCertain>
+		<WordListGenerator>Edit button to edit word collection words</WordListGenerator>
+		<WordListGenerator>Over write old version of wordcollection</WordListGenerator>
+	</UnCertain>
+</Versions>

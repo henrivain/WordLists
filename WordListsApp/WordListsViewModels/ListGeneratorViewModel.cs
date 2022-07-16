@@ -33,52 +33,6 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     [ObservableProperty]
     string languageHeaders = "fi-en";
 
-    private static WordCollection GetTestData() => new()
-    {
-        Owner = new()
-        {
-            Name = "WordCollection1",
-            Description = "this is WordCollection1",
-            Id = 1
-        },
-        WordPairs = new()
-        {
-            new()
-            {
-                NativeLanguageWord = "a Tree",
-                ForeignLanguageWord = "puu",
-                IndexInVocalbulary = 0,
-                LearnState = WordLearnState.MightKnow,
-                OwnerId = 1
-            },
-            new()
-            {
-                NativeLanguageWord = "a flower",
-                ForeignLanguageWord = "kukka",
-                IndexInVocalbulary = 1,
-                LearnState = WordLearnState.NeverHeard,
-                OwnerId = 1
-            },
-            new()
-            {
-                NativeLanguageWord = "a pig",
-                ForeignLanguageWord = "sika",
-                IndexInVocalbulary = 2,
-                LearnState = WordLearnState.Learned,
-                OwnerId = 1
-            },
-            new()
-            {
-                NativeLanguageWord = "a car",
-                ForeignLanguageWord = "auto",
-                IndexInVocalbulary = 3,
-                LearnState = WordLearnState.NeverHeard,
-                OwnerId = 1
-            }
-
-        }
-    };
-
     public IAsyncRelayCommand GeneratePairsCommand => new AsyncRelayCommand(
         async () =>
         {
@@ -89,28 +43,19 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     public IAsyncRelayCommand SaveCollection => new AsyncRelayCommand(
         async () =>
         {
-            // not enabled for saving currently room for laptop
-            //await WordCollectionService.AddWordCollection(GetDataAsWordCollection());
-
             // implement save on top of old instance if that saved
             if (WordPairs.Count is 0)
             {
                 Debug.WriteLine($"{nameof(SaveCollection)}: Can't add empty word collection");
                 return;
             }
-            await Task.Delay(1);
-            Debug.WriteLine($"{nameof(SaveCollection)} is not currently enabled");
+            await WordCollectionService.AddWordCollection(GetDataAsWordCollection());
         });
 
     public IRelayCommand FlipSides => new RelayCommand(() =>
     {
         WordPairs = WordListFlipper.FlipWordPair(WordPairs);
     });
-
-
-
-
-
 
     private void SetWordPairsFromString(string text)
     {
@@ -137,9 +82,9 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
             WordPairs = WordPairs,
             Owner = new()
             {
-                Name = CollectionName,
-                Description = Description,
-                LanguageHeaders = LanguageHeaders
+                Name = CollectionName ?? string.Empty,
+                Description = Description ?? string.Empty,
+                LanguageHeaders = LanguageHeaders ?? string.Empty
             }
         };
     }
