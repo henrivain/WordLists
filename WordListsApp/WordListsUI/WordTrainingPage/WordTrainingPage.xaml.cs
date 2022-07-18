@@ -1,15 +1,22 @@
 using Microsoft.Maui.Controls;
+using WordDataAccessLibrary;
 using WordListsUI.WordTrainingPage.FlipCardControl;
 using WordListsViewModels;
+
 
 namespace WordListsUI.WordTrainingPage;
 
 public partial class WordTrainingPage : ContentPage
 {
-	public WordTrainingPage(IWordTrainingViewModel model)
+
+
+    public WordTrainingPage(IWordTrainingViewModel model)
 	{
         BindingContext = model;
 		InitializeComponent();
+        Animator = new(flipper);
+
+        
 	}
 
     public IWordTrainingViewModel Model => (IWordTrainingViewModel)BindingContext;
@@ -17,36 +24,32 @@ public partial class WordTrainingPage : ContentPage
 	public bool ShowNativeWordByDefault { get; set; } = true;
 
 
+    readonly SlideAnimation Animator;
 
- 
-	private void ShowDefaultSideWithoutAnimation()
+    private void ShowDefaultSideWithoutAnimation()
 	{
         if (ShowNativeWordByDefault)
         {
-            flipper.ShowTopSideWithoutAnimation();
+            flipper.ShowTopSideNoAnimation();
 			return;
         }
-		flipper.ShowBottomSideWithoutAnimation();
+		flipper.ShowBottomSideNoAnimation();
     }
 
 	private async void Button_LastCard(object sender, EventArgs e)
 	{
-        SlideAnimation animation = new(flipper);
-        await animation.ToMaxRight();
+        await Animator.ToMaxRight();
+        Model.Previous();
         ShowDefaultSideWithoutAnimation();
-        await animation.FromMaxLeftToMiddle();
+        await Animator.FromMaxLeftToMiddle();
     }
 
 	private async void Button_NextCard(object sender, EventArgs e)
 	{
-        SlideAnimation animation = new(flipper);
-        await animation.ToMaxLeft();
+        await Animator.ToMaxLeft();
+        Model.Next();
         ShowDefaultSideWithoutAnimation();
-        await animation.FromMaxRightToMiddle();
+        await Animator.FromMaxRightToMiddle();
     }
-
-   
-
-
 
 }

@@ -2,11 +2,15 @@ using System.Diagnostics;
 
 namespace WordListsUI.WordTrainingPage.FlipCardControl;
 
+/// <summary>
+/// Implement card like view with two sides for text. Side is changed when tapped (No animation) 
+/// </summary>
 public partial class FlipCard : ContentView
 {
 	public FlipCard()
 	{
 		InitializeComponent();
+        //BindingContext = new FlipCardViewModel();
         UpdateText();
 	}
     public FlipCard(string topText, string bottomText) : this()
@@ -14,9 +18,10 @@ public partial class FlipCard : ContentView
         TopSideText = topText;
         BottomSideText = bottomText;
     }
-    protected bool ShowingTopSide { get; set; } = true;
+    protected bool ShowingTopSide { get; set; } = true; 
 
-    #region TextHandling
+
+    //public IFlipCardViewModel Model => (IFlipCardViewModel)BindingContext;
 
     protected virtual Task ShowTopSide()
     {
@@ -24,18 +29,23 @@ public partial class FlipCard : ContentView
         UpdateText();
         return Task.CompletedTask;
     }
+
     protected virtual Task ShowBottomSide()
     {
         ShowingTopSide = false;
         UpdateText();
         return Task.CompletedTask;
     }
-    protected void UpdateText()
+
+    protected virtual void UpdateText()
     {
-        //textField.Text = ShowingTopSide ? TopSideText : BottomSideText;
+        textField.Text = ShowingTopSide ? TopSideText : BottomSideText;
     }
 
-    public string TopSideText
+
+
+
+    public virtual string TopSideText
     {
         get => (string)GetValue(TopTextProperty);
         set
@@ -44,7 +54,8 @@ public partial class FlipCard : ContentView
             UpdateText();
         }
     }
-    public string BottomSideText
+
+    public virtual string BottomSideText
     {
         get => (string)GetValue(BottomTextProperty);
         set
@@ -59,21 +70,10 @@ public partial class FlipCard : ContentView
 
     public static readonly BindableProperty BottomTextProperty =
         BindableProperty.Create(nameof(BottomSideText), typeof(string), typeof(FlipCard), "my bottom text");
-    #endregion
-
+    
     protected virtual void Tapped(object sender, EventArgs e) 
     {
         ShowingTopSide = !ShowingTopSide;
         UpdateText();
-    }
-
-    private void Grid_SizeChanged(object sender, EventArgs e)
-    {
-        Debug.WriteLine($"Grid {((Grid)sender).Width}");
-    }
-
-    private void ContentView_SizeChanged(object sender, EventArgs e)
-    {
-        Debug.WriteLine($"Content view {((ContentView)sender).Width}");
     }
 }

@@ -5,7 +5,7 @@
              xmlns:flipper="clr-namespace:WordListsUI.WordTrainingPage.FlipCardControl"
              xmlns:viewModel="clr-namespace:WordListsViewModels;assembly=WordListsViewModels"
              xmlns:windows="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;assembly=Microsoft.Maui.Controls"
-             x:DataType="{x:Type viewModel:WordTrainingViewModel}"
+             x:DataType="{x:Type viewModel:IWordTrainingViewModel}"
              Title="Train words" 
              BackgroundColor="#1c1b4d"
              x:Name="WordTrainer"
@@ -49,6 +49,7 @@
                                               x:Name="flipper"
                                               VerticalOptions="FillAndExpand"
                                               Margin="0,0"
+                                              WordPair="{Binding VisibleWordPair}"
                                               />
                 </Grid>
                 
@@ -62,11 +63,15 @@
                             <Setter Property="Margin" Value="20,0"/>
                         </Style>
                     </Grid.Resources>
-                    <ImageButton Source="arrow.svg" 
+                    <ImageButton Source="arrow.png" 
+                                 IsEnabled="{Binding CanFlipLast}"
+                                 BackgroundColor="Transparent"
+                                 Rotation="180"
                                  HorizontalOptions="End"
                                  Clicked="Button_LastCard"
-                                 />
-                    <!--Rotation="180"-->
+                                 >
+
+                    </ImageButton>
                     <Label Grid.Column="1"
                            HorizontalOptions="Center"
                            VerticalOptions="Center"
@@ -78,11 +83,14 @@
                             </MultiBinding>
                         </Label.Text>
                     </Label>
-                    <ImageButton Source="arrow.svg" 
+                    <ImageButton Source="arrow.png" 
+                                 IsEnabled="{Binding CanFlipNext}"
+                                 BackgroundColor="Transparent"
                                  HorizontalOptions="Start"
                                  Grid.Column="2"
                                  Clicked="Button_NextCard"
-                                 />
+                                 >
+                    </ImageButton>
                 </Grid>
             </VerticalStackLayout>
         </ScrollView>

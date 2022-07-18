@@ -12,9 +12,12 @@ namespace WordListsViewModels;
 [INotifyPropertyChanged]
 public partial class WordTrainingViewModel : IWordTrainingViewModel
 {
+    public WordTrainingViewModel()
+    {
+        StartNewCollection(new());
+    }
+
     public WordCollection WordCollection { get; set; } = new();
-
-
 
     [ObservableProperty]
     string title = "Unter uns 6 kpl 5 nice!";
@@ -30,18 +33,64 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     string languageHeaders = "fi-en-sw-ge-fif";
 
     [ObservableProperty]
-    uint currentWordIndex = 0;
+    int currentWordIndex = 0;
 
     [ObservableProperty]
-    uint maxWordIndex = 5;
+    int maxWordIndex = 0;
 
-    public WordPair GetNextPair()
+    [ObservableProperty]
+    bool canFlipNext = true;
+
+    [ObservableProperty]
+    bool canFlipLast = false;
+
+    [ObservableProperty]
+    WordPair? visibleWordPair;
+
+    public void Next()
     {
-        throw new NotImplementedException();
+        CanFlipLast = true;
+        
+        if (CurrentWordIndex >= MaxWordIndex)
+        {
+            Completed();
+            return;
+        }
+        CurrentWordIndex++;
+        VisibleWordPair = WordCollection.WordPairs[CurrentWordIndex];
     }
 
-    public WordPair GetLastPair()
+    public void Previous()
     {
-        throw new NotImplementedException();
+        CanFlipNext = true;
+        CurrentWordIndex--;
+        if (CurrentWordIndex <= 0)
+        {
+            CanFlipLast = false;
+            CurrentWordIndex = 0;
+        }
+        VisibleWordPair = WordCollection.WordPairs[CurrentWordIndex];
     }
+
+    public void StartNewCollection(WordCollection collection)
+    {
+        MaxWordIndex = collection.WordPairs.Count;
+        WordCollection = collection;
+        CurrentWordIndex = 0;
+        CanFlipLast = false;
+        
+        if (CurrentWordIndex >= MaxWordIndex) Completed();
+    }
+
+    private void Completed()
+    {
+        CanFlipNext = false;
+        VisibleWordPair = new()
+        {
+            NativeLanguageWord = "Word list completed!",
+            ForeignLanguageWord = "Word list completed!"
+        };
+        CurrentWordIndex = MaxWordIndex;
+    }
+
 }

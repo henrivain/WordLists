@@ -4,12 +4,12 @@
              x:Class="WordListsUI.WordTrainingPage.FlipCardControl.FlipCard"
              BackgroundColor="Transparent"
              >
-    <ContentView.GestureRecognizers>
-        <TapGestureRecognizer Tapped="Tapped"/>
-    </ContentView.GestureRecognizers>
     <ContentView.Content>
-            <Border Stroke="Transparent">
-                <Border.StrokeShape>
+        <Border Stroke="Transparent" BackgroundColor="#6c5aad">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Tapped="Tapped"/>
+            </Border.GestureRecognizers>
+            <Border.StrokeShape>
                     <RoundRectangle CornerRadius="20"/>
                 </Border.StrokeShape>
                 <Border.Shadow>
@@ -19,13 +19,12 @@
                             Offset="0,0"
                             />
                 </Border.Shadow>
-                <Label Text="Flip card text field" 
+                <Label Text="this is flipcard"
                        x:Name="textField"
                        LineBreakMode="WordWrap"
                        FontSize="Medium"
                        HorizontalTextAlignment="Center" 
                        VerticalTextAlignment="Center"
-                       BackgroundColor="#6c5aad"
                        TextColor="White"
                        />
             </Border>

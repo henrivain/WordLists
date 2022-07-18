@@ -1,38 +1,81 @@
 ﻿using WordDataAccessLibrary;
 
 namespace WordListsUI.WordTrainingPage.FlipCardControl;
+
+/// <summary>
+/// 
+/// </summary>
 public class WordPairFlipCard : AnimatedFlipCard
 {
-    public WordPairFlipCard() : base() => WordPair = new(string.Empty, string.Empty);
-
-    public WordPairFlipCard(WordPair pair, bool showNativeWord = true) : base()
+    public WordPairFlipCard() : base()
     {
-        WordPair = pair;
-        if (showNativeWord is false) _ = ShowBottomSide();
+        WordPair = new("top of WordPairFlipCard", "bottom of WordPairFlipCard");
     }
 
-    WordPair _wordPair;
+    public WordPairFlipCard(WordPair pair, bool showNativeFirst = true) : base()
+    {
+        WordPair = pair;
+        ShowNativeFirst = showNativeFirst;
+    }
 
     public WordPair WordPair
     {
-        get => _wordPair;
+        get => (WordPair)GetValue(WordPairProperty);
         set
         {
-            _wordPair = value;
-            ResetSideTextsFromWordPair(value);
+            SetValue(WordPairProperty, value);
         }
     }
-
-    public static readonly BindableProperty WordPairProperty =
-        BindableProperty.Create(nameof(TopSideText), typeof(WordPair), typeof(WordPairFlipCard));
-
-    private void ResetSideTextsFromWordPair(WordPair pair)
+    public bool ShowNativeFirst { get; set; } = true;
+    public override string TopSideText
     {
-        if (pair is null) return;
-        TopSideText = pair.NativeLanguageWord;
-        BottomSideText = pair.ForeignLanguageWord;
-        UpdateText();
+        get => base.TopSideText;
+        set => SetValue(TopTextProperty, value);
+    }
+    public override string BottomSideText
+    {
+        get => base.BottomSideText;
+        set => SetValue(BottomTextProperty, value);
     }
 
 
+    public static readonly BindableProperty WordPairProperty =
+        BindableProperty.Create(nameof(WordPair), typeof(WordPair), typeof(FlipCard), propertyChanged: WordPairProperty_Changed);
+    
+    protected static void WordPairProperty_Changed(BindableObject bindable, object oldValue, object newValue)
+    {
+        WordPair pair = (WordPair)newValue;
+        if (pair is null) return;
+        ((WordPairFlipCard)bindable).ShowNewPair(pair);
+    }
+    protected virtual void ShowNewPair(WordPair pair)
+    {
+        TopSideText = pair.NativeLanguageWord;
+        BottomSideText = pair.ForeignLanguageWord;
+
+        if (ShowNativeFirst)
+        {
+            ShowOrUpdateTop();
+            return;
+        }
+        ShowOrUpdateBottom();
+    }
+    protected virtual void ShowOrUpdateTop()
+    {
+        if (ShowingTopSide)
+        {
+            UpdateText();
+            return;
+        }
+        _ = ShowTopSide();
+    }
+    protected virtual void ShowOrUpdateBottom()
+    {
+        if (ShowingTopSide is false)
+        {
+            UpdateText();
+            return;
+        }
+        _ = ShowBottomSide();
+    }
 }
