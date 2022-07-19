@@ -2,91 +2,111 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.ListGeneratorPage.ListGeneratorPage"
-             Title="ListGeneratorPage"
+             Title="List generator"
              xmlns:viewModel="clr-namespace:WordListsViewModels;assembly=WordListsViewModels"
              xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
              xmlns:windows="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;assembly=Microsoft.Maui.Controls"
-             x:DataType="{x:Type viewModel:ListGeneratorViewModel}"
+             x:DataType="{x:Type viewModel:IListGeneratorViewModel}"
              x:Name="listGeneratorView"
+             BackgroundColor="{StaticResource PageBackground}"
              >
     <ScrollView>
         <VerticalStackLayout >
-            <Button Text="Luo leikepöydältä" 
+            <VerticalStackLayout.Resources>
+                <Style TargetType="{x:Type Label}">
+                    <Setter Property="TextColor" Value="{StaticResource UnImportantText}"/>
+                </Style>
+                <Style TargetType="{x:Type Entry}">
+                    <Setter Property="Margin" Value="0,5,0,10"/>
+                    <Setter Property="TextColor" Value="Black"/>
+                    <Setter Property="BackgroundColor" Value="{StaticResource KindaWhite}"/>
+                </Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Margin" Value="0,20"/>
+                </Style>
+            </VerticalStackLayout.Resources>
+            <VerticalStackLayout Padding="30">
+                <VerticalStackLayout HorizontalOptions="Center">
+
+
+                    <Label Text="Otsikko" />
+                    <Entry Placeholder="Title"
+                            Text="{Binding CollectionName}"
+                            Focused="ITextInput_Focused"
+                            SemanticProperties.Hint="Collection name"
+                            MaxLength="24"
+                            WidthRequest="300"
+                            HorizontalOptions="Start"
+                               
+                            >
+
+                    </Entry>
+
+                    <Label Text="Kielet"/>
+                    <Entry Placeholder="Languages"
+                            Grid.Row="1"
+                            Text="{Binding LanguageHeaders}"
+                            Focused="ITextInput_Focused"
+                            SemanticProperties.Hint="Collection languages: example fi-en or ge-sw"
+                            SemanticProperties.Description="Collection "
+                            MaxLength="16"
+                            WidthRequest="120"
+                            HorizontalOptions="Start"
+                            />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+            <Button Text="Uusi leikepöydältä" 
                     HorizontalOptions="Center" 
                     Command="{Binding GeneratePairsCommand}"
-                    x:Name="hh"
                     />
-
-            <Button Text="FlipPairs" 
-                    HorizontalOptions="Center"
-                    Command="{Binding FlipSides}"
-                    />
-
-            <Entry Placeholder="Title"
-                   Text="{Binding CollectionName}"
-                   Focused="ITextInput_Focused"
-                   SemanticProperties.Hint="Collection name"
-                   MaxLength="24"
-                   Margin="5"
-                   />
-
-            <!-- Focused ui changes do not work currently (Might be bug) -->
-            <Editor Placeholder="{Binding Description}"
-                    Focused="ITextInput_Focused"
-                    SemanticProperties.Hint="Description: tell about collection, max 256 chars"
-                    MaxLength="256"
-                    Margin="5"
-                    AutoSize="TextChanges"
-                    />
-
-            <Entry Placeholder="Languages"
-                   Text="{Binding LanguageHeaders}"
-                   Focused="ITextInput_Focused"
-                   SemanticProperties.Hint="Collection languages: example fi-en or ge-sw"
-                   SemanticProperties.Description="Collection "
-                   MaxLength="16"
-                   Margin="5"
-                   />
-
-
-
             <CollectionView ItemsLayout="VerticalList"
                             ItemsSource="{Binding WordPairs}"
-                            BackgroundColor="Red"
                             ItemSizingStrategy="MeasureAllItems"
                             >
                 <CollectionView.EmptyView>
-                    <Label Padding="12"
-                       HorizontalTextAlignment="Center"
-                       Text="Import word list from clipboard to generate new list" 
-                       HorizontalOptions="Center"
+                    <Label Padding="40"
+                           TextColor="{StaticResource UnImportantText}"
+                           HorizontalTextAlignment="Center"
+                           Text="Import word list from clipboard to generate new list!" 
+                           HorizontalOptions="Center"
                        />
                 </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
                     <DataTemplate >
-                        <Grid BackgroundColor="Red" ColumnDefinitions="5*, *, 5*" 
+                        <Grid ColumnDefinitions="5*, *, 5*" BackgroundColor="AliceBlue">
+                            <Label LineBreakMode="WordWrap"
+                            Grid.Column="0"
+                            HorizontalTextAlignment="Start"
+                            HorizontalOptions="End"
+                            x:DataType="{x:Type wordData:WordPair}"
+                            Text="{Binding NativeLanguageWord}"
                             >
-                            <Label LineBreakMode="WordWrap"
-                                   Grid.Column="0"
-                                   HorizontalTextAlignment="Start"
-                                   HorizontalOptions="End"
-                                   x:DataType="{x:Type wordData:WordPair}"
-                                   Text="{Binding NativeLanguageWord}"
-                                   >
                             </Label>
                             <Label LineBreakMode="WordWrap"
-                                   Grid.Column="2"
-                                   HorizontalTextAlignment="Start"
-                                   HorizontalOptions="Start"
-                                   x:DataType="{x:Type wordData:WordPair}"
-                                   Text="{Binding ForeignLanguageWord}"
-                                   >
+                            Grid.Column="2"
+                            HorizontalTextAlignment="Start"
+                            HorizontalOptions="Start"
+                            x:DataType="{x:Type wordData:WordPair}"
+                            Text="{Binding ForeignLanguageWord}"
+                            >
                             </Label>
+
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <Button Text="Save to database" Command="{Binding SaveCollection}"/>
+            <Button Text="Vaihda kielet" 
+                    IsEnabled="{Binding CanSave}"
+                    HorizontalOptions="Center"
+                    Command="{Binding FlipSides}"
+                    />
+            <Button Text="Save to database" 
+                    Command="{Binding SaveCollection}" 
+                    HorizontalOptions="Center"/>
+
+            <Label Text="Started saving process" IsVisible="{Binding LableVisible}"/>
+            <!-- IsEnabled="{Binding CanSave}"--> 
+            <Button Text="Aloita alusta" Clicked="StartAgainBtn_Click" HorizontalOptions="Center"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

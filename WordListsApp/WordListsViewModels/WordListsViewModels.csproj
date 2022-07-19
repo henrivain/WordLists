@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+     <TargetFramework>net6.0</TargetFramework>
+     <ImplicitUsings>enable</ImplicitUsings>
+     <Nullable>enable</Nullable>
+	  <UseMaui>true</UseMaui>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WordDataAccessLibrary\WordDataAccessLibrary.csproj" />
+    <ProjectReference Include="..\WordListsMauiHelpers\WordListsMauiHelpers.csproj" />
   </ItemGroup>
 
 </Project>

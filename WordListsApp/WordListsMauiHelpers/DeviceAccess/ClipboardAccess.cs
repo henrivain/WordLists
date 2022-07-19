@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WordDataAccessLibrary.DeviceAccess;
-public static class ClipBoardAccess
+public static class ClipboardAccess
 {
     /// <summary>
     /// Get string from Clipboard asynchronously

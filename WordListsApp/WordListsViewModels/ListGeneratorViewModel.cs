@@ -7,11 +7,14 @@ using WordDataAccessLibrary.DeviceAccess;
 using WordDataAccessLibrary.Generators;
 using WordDataAccessLibrary.Helpers;
 
+
 namespace WordListsViewModels;
 
 [INotifyPropertyChanged]
+[QueryProperty(nameof(Owner), nameof(WordCollectionOwner))]
 public partial class ListGeneratorViewModel : IListGeneratorViewModel
 {
+    [AlsoNotifyChangeFor(nameof(CanSave))]
     [ObservableProperty]
     List<WordPair> wordPairs = new();
 
@@ -24,24 +27,36 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     [ObservableProperty]
     string languageHeaders = "fi-en";
 
+    public bool CanSave => WordPairs.Count > 0;
+
     public IAsyncRelayCommand GeneratePairsCommand => new AsyncRelayCommand(
         async () =>
         {
-            string text = await ClipBoardAccess.GetStringAsync();
+            string text = await ClipboardAccess.GetStringAsync();
             ParseAndSetWordPairsFromString(text);
         });
 
     public IAsyncRelayCommand SaveCollection => new AsyncRelayCommand(
         async () =>
         {
+            LableVisible = true;
             // implement save on top of old instance if that saved
             if (WordPairs.Count is 0)
             {
                 Debug.WriteLine($"{nameof(SaveCollection)}: Can't add empty word collection");
-                return;
+                LableVisible = false;
+                throw new InvalidOperationException();
+                //return;
             }
-            await WordCollectionService.AddWordCollection(GetData());
+            int id = await WordCollectionService.AddWordCollection(GetData());
+
+            LableVisible = false;
+            CollectionAddedEvent?.Invoke(this, new("Added wordCollection successfully", id));
         });
+
+    public delegate void CollectionAddedEventHandler(object sender, DataBaseActionArgs e);
+
+    public event CollectionAddedEventHandler? CollectionAddedEvent;
 
     public IRelayCommand FlipSides => new RelayCommand(() =>
     {
@@ -62,7 +77,12 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         };
     }
 
+    public WordCollectionOwner Owner { get; set; } = new();
+
     public Parser UseParser { get; set; } = Parser.Otava;
+
+
+    public bool LableVisible { get; set; } = false;
 
     public enum Parser
     {

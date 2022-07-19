@@ -20,9 +20,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordListsViewModels", "Word
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{AC1754A4-454D-43B3-966F-5B323561E1C4}"
 	ProjectSection(SolutionItems) = preProject
-		Colors.xml = Colors.xml
 		RoadMap.xml = RoadMap.xml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordListsMauiHelpers", "WordListsMauiHelpers\WordListsMauiHelpers.csproj", "{5D46895D-FFA2-4293-B6C1-A8E2D0B2CFCC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,6 +53,10 @@ Global
 		{2BACFEA6-BE91-4923-966C-57EBC9719F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BACFEA6-BE91-4923-966C-57EBC9719F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BACFEA6-BE91-4923-966C-57EBC9719F05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D46895D-FFA2-4293-B6C1-A8E2D0B2CFCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D46895D-FFA2-4293-B6C1-A8E2D0B2CFCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D46895D-FFA2-4293-B6C1-A8E2D0B2CFCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D46895D-FFA2-4293-B6C1-A8E2D0B2CFCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

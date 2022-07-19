@@ -4,6 +4,17 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
+    <Color x:Key="PageBackground">#262B31</Color>
+    <!--<Color x:Key="PageBackground">#1c1b4d</Color>-->
+    <Color x:Key="FlipCard">#8394A8</Color>
+    <Color x:Key="UnImportantText">#6E6E6E</Color>
+    <Color x:Key="KindaWhite">#B3B3B3</Color>
+    
+    
+    <!--<Color x:Key="FlipCard">#6c5aad</Color>-->
+
+
+
     <Color x:Key="Primary">#512BD4</Color>
     <Color x:Key="Secondary">#DFD8F7</Color>
     <Color x:Key="Tertiary">#2B0B98</Color>

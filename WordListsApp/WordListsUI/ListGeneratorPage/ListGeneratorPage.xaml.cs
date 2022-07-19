@@ -1,24 +1,30 @@
-using System.Diagnostics;
-using WordDataAccessLibrary;
-using WordDataAccessLibrary.DataBaseActions;
-using WordDataAccessLibrary.Generators;
-using WordListsViewModels;
-using Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;
-using InputView = Microsoft.Maui.Controls.InputView;
+using WordListsMauiHelpers.Factories;
 using WordListsUI.Helpers;
+using WordListsViewModels;
+using WordDataAccessLibrary.DataBaseActions;
 
 namespace WordListsUI.ListGeneratorPage;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class ListGeneratorPage : ContentPage
 {
-	public ListGeneratorPage(IListGeneratorViewModel model)
+	public ListGeneratorPage(IAbstractFactory<IListGeneratorViewModel> modelFactory)
 	{
-        BindingContext = model;
+		ModelFactory = modelFactory;
+		BindingContext = modelFactory.Create(); ;
 		InitializeComponent();
+		Model.CollectionAddedEvent += Model_CollectionAddedEvent;
 	}
 
-    public IListGeneratorViewModel ViewModel => (IListGeneratorViewModel)BindingContext;
+	private async void Model_CollectionAddedEvent(object sender, DataBaseActionArgs e)
+	{
+		BindingContext = ModelFactory.Create();
+		await DisplayAlert("Onnistui!", $"Sanasto lisätty onnistuneesti säilytykseen id:llä {e.RefId}", "OK");
+	}
+
+	IAbstractFactory<IListGeneratorViewModel> ModelFactory { get; }
+
+    public IListGeneratorViewModel Model => (IListGeneratorViewModel)BindingContext;
 	
 	private void ITextInput_Focused(object sender, FocusEventArgs e)
 	{
@@ -29,4 +35,9 @@ public partial class ListGeneratorPage : ContentPage
 		}
 	}
 
+	
+	private void StartAgainBtn_Click(object sender, EventArgs e)
+	{
+		BindingContext = ModelFactory.Create();
+	}
 }

@@ -5,7 +5,7 @@
              BackgroundColor="Transparent"
              >
     <ContentView.Content>
-        <Border Stroke="Transparent" BackgroundColor="#6c5aad">
+        <Border Stroke="Transparent" BackgroundColor="{StaticResource FlipCard}">
             <Border.GestureRecognizers>
                 <TapGestureRecognizer Tapped="Tapped"/>
             </Border.GestureRecognizers>

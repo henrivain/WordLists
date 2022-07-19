@@ -23,6 +23,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\WordDataAccessLibrary\WordDataAccessLibrary.csproj" />
+	  <ProjectReference Include="..\WordListsMauiHelpers\WordListsMauiHelpers.csproj" />
 	  <ProjectReference Include="..\WordListsViewModels\WordListsViewModels.csproj" />
 	</ItemGroup>
 
@@ -34,6 +35,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="AppInfoPage\AppInfoPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="StartTrainingPage\StartTrainingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="WordTrainingPage\FlipCardControl\FlipCard.xaml">
@@ -60,6 +64,10 @@
 	  <MauiXaml Update="WordTrainingPage\WordTrainingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Components\" />
 	</ItemGroup>
 
 </Project>

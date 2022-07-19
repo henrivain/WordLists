@@ -6,6 +6,7 @@ namespace WordListsViewModels;
 public interface IListGeneratorViewModel
 {
     event PropertyChangedEventHandler? PropertyChanged;
+    event ListGeneratorViewModel.CollectionAddedEventHandler? CollectionAddedEvent;
 
     List<WordPair> WordPairs { get; set; }
 
@@ -15,12 +16,16 @@ public interface IListGeneratorViewModel
 
     string LanguageHeaders { get; set; }
 
+    bool CanSave { get; }
+
+    bool LableVisible { get; }
+
     IAsyncRelayCommand GeneratePairsCommand { get; }
-    
+
     IAsyncRelayCommand SaveCollection { get; }
 
     IRelayCommand FlipSides { get; }
-    
+
     WordCollection GetData();
 
 

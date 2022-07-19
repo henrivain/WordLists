@@ -45,8 +45,8 @@ public class OtavaWordPairParser : IWordPairParser
                 new()
                 {
                     // in otava books foreign language is first and native second
-                    ForeignLanguageWord = lines[i + 1],
-                    NativeLanguageWord = lines[i],
+                    ForeignLanguageWord = lines[i + 1].Trim(),
+                    NativeLanguageWord = lines[i].Trim(),
                     IndexInVocalbulary = (int)Math.Round((double)i / 2)
                 });
         }

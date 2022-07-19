@@ -7,7 +7,7 @@
              xmlns:windows="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;assembly=Microsoft.Maui.Controls"
              x:DataType="{x:Type viewModel:IWordTrainingViewModel}"
              Title="Train words" 
-             BackgroundColor="#1c1b4d"
+             BackgroundColor="{StaticResource PageBackground}"
              x:Name="WordTrainer"
              >
     <ContentPage.Resources>
@@ -17,33 +17,24 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <ScrollView >
-            <VerticalStackLayout>
-                <Grid Margin="40,20,40,0" 
-                      ColumnDefinitions="4*, 0.5*, 3*" RowDefinitions="auto, auto">
+            <VerticalStackLayout >
+                <VerticalStackLayout Margin="40,20">
                     <Label Text="{Binding Title}"
-                           FontSize="50"
-                           FontAttributes="Bold"
-                           />
+                        FontSize="Title"
+                        FontAttributes="Bold"
+                        LineBreakMode="TailTruncation"
+                        />
 
                     <Label Text="{Binding LanguageHeaders}"
-                           Grid.Row="1"
-                           FontSize="24"    
-                           />
+                        Grid.Row="1"
+                        FontSize="Subtitle"    
+                        />
+                </VerticalStackLayout>
 
-                    <Label Text="{Binding Description}"
-                           Margin="0,20,0,0"
-                           Grid.RowSpan="2"
-                           Grid.Column="2"
-                           VerticalTextAlignment="Center"
-                           LineBreakMode="WordWrap"    
-                           HorizontalOptions="Start"
-                           />
-                </Grid>
-
-                <Grid ColumnDefinitions="0.5*, 0.8*, 0.5*" 
-                      HeightRequest="300"
-                      Margin="0,50,0,0"
+                <Grid HeightRequest="{OnIdiom Desktop='300', Default='200'}"
                       Grid.Row="3"
+                      ColumnDefinitions="{OnIdiom Phone='0.1*, *, 0.1*', Default='*, *, *'}"
+                      SizeChanged="FlipperGrid_SizeChanged"
                       >
                     <flipper:WordPairFlipCard Grid.Column="1"
                                               x:Name="flipper"
@@ -53,7 +44,7 @@
                                               />
                 </Grid>
                 
-                <Grid ColumnDefinitions="*,0.2*,*" Margin="0,25,0,50" >
+                <Grid ColumnDefinitions="*, 0.2*, *" Margin="0,25,0,50" >
                     <Grid.Resources>
                         <Style TargetType="{x:Type ImageButton}">
                             <Setter Property="HeightRequest" Value="40"/>
@@ -70,7 +61,6 @@
                                  HorizontalOptions="End"
                                  Clicked="Button_LastCard"
                                  >
-
                     </ImageButton>
                     <Label Grid.Column="1"
                            HorizontalOptions="Center"

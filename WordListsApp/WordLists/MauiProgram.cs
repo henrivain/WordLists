@@ -2,6 +2,7 @@
 using WordListsUI.ListGeneratorPage;
 using WordListsUI.WordTrainingPage;
 using WordListsViewModels;
+using WordListsMauiHelpers.Factories;
 
 namespace WordLists;
 
@@ -23,7 +24,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<WordTrainingPage>();
 		builder.Services.AddTransient<IListGeneratorViewModel, ListGeneratorViewModel>();
 		builder.Services.AddSingleton<IWordTrainingViewModel, WordTrainingViewModel>();
-
+		builder.Services.AddAbstractFactory<IListGeneratorViewModel, ListGeneratorViewModel>();
 
 		return builder.Build();
 	}

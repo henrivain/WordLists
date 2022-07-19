@@ -87,7 +87,11 @@
 
 
 	<ItemGroup>
+	  <ProjectReference Include="..\WordListsMauiHelpers\WordListsMauiHelpers.csproj" />
 	  <ProjectReference Include="..\WordListsUI\WordListsUI.csproj" />
 	</ItemGroup>
+
+
+	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadUnhandledDeviceExceptionWordListsHideInfoBar="True" /></VisualStudio></ProjectExtensions>
 
 </Project>
