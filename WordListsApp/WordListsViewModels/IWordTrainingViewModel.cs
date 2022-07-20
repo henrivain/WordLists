@@ -16,14 +16,13 @@ public interface IWordTrainingViewModel
     WordCollection WordCollection { get; set; }
     WordPair VisibleWordPair { get; set; }
 
-    int CurrentWordIndex { get; set; }
     int MaxWordIndex { get; set; }
-    
-    bool CanFlipNext { get; set; }
-    bool CanFlipLast { get; set; }
+    int UIVisibleIndex { get; }
 
+    bool CanFlipNext { get; }
+    bool CanFlipPrevious { get; }
 
     void Next();
     void Previous();
-    void StartNewCollection(WordCollection collection);
+    void StartNew(WordCollection collection);
 }

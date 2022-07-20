@@ -97,5 +97,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
             _ => throw new NotImplementedException($"Parser {UseParser} is not implemented")
         };
     }
+
+
 }
 

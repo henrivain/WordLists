@@ -55,7 +55,7 @@
                         </Style>
                     </Grid.Resources>
                     <ImageButton Source="arrow.png" 
-                                 IsEnabled="{Binding CanFlipLast}"
+                                 IsEnabled="{Binding CanFlipPrevious}"
                                  BackgroundColor="Transparent"
                                  Rotation="180"
                                  HorizontalOptions="End"
@@ -68,7 +68,7 @@
                            >
                         <Label.Text>
                             <MultiBinding StringFormat="{}{0}/{1}">
-                                <Binding Path="CurrentWordIndex"/>
+                                <Binding Path="UIVisibleIndex"/>
                                 <Binding Path="MaxWordIndex"/>
                             </MultiBinding>
                         </Label.Text>

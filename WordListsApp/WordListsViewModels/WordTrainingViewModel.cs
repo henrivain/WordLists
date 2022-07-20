@@ -14,7 +14,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
 {
     public WordTrainingViewModel()
     {
-        StartNewCollection(new());
+        StartNew(TestData_Length4);
     }
 
     public WordCollection WordCollection { get; set; } = new();
@@ -33,64 +33,138 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     string languageHeaders = "fi-en-sw-ge-fif";
 
     [ObservableProperty]
-    int currentWordIndex = 0;
+    WordPair? visibleWordPair;
 
     [ObservableProperty]
     int maxWordIndex = 0;
 
-    [ObservableProperty]
-    bool canFlipNext = true;
+    [AlsoNotifyChangeFor(nameof(UIVisibleIndex))]
+    [AlsoNotifyChangeFor(nameof(CanFlipNext))]
+    [AlsoNotifyChangeFor(nameof(CanFlipPrevious))]
+    int RealIndex = 0;
 
-    [ObservableProperty]
-    bool canFlipLast = false;
+    public bool CanFlipPrevious => IsFirstWordPair() is false;
 
-    [ObservableProperty]
-    WordPair? visibleWordPair;
+    public bool CanFlipNext => RealIndex <= MaxWordIndex;
+
+    public int UIVisibleIndex => GetUIIndex();
 
     public void Next()
     {
-        CanFlipLast = true;
-        
-        if (CurrentWordIndex >= MaxWordIndex)
+        if (CanFlipNext)
         {
-            Completed();
-            return;
+            RealIndex++;
+            ShowCurrentWord();
         }
-        CurrentWordIndex++;
-        VisibleWordPair = WordCollection.WordPairs[CurrentWordIndex];
     }
-
     public void Previous()
     {
-        CanFlipNext = true;
-        CurrentWordIndex--;
-        if (CurrentWordIndex <= 0)
+        if (CanFlipPrevious)
         {
-            CanFlipLast = false;
-            CurrentWordIndex = 0;
+            RealIndex--;
+            ShowCurrentWord();
         }
-        VisibleWordPair = WordCollection.WordPairs[CurrentWordIndex];
     }
-
-    public void StartNewCollection(WordCollection collection)
+    public void StartNew(WordCollection collection)
     {
-        MaxWordIndex = collection.WordPairs.Count;
+        MaxWordIndex = collection.WordPairs.Count - 1;
         WordCollection = collection;
-        CurrentWordIndex = 0;
-        CanFlipLast = false;
-        
-        if (CurrentWordIndex >= MaxWordIndex) Completed();
+        RealIndex = 0;
+        ShowCurrentWord();
     }
-
-    private void Completed()
+    public void StartNew(WordCollection collection, int fromIndex)
     {
-        CanFlipNext = false;
-        VisibleWordPair = new()
+        MaxWordIndex = collection.WordPairs.Count - 1;
+
+        if (fromIndex > MaxWordIndex || fromIndex < 0)
         {
-            NativeLanguageWord = "Word list completed!",
-            ForeignLanguageWord = "Word list completed!"
-        };
-        CurrentWordIndex = MaxWordIndex;
+            throw new ArgumentException(
+                $"{nameof(fromIndex)} can't be bigger than max index, or smaller than 0. Was given: {fromIndex}, max: {MaxWordIndex}");
+        }
+
+        WordCollection = collection;
+        RealIndex = fromIndex;
+        ShowCurrentWord();
     }
 
+
+
+    private void ShowCurrentWord()
+    {
+        if (IsOverMaxIndex())
+        {
+            VisibleWordPair = CompletedView;
+            return;
+        }
+        VisibleWordPair = WordCollection.WordPairs[UIVisibleIndex];
+    }
+    private int GetUIIndex()
+    {
+        return (RealIndex > MaxWordIndex) ? MaxWordIndex : RealIndex;
+    }
+    private bool IsFirstWordPair()
+    {
+        if (RealIndex <= 0)
+        {
+            RealIndex = 0;
+            return true;
+        }
+        return false;
+    }
+    private bool IsOverMaxIndex()
+    {
+        return RealIndex > MaxWordIndex;
+    }
+
+    private readonly WordPair CompletedView = new()
+    {
+        NativeLanguageWord = "Word list completed!",
+        ForeignLanguageWord = "Word list completed!"
+    };
+
+    private static readonly WordCollection TestData_Length4 = new()
+    {
+        Owner = new()
+        {
+            Name = "WordCollection1",
+            Description = "this is WordCollection1",
+            Id = 1
+        },
+        WordPairs = new()
+        {
+            new()
+            {
+                NativeLanguageWord = "a Tree",
+                ForeignLanguageWord = "puu",
+                IndexInVocalbulary = 0,
+                LearnState = WordLearnState.MightKnow,
+                OwnerId = 1
+            },
+            new()
+            {
+                NativeLanguageWord = "a flower",
+                ForeignLanguageWord = "kukka",
+                IndexInVocalbulary = 1,
+                LearnState = WordLearnState.NeverHeard,
+                OwnerId = 1
+            },
+            new()
+            {
+                NativeLanguageWord = "a pig",
+                ForeignLanguageWord = "sika",
+                IndexInVocalbulary = 2,
+                LearnState = WordLearnState.Learned,
+                OwnerId = 1
+            },
+            new()
+            {
+                NativeLanguageWord = "a car",
+                ForeignLanguageWord = "auto",
+                IndexInVocalbulary = 3,
+                LearnState = WordLearnState.NeverHeard,
+                OwnerId = 1
+            }
+
+        }
+    };
 }
