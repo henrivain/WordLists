@@ -19,10 +19,11 @@ public interface IWordTrainingViewModel
     int MaxWordIndex { get; set; }
     int UIVisibleIndex { get; }
 
-    bool CanFlipNext { get; }
-    bool CanFlipPrevious { get; }
+    bool CanGoNext { get; set; }
+    bool CanGoPrevious { get; set; }
 
     void Next();
     void Previous();
+
     void StartNew(WordCollection collection);
 }

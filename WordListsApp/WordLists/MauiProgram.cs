@@ -3,6 +3,7 @@ using WordListsUI.ListGeneratorPage;
 using WordListsUI.WordTrainingPage;
 using WordListsViewModels;
 using WordListsMauiHelpers.Factories;
+using WordListsUI.StartTrainingPage;
 
 namespace WordLists;
 
@@ -22,8 +23,11 @@ public static class MauiProgram
 		// injectin appshell will make app buggy and starts to change visual element visibility
 		builder.Services.AddTransient<ListGeneratorPage>();
 		builder.Services.AddTransient<WordTrainingPage>();
-		builder.Services.AddTransient<IListGeneratorViewModel, ListGeneratorViewModel>();
+		builder.Services.AddTransient<StartTrainingPage>();
+		//builder.Services.AddTransient<IListGeneratorViewModel, ListGeneratorViewModel>();
 		builder.Services.AddSingleton<IWordTrainingViewModel, WordTrainingViewModel>();
+		builder.Services.AddSingleton<IStartTrainingViewModel, StartTrainingViewModel>();
+
 		builder.Services.AddAbstractFactory<IListGeneratorViewModel, ListGeneratorViewModel>();
 
 		return builder.Build();

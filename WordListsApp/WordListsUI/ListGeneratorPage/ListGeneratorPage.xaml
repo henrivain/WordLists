@@ -60,6 +60,7 @@
                     Command="{Binding GeneratePairsCommand}"
                     />
             <CollectionView ItemsLayout="VerticalList"
+                            Margin="20"
                             ItemsSource="{Binding WordPairs}"
                             ItemSizingStrategy="MeasureAllItems"
                             >

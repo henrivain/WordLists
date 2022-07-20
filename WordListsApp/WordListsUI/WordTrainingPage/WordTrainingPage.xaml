@@ -24,7 +24,6 @@
                         FontAttributes="Bold"
                         LineBreakMode="TailTruncation"
                         />
-
                     <Label Text="{Binding LanguageHeaders}"
                         Grid.Row="1"
                         FontSize="Subtitle"    
@@ -55,7 +54,7 @@
                         </Style>
                     </Grid.Resources>
                     <ImageButton Source="arrow.png" 
-                                 IsEnabled="{Binding CanFlipPrevious}"
+                                 IsEnabled="{Binding CanGoPrevious}"
                                  BackgroundColor="Transparent"
                                  Rotation="180"
                                  HorizontalOptions="End"
@@ -74,7 +73,7 @@
                         </Label.Text>
                     </Label>
                     <ImageButton Source="arrow.png" 
-                                 IsEnabled="{Binding CanFlipNext}"
+                                 IsEnabled="{Binding CanGoNext}"
                                  BackgroundColor="Transparent"
                                  HorizontalOptions="Start"
                                  Grid.Column="2"

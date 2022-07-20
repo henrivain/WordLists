@@ -38,30 +38,41 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     [ObservableProperty]
     int maxWordIndex = 0;
 
+
+    [ObservableProperty]
     [AlsoNotifyChangeFor(nameof(UIVisibleIndex))]
-    [AlsoNotifyChangeFor(nameof(CanFlipNext))]
-    [AlsoNotifyChangeFor(nameof(CanFlipPrevious))]
-    int RealIndex = 0;
+    public int realIndex = 0;
 
-    public bool CanFlipPrevious => IsFirstWordPair() is false;
 
-    public bool CanFlipNext => RealIndex <= MaxWordIndex;
+    [ObservableProperty]
+    bool canGoNext = false;
 
-    public int UIVisibleIndex => GetUIIndex();
+    [ObservableProperty]
+    bool canGoPrevious = false;
+
+    [ObservableProperty]
+    int uIVisibleIndex = 0;
+
 
     public void Next()
     {
-        if (CanFlipNext)
+        if (CanMoveNext())
         {
+            CanGoPrevious = true;
             RealIndex++;
+            CanGoNext = CanMoveNext();
+            UIVisibleIndex = GetUIIndex();
             ShowCurrentWord();
         }
     }
     public void Previous()
     {
-        if (CanFlipPrevious)
+        if (CanGoPrevious)
         {
+            CanGoNext = true;
             RealIndex--;
+            CanGoPrevious = CanMovePrevious();
+            UIVisibleIndex = GetUIIndex();
             ShowCurrentWord();
         }
     }
@@ -70,8 +81,19 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
         MaxWordIndex = collection.WordPairs.Count - 1;
         WordCollection = collection;
         RealIndex = 0;
+
+        if (MaxWordIndex < 0)
+        {
+            ShowEmptyCollection();
+            return;
+        }
+        CanGoNext = true;
+        CanGoPrevious = false;
         ShowCurrentWord();
     }
+
+
+
     public void StartNew(WordCollection collection, int fromIndex)
     {
         MaxWordIndex = collection.WordPairs.Count - 1;
@@ -81,6 +103,13 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
             throw new ArgumentException(
                 $"{nameof(fromIndex)} can't be bigger than max index, or smaller than 0. Was given: {fromIndex}, max: {MaxWordIndex}");
         }
+        if (MaxWordIndex < 0)
+        {
+            ShowEmptyCollection();
+            return;
+        }
+        CanGoPrevious = CanMovePrevious();
+        CanGoNext = CanMoveNext();
 
         WordCollection = collection;
         RealIndex = fromIndex;
@@ -88,7 +117,25 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     }
 
 
+    private bool IsNotEmptyCollection { get; set; } = true;
 
+
+    private bool CanMoveNext()
+    {
+        return RealIndex <= MaxWordIndex && IsNotEmptyCollection;
+    }
+    private bool CanMovePrevious()
+    {
+        return IsNotFirstWordPair() && IsNotEmptyCollection;
+    }
+    private void ShowEmptyCollection()
+    {
+        CanGoNext = false;
+        CanGoPrevious = false;
+        IsNotEmptyCollection = false;
+        ShowCurrentWord();
+        MaxWordIndex = 0;
+    }
     private void ShowCurrentWord()
     {
         if (IsOverMaxIndex())
@@ -102,14 +149,14 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     {
         return (RealIndex > MaxWordIndex) ? MaxWordIndex : RealIndex;
     }
-    private bool IsFirstWordPair()
+    private bool IsNotFirstWordPair()
     {
         if (RealIndex <= 0)
         {
             RealIndex = 0;
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
     private bool IsOverMaxIndex()
     {

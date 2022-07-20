@@ -6,7 +6,7 @@ using WordDataAccessLibrary.DataBaseActions;
 namespace WordListsViewModels;
 
 [INotifyPropertyChanged]
-public partial class StartTrainingViewModel
+public partial class StartTrainingViewModel : IStartTrainingViewModel
 {
     public List<WordCollectionOwner> AvailableCollections { get; private set; } = new();
 
