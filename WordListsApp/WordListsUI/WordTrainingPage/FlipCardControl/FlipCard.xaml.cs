@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace WordListsUI.WordTrainingPage.FlipCardControl;
 
@@ -70,7 +71,8 @@ public partial class FlipCard : ContentView
 
     public static readonly BindableProperty BottomTextProperty =
         BindableProperty.Create(nameof(BottomSideText), typeof(string), typeof(FlipCard), "my bottom text");
-    
+
+
     protected virtual void Tapped(object sender, EventArgs e) 
     {
         ShowingTopSide = !ShowingTopSide;

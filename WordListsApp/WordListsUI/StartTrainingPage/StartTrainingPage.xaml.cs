@@ -1,5 +1,4 @@
-using System.Diagnostics;
-using WordDataAccessLibrary;
+using WordDataAccessLibrary.DataBaseActions;
 using WordListsViewModels;
 
 namespace WordListsUI.StartTrainingPage;
@@ -9,22 +8,19 @@ public partial class StartTrainingPage : ContentPage
 	public StartTrainingPage(IStartTrainingViewModel model)
 	{
 		BindingContext = model;
-		InitializeComponent();
-	}
+        InitializeComponent();
+    }
 
-	public IStartTrainingViewModel Model => (IStartTrainingViewModel)BindingContext;
+    public IStartTrainingViewModel Model => (IStartTrainingViewModel)BindingContext;
 
 	private async void ContentPage_Loaded(object sender, EventArgs e)
 	{
 		await Model.ResetCollections();
 	}
 
-	private void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+	private async void SwipeItem_Clicked(object sender, EventArgs e)
 	{
-		if (e.CurrentSelection is WordCollectionOwner owner)
-		{
-			Model.SelectedItem = owner;
-			Debug.WriteLine("yesyesyesyesyesyesyes");
-		}
-	}
+		int id = (int)((SwipeItem)sender).CommandParameter;
+        await Shell.Current.GoToAsync($"{nameof(WordTrainingPage.WordTrainingPage)}?StartWordCollection={id}");
+    }
 }

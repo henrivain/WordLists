@@ -16,34 +16,34 @@
         </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <ScrollView >
+        <Grid>
             <VerticalStackLayout >
                 <VerticalStackLayout Margin="40,20">
                     <Label Text="{Binding Title}"
-                        FontSize="Title"
-                        FontAttributes="Bold"
-                        LineBreakMode="TailTruncation"
-                        />
+                    FontSize="Title"
+                    FontAttributes="Bold"
+                    LineBreakMode="TailTruncation"
+                    />
                     <Label Text="{Binding LanguageHeaders}"
-                        Grid.Row="1"
-                        FontSize="Subtitle"    
-                        />
+                    Grid.Row="1"
+                    FontSize="Subtitle"    
+                    />
                 </VerticalStackLayout>
 
                 <Grid HeightRequest="{OnIdiom Desktop='300', Default='200'}"
-                      Grid.Row="3"
-                      ColumnDefinitions="{OnIdiom Phone='0.1*, *, 0.1*', Default='*, *, *'}"
-                      SizeChanged="FlipperGrid_SizeChanged"
-                      >
+                    Grid.Row="3"
+                    ColumnDefinitions="{OnIdiom Phone='0.1*, *, 0.1*', Default='*, *, *'}"
+                    SizeChanged="FlipperGrid_SizeChanged"
+                    >
                     <flipper:WordPairFlipCard Grid.Column="1"
                                               x:Name="flipper"
                                               VerticalOptions="FillAndExpand"
-                                              Margin="0,0"
                                               WordPair="{Binding VisibleWordPair}"
-                                              />
+                                              >
+                    </flipper:WordPairFlipCard>
                 </Grid>
-                
-                <Grid ColumnDefinitions="*, 0.2*, *" Margin="0,25,0,50" >
+
+                <Grid ColumnDefinitions="*, auto, *" Margin="0,25,0,50" >
                     <Grid.Resources>
                         <Style TargetType="{x:Type ImageButton}">
                             <Setter Property="HeightRequest" Value="40"/>
@@ -54,17 +54,17 @@
                         </Style>
                     </Grid.Resources>
                     <ImageButton Source="arrow.png" 
-                                 IsEnabled="{Binding CanGoPrevious}"
-                                 BackgroundColor="Transparent"
-                                 Rotation="180"
-                                 HorizontalOptions="End"
-                                 Clicked="Button_LastCard"
-                                 >
+                                IsEnabled="{Binding CanGoPrevious}"
+                                BackgroundColor="Transparent"
+                                Rotation="180"
+                                HorizontalOptions="End"
+                                Clicked="Button_LastCard"
+                                >
                     </ImageButton>
                     <Label Grid.Column="1"
-                           HorizontalOptions="Center"
-                           VerticalOptions="Center"
-                           >
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        >
                         <Label.Text>
                             <MultiBinding StringFormat="{}{0}/{1}">
                                 <Binding Path="UIVisibleIndex"/>
@@ -73,15 +73,63 @@
                         </Label.Text>
                     </Label>
                     <ImageButton Source="arrow.png" 
-                                 IsEnabled="{Binding CanGoNext}"
-                                 BackgroundColor="Transparent"
-                                 HorizontalOptions="Start"
-                                 Grid.Column="2"
-                                 Clicked="Button_NextCard"
-                                 >
+                                IsEnabled="{Binding CanGoNext}"
+                                BackgroundColor="Transparent"
+                                HorizontalOptions="Start"
+                                Grid.Column="2"
+                                Clicked="Button_NextCard"
+                                >
                     </ImageButton>
                 </Grid>
+                <Grid ColumnDefinitions="*, *, *" HorizontalOptions="CenterAndExpand">
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="TextColor" Value="Black"/>
+                            <Setter Property="Margin" Value="5,5"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Button Text="Osaan!" 
+                            Command="{Binding WordLearnedCommand}" 
+                            HorizontalOptions="Center" 
+                            BackgroundColor="{StaticResource LearnedWord}"
+                            Grid.Column="0"
+                            >
+                    </Button>
+                    <Button Text="Olen kuullut!" 
+                        Command="{Binding MightKnowWordCommand}" 
+                        HorizontalOptions="Center"
+                        BackgroundColor="{StaticResource MightKnowWord}"
+                        Grid.Column="1"
+                        />
+                    <Button Text="En tiedä!" 
+                        Command="{Binding WordNeverHeardCommand}" 
+                        HorizontalOptions="Center"
+                        BackgroundColor="{StaticResource NeverHeardWord}"
+                        Grid.Column="2"
+                        />
+                </Grid>
+                <!--<Label>
+                    <Label.Triggers>
+                        <DataTrigger TargetType="{x:Type Label}" Binding="{Binding LearnStateAsInt}" Value="0">
+                            <Setter Property="BackgroundColor" Value="{StaticResource NeverHeardWord}"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="{x:Type Label}" Binding="{Binding LearnStateAsInt}" Value="1">
+                            <Setter Property="BackgroundColor" Value="{StaticResource MightKnowWord}"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="{x:Type Label}"  Binding="{Binding LearnStateAsInt}" Value="2">
+                            <Setter Property="BackgroundColor" Value="{StaticResource LearnedWord}"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>-->
             </VerticalStackLayout>
-        </ScrollView>
+            <Button Text="Tallenna eteneminen" 
+                    VerticalOptions="End"
+                    Margin="0,0,0,20"
+                    HorizontalOptions="Center"
+                    Command="{Binding SaveProgression}"
+                    />
+
+            
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

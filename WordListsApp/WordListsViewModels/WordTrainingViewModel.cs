@@ -6,6 +6,7 @@ using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DeviceAccess;
 using WordDataAccessLibrary.Generators;
 using WordDataAccessLibrary.Helpers;
+using static WordDataAccessLibrary.DataBaseActions.DataBaseDelegates;
 
 namespace WordListsViewModels;
 
@@ -14,7 +15,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
 {
     public WordTrainingViewModel()
     {
-        StartNew(TestData_Length4);
+        StartNew(new());
     }
 
     public WordCollection WordCollection { get; set; } = new();
@@ -38,7 +39,6 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     [ObservableProperty]
     int maxWordIndex = 0;
 
-
     [ObservableProperty]
     public int realIndex = 0;
 
@@ -50,6 +50,14 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
 
     [ObservableProperty]
     int uIVisibleIndex = 0;
+
+    [ObservableProperty]
+    int learnStateAsInt = 0;
+
+    public IAsyncRelayCommand SaveProgression => new AsyncRelayCommand(async () =>
+    {
+        await UpdateCollectionToDataBase();
+    });
 
 
     public void Next()
@@ -74,8 +82,30 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
             ShowCurrentWord();
         }
     }
+
+    public async Task StartNewAsync(int collectionId)
+    {
+        WordCollection collection = await WordCollectionService.GetWordCollection(collectionId);
+        if (collection is null)
+        {
+            StartNew(new WordCollection()
+            {
+                WordPairs = new()
+                {
+                    new WordPair()
+                    {
+                        ForeignLanguageWord = "Collection not found",
+                        NativeLanguageWord = "Collection not found"
+                    }
+                }
+            });
+            return;
+        }
+        StartNew(collection);       
+    }
     public void StartNew(WordCollection collection)
     {
+        IsNotEmptyCollection = true;
         MaxWordIndex = collection.WordPairs.Count - 1;
         WordCollection = collection;
         RealIndex = 0;
@@ -89,9 +119,6 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
         CanGoPrevious = false;
         ShowCurrentWord();
     }
-
-
-
     public void StartNew(WordCollection collection, int fromIndex)
     {
         MaxWordIndex = collection.WordPairs.Count - 1;
@@ -117,6 +144,33 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
 
     private bool IsNotEmptyCollection { get; set; } = true;
 
+    public IRelayCommand WordLearnedCommand => new RelayCommand(() =>
+    {
+        SetLearnState(WordLearnState.Learned);
+    });
+
+    public IRelayCommand MightKnowWordCommand => new RelayCommand(() =>
+    {
+        SetLearnState(WordLearnState.MightKnow);
+    });
+
+    public IRelayCommand WordNeverHeardCommand => new RelayCommand(() =>
+    {
+        SetLearnState(WordLearnState.NeverHeard);   
+    });
+
+    private void SetLearnState(WordLearnState state)
+    {
+        if (IsOverMaxIndex() is false)
+        {
+            GetCurrentWordPair().LearnState = state;
+            Next();
+            return;
+        }
+        #if DEBUG
+        throw new InvalidOperationException("index out of range");
+        #endif
+    }
 
     private bool CanMoveNext()
     {
@@ -136,12 +190,27 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     }
     private void ShowCurrentWord()
     {
+        UpdateLearnStateColor();
         if (IsOverMaxIndex())
         {
+            if (IsNotEmptyCollection) _ = UpdateCollectionToDataBase();
             VisibleWordPair = CompletedView;
             return;
         }
-        VisibleWordPair = WordCollection.WordPairs[UIVisibleIndex];
+        VisibleWordPair = GetCurrentWordPair();
+    }
+    private void UpdateLearnStateColor()
+    {
+        if (IsOverMaxIndex() || VisibleWordPair is null)
+        {
+            LearnStateAsInt = int.MaxValue;
+            return;
+        }
+        LearnStateAsInt = (int)VisibleWordPair!.LearnState;
+    }
+    private WordPair GetCurrentWordPair()
+    {
+        return WordCollection.WordPairs[UIVisibleIndex];
     }
     private int GetUIIndex()
     {
@@ -212,4 +281,12 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
 
         }
     };
+
+    public event CollectionUpdatedEventHandler? CollectionUpdated;
+
+    private async Task UpdateCollectionToDataBase()
+    {
+        await WordCollectionService.SaveProgression(WordCollection);
+        CollectionUpdated?.Invoke(this, new("Updated collection to match progression", WordCollection.Owner.Id));
+    }
 }

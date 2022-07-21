@@ -3,9 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.WordTrainingPage.FlipCardControl.FlipCard"
              BackgroundColor="Transparent"
+             xmlns:local="clr-namespace:WordListsUI.WordTrainingPage.FlipCardControl"
+             x:DataType="{x:Type local:FlipCard}"
              >
     <ContentView.Content>
-        <Border Stroke="Transparent" BackgroundColor="{StaticResource FlipCard}">
+        <Border Stroke="Transparent" x:Name="card"  BackgroundColor="{StaticResource FlipCardColor}">
             <Border.GestureRecognizers>
                 <TapGestureRecognizer Tapped="Tapped"/>
             </Border.GestureRecognizers>

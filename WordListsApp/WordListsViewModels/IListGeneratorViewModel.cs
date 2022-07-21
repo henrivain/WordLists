@@ -1,13 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel;
 using WordDataAccessLibrary;
+using static WordDataAccessLibrary.DataBaseActions.DataBaseDelegates;
 
 namespace WordListsViewModels;
 public interface IListGeneratorViewModel
 {
     event PropertyChangedEventHandler? PropertyChanged;
-    event ListGeneratorViewModel.CollectionAddedEventHandler? CollectionAddedEvent;
-
+    
     List<WordPair> WordPairs { get; set; }
 
     string CollectionName { get; set; }
@@ -28,5 +28,5 @@ public interface IListGeneratorViewModel
 
     WordCollection GetData();
 
-
+    event CollectionAddedEventHandler? CollectionAddedEvent;
 }

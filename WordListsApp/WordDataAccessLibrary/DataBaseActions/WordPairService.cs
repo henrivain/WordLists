@@ -59,6 +59,18 @@ public static class WordPairService
             .ToListAsync();
     }
 
+    public static async Task UpdatePairsAsync(WordCollection collection)
+    {
+        await Init();
+
+        Debug.WriteLine($"{nameof(WordPairService)}: Insert or update all word pairs of {nameof(WordCollection)}");
+
+        foreach (WordPair pair in collection.WordPairs)
+        {
+            pair.OwnerId = collection.Owner.Id;
+            await db.UpdateAsync(pair);
+        }
+    }
 
     public static async Task InsertPairsAsync(WordCollection collection)
     {

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using WordDataAccessLibrary;
 using WordDataAccessLibrary.DataBaseActions;
+using static WordDataAccessLibrary.DataBaseActions.DataBaseDelegates;
 
 namespace WordListsViewModels;
 
@@ -13,6 +14,7 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
 
     [ObservableProperty]
     string dataParameter = string.Empty;
+
 
     public IAsyncRelayCommand UpdateCollectionsByName => new AsyncRelayCommand(async () =>
     {
@@ -56,14 +58,6 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
     [ObservableProperty]
     WordCollectionOwner selectedItem = new();
     
-
-
-
-    public WordCollection CreateCollection()
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task ResetCollections()
     {
         IsRefreshing = true;   

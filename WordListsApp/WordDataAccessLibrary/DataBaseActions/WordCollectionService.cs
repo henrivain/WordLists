@@ -27,6 +27,18 @@ public static class WordCollectionService
         return collection.Owner.Id;
     }
 
+
+    public static async Task SaveProgression(WordCollection wordCollection)
+    {
+        await Init();
+
+        Debug.WriteLine($"{nameof(WordCollectionService)}: Update {nameof(WordCollection)}");
+
+        await db.UpdateAsync(wordCollection.Owner);
+
+        await WordPairService.UpdatePairsAsync(wordCollection);
+    }
+
     /// <summary>
     /// Get all WordCollections from database
     /// </summary>
@@ -131,8 +143,5 @@ public static class WordCollectionService
 
     }
 
-
-
-
-
+    
 }

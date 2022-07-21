@@ -13,7 +13,7 @@ public static class ClipboardAccess
     /// <returns>string from clipboard or empty if null</returns>
     public static async Task<string> GetStringAsync()
     {
-        return await Clipboard.GetTextAsync() ?? string.Empty;
+        return await Clipboard.Default.GetTextAsync() ?? string.Empty;
     }
 
     /// <summary>

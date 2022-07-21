@@ -62,6 +62,7 @@ public static class WordCollectionOwnerService
                     .Contains(name))
                         .ToListAsync();
     }
+
     /// <summary>
     /// Get by WordCollectionOwner id (primary key)
     /// </summary>
@@ -88,5 +89,4 @@ public static class WordCollectionOwnerService
             #endif
         }
     }
-
 }

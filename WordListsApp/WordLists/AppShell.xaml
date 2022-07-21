@@ -15,30 +15,32 @@
     <TabBar FlyoutDisplayOptions="AsMultipleItems">
         <!-- Welcome page -->
 
-        <ShellContent Title="Home"
+        <ShellContent Title="Koti"
                       ContentTemplate="{DataTemplate local:MainPage}"
                       />
 
 
         <!-- Word training page -->
-        <Tab Title="Training">
-            <ShellContent Title="Start new"
+        <Tab Title="Harjoitus">
+            <ShellContent Title="Aloita uusi"
                           ContentTemplate="{DataTemplate startTraining:StartTrainingPage}"
                           />
-            <ShellContent Title="Training"
+            <ShellContent Title="Harjoittele"
                           ContentTemplate="{DataTemplate training:WordTrainingPage}"
                           />
         </Tab>
 
         <!-- Word list generator page -->
-            
-        <ShellContent Title="Create new"
+
+        <Tab Title="Luo">
+            <ShellContent Title="Luo otavasta"
                         ContentTemplate="{DataTemplate generator:ListGeneratorPage}"
                         />
+        </Tab>
 
 
         <!-- App information page -->
-        <ShellContent Title="About"
+        <ShellContent Title="Tietoa"
                       ContentTemplate="{DataTemplate info:AppInfoPage}"
                       />
     </TabBar>

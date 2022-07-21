@@ -6,7 +6,7 @@ using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DeviceAccess;
 using WordDataAccessLibrary.Generators;
 using WordDataAccessLibrary.Helpers;
-
+using static WordDataAccessLibrary.DataBaseActions.DataBaseDelegates;
 
 namespace WordListsViewModels;
 
@@ -54,7 +54,6 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
             CollectionAddedEvent?.Invoke(this, new("Added wordCollection successfully", id));
         });
 
-    public delegate void CollectionAddedEventHandler(object sender, DataBaseActionArgs e);
 
     public event CollectionAddedEventHandler? CollectionAddedEvent;
 

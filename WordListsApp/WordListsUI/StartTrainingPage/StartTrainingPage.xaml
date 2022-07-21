@@ -28,7 +28,8 @@
                        MaxLength="24"
                        WidthRequest="300"
                        HorizontalOptions="Center"
-                       />
+                       Margin="0,20"
+                       /> 
                 <VerticalStackLayout>
                     <VerticalStackLayout.Resources>
                         <Style TargetType="{x:Type Button}">
@@ -37,9 +38,7 @@
                             <Setter Property="Margin" Value="5"/>
                         </Style>
                     </VerticalStackLayout.Resources>
-                    <Button Text="Näytä kaikki" 
-                            Command="{Binding UpdateCollections}" 
-                            />
+                    
                     <Grid ColumnDefinitions="*, *">
                         <Button Text="Etsi nimen perusteella" 
                                 Command="{Binding UpdateCollectionsByName}"
@@ -85,41 +84,46 @@
                     </HorizontalStackLayout>
                 </Grid>
                 
-                
-                <CollectionView ItemsSource="{Binding AvailableCollections}" 
-                                BackgroundColor="{StaticResource WordListBackground}"
-                                Margin="10"
-                                SelectionMode="Single"
+                <Button Text="Näytä kaikki" 
+                        HorizontalOptions="Center"
+                        Margin="0,20"
+                        Command="{Binding UpdateCollections}" 
+                        />
+
+
+
+                <CollectionView ItemsSource="{Binding AvailableCollections}"
+                                Background="{StaticResource WordListBackground}"
+                                
                                 >
-                    <CollectionView.Resources>
-                        <Style TargetType="{x:Type Label}">
-                            <Setter Property="TextColor" Value="Black"/>
-                        </Style>
-                    </CollectionView.Resources>
+                    <!-- SelectionMode="Single" (crashes if items are null -not sure) -->
                     <CollectionView.EmptyView>
-                        <Label Text="Haettuja sanastoja ei ole saatavilla"/>
+                        <Label Text="Sopivia sanastoja ei löytynyt" HorizontalTextAlignment="Center"/>
                     </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <SwipeView>
+                        <DataTemplate >
+                            <SwipeView VerticalOptions="Start">
                                 <SwipeView.RightItems>
-                                    <SwipeItem Text="Poista" BackgroundColor="Red"
-                                               />
+                                    <SwipeItem BackgroundColor="Green" Text="Aloita"
+                                               Clicked="SwipeItem_Clicked"
+                                               >
+                                        <!-- using command parameter as paramer for Clicked action, 
+                                        its stupid but didnt find easy better way quickly -->
+                                        <SwipeItem.CommandParameter>
+                                            <Binding Path="Id" x:DataType="{x:Type wordData:WordCollectionOwner}"/>
+                                        </SwipeItem.CommandParameter>
+                                    </SwipeItem>
                                 </SwipeView.RightItems>
-                                <VerticalStackLayout x:DataType="{x:Type wordData:WordCollectionOwner}"
-                                                Padding="5">
-                                    <Label Text="{Binding Name}" 
-                                           FontAttributes="Bold" 
-                                           FontSize="Body"/>
-                                    <Label Text="{Binding LanguageHeaders}"/>
-                                </VerticalStackLayout>
+                                <Grid Padding="20,5,0,5" x:DataType="{x:Type wordData:WordCollectionOwner}">
+                                    <VerticalStackLayout>
+                                        <Label Text="{Binding Name}"/>
+                                        <Label Text="{Binding LanguageHeaders}"/>
+                                    </VerticalStackLayout>
+                                </Grid>
                             </SwipeView>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                
-                
-                
             </VerticalStackLayout>
         </ScrollView>
         <!--</RefreshView>-->

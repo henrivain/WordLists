@@ -1,3 +1,4 @@
+using WordDataAccessLibrary;
 using WordDataAccessLibrary.DataBaseActions;
 using WordListsUI.WordTrainingPage.FlipCardControl;
 using WordListsUI.WordTrainingPage.Helpers;
@@ -6,7 +7,7 @@ using WordListsViewModels;
 
 namespace WordListsUI.WordTrainingPage;
 
-
+[QueryProperty(nameof(StartWordCollection), nameof(StartWordCollection))]
 public partial class WordTrainingPage : ContentPage
 {
     public WordTrainingPage(IWordTrainingViewModel model)
@@ -14,7 +15,16 @@ public partial class WordTrainingPage : ContentPage
         BindingContext = model;
 		InitializeComponent();
         Animator = new(flipper);
-	}
+        Model.CollectionUpdated += Model_CollectionUpdatedEvent;
+
+    }
+
+    private async void Model_CollectionUpdatedEvent(object sender, DataBaseActionArgs e)
+    {
+        await DisplayAlert("Päivitetty!", $"Sanasto päivitettiin säilytykseen id:llä {e.RefId}", "OK");
+    }
+
+    public int StartWordCollection { set => StartNewCollectionById(value); }
 
     public IWordTrainingViewModel Model => (IWordTrainingViewModel)BindingContext;
 
@@ -22,6 +32,9 @@ public partial class WordTrainingPage : ContentPage
 
 
     readonly SlideAnimation Animator;
+
+
+
 
     private void ShowDefaultSideWithoutAnimation()
 	{
@@ -57,5 +70,14 @@ public partial class WordTrainingPage : ContentPage
             FlipperResizer.Resize(grid, Width);
         }
         #endif
+    }
+
+    /// <summary>
+    /// This method is called when StartWordCollection is initialized
+    /// </summary>
+    /// <param name="id"></param>
+    private async void StartNewCollectionById(int id)
+    {
+        await Model.StartNewAsync(id);
     }
 }
