@@ -2,11 +2,126 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.StartTrainingPage.StartTrainingPage"
-             Title="StartTrainingPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="StartTrainingPage"
+             xmlns:viewModel="clr-namespace:WordListsViewModels;assembly=WordListsViewModels"
+             xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
+             x:DataType="{x:Type viewModel:IStartTrainingViewModel}"
+             BackgroundColor="{StaticResource PageBackground}"
+             Loaded="ContentPage_Loaded"
+             >
+    <ContentPage.Resources>
+        <Style TargetType="{x:Type Entry}">
+            <Setter Property="BackgroundColor" Value="{StaticResource KindaWhite}"/>
+            <Setter Property="PlaceholderColor" Value="{StaticResource UnImportantText}"/>
+            <Setter Property="TextColor" Value="Black"/>
+        </Style>
+        
+    </ContentPage.Resources>
+
+    <Grid>
+        <!--<RefreshView Command="{Binding UpdateCollections}" IsRefreshing="{Binding IsRefreshing}">-->
+        <!-- Add refresh view when bug #5772 is fixed -->
+        <ScrollView>
+            <VerticalStackLayout>
+                <Entry Text="{Binding DataParameter}"
+                       Placeholder="Avainsana"
+                       MaxLength="24"
+                       WidthRequest="300"
+                       HorizontalOptions="Center"
+                       />
+                <VerticalStackLayout>
+                    <VerticalStackLayout.Resources>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="HorizontalOptions" Value="Start"/>
+                            <Setter Property="FontSize" Value="Caption"/>
+                            <Setter Property="Margin" Value="5"/>
+                        </Style>
+                    </VerticalStackLayout.Resources>
+                    <Button Text="Näytä kaikki" 
+                            Command="{Binding UpdateCollections}" 
+                            />
+                    <Grid ColumnDefinitions="*, *">
+                        <Button Text="Etsi nimen perusteella" 
+                                Command="{Binding UpdateCollectionsByName}"
+                                HorizontalOptions="End"
+                                />
+                        <Button Text="Etsi kielen perusteella" 
+                                Grid.Column="1"
+                                HorizontalOptions="Start"
+                                Command="{Binding UpdateCollectionsByLanguage}"
+                                />
+                    </Grid>
+                </VerticalStackLayout>
+
+                <Grid>
+                    <HorizontalStackLayout HorizontalOptions="Center" 
+                                    Padding="10"
+                                    >
+                        <VerticalStackLayout Margin="0,0,20,0" >
+                            <VerticalStackLayout.Resources>
+                                <Style TargetType="{x:Type Label}">
+                                    <Setter Property="Margin" Value="0,14"/>
+                                    <Setter Property="TextColor" Value="{StaticResource UnImportantText}"/>
+                                </Style>
+                            </VerticalStackLayout.Resources>
+                            <Label Text="Näytä opitut sanat"/>
+                            <Label Text="Näytä sanat, jotka saatan muistaa"/>
+                            <Label Text="Näytä sanat, joita en muista"/>
+                        </VerticalStackLayout>
+                        <Grid RowDefinitions="*, *, *" HorizontalOptions="Start">
+                            <Switch IsToggled="{Binding ShowLearnedWords}" 
+                                    VerticalOptions="Center"
+                                    Grid.Row="0"
+                                    />
+                            <Switch IsToggled="{Binding ShowMightKnowWords}" 
+                                    VerticalOptions="Center"
+                                    Grid.Row="1"
+                                    />
+                            <Switch IsToggled="{Binding ShowNeverHeardKnowWords}" 
+                                    VerticalOptions="Center"
+                                    Grid.Row="2"
+                                    />
+                        </Grid>
+                    </HorizontalStackLayout>
+                </Grid>
+                
+                
+                <CollectionView ItemsSource="{Binding AvailableCollections}" 
+                                BackgroundColor="{StaticResource WordListBackground}"
+                                Margin="10"
+                                SelectionMode="Single"
+                                >
+                    <CollectionView.Resources>
+                        <Style TargetType="{x:Type Label}">
+                            <Setter Property="TextColor" Value="Black"/>
+                        </Style>
+                    </CollectionView.Resources>
+                    <CollectionView.EmptyView>
+                        <Label Text="Haettuja sanastoja ei ole saatavilla"/>
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItem Text="Poista" BackgroundColor="Red"
+                                               />
+                                </SwipeView.RightItems>
+                                <VerticalStackLayout x:DataType="{x:Type wordData:WordCollectionOwner}"
+                                                Padding="5">
+                                    <Label Text="{Binding Name}" 
+                                           FontAttributes="Bold" 
+                                           FontSize="Body"/>
+                                    <Label Text="{Binding LanguageHeaders}"/>
+                                </VerticalStackLayout>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                
+                
+                
+            </VerticalStackLayout>
+        </ScrollView>
+        <!--</RefreshView>-->
+    </Grid>
 </ContentPage>

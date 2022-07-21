@@ -67,7 +67,7 @@ public class WordPairFlipCard : AnimatedFlipCard
             UpdateText();
             return;
         }
-        _ = ShowTopSide();
+        ShowTopSideNoAnimation();
     }
     protected virtual void ShowOrUpdateBottom()
     {
@@ -76,6 +76,6 @@ public class WordPairFlipCard : AnimatedFlipCard
             UpdateText();
             return;
         }
-        _ = ShowBottomSide();
+        ShowBottomSideNoAnimation();
     }
 }

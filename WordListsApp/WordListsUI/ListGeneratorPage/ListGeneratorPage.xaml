@@ -20,6 +20,7 @@
                     <Setter Property="Margin" Value="0,5,0,10"/>
                     <Setter Property="TextColor" Value="Black"/>
                     <Setter Property="BackgroundColor" Value="{StaticResource KindaWhite}"/>
+                    <Setter Property="PlaceholderColor" Value="{StaticResource UnImportantText}"/>
                 </Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Margin" Value="0,20"/>
@@ -30,29 +31,28 @@
 
 
                     <Label Text="Otsikko" />
-                    <Entry Placeholder="Title"
-                            Text="{Binding CollectionName}"
-                            Focused="ITextInput_Focused"
-                            SemanticProperties.Hint="Collection name"
-                            MaxLength="24"
-                            WidthRequest="300"
-                            HorizontalOptions="Start"
-                               
-                            >
+                    <Entry Placeholder="Minun sanastoni 1"
+                           Text="{Binding CollectionName}"
+                           Focused="ITextInput_Focused"
+                           SemanticProperties.Hint="Collection name"
+                           MaxLength="24"
+                           WidthRequest="300"
+                           HorizontalOptions="Start"
+                           >
 
                     </Entry>
 
                     <Label Text="Kielet"/>
-                    <Entry Placeholder="Languages"
-                            Grid.Row="1"
-                            Text="{Binding LanguageHeaders}"
-                            Focused="ITextInput_Focused"
-                            SemanticProperties.Hint="Collection languages: example fi-en or ge-sw"
-                            SemanticProperties.Description="Collection "
-                            MaxLength="16"
-                            WidthRequest="120"
-                            HorizontalOptions="Start"
-                            />
+                    <Entry Placeholder="fi-en"
+                           Grid.Row="1"
+                           Text="{Binding LanguageHeaders}"
+                           Focused="ITextInput_Focused"
+                           SemanticProperties.Hint="Collection languages: example fi-en or ge-sw"
+                           SemanticProperties.Description="Collection "
+                           MaxLength="16"
+                           WidthRequest="120"
+                           HorizontalOptions="Start"
+                           />
                 </VerticalStackLayout>
             </VerticalStackLayout>
             <Button Text="Uusi leikepöydältä" 
@@ -74,7 +74,7 @@
                 </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
                     <DataTemplate >
-                        <Grid ColumnDefinitions="5*, *, 5*" BackgroundColor="AliceBlue">
+                        <Grid ColumnDefinitions="5*, *, 5*" BackgroundColor="{StaticResource WordListBackground}">
                             <Label LineBreakMode="WordWrap"
                             Grid.Column="0"
                             HorizontalTextAlignment="Start"
@@ -105,7 +105,7 @@
                     Command="{Binding SaveCollection}" 
                     HorizontalOptions="Center"/>
 
-            <Label Text="Started saving process" IsVisible="{Binding LableVisible}"/>
+            <Label Text="Tallenna" IsVisible="{Binding LableVisible}"/>
             <!-- IsEnabled="{Binding CanSave}"--> 
             <Button Text="Aloita alusta" Clicked="StartAgainBtn_Click" HorizontalOptions="Center"/>
         </VerticalStackLayout>

@@ -40,21 +40,27 @@ public static class WordCollectionOwnerService
     {
         await Init();
 
+        languageHeaders = languageHeaders.Trim().ToLower();
         Debug.WriteLine($"{nameof(WordCollectionOwnerService)}: Get all containing language headers: {languageHeaders}");
 
         return await db.Table<WordCollectionOwner>()
-            .Where(x => x.LanguageHeaders.Contains(languageHeaders.Trim()))
-                .ToListAsync();
+            .Where(x => x.LanguageHeaders
+                .ToLower()
+                    .Contains(languageHeaders))
+                        .ToListAsync();
     }
     public static async Task<List<WordCollectionOwner>> GetByName(string name)
     {
         await Init();
-     
+
+        name = name.Trim().ToLower();
         Debug.WriteLine($"{nameof(WordCollectionOwnerService)}: Get all containing name: {name}");
 
         return await db.Table<WordCollectionOwner>()
-            .Where(x => x.Name.Contains(name))
-                .ToListAsync();
+            .Where(x => x.Name
+                .ToLower()
+                    .Contains(name))
+                        .ToListAsync();
     }
     /// <summary>
     /// Get by WordCollectionOwner id (primary key)

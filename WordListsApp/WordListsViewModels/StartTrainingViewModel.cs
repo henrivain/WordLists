@@ -8,7 +8,8 @@ namespace WordListsViewModels;
 [INotifyPropertyChanged]
 public partial class StartTrainingViewModel : IStartTrainingViewModel
 {
-    public List<WordCollectionOwner> AvailableCollections { get; private set; } = new();
+    [ObservableProperty]
+    List<WordCollectionOwner> availableCollections = new();
 
     [ObservableProperty]
     string dataParameter = string.Empty;
@@ -28,8 +29,45 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
         await ResetCollections();
     });
 
+    [ObservableProperty]
+    bool showLearnedWords = true;
+
+    [ObservableProperty]
+    bool showMightKnowWords = true;
+
+    [ObservableProperty]
+    bool showNeverHeardKnowWords = true;
+
+    [ObservableProperty]
+    int showWords = 1;
+
+    [ObservableProperty]
+    bool removeLearnedWords;
+
+    [ObservableProperty]
+    bool removeMightKnowWords;
+
+    [ObservableProperty]
+    bool removeNeverHeardWords;
+
+    [ObservableProperty]
+    bool isRefreshing = false;
+
+    [ObservableProperty]
+    WordCollectionOwner selectedItem = new();
+    
+
+
+
+    public WordCollection CreateCollection()
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task ResetCollections()
     {
+        IsRefreshing = true;   
         AvailableCollections = await WordCollectionOwnerService.GetAll();
+        IsRefreshing = false;
     }
 }

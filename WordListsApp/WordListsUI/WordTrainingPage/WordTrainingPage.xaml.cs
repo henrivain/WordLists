@@ -1,12 +1,11 @@
-using Microsoft.Maui.Controls;
-using System.Diagnostics;
-using WordDataAccessLibrary;
+using WordDataAccessLibrary.DataBaseActions;
 using WordListsUI.WordTrainingPage.FlipCardControl;
 using WordListsUI.WordTrainingPage.Helpers;
 using WordListsViewModels;
 
 
 namespace WordListsUI.WordTrainingPage;
+
 
 public partial class WordTrainingPage : ContentPage
 {

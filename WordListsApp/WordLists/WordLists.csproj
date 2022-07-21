@@ -92,6 +92,6 @@
 	</ItemGroup>
 
 
-	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadUnhandledDeviceExceptionWordListsHideInfoBar="True" /></VisualStudio></ProjectExtensions>
+	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionWordListsHideInfoBar="True" XamarinHotReloadUnhandledDeviceExceptionWordListsHideInfoBar="True" /></VisualStudio></ProjectExtensions>
 
 </Project>

@@ -7,6 +7,7 @@
     xmlns:UIComponents="clr-namespace:WordListsUI;assembly=WordListsUI"
     xmlns:generator="clr-namespace:WordListsUI.ListGeneratorPage;assembly=WordListsUI"
     xmlns:welcome="clr-namespace:WordListsUI.WelcomePage;assembly=WordListsUI"
+    xmlns:startTraining="clr-namespace:WordListsUI.StartTrainingPage;assembly=WordListsUI"
     xmlns:training="clr-namespace:WordListsUI.WordTrainingPage;assembly=WordListsUI"
     xmlns:info="clr-namespace:WordListsUI.AppInfoPage;assembly=WordListsUI"
     >
@@ -20,18 +21,20 @@
 
 
         <!-- Word training page -->
-        <ShellContent Title="Training"
-                      ContentTemplate="{DataTemplate training:WordTrainingPage}"
-                      />
+        <Tab Title="Training">
+            <ShellContent Title="Start new"
+                          ContentTemplate="{DataTemplate startTraining:StartTrainingPage}"
+                          />
+            <ShellContent Title="Training"
+                          ContentTemplate="{DataTemplate training:WordTrainingPage}"
+                          />
+        </Tab>
 
         <!-- Word list generator page -->
             
-        <Tab Title="Generators" >
-            <ShellContent Title="Create"
-                          Route="Generators/Create"
-                          ContentTemplate="{DataTemplate generator:ListGeneratorPage}"
-                          />
-        </Tab>
+        <ShellContent Title="Create new"
+                        ContentTemplate="{DataTemplate generator:ListGeneratorPage}"
+                        />
 
 
         <!-- App information page -->

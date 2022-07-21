@@ -40,9 +40,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
 
 
     [ObservableProperty]
-    [AlsoNotifyChangeFor(nameof(UIVisibleIndex))]
     public int realIndex = 0;
-
 
     [ObservableProperty]
     bool canGoNext = false;

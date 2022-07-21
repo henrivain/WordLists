@@ -9,6 +9,7 @@
     <Color x:Key="FlipCard">#8394A8</Color>
     <Color x:Key="UnImportantText">#6E6E6E</Color>
     <Color x:Key="KindaWhite">#B3B3B3</Color>
+    <Color x:Key="WordListBackground">#F0F8FF</Color>   <!-- Alice blue -->
     
     
     <!--<Color x:Key="FlipCard">#6c5aad</Color>-->

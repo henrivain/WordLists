@@ -40,4 +40,9 @@ public partial class ListGeneratorPage : ContentPage
 	{
 		BindingContext = ModelFactory.Create();
 	}
+
+	private void listGeneratorView_Loaded(object sender, EventArgs e)
+	{
+
+	}
 }
