@@ -2,20 +2,78 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.WordCollectionHandlingPage.WordCollectionHandlingPage"
-             Title="Hallitse sanastoja"
+             Title="Muokkaa sanastoja"
              xmlns:viewModel="clr-namespace:WordListsViewModels;assembly=WordListsViewModels"
+             xmlns:viewModelHelpers="clr-namespace:WordListsViewModels.Helpers;assembly=WordListsViewModels"
              BackgroundColor="{StaticResource PageBackground}"
              x:DataType="{x:Type viewModel:IWordCollectionHandlingViewModel}"
+             Loaded="ContentPage_Loaded" 
+             
              >
     <ContentPage.Resources>
         <Style TargetType="{x:Type Label}">
             <Setter Property="TextColor" Value="Black"/>
         </Style>
     </ContentPage.Resources>
-    <VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout>
 
-        <Label Text="Muokkaa tai poista sanastoja"
-               HorizontalTextAlignment="Center"
-               />
-    </VerticalStackLayout>
+            <Label Text="Muokkaa tai poista sanastoja"
+                   FontSize="Title"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource UnImportantText}"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,20,0,30"
+                   />
+
+            <CollectionView ItemsSource="{Binding AvailableCollections}"
+                            x:DataType="{x:Type viewModel:IWordCollectionHandlingViewModel}"
+                            BackgroundColor="{StaticResource WordListBackground}"
+                            Margin="20"
+                            >
+                <CollectionView.EmptyView>
+                    <Label Text="Yhtäkään sanastoa ei ole vielä lisätty" HorizontalTextAlignment="Center" Margin="0,20"/>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView x:DataType="{x:Type viewModelHelpers:WordCollectionInfo}" VerticalOptions="Start">
+                            <SwipeView.RightItems >
+                                <SwipeItem Text="Poista" 
+                                       Clicked="DeleteCollection_Clicked"
+                                       CommandParameter="{Binding Owner.Id}"
+                                       >
+                                </SwipeItem>
+                            </SwipeView.RightItems>
+                            <Grid ColumnDefinitions="{OnPlatform WinUI='*, auto', UWP='*, auto', Default='*'}" VerticalOptions="Start">
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding Owner.Name}"/>
+                                    <Label Text="{Binding Owner.LanguageHeaders}"/>
+                                    <Label Text="{Binding WordPairsCount}"/>
+                                </VerticalStackLayout>
+                                <!-- again passing selected data with command parameters -->
+                                <ImageButton Source="bin_icon_with_border.png" 
+                                             Grid.Column="1" 
+                                             HeightRequest="30" 
+                                             WidthRequest="30"
+                                             CommandParameter="{Binding Owner.Id}" 
+                                             Pressed="DeleteCollection_Clicked"
+                                             BackgroundColor="{StaticResource BinIconBackground}" 
+                                             Padding="3" 
+                                             CornerRadius="15"  
+                                             Margin="0,0,20,0"
+                                             IsVisible="{OnPlatform WinUI=true, UWP=true, Default=false}"
+                                             />
+                            </Grid>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="{OnPlatform Default=1, UWP=3, WinUI=3}"/>
+                </CollectionView.ItemsLayout>
+
+
+            </CollectionView>
+            <Button Text="Päivitä näkymä" Command="{Binding UpdateCollectionInfos}" HorizontalOptions="Center" Margin="0,30"/>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

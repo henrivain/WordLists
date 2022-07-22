@@ -9,7 +9,7 @@
 
     <ContentView.Content>
 
-        <Border Stroke="Transparent" x:Name="card" BackgroundColor="{DynamicResource FlipCardColor}" >
+        <Border Stroke="Transparent" x:Name="card" BackgroundColor="{StaticResource FlipCardColor}" >
             <!--BackgroundColor="{StaticResource FlipCardColor}"-->
             <Border.GestureRecognizers>
                 <TapGestureRecognizer Tapped="Tapped"/>

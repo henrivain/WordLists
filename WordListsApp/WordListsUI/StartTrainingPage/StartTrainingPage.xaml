@@ -53,7 +53,6 @@
 
                 <HorizontalStackLayout HorizontalOptions="Center" 
                                 Padding="10"
-                                       BackgroundColor="Red"
                                 >
                     <VerticalStackLayout Margin="0,0,20,0" >
                         <VerticalStackLayout.Resources>
@@ -67,12 +66,7 @@
                         <Label Text="Näytä sanat, jotka saatan muistaa"/>
                         <Label Text="Näytä sanat, joita en muista"/>
                     </VerticalStackLayout>
-                    <Grid RowDefinitions="*, *, *" BackgroundColor="Green">
-                        <Grid.Resources>
-                            <Style TargetType="{x:Type Switch}">
-                                <Setter Property="Margin" Value="0,0,-70,0"/>
-                            </Style>
-                        </Grid.Resources>
+                    <Grid RowDefinitions="*, *, *">
                         <Switch IsToggled="{Binding ShowLearnedWords}" 
                                 VerticalOptions="Center"
                                 Grid.Row="0"

@@ -48,7 +48,7 @@ public class WordPair
         }
     }
 
-    public virtual int WordLearnStateId { get; private set; } = (int)WordLearnState.NeverHeard;
+    public virtual int WordLearnStateId { get; private set; } = (int)WordLearnState.NotSet;
 
     [EnumDataType(typeof(WordLearnState))]
     public WordLearnState LearnState

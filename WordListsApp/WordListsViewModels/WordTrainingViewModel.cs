@@ -149,9 +149,6 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
             Next();
             return;
         }
-        #if DEBUG
-        throw new InvalidOperationException("index out of range");
-        #endif
     }
 
     private void StartNewWithIndex(WordCollection collection, int startIndex)

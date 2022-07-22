@@ -9,6 +9,7 @@
     <Color x:Key="UnImportantText">#6E6E6E</Color>
     <Color x:Key="KindaWhite">#B3B3B3</Color>
     <Color x:Key="WordListBackground">#F0F8FF</Color>   <!-- Alice blue -->
+    <Color x:Key="BinIconBackground">#8ba2a6</Color>   <!-- Alice blue -->
 
     <!--was #1c1b4d</Color>-->
     <Color x:Key="FlipCardColor">#8394A8</Color>

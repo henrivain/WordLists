@@ -3,5 +3,5 @@
 namespace WordDataAccessLibrary;
 public enum WordLearnState
 {
-    NeverHeard, MightKnow, Learned
+    NeverHeard, MightKnow, Learned, NotSet
 }

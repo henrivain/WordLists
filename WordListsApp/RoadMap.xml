@@ -8,21 +8,22 @@
 		</InRelease>
 		<UnReleased>
 			<!-- Update not released -->
+			<WordListGenerator>Over write old version of wordcollection</WordListGenerator>
+			<WordCollections>
+				<GetByLanguageHeaders/>
+				<GetByName/>
+			</WordCollections>
 		</UnReleased>
 	</Completed>
 	<Coming>
 		<!-- Most certainly coming features-->
 		<TODO>
-			<WordCollections>
-				<GetByLanguageHeaders/>
-				<GetByName/>
-			</WordCollections>
+			<FixBug>list saved event does not fire twice in list generator</FixBug>
 		</TODO>
 	</Coming>
 	
 	<UnCertain>
 		<WordListGenerator>Edit button to edit word collection words</WordListGenerator>
-		<WordListGenerator>Over write old version of wordcollection</WordListGenerator>
 		<LearnWords>Learn by writing words</LearnWords>
 		<LearnWords>Generate test</LearnWords>
 		<WordCollections>

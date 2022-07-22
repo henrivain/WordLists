@@ -1,9 +1,19 @@
-﻿using WordDataAccessLibrary;
+﻿using CommunityToolkit.Mvvm.Input;
+using WordDataAccessLibrary;
+using WordListsViewModels.Helpers;
+using static WordDataAccessLibrary.DataBaseActions.DataBaseDelegates;
 
 namespace WordListsViewModels;
 public interface IWordCollectionHandlingViewModel
 {
-    WordCollectionOwner? Selected { get; set; }
 
-    List<WordCollectionOwner> AvailableCollections { get; set; }
+    List<WordCollectionInfo> AvailableCollections { get; set; }
+
+    IAsyncRelayCommand UpdateCollectionInfos { get; }
+
+    Task ResetCollections();
+
+    Task DeleteCollection(int id);
+
+    event CollectionDeletedEventHandler? CollectionDeleted;
 }

@@ -80,7 +80,6 @@ public class WordPairFlipCard : AnimatedFlipCard
         }
         ShowBottomSideNoAnimation();
     }
-
     protected virtual Color GetColor(WordLearnState state)
     {
         return state switch
@@ -88,6 +87,7 @@ public class WordPairFlipCard : AnimatedFlipCard
             WordLearnState.Learned => ColorHelper.GetResourceColor(ResourceColor.LearnedWord),
             WordLearnState.MightKnow => ColorHelper.GetResourceColor(ResourceColor.MightKnowWord),
             WordLearnState.NeverHeard => ColorHelper.GetResourceColor(ResourceColor.NeverHeardWord),
+            WordLearnState.NotSet => ColorHelper.GetResourceColor(ResourceColor.DefaultFlipCard),
             _ => ColorHelper.GetResourceColor(ResourceColor.DefaultFlipCard)
         };
     }

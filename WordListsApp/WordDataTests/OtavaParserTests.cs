@@ -53,8 +53,8 @@ public partial class OtavaParserTests
 
         List<WordPair> wordPairs = parser.GetList();
 
-        Assert.Equal("bad hair day", wordPairs[0].ForeignLanguageWord);
-        Assert.Equal("tosi huono päivä", wordPairs[0].NativeLanguageWord);
+        Assert.Equal("bad hair day", wordPairs[0].NativeLanguageWord);
+        Assert.Equal("tosi huono päivä", wordPairs[0].ForeignLanguageWord);
     }
 
 
@@ -65,12 +65,12 @@ public partial class OtavaParserTests
 
         List<WordPair> wordPairs = parser.GetList();
 
-        Assert.Equal("bad hair day", wordPairs[0].ForeignLanguageWord);
-        Assert.Equal("tosi huono päivä", wordPairs[0].NativeLanguageWord);
-        Assert.Equal("fleeting", wordPairs[1].ForeignLanguageWord);
-        Assert.Equal("ohikiitävä", wordPairs[1].NativeLanguageWord);
-        Assert.Equal("principal", wordPairs[2].ForeignLanguageWord);
-        Assert.Equal("rehtori", wordPairs[2].NativeLanguageWord);
+        Assert.Equal("bad hair day", wordPairs[0].NativeLanguageWord);
+        Assert.Equal("tosi huono päivä", wordPairs[0].ForeignLanguageWord);
+        Assert.Equal("fleeting", wordPairs[1].NativeLanguageWord);
+        Assert.Equal("ohikiitävä", wordPairs[1].ForeignLanguageWord);
+        Assert.Equal("principal", wordPairs[2].NativeLanguageWord);
+        Assert.Equal("rehtori", wordPairs[2].ForeignLanguageWord);
     }
 
     [Fact]
