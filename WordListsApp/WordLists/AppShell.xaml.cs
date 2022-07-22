@@ -3,6 +3,7 @@ using WordListsUI.ListGeneratorPage;
 using System.Diagnostics;
 using WordListsUI.StartTrainingPage;
 using WordListsUI.WordTrainingPage;
+using WordListsUI.WordCollectionHandlingPage;
 
 namespace WordLists;
 
@@ -12,7 +13,8 @@ public partial class AppShell : Shell
 	{
 		InitializeComponent();
 
-		Routing.RegisterRoute(nameof(StartTrainingPage), typeof(StartTrainingPage));
-		Routing.RegisterRoute(nameof(WordTrainingPage), typeof(WordTrainingPage));
+		Routing.RegisterRoute($"Training/{nameof(StartTrainingPage)}", typeof(StartTrainingPage));
+		Routing.RegisterRoute($"Training/{nameof(WordTrainingPage)}", typeof(WordTrainingPage));
+		Routing.RegisterRoute(nameof(WordCollectionHandlingPage), typeof(WordCollectionHandlingPage));
     }
 }

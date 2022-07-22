@@ -40,6 +40,9 @@
 	  <MauiXaml Update="StartTrainingPage\StartTrainingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="WordCollectionHandlingPage\WordCollectionHandlingPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="WordTrainingPage\FlipCardControl\FlipCard.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

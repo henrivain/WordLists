@@ -10,6 +10,7 @@
     xmlns:startTraining="clr-namespace:WordListsUI.StartTrainingPage;assembly=WordListsUI"
     xmlns:training="clr-namespace:WordListsUI.WordTrainingPage;assembly=WordListsUI"
     xmlns:info="clr-namespace:WordListsUI.AppInfoPage;assembly=WordListsUI"
+    xmlns:handling="clr-namespace:WordListsUI.WordCollectionHandlingPage;assembly=WordListsUI"
     >
 
     <TabBar FlyoutDisplayOptions="AsMultipleItems">
@@ -20,7 +21,7 @@
                       />
 
 
-        <!-- Word training page -->
+        <!-- Word training -->
         <Tab Title="Harjoitus">
             <ShellContent Title="Aloita uusi"
                           ContentTemplate="{DataTemplate startTraining:StartTrainingPage}"
@@ -30,12 +31,15 @@
                           />
         </Tab>
 
-        <!-- Word list generator page -->
+        <!-- Word list handling -->
 
-        <Tab Title="Luo">
+        <Tab Title="Hallitse">
             <ShellContent Title="Luo otavasta"
-                        ContentTemplate="{DataTemplate generator:ListGeneratorPage}"
-                        />
+                          ContentTemplate="{DataTemplate generator:ListGeneratorPage}"
+                          />
+            <ShellContent Title="Hallitse sanastoja"
+                          ContentTemplate="{DataTemplate handling:WordCollectionHandlingPage}"
+                          />
         </Tab>
 
 
@@ -43,6 +47,7 @@
         <ShellContent Title="Tietoa"
                       ContentTemplate="{DataTemplate info:AppInfoPage}"
                       />
+        
     </TabBar>
     
 

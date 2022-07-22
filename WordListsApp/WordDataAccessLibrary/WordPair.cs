@@ -48,7 +48,6 @@ public class WordPair
         }
     }
 
-    #region LearnStateEnum
     public virtual int WordLearnStateId { get; private set; } = (int)WordLearnState.NeverHeard;
 
     [EnumDataType(typeof(WordLearnState))]
@@ -57,7 +56,6 @@ public class WordPair
         get => (WordLearnState)WordLearnStateId;
         set => WordLearnStateId = (int)value;
     }
-    #endregion
 
     /// <summary>
     /// Index in source vocalbulary, -1 if not defined

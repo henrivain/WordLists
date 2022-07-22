@@ -7,6 +7,7 @@ using WordListsViewModels;
 
 namespace WordListsUI.WordTrainingPage;
 
+[QueryProperty(nameof(StartCollection), nameof(StartCollection))]
 [QueryProperty(nameof(StartWordCollection), nameof(StartWordCollection))]
 public partial class WordTrainingPage : ContentPage
 {
@@ -17,6 +18,17 @@ public partial class WordTrainingPage : ContentPage
         Animator = new(flipper);
         Model.CollectionUpdated += Model_CollectionUpdatedEvent;
 
+    }
+
+    public WordCollection StartCollection 
+    { 
+        set 
+        { 
+            if (value is not null)
+            {
+                Model.StartNew(value);
+            }
+        } 
     }
 
     private async void Model_CollectionUpdatedEvent(object sender, DataBaseActionArgs e)

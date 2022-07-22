@@ -4,6 +4,10 @@
              x:Class="WordLists.MainPage"
              >
 
+    
+    <!-- Add number of word collections -->
+    <!-- and maybe more stats (number of word learned) -->
+    <!-- Link to latest word sets? -->
     <ScrollView>
         <Grid HeightRequest="300">
             <Grid.ColumnDefinitions>

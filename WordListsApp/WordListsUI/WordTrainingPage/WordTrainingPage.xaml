@@ -16,7 +16,7 @@
         </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid>
+        <ScrollView>
             <VerticalStackLayout >
                 <VerticalStackLayout Margin="40,20">
                     <Label Text="{Binding Title}"
@@ -121,15 +121,17 @@
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>-->
-            </VerticalStackLayout>
-            <Button Text="Tallenna eteneminen" 
+                <Button Text="Tallenna eteneminen" 
+                    Grid.Row="1"
                     VerticalOptions="End"
-                    Margin="0,0,0,20"
+                    Margin="0,50,0,0"
                     HorizontalOptions="Center"
                     Command="{Binding SaveProgression}"
                     />
+            </VerticalStackLayout>
+            
 
             
-        </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
