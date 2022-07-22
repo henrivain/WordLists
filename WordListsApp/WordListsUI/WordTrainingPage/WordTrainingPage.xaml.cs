@@ -45,9 +45,6 @@ public partial class WordTrainingPage : ContentPage
 
     readonly SlideAnimation Animator;
 
-
-
-
     private void ShowDefaultSideWithoutAnimation()
 	{
         if (ShowNativeWordByDefault)

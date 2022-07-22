@@ -6,8 +6,11 @@
              xmlns:local="clr-namespace:WordListsUI.WordTrainingPage.FlipCardControl"
              x:DataType="{x:Type local:FlipCard}"
              >
+
     <ContentView.Content>
-        <Border Stroke="Transparent" x:Name="card"  BackgroundColor="{StaticResource FlipCardColor}">
+
+        <Border Stroke="Transparent" x:Name="card" BackgroundColor="{DynamicResource FlipCardColor}" >
+            <!--BackgroundColor="{StaticResource FlipCardColor}"-->
             <Border.GestureRecognizers>
                 <TapGestureRecognizer Tapped="Tapped"/>
             </Border.GestureRecognizers>

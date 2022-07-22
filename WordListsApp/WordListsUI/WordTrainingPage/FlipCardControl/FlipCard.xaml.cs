@@ -73,6 +73,8 @@ public partial class FlipCard : ContentView
         BindableProperty.Create(nameof(BottomSideText), typeof(string), typeof(FlipCard), "my bottom text");
 
 
+    protected Color CardColor { set => card.BackgroundColor = value; }
+
     protected virtual void Tapped(object sender, EventArgs e) 
     {
         ShowingTopSide = !ShowingTopSide;
