@@ -13,21 +13,36 @@
 				<GetByLanguageHeaders/>
 				<GetByName/>
 			</WordCollections>
+			<FixBug>list saved event does not fire twice in list generator</FixBug>
 		</UnReleased>
 	</Completed>
 	<Coming>
 		<!-- Most certainly coming features-->
 		<TODO>
-			<FixBug>list saved event does not fire twice in list generator</FixBug>
+			<Enhancement>
+				<StartLearningPage>Fix collection view sizing on windows when less than 3 items (Might be maui bug)</StartLearningPage>
+			</Enhancement>
+			<LearnWords>Add set learnstate NotSet</LearnWords>
+			<Usability>
+				<CollectionEditPage>
+					<Edit>Name</Edit>
+					<Edit>LanguageTags</Edit>
+					<Edit>EditLanguageTags</Edit>
+					<Edit>Switch languages with one and another</Edit>
+				</CollectionEditPage>
+			</Usability>
+			
 		</TODO>
 	</Coming>
 	
 	<UnCertain>
+		<Description>Make Description Visible</Description>
 		<WordListGenerator>Edit button to edit word collection words</WordListGenerator>
 		<LearnWords>Learn by writing words</LearnWords>
 		<LearnWords>Generate test</LearnWords>
 		<WordCollections>
-			<SearchByTags/>
+			<SearchByTags>Tag to point add specific book</SearchByTags>
 		</WordCollections>
+		<WelcomePage>add user stats</WelcomePage>
 	</UnCertain>
 </Versions>

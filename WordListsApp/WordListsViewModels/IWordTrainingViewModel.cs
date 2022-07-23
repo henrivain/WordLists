@@ -27,6 +27,7 @@ public interface IWordTrainingViewModel
 
     IAsyncRelayCommand SaveProgression { get; }
 
+    IRelayCommand WordStateNotSetCommand { get; }
     IRelayCommand WordLearnedCommand { get; }
     IRelayCommand MightKnowWordCommand { get; }
     IRelayCommand WordNeverHeardCommand { get; }

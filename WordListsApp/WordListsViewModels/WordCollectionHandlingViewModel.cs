@@ -31,7 +31,7 @@ public partial class WordCollectionHandlingViewModel : IWordCollectionHandlingVi
         {
             collectionInfos.Add(new(collection.Owner, collection.WordPairs.Count));
         }
-        AvailableCollections = collectionInfos;
+        AvailableCollections = collectionInfos.SortByName();
     }
     
     public async Task DeleteCollection(int id)

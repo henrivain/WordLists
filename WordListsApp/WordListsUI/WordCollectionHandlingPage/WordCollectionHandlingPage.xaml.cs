@@ -8,8 +8,8 @@ public partial class WordCollectionHandlingPage : ContentPage
 	{
 		BindingContext = model;
 		InitializeComponent();
-		Model.CollectionDeleted += Model_CollectionDeleted;
-	}
+        Model.CollectionDeleted += Model_CollectionDeleted;
+    }
 
 	private async void Model_CollectionDeleted(object sender, WordDataAccessLibrary.DataBaseActions.DataBaseActionArgs e)
 	{
@@ -25,7 +25,6 @@ public partial class WordCollectionHandlingPage : ContentPage
 
 	private async void DeleteCollection_Clicked(object sender, EventArgs e)
 	{
-
         int id = -1;
 		if (sender is MenuItem item)
 		{

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using WordDataAccessLibrary;
 using WordDataAccessLibrary.DataBaseActions;
+using WordListsViewModels.Helpers;
 using static WordDataAccessLibrary.DataBaseActions.DataBaseDelegates;
 
 namespace WordListsViewModels;
@@ -16,14 +17,16 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
     string dataParameter = string.Empty;
 
 
+
+
     public IAsyncRelayCommand UpdateCollectionsByName => new AsyncRelayCommand(async () =>
     {
-        AvailableCollections = await WordCollectionOwnerService.GetByName(DataParameter);
+        AvailableCollections = (await WordCollectionOwnerService.GetByName(DataParameter)).SortByName();
     });    
     
     public IAsyncRelayCommand UpdateCollectionsByLanguage => new AsyncRelayCommand(async () =>
     {
-        AvailableCollections = await WordCollectionOwnerService.GetByLanguage(DataParameter);
+        AvailableCollections = (await WordCollectionOwnerService.GetByLanguage(DataParameter)).SortByName();
     });
 
     public IAsyncRelayCommand UpdateCollections => new AsyncRelayCommand(async () =>
@@ -61,7 +64,7 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
     public async Task ResetCollections()
     {
         IsRefreshing = true;   
-        AvailableCollections = await WordCollectionOwnerService.GetAll();
+        AvailableCollections = (await WordCollectionOwnerService.GetAll()).SortByName();
         IsRefreshing = false;
     }
 }

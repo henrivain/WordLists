@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.StartTrainingPage.StartTrainingPage"
-             Title="StartTrainingPage"
+             Title="Aloita uusi"
              xmlns:viewModel="clr-namespace:WordListsViewModels;assembly=WordListsViewModels"
              xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
              x:DataType="{x:Type viewModel:IStartTrainingViewModel}"
@@ -98,7 +98,11 @@
                                 >
                     <!-- SelectionMode="Single" (crashes if items are null -not sure) -->
                     <CollectionView.EmptyView>
-                        <Label Text="Sopivia sanastoja ei löytynyt" HorizontalTextAlignment="Center"/>
+                        <Grid>
+                            <Label Text="Sopivia sanastoja ei löytynyt" HorizontalTextAlignment="Center"
+                                    BackgroundColor="Black" VerticalOptions="Start"
+                               />
+                        </Grid>
                     </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
                         <DataTemplate >
@@ -111,12 +115,11 @@
                                 <SwipeView.RightItems>
                                     <SwipeItem BackgroundColor="Green" Text="Aloita"
                                                Clicked="SwipeItem_Clicked"
+                                               x:DataType="{x:Type wordData:WordCollectionOwner}"
+                                               CommandParameter="{Binding Id}"
                                                >
                                         <!-- using command parameter as paramer for Clicked action, 
                                         it's stupid but didnt find easy better way quickly -->
-                                        <SwipeItem.CommandParameter>
-                                            <Binding Path="Id" x:DataType="{x:Type wordData:WordCollectionOwner}"/>
-                                        </SwipeItem.CommandParameter>
                                     </SwipeItem>
                                 </SwipeView.RightItems>
                                 <Grid Padding="20,5,0,5" x:DataType="{x:Type wordData:WordCollectionOwner}"
@@ -127,18 +130,16 @@
                                         <Label Text="{Binding LanguageHeaders}"/>
                                     </VerticalStackLayout>
                                     <ImageButton IsVisible="{OnPlatform WinUI=true, UWP=true, Default=false}"
-                                                 Grid.Column="{OnPlatform WinUI=1}"
+                                                 Grid.Column="{OnPlatform WinUI=1, UWP=1}" 
                                                  Source="letsgoicon.png" 
                                                  Padding="2" 
                                                  HeightRequest="30"
                                                  WidthRequest="30"
                                                  Clicked="SwipeItem_Clicked"
+                                                 CommandParameter="{Binding Id}"
                                                  >
                                         <!-- using command parameter as paramer for Clicked action, 
                                         it's stupid but didnt find easy better way quickly Must fix later when i have time -->
-                                        <ImageButton.CommandParameter>
-                                            <Binding Path="Id" x:DataType="{x:Type wordData:WordCollectionOwner}"/>
-                                        </ImageButton.CommandParameter>
                                     </ImageButton>
                                 </Grid>
                             </SwipeView>

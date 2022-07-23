@@ -26,25 +26,32 @@
                    Margin="0,20,0,30"
                    />
 
+            <!-- Android needs Height request for some reason or 
+                collection view will not be shown. 
+                Android margin is for better fit for smaller screen-->
             <CollectionView ItemsSource="{Binding AvailableCollections}"
-                            x:DataType="{x:Type viewModel:IWordCollectionHandlingViewModel}"
                             BackgroundColor="{StaticResource WordListBackground}"
-                            Margin="20"
+                            Margin="{OnPlatform Android='20,0', Default='20'}"
+                            MinimumHeightRequest="{OnPlatform Android=400, Default=0}"
                             >
+                <!-- not setting default MinimumHeightRequest crashes with collection view -->
                 <CollectionView.EmptyView>
-                    <Label Text="Yhtäkään sanastoa ei ole vielä lisätty" HorizontalTextAlignment="Center" Margin="0,20"/>
+                    <Label Text="Yhtäkään sanastoa ei ole vielä lisätty" HorizontalTextAlignment="Center"/>
                 </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <SwipeView x:DataType="{x:Type viewModelHelpers:WordCollectionInfo}" VerticalOptions="Start">
+                        <SwipeView x:DataType="{x:Type viewModelHelpers:WordCollectionInfo}" 
+                                VerticalOptions="Start">
                             <SwipeView.RightItems >
                                 <SwipeItem Text="Poista" 
-                                       Clicked="DeleteCollection_Clicked"
-                                       CommandParameter="{Binding Owner.Id}"
-                                       >
-                                </SwipeItem>
+                                           Clicked="DeleteCollection_Clicked"
+                                           BackgroundColor="Red"
+                                           CommandParameter="{Binding Owner.Id}"
+                                           />
                             </SwipeView.RightItems>
-                            <Grid ColumnDefinitions="{OnPlatform WinUI='*, auto', UWP='*, auto', Default='*'}" VerticalOptions="Start">
+                            <Grid Padding="20,5,0,5"
+                                  ColumnDefinitions="{OnPlatform WinUI='*, auto', UWP='*, auto', Default='*'}" 
+                                >
                                 <VerticalStackLayout>
                                     <Label Text="{Binding Owner.Name}"/>
                                     <Label Text="{Binding Owner.LanguageHeaders}"/>
@@ -52,17 +59,17 @@
                                 </VerticalStackLayout>
                                 <!-- again passing selected data with command parameters -->
                                 <ImageButton Source="bin_icon_with_border.png" 
-                                             Grid.Column="1" 
-                                             HeightRequest="30" 
-                                             WidthRequest="30"
-                                             CommandParameter="{Binding Owner.Id}" 
-                                             Pressed="DeleteCollection_Clicked"
-                                             BackgroundColor="{StaticResource BinIconBackground}" 
-                                             Padding="3" 
-                                             CornerRadius="15"  
-                                             Margin="0,0,20,0"
-                                             IsVisible="{OnPlatform WinUI=true, UWP=true, Default=false}"
-                                             />
+                                            IsVisible="{OnPlatform WinUI=true, UWP=true, Default=false}"
+                                            Grid.Column="{OnPlatform WinUI=1, UWP=1}" 
+                                            HeightRequest="30" 
+                                            WidthRequest="30"
+                                            CommandParameter="{Binding Owner.Id}" 
+                                            Clicked="DeleteCollection_Clicked"
+                                            BackgroundColor="{StaticResource BinIconBackground}" 
+                                            Padding="3" 
+                                            CornerRadius="15"  
+                                            Margin="0,0,20,0"
+                                            />
                             </Grid>
                         </SwipeView>
                     </DataTemplate>
@@ -70,8 +77,6 @@
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical" Span="{OnPlatform Default=1, UWP=3, WinUI=3}"/>
                 </CollectionView.ItemsLayout>
-
-
             </CollectionView>
             <Button Text="Päivitä näkymä" Command="{Binding UpdateCollectionInfos}" HorizontalOptions="Center" Margin="0,30"/>
         </VerticalStackLayout>

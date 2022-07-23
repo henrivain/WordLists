@@ -141,6 +141,11 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
         SetLearnState(WordLearnState.NeverHeard);   
     });
 
+    public IRelayCommand WordStateNotSetCommand => new RelayCommand(() =>
+    {
+        SetLearnState(WordLearnState.NotSet);
+    });
+
     private void SetLearnState(WordLearnState state)
     {
         if (IsOverMaxIndex() is false)
@@ -238,8 +243,8 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
 
     private readonly WordPair CompletedView = new()
     {
-        NativeLanguageWord = "Word list completed!",
-        ForeignLanguageWord = "Word list completed!"
+        NativeLanguageWord = "Sanasto suoritettu!",
+        ForeignLanguageWord = "Sanasto suoritettu!"
     };
 
 }

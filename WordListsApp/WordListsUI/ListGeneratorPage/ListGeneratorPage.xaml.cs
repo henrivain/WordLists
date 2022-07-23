@@ -13,16 +13,19 @@ public partial class ListGeneratorPage : ContentPage
 		ModelFactory = modelFactory;
 		BindingContext = modelFactory.Create(); ;
 		InitializeComponent();
-		Model.CollectionAddedEvent += Model_CollectionAddedEvent;
-	}
+        Model.CollectionAddedEvent += Model_CollectionAddedEvent;
+    }
 
 	private async void Model_CollectionAddedEvent(object sender, DataBaseActionArgs e)
 	{
 		BindingContext = ModelFactory.Create();
 		await DisplayAlert("Onnistui!", $"Sanasto lisätty onnistuneesti säilytykseen id:llä {e.RefId}", "OK");
-	}
+		Model.CollectionAddedEvent -= Model_CollectionAddedEvent;
+		Model.CollectionAddedEvent += Model_CollectionAddedEvent;
+    }
 
-	IAbstractFactory<IListGeneratorViewModel> ModelFactory { get; }
+
+    IAbstractFactory<IListGeneratorViewModel> ModelFactory { get; }
 
     public IListGeneratorViewModel Model => (IListGeneratorViewModel)BindingContext;
 	
