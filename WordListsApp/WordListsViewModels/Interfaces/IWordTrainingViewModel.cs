@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using WordDataAccessLibrary;
 using static WordDataAccessLibrary.DataBaseActions.DataBaseDelegates;
 
-namespace WordListsViewModels;
+namespace WordListsViewModels.Interfaces;
 
 
 public interface IWordTrainingViewModel

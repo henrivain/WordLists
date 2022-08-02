@@ -1,5 +1,3 @@
-using WordListsViewModels;
-
 namespace WordListsUI.WordCollectionHandlingPage;
 
 public partial class WordCollectionHandlingPage : ContentPage

@@ -3,7 +3,7 @@ using WordDataAccessLibrary;
 using WordListsViewModels.Helpers;
 using static WordDataAccessLibrary.DataBaseActions.DataBaseDelegates;
 
-namespace WordListsViewModels;
+namespace WordListsViewModels.Interfaces;
 public interface IWordCollectionHandlingViewModel
 {
 

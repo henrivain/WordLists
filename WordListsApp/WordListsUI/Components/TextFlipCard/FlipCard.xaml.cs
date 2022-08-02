@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace WordListsUI.WordTrainingPage.FlipCardControl;
+namespace WordListsUI.Components.TextFlipCard;
 
 /// <summary>
 /// Implement card like view with two sides for text. Side is changed when tapped (No animation) 

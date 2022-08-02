@@ -1,9 +1,6 @@
 using WordDataAccessLibrary;
 using WordDataAccessLibrary.DataBaseActions;
-using WordListsUI.WordTrainingPage.FlipCardControl;
-using WordListsUI.WordTrainingPage.Helpers;
-using WordListsViewModels;
-
+using WordListsUI.Components.TextFlipCard;
 
 namespace WordListsUI.WordTrainingPage;
 
@@ -17,7 +14,6 @@ public partial class WordTrainingPage : ContentPage
 		InitializeComponent();
         Animator = new(flipper);
         Model.CollectionUpdated += Model_CollectionUpdatedEvent;
-
     }
 
     public WordCollection StartCollection 
@@ -76,7 +72,7 @@ public partial class WordTrainingPage : ContentPage
         #if WINDOWS
         if (sender is Grid grid)
         {
-            FlipperResizer.Resize(grid, Width);
+            Helpers.FlipperResizer.Resize(grid, Width);
         }
         #endif
     }

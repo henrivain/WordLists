@@ -1,7 +1,7 @@
 using WordListsMauiHelpers.Factories;
 using WordListsUI.Helpers;
-using WordListsViewModels;
 using WordDataAccessLibrary.DataBaseActions;
+using WordListsViewModels.Interfaces;
 
 namespace WordListsUI.ListGeneratorPage;
 
@@ -34,7 +34,7 @@ public partial class ListGeneratorPage : ContentPage
 		if (sender is ITextInput input)
 		{
 			// this does not work with editor
-            UiInteractionHelper.FocusITextInputText(input, this);
+            UIInteractionHelper.FocusITextInputText(input, this);
 		}
 	}
 

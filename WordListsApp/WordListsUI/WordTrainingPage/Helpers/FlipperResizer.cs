@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WordListsUI.WordTrainingPage.Helpers;
+﻿namespace WordListsUI.WordTrainingPage.Helpers;
 internal static class FlipperResizer
 {
     internal static void Resize(Grid sender, double viewHeight)

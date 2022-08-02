@@ -3,11 +3,11 @@ using System.ComponentModel;
 using WordDataAccessLibrary;
 using static WordDataAccessLibrary.DataBaseActions.DataBaseDelegates;
 
-namespace WordListsViewModels;
+namespace WordListsViewModels.Interfaces;
 public interface IListGeneratorViewModel
 {
     event PropertyChangedEventHandler? PropertyChanged;
-    
+
     List<WordPair> WordPairs { get; set; }
 
     string CollectionName { get; set; }

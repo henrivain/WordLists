@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.WordCollectionHandlingPage.WordCollectionHandlingPage"
              Title="Muokkaa sanastoja"
-             xmlns:viewModel="clr-namespace:WordListsViewModels;assembly=WordListsViewModels"
+             xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
              xmlns:viewModelHelpers="clr-namespace:WordListsViewModels.Helpers;assembly=WordListsViewModels"
              BackgroundColor="{StaticResource PageBackground}"
              x:DataType="{x:Type viewModel:IWordCollectionHandlingViewModel}"

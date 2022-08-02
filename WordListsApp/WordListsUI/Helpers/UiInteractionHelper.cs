@@ -1,12 +1,5 @@
-﻿using Microsoft.Maui.Dispatching;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WordListsUI.Helpers;
-internal static class UiInteractionHelper
+﻿namespace WordListsUI.Helpers;
+internal static class UIInteractionHelper
 {
     internal static void FocusITextInputText(ITextInput input, BindableObject dispatcher)
     {

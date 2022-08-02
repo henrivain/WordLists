@@ -1,7 +1,7 @@
 ﻿using WordDataAccessLibrary;
 using WordListsMauiHelpers;
 
-namespace WordListsUI.WordTrainingPage.FlipCardControl;
+namespace WordListsUI.Components.TextFlipCard;
 
 /// <summary>
 /// 

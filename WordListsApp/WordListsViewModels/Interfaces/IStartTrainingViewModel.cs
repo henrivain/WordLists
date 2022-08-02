@@ -2,7 +2,7 @@
 using WordDataAccessLibrary;
 using static WordDataAccessLibrary.DataBaseActions.DataBaseDelegates;
 
-namespace WordListsViewModels;
+namespace WordListsViewModels.Interfaces;
 public interface IStartTrainingViewModel
 {
     List<WordCollectionOwner> AvailableCollections { get; set; }
@@ -14,7 +14,7 @@ public interface IStartTrainingViewModel
     IAsyncRelayCommand UpdateCollections { get; }
 
     string DataParameter { get; set; }
-    
+
     bool ShowLearnedWords { get; set; }
     bool ShowMightKnowWords { get; set; }
     bool ShowNeverHeardKnowWords { get; set; }

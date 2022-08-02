@@ -1,9 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using WordDataAccessLibrary;
+﻿using WordDataAccessLibrary;
 using WordDataAccessLibrary.DataBaseActions;
 using WordListsViewModels.Helpers;
-using static WordDataAccessLibrary.DataBaseActions.DataBaseDelegates;
 
 namespace WordListsViewModels;
 

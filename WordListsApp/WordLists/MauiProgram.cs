@@ -4,6 +4,7 @@ using WordListsUI.StartTrainingPage;
 using WordListsUI.WordCollectionHandlingPage;
 using WordListsUI.WordTrainingPage;
 using WordListsViewModels;
+using WordListsViewModels.Interfaces;
 
 namespace WordLists;
 

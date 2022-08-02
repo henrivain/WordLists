@@ -1,4 +1,4 @@
-﻿namespace WordListsUI.WordTrainingPage.FlipCardControl;
+﻿namespace WordListsUI.Components.TextFlipCard;
 
 /// <summary>
 /// Implements animation tap action on top of FlipCard
@@ -7,7 +7,7 @@ public class AnimatedFlipCard : FlipCard
 {
     public AnimatedFlipCard() : base() { }
     public AnimatedFlipCard(string topText, string bottomText) : base(topText, bottomText) { }
-    
+
     public uint FlipAnimationSpeed { get; set; } = 175;
     protected override async void Tapped(object sender, EventArgs e)
     {

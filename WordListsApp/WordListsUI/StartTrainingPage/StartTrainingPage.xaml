@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.StartTrainingPage.StartTrainingPage"
              Title="Aloita uusi"
-             xmlns:viewModel="clr-namespace:WordListsViewModels;assembly=WordListsViewModels"
+             xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
              xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
              x:DataType="{x:Type viewModel:IStartTrainingViewModel}"
              BackgroundColor="{StaticResource PageBackground}"

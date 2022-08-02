@@ -1,4 +1,4 @@
-﻿namespace WordListsUI.WordTrainingPage.FlipCardControl;
+﻿namespace WordListsUI.Components.TextFlipCard;
 internal class SlideAnimation
 {
     internal SlideAnimation(VisualElement element)

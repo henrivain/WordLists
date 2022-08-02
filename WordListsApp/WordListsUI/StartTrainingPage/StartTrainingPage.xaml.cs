@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using WordDataAccessLibrary;
 using WordDataAccessLibrary.DataBaseActions;
-using WordListsViewModels;
 
 namespace WordListsUI.StartTrainingPage;
 

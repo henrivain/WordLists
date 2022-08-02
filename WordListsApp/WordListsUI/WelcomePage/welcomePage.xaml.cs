@@ -1,8 +1,8 @@
 namespace WordListsUI.WelcomePage;
 
-public partial class welcomePage : ContentPage
+public partial class WelcomePage : ContentPage
 {
-	public welcomePage()
+	public WelcomePage()
 	{
 		InitializeComponent();
 	}
