@@ -9,8 +9,8 @@ public interface IWordTrainingViewModel
     WordCollection WordCollection { get; set; }
     WordPair VisibleWordPair { get; set; }
 
+    int WordIndex { get; }
     int MaxWordIndex { get; set; }
-    int UIVisibleIndex { get; }
     int LearnStateAsInt { get; set; }
 
     bool CanGoNext { get; set; }
