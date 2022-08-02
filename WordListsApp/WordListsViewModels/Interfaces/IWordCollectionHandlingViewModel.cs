@@ -1,7 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using WordDataAccessLibrary;
-using WordListsViewModels.Helpers;
-using static WordDataAccessLibrary.DataBaseActions.DataBaseDelegates;
+﻿using WordListsViewModels.Helpers;
 
 namespace WordListsViewModels.Interfaces;
 public interface IWordCollectionHandlingViewModel

@@ -41,7 +41,6 @@ public class AnimatedFlipCard : FlipCard
         ShowingTopSide = true;
         await FlipUp();
     }
-
     protected override async Task ShowBottomSide()
     {
         if (ShowingTopSide is false) return;

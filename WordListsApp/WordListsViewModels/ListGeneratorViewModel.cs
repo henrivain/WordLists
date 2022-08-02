@@ -1,10 +1,7 @@
 ﻿using System.Diagnostics;
-using WordDataAccessLibrary;
-using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DeviceAccess;
 using WordDataAccessLibrary.Generators;
 using WordDataAccessLibrary.Helpers;
-using static WordDataAccessLibrary.DataBaseActions.DataBaseDelegates;
 
 namespace WordListsViewModels;
 

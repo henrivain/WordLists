@@ -1,8 +1,4 @@
-﻿using WordDataAccessLibrary;
-using WordDataAccessLibrary.DataBaseActions;
-using static WordDataAccessLibrary.DataBaseActions.DataBaseDelegates;
-
-namespace WordListsViewModels;
+﻿namespace WordListsViewModels;
 
 [INotifyPropertyChanged]
 public partial class WordTrainingViewModel : IWordTrainingViewModel
@@ -61,7 +57,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
 
     public void Next()
     {
-        if (CanMoveNext())
+        if (CanGoNext)
         {
             CanGoPrevious = true;
             RealIndex++;
@@ -115,7 +111,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
         if (StartIndexNotValid(fromIndex))
         {
             throw new ArgumentException(
-                $"{nameof(fromIndex)} can't be bigger than max index, or smaller than 0. Was given: {fromIndex}, max: {MaxWordIndex}");
+                $"{nameof(fromIndex)} can't be bigger than max index {MaxWordIndex}, or smaller than 0. Was given: {fromIndex}");
         }
         StartNewWithIndex(collection, fromIndex);
     }

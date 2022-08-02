@@ -1,13 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WordDataAccessLibrary;
-using static WordDataAccessLibrary.DataBaseActions.DataBaseDelegates;
-
-namespace WordListsViewModels.Interfaces;
+﻿namespace WordListsViewModels.Interfaces;
 
 
 public interface IWordTrainingViewModel

@@ -1,8 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using WordDataAccessLibrary;
-using static WordDataAccessLibrary.DataBaseActions.DataBaseDelegates;
-
-namespace WordListsViewModels.Interfaces;
+﻿namespace WordListsViewModels.Interfaces;
 public interface IStartTrainingViewModel
 {
     List<WordCollectionOwner> AvailableCollections { get; set; }

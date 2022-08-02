@@ -1,6 +1,4 @@
-﻿using WordDataAccessLibrary;
-
-namespace WordListsViewModels.Helpers;
+﻿namespace WordListsViewModels.Helpers;
 internal static class ListExtensionMethods
 {
     internal static List<WordCollectionOwner> SortByName(this List<WordCollectionOwner> owners)

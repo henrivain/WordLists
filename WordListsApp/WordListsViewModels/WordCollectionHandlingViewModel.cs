@@ -1,7 +1,4 @@
-﻿using WordDataAccessLibrary;
-using WordDataAccessLibrary.DataBaseActions;
-using WordListsViewModels.Helpers;
-using static WordDataAccessLibrary.DataBaseActions.DataBaseDelegates;
+﻿using WordListsViewModels.Helpers;
 
 namespace WordListsViewModels;
 

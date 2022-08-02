@@ -5,20 +5,27 @@
 		<!-- Here are all versions that are completed and released to github -->
 		<InRelease>
 			<!-- Update released -->
+			<v1.0.0>
+				<WordListGenerator>Over write old version of wordcollection</WordListGenerator>
+				<WordCollections>
+					<GetByLanguageHeaders/>
+					<GetByName/>
+				</WordCollections>
+				<FixBug>list saved event does not fire twice in list generator</FixBug>
+			</v1.0.0>
 		</InRelease>
 		<UnReleased>
 			<!-- Update not released -->
-			<WordListGenerator>Over write old version of wordcollection</WordListGenerator>
-			<WordCollections>
-				<GetByLanguageHeaders/>
-				<GetByName/>
-			</WordCollections>
-			<FixBug>list saved event does not fire twice in list generator</FixBug>
+			
 		</UnReleased>
 	</Completed>
 	<Coming>
 		<!-- Most certainly coming features-->
 		<TODO>
+			<Logging>Implement proper logging</Logging>
+			<Tests>
+				<TestViewModels>Add tests to view models</TestViewModels>
+			</Tests>
 			<Enhancement>
 				<StartLearningPage>Fix collection view sizing on windows when less than 3 items (Might be maui bug)</StartLearningPage>
 			</Enhancement>
@@ -31,7 +38,6 @@
 					<Edit>Switch languages with one and another</Edit>
 				</CollectionEditPage>
 			</Usability>
-			
 		</TODO>
 	</Coming>
 	

@@ -1,7 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using System.ComponentModel;
-using WordDataAccessLibrary;
-using static WordDataAccessLibrary.DataBaseActions.DataBaseDelegates;
+﻿using System.ComponentModel;
 
 namespace WordListsViewModels.Interfaces;
 public interface IListGeneratorViewModel
