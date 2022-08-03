@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 namespace WordDataAccessLibrary.JsonServices;
-public class JsonWordCollection : IJsonWordCollection
+public class ExportWordCollection : IJsonWordCollection
 {
     public string Name
     {
@@ -30,27 +30,29 @@ public class JsonWordCollection : IJsonWordCollection
 
 
 
-    public void FromWordCollection(WordCollection collection)
+    public IJsonWordCollection FromWordCollection(WordCollection collection)
     {
-        if (collection is null) return;
+        if (collection is null) return null;
         FromWordCollectionOwner(collection.Owner);
         WordPairsFromList(collection.WordPairs);
+        return this;
     }
 
-    public void FromWordCollectionOwner(WordCollectionOwner owner)
+    public IJsonWordCollection FromWordCollectionOwner(WordCollectionOwner owner)
     {
-        if (owner is null) return;
+        if (owner is null) return null;
         Name = owner.Name;
         Description = owner.Description;
         LanguageHeaders = owner.LanguageHeaders;
+        return this;
     }
 
-    public void WordPairsFromList(List<WordPair> pairs)
+    public IJsonWordCollection WordPairsFromList(List<WordPair> pairs)
     {
         if (pairs is null)
         {
             WordPairs = Array.Empty<ExportWordPair>();
-            return;
+            return null;
         }
 
         List<ExportWordPair> exportPairs = new();
@@ -60,6 +62,7 @@ public class JsonWordCollection : IJsonWordCollection
             exportPairs.Add(ExportWordPair.FromWordPair(pair));
         }
         WordPairs = exportPairs.ToArray();
+        return this;
     }
 
     /// <summary>
@@ -78,12 +81,12 @@ public class JsonWordCollection : IJsonWordCollection
   
     /// <param name="objectAsJson"></param>
     /// <returns>JsonWordCollection matching string or null if argument null or otherwise bad</returns>
-    public static JsonWordCollection ParseFromJson(string objectAsJson)
+    public static ExportWordCollection ParseFromJson(string objectAsJson)
     {
         if (objectAsJson is null) return null;
         try
         {
-            return JsonConvert.DeserializeObject<JsonWordCollection>(objectAsJson);
+            return JsonConvert.DeserializeObject<ExportWordCollection>(objectAsJson);
         }
         catch (JsonReaderException)
         {

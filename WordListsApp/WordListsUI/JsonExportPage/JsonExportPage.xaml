@@ -11,15 +11,15 @@
     <VerticalStackLayout>
         <CollectionView ItemSizingStrategy="MeasureAllItems" 
                         SelectedItems="{Binding SelectedCollections}"
-                        ItemsSource="{Binding AvailableWordCollections}"
+                        ItemsSource="{Binding AvailableCollections}"
                         SelectionMode="Multiple"
                         >
             <CollectionView.EmptyView>
                 <Label Text="Sanastoja ei saatavilla" Padding="0,30" HorizontalTextAlignment="Center"/>
             </CollectionView.EmptyView>
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type wordData:WordCollection}">
-                    <Label Text="{Binding  Owner.Name}" HorizontalTextAlignment="Center"/>
+                <DataTemplate x:DataType="{x:Type wordData:WordCollectionOwner}">
+                    <Label Text="{Binding Name}" HorizontalTextAlignment="Center"/>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

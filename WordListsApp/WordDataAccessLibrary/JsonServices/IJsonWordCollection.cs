@@ -7,8 +7,8 @@ public interface IJsonWordCollection
     string Name { get; set; }
     ExportWordPair[] WordPairs { get; set; }
 
-    void FromWordCollection(WordCollection collection);
-    void FromWordCollectionOwner(WordCollectionOwner owner);
+    IJsonWordCollection FromWordCollection(WordCollection collection);
+    IJsonWordCollection FromWordCollectionOwner(WordCollectionOwner owner);
+    IJsonWordCollection WordPairsFromList(List<WordPair> pairs);
     string GetAsJson();
-    void WordPairsFromList(List<WordPair> pairs);
 }
