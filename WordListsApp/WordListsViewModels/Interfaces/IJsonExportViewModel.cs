@@ -3,7 +3,7 @@ public interface IJsonExportViewModel
 {
     List<WordCollection> AvailableWordCollections { get; }
 
-    List<WordCollection> SelectedCollections { get; }
+    List<object> SelectedCollections { get; }
 
     IAsyncRelayCommand ExportSelections { get; }
     IAsyncRelayCommand ExportByName { get; }

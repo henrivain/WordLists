@@ -11,6 +11,8 @@ public partial class JsonExportViewModel : IJsonExportViewModel
 
     }
 
+    
+
     [ObservableProperty]
     public List<WordCollection> availableWordCollections = new()
     {
@@ -31,7 +33,7 @@ public partial class JsonExportViewModel : IJsonExportViewModel
     };
 
     [ObservableProperty]
-    public List<WordCollection> selectedCollections = new();
+    public List<object> selectedCollections = new();
 
     public IAsyncRelayCommand ExportSelections => throw new NotImplementedException();
 
