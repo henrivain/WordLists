@@ -11,6 +11,7 @@
     xmlns:training="clr-namespace:WordListsUI.WordTrainingPage;assembly=WordListsUI"
     xmlns:info="clr-namespace:WordListsUI.AppInfoPage;assembly=WordListsUI"
     xmlns:handling="clr-namespace:WordListsUI.WordCollectionHandlingPage;assembly=WordListsUI"
+    xmlns:export="clr-namespace:WordListsUI.JsonExportPage;assembly=WordListsUI"
     >
 
     <TabBar FlyoutDisplayOptions="AsMultipleItems">
@@ -47,7 +48,11 @@
         <ShellContent Title="Tietoa"
                       ContentTemplate="{DataTemplate info:AppInfoPage}"
                       />
-        
+
+        <ShellContent Title="Vie"
+                      ContentTemplate="{DataTemplate export:JsonExportPage}"
+                      />
+
     </TabBar>
     
 

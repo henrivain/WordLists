@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WordDataTests;
+namespace WordDataTests.ParserTests;
 public partial class WordCollectionTests
 {
 }

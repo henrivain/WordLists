@@ -2,14 +2,26 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.JsonExportPage.JsonExportPage"
-             Title="JsonExportPage"
+             Title="Vie Sanastoja"
+             xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
              xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
              x:DataType="{x:Type viewModel:IJsonExportViewModel}"
+             BackgroundColor="{StaticResource PageBackground}"
              >
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <CollectionView ItemSizingStrategy="MeasureAllItems" 
+                        SelectedItems="{Binding SelectedCollections}"
+                        ItemsSource="{Binding AvailableWordCollections}"
+                        SelectionMode="Multiple"
+                        >
+            <CollectionView.EmptyView>
+                <Label Text="Sanastoja ei saatavilla" Padding="0,30" HorizontalTextAlignment="Center"/>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type wordData:WordCollection}">
+                    <Label Text="{Binding  Owner.Name}" HorizontalTextAlignment="Center"/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
 </ContentPage>

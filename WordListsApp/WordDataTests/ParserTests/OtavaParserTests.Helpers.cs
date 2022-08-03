@@ -1,6 +1,6 @@
 ﻿using WordDataAccessLibrary;
 
-namespace WordDataTests;
+namespace WordDataTests.ParserTests;
 public partial class OtavaParserTests
 {
     private readonly string TestDataOneLine =

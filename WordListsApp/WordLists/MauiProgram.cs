@@ -1,4 +1,5 @@
 ﻿using WordListsMauiHelpers.Factories;
+using WordListsUI.JsonExportPage;
 using WordListsUI.ListGeneratorPage;
 using WordListsUI.StartTrainingPage;
 using WordListsUI.WordCollectionHandlingPage;
@@ -25,10 +26,12 @@ public static class MauiProgram
 		builder.Services.AddTransient<WordTrainingPage>();
 		builder.Services.AddTransient<StartTrainingPage>();
 		builder.Services.AddTransient<WordCollectionHandlingPage>();
+		builder.Services.AddTransient<JsonExportPage>();
 		builder.Services.AddSingleton<IWordTrainingViewModel, WordTrainingViewModel>();
 		builder.Services.AddTransient<IStartTrainingViewModel, StartTrainingViewModel>();
 		builder.Services.AddTransient<IWordCollectionHandlingViewModel, WordCollectionHandlingViewModel>();
 		builder.Services.AddAbstractFactory<IListGeneratorViewModel, ListGeneratorViewModel>();
+		builder.Services.AddAbstractFactory<IJsonExportViewModel, JsonExportViewModel>();
 
 		return builder.Build();
 	}

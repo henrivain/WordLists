@@ -23,16 +23,11 @@ public class WordPair
     /// <summary>
     /// Word in language, that user speaks natively
     /// </summary>
-    public string NativeLanguageWord 
+    public string NativeLanguageWord
     {
         get => _nativeLanguageWord;
-        set
-        {
-            if (value is null) 
-                throw new ArgumentNullException($"{nameof(NativeLanguageWord)} can't be null");
-            _nativeLanguageWord = value;
-        }
-    } 
+        set => _nativeLanguageWord = value ?? string.Empty;
+    }
 
     /// <summary>
     /// Word in language, that user is trying to learn
@@ -40,12 +35,7 @@ public class WordPair
     public string ForeignLanguageWord
     {
         get => _foreignLanguageWord;
-        set
-        {
-            if (value is null)
-                throw new ArgumentNullException($"{nameof(ForeignLanguageWord)} can't be null");
-            _foreignLanguageWord = value;
-        }
+        set => _foreignLanguageWord = value ?? string.Empty;
     }
 
     public virtual int WordLearnStateId { get; private set; } = (int)WordLearnState.NotSet;

@@ -1,7 +1,7 @@
 using WordDataAccessLibrary;
 using WordDataAccessLibrary.Generators;
 
-namespace WordDataTests;
+namespace WordDataTests.ParserTests;
 
 public partial class OtavaParserTests
 {

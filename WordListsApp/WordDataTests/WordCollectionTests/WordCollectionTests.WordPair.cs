@@ -1,6 +1,6 @@
 ﻿using WordDataAccessLibrary;
 
-namespace WordDataTests;
+namespace WordDataTests.ParserTests;
 public partial class WordCollectionTests
 {
     [Fact]
@@ -20,29 +20,26 @@ public partial class WordCollectionTests
     }
 
     [Fact]
-    public void WordPair_NativeWordFailsOnNull()
+    public void WordPair_NativeWordNull_ShouldChangeTo_EmptyString()
     {
-        Assert.Throws<ArgumentNullException>(() =>
+        WordPair pair = new()
         {
-            WordPair pair = new()
-            {
-                NativeLanguageWord = null,
-                ForeignLanguageWord = "juosta"
-            };
-        });
+            NativeLanguageWord = null,
+            ForeignLanguageWord = "juosta"
+        };
+        Assert.Equal(string.Empty, pair.NativeLanguageWord);
+
     }
 
     [Fact]
-    public void WordPair_ForeignWordFailsOnNull()
+    public void WordPair_ForeignWordNull_ShouldChangeTo_EmptyString()
     {
-        Assert.Throws<ArgumentNullException>(() =>
+        WordPair pair = new()
         {
-            WordPair pair = new()
-            {
-                NativeLanguageWord = "run",
-                ForeignLanguageWord = null
-            };
-        });
+            NativeLanguageWord = "run",
+            ForeignLanguageWord = null
+        };
+        Assert.Equal(string.Empty, pair.ForeignLanguageWord);
     }
 
     [Fact]
