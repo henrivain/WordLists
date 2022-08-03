@@ -47,73 +47,58 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     int learnStateAsInt = 0;
 
 
-    private void ShowListCompleted()
-    {
-        if (IsNotEmptyCollection) _ = UpdateCollectionToDataBase();
-        ShowingListCompleted = true;
-        VisibleWordPair = CompletedView;
-    }
-    private void ShowCurrentWord()
-    {
-        ShowingListCompleted = false;
-        UpdateLearnStateColor();
-        VisibleWordPair = GetCurrentWordPair();
-    }
 
-    private bool ShowingListCompleted { get; set; } = false;
 
+    public event CollectionUpdatedEventHandler? CollectionUpdated;
 
 
 
 
     public void Next()
     {
-        if (IsLastPair())
+        if (WordIndex == MaxWordIndex)
         {
             ShowListCompleted();
             return;
         }
         if (CanGoNext)
         {
-            IncrementIndex();
+            WordIndex++;
             ShowCurrentWord();
         }
     }
-
-
-    private bool IsLastPair()
-    {
-        return WordIndex == MaxWordIndex;
-    }
-  
-
-    private void IncrementIndex()
-    {
-        CanGoPrevious = true;
-        WordIndex++;
-        CanGoNext = CanMoveNext();
-    }
-    private void DecrementIndex()
-    {
-        CanGoNext = true;
-        WordIndex--;
-        CanGoPrevious = CanMovePrevious();
-    }
-
     public void Previous()
     {
-        if (ShowingListCompleted)
+        if (IsListCompleted)
         {
             ShowCurrentWord();
             return;
         }
         if (CanGoPrevious)
         {
-            DecrementIndex();
+            WordIndex--;
             ShowCurrentWord();
         }
     }
 
+
+    public void StartNew(WordCollection collection)
+    {
+        MaxWordIndex = collection.WordPairs.Count;
+        StartNewWithIndex(collection, 1);
+    }
+    public void StartNew(WordCollection collection, int startIndex)
+    {
+        MaxWordIndex = collection.WordPairs.Count;
+
+        startIndex = Math.Max(startIndex, 1);
+        if (startIndex > MaxWordIndex)
+        {
+            throw new ArgumentException(
+                $"{nameof(startIndex)} can't be bigger than max index {MaxWordIndex}, or smaller than 0. Was given: {startIndex}");
+        }
+        StartNewWithIndex(collection, startIndex);
+    }
     public async Task StartNewAsync(int collectionId)
     {
         WordCollection collection = await WordCollectionService.GetWordCollection(collectionId);
@@ -132,31 +117,11 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
             });
             return;
         }
-        StartNew(collection);       
-    }
-
-    public void StartNew(WordCollection collection)
-    {
-        MaxWordIndex = collection.WordPairs.Count;
-        StartNewWithIndex(collection, 1);
-    }
-    
-    public void StartNew(WordCollection collection, int startIndex)
-    {
-        MaxWordIndex = collection.WordPairs.Count;
-
-        startIndex = Math.Max(startIndex, 1);
-        if (startIndex > MaxWordIndex)
-        {
-            throw new ArgumentException(
-                $"{nameof(startIndex)} can't be bigger than max index {MaxWordIndex}, or smaller than 0. Was given: {startIndex}");
-        }
-        StartNewWithIndex(collection, startIndex);
+        StartNew(collection);
     }
 
 
 
-    private bool IsNotEmptyCollection { get; set; } = true;
 
     public IRelayCommand WordLearnedCommand => new RelayCommand(() =>
     {
@@ -180,7 +145,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
 
     public IAsyncRelayCommand SaveProgression => new AsyncRelayCommand(async () =>
     {
-        if (IsNotEmptyCollection)
+        if (IsEmptyCollection is false)
         {
             await UpdateCollectionToDataBase();
             CollectionUpdated?.Invoke(this, new("Updated collection to match progression", WordCollection.Owner.Id));
@@ -188,88 +153,75 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     });
 
     
-    
-    
-    public event CollectionUpdatedEventHandler? CollectionUpdated;
-
-
-
-
-    private void SetLearnState(WordLearnState state)
-    {
-        if (IsOverMaxIndex() is false)
-        {
-            GetCurrentWordPair().LearnState = state;
-            Next();
-            return;
-        }
-    }
+    private bool IsListCompleted { get; set; } = false;
+    private bool IsEmptyCollection { get; set; } = false;
 
     private void StartNewWithIndex(WordCollection collection, int startIndex)
     {
-        IsNotEmptyCollection = true;
         WordCollection = collection;
-        
-        Title = collection.Owner.Name;
-        Description = collection.Owner.Description;
-        LanguageHeaders = collection.Owner.LanguageHeaders;
+        SetCollectionInfo();
 
         WordIndex = startIndex;
-
-
         if (MaxWordIndex <= 0)
         {
-            SetCollectionIsEmpty();
+            ShowCollectionIsEmpty();
             return;
         }
-        CanGoNext = CanMoveNext();
-        CanGoPrevious = CanMovePrevious();
+        IsEmptyCollection = false;
         ShowCurrentWord();
     }
-    private bool CanMoveNext()
+    private void SetCollectionInfo()
     {
-        return WordIndex <= MaxWordIndex && IsNotEmptyCollection;
+        Title = WordCollection.Owner.Name;
+        Description = WordCollection.Owner.Description;
+        LanguageHeaders = WordCollection.Owner.LanguageHeaders;
     }
-    private bool CanMovePrevious()
+
+    private void ShowCurrentWord()
     {
-        return IsNotFirstWordPair() && IsNotEmptyCollection;
+        IsListCompleted = false;
+
+        if (WordIndex <= 1) WordIndex = 1;
+        CanGoPrevious = IsEmptyCollection is false && WordIndex > 1;
+        CanGoNext = (IsEmptyCollection || IsListCompleted) is false;
+
+        UpdateFlipCardColor();
+        VisibleWordPair = WordCollection.WordPairs[WordIndex - 1];
     }
-    private void SetCollectionIsEmpty()
+    private void ShowListCompleted()
+    {
+        IsListCompleted = true;
+        if (IsEmptyCollection) _ = UpdateCollectionToDataBase();
+        CanGoNext = false;
+        VisibleWordPair = CompletedView;
+    }
+    private void ShowCollectionIsEmpty()
     {
         CanGoNext = false;
         CanGoPrevious = false;
-        IsNotEmptyCollection = false;
+        IsEmptyCollection = false;
         ShowListCompleted();
     }
-   
-    private void UpdateLearnStateColor()
+
+
+    private void UpdateFlipCardColor()
     {
-        if (IsOverMaxIndex() || VisibleWordPair is null)
+        if (IsListCompleted || VisibleWordPair is null)
         {
             LearnStateAsInt = int.MaxValue;
             return;
         }
         LearnStateAsInt = (int)VisibleWordPair!.LearnState;
     }
-    private WordPair GetCurrentWordPair()
+    private void SetLearnState(WordLearnState state)
     {
-        return WordCollection.WordPairs[WordIndex - 1];
-    }
-   
-    private bool IsNotFirstWordPair()
-    {
-        if (WordIndex <= 1)
+        if (IsListCompleted is false && VisibleWordPair is not null)
         {
-            WordIndex = 1;
-            return false;
+            VisibleWordPair.LearnState = state;
+            Next();
+            return;
         }
-        return true;
     }
-    private bool IsOverMaxIndex()
-    {
-        return WordIndex > MaxWordIndex;
-    }
-    
     private async Task UpdateCollectionToDataBase()
     {
         await WordCollectionService.SaveProgression(WordCollection);

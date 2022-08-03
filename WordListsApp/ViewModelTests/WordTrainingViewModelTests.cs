@@ -1,8 +1,8 @@
-﻿using static WordDataAccessLibrary.TestData.WordCollectionTestData;
+﻿using WordDataAccessLibrary;
 
 namespace ViewModelTests;
 
-public class WordTrainingViewModelTests
+public partial class WordTrainingViewModelTests
 {
     readonly IWordTrainingViewModel _viewModel = new WordTrainingViewModel();
 
@@ -65,7 +65,7 @@ public class WordTrainingViewModelTests
         var viewModel = _viewModel;
         WordCollection testCollection = new()
         {
-            WordPairs = new(new WordPair[1]),
+            WordPairs = new(GetWordPairArray(1)),
             Owner = new()
             {
                 Name = name,
@@ -97,7 +97,7 @@ public class WordTrainingViewModelTests
         var viewModel = _viewModel;
         WordCollection testCollection = new()
         {
-            WordPairs = new(new WordPair[3])
+            WordPairs = new(GetWordPairArray(3))
         };
         var action = () => viewModel.StartNew(testCollection, startIndex);
 
@@ -119,7 +119,7 @@ public class WordTrainingViewModelTests
         var viewModel = _viewModel;
         WordCollection testCollection = new()
         {
-            WordPairs = new(new WordPair[3])
+            WordPairs = new(GetWordPairArray(3))
         };
 
         // Act
@@ -141,7 +141,7 @@ public class WordTrainingViewModelTests
 
         WordCollection collection = new()
         {
-            WordPairs = new(new WordPair[wordPairListLength])
+            WordPairs = new(GetWordPairArray(wordPairListLength))
         };
 
         // Act
@@ -167,7 +167,7 @@ public class WordTrainingViewModelTests
         var viewModel = _viewModel;
         WordCollection collection = new()
         {
-            WordPairs = new(new WordPair[wordPairListLength])
+            WordPairs = new(GetWordPairArray(wordPairListLength))
         };
 
         // Act
@@ -195,7 +195,7 @@ public class WordTrainingViewModelTests
         var viewModel = _viewModel;
         WordCollection collection = new()
         {
-            WordPairs = new(new WordPair[wordPairListLength])
+            WordPairs = new(GetWordPairArray(wordPairListLength))
         };
 
         // Act
@@ -217,7 +217,7 @@ public class WordTrainingViewModelTests
         var viewModel = _viewModel;
         WordCollection collection = new()
         {
-            WordPairs = new(new WordPair[2])
+            WordPairs = new(GetWordPairArray(2))
         };
 
         // Act
@@ -230,6 +230,191 @@ public class WordTrainingViewModelTests
         Assert.Equal(1, viewModel.WordIndex);
     }
 
+    [Fact]
+    public void WordStateNotSetCommand_ShouldSet_LearnStateNotSet()
+    {
+        // Arrange
+        var viewModel = _viewModel;
+        viewModel.StartNew(new()
+        {
+            WordPairs = new()
+            {
+                new()
+                {
+                    LearnState = WordLearnState.Learned
+                }
+            }
+        });
+        // Act
+        viewModel.WordStateNotSetCommand.Execute(null);
 
+        // Assert
+        Assert.Equal(WordLearnState.NotSet, viewModel.WordCollection.WordPairs.First().LearnState);
+    }
+
+    [Fact]
+    public void WordLearnedCommand_ShouldSet_LearnStateLearned()
+    {
+        // Arrange
+        var viewModel = _viewModel;
+        viewModel.StartNew(new()
+        {
+            WordPairs = new()
+            {
+                new()
+                {
+                    LearnState = WordLearnState.NotSet
+                }
+            }
+        });
+        // Act
+        viewModel.WordLearnedCommand.Execute(null);
+
+        // Assert
+        Assert.Equal(WordLearnState.Learned, GetFirstPair(viewModel).LearnState);
+    }
+
+    [Fact]
+    public void MightKnowWordCommand_ShouldSet_LearnStateLearned()
+    {
+        // Arrange
+        var viewModel = _viewModel;
+        viewModel.StartNew(new()
+        {
+            WordPairs = new()
+            {
+                new()
+                {
+                    LearnState = WordLearnState.NotSet
+                }
+            }
+        });
+        // Act
+        viewModel.MightKnowWordCommand.Execute(null);
+
+        // Assert
+        Assert.Equal(WordLearnState.MightKnow, GetFirstPair(viewModel).LearnState);
+    }
+
+    [Fact]
+    public void WordNeverHeardCommand_ShouldSet_LearnStateLearned()
+    {
+        // Arrange
+        var viewModel = _viewModel;
+        viewModel.StartNew(new()
+        {
+            WordPairs = new()
+            {
+                new()
+                {
+                    LearnState = WordLearnState.NotSet
+                }
+            }
+        });
+        // Act
+        viewModel.WordNeverHeardCommand.Execute(null);
+
+        // Assert
+        Assert.Equal(WordLearnState.NeverHeard, GetFirstPair(viewModel).LearnState);
+    }
+
+    [Theory]
+    [InlineData(2,2,0)]
+    [InlineData(2,1,1)]
+    [InlineData(10,1,4)]
+    [InlineData(0,1,0)]
+
+    public void VisibleWordPair_ShouldChange_WhenNextCalled(int nextClickedTimes, int previousClickedTimes, int matchingArrayIndex)
+    {
+        // Arrange
+        var viewModel = _viewModel;
+        var wordPairs = GetWordPairArray(5);
+
+        viewModel.StartNew(new()
+        {
+            WordPairs = new(wordPairs)
+        });
+
+        // Act
+        for (int i = 0; i < nextClickedTimes; i++)
+        {
+            viewModel.Next();
+        }
+        for (int i = 0; i < previousClickedTimes; i++)
+        {
+            viewModel.Previous();
+        }
+
+        // Assert
+        Assert.Equal(wordPairs[matchingArrayIndex], viewModel.VisibleWordPair);
+    }
+
+    [Fact]
+    public void ShowingListCompleted_ShouldUpdate_CanGoNext()
+    {
+        // Arrange
+        var viewModel = _viewModel;
+        viewModel.StartNew(new()
+        {
+            WordPairs = new(GetWordPairArray(1))
+        });
+
+        // Act
+        viewModel.Next();
+
+        // Assert
+        Assert.False(viewModel.CanGoNext);
+    }
+
+    [Fact]
+    public void ShowingFirstPair_ShouldUpdate_CanGoPrevious()
+    {
+        // Arrange
+        var viewModel = _viewModel;
+
+        // Act
+        viewModel.StartNew(new()
+        {
+            WordPairs = new(GetWordPairArray(1))
+        });
+
+        // Assert
+        Assert.False(viewModel.CanGoPrevious);
+    }
+    
+    [Fact]
+    public void StartingEmpty_ShouldSet_CanGoPreviousAndCanGoNext_False()
+    {
+        // Arrange
+        var viewModel = _viewModel;
+
+        // Act
+        viewModel.StartNew(new());
+
+        // Assert
+        Assert.False(viewModel.CanGoPrevious);
+        Assert.False(viewModel.CanGoNext);
+    }
+
+
+    [Fact]
+    public void UsingPrevious_InCompletedView_ShouldUpdate_CanGoNext()
+    {
+        // Arrange
+        var viewModel = _viewModel;
+        viewModel.StartNew(new()
+        {
+            WordPairs = new(GetWordPairArray(2))
+        });
+
+        // Act
+        viewModel.Next();
+        viewModel.Next();
+        viewModel.Previous();
+        
+
+        // Assert
+        Assert.True(viewModel.CanGoNext);
+    }
 
 }
