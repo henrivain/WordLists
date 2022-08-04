@@ -1,2 +1,2 @@
 # WordListsApp
- Way to learn big sets of words from other languages. 
+ Way to learn word lists easily!
