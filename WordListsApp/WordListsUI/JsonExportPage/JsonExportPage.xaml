@@ -11,7 +11,7 @@
              >
     <ContentPage.Resources>
         <Style TargetType="{x:Type Label}">
-            <Setter Property="TextColor" Value="{StaticResource UnImportantText}"/>
+            <Setter Property="TextColor" Value="{OnIdiom Phone={StaticResource UnImportantText}}"/>
         </Style>
     </ContentPage.Resources>
     <ScrollView>
@@ -44,32 +44,35 @@
                 <Grid.Resources>
                     <Style TargetType="{x:Type Label}">
                         <Setter Property="VerticalOptions" Value="Center"/>
+                        <Setter Property="Margin" Value="0,0,0,20"/>
                     </Style>
                     <Style TargetType="{x:Type Entry}">
                         <Setter Property="MaxLength" Value="36"/>
                         <Setter Property="Margin" Value="0,0,0,20"/>
-                        <Setter Property="PlaceholderColor" Value="{StaticResource UnImportantText}"/>
-                        <Setter Property="WidthRequest" Value="{OnIdiom Phone='300'}"/>
+                        <Setter Property="PlaceholderColor" Value="{OnIdiom Phone={StaticResource UnImportantText}}"/>
+                        <Setter Property="MinimumWidthRequest" Value="{OnIdiom Phone='300'}"/>
+                        <Setter Property="Grid.Column" Value="1"/>
                     </Style>
                   
 
                 </Grid.Resources>
                 <Label Text="Etsi nimellä" 
+                       VerticalOptions="Center"
                        IsVisible="{OnIdiom Default=true, Phone=false}" />
                 <Label Text="Etsi kielellä"
                        IsVisible="{OnIdiom Default=true, Phone=false}"
                        Grid.Row="1"
                        />
                 <Entry Text="{Binding NameParameter}" 
-                       BackgroundColor="{StaticResource KindaWhite}"
-                       Grid.Column="1"
+                       BackgroundColor="{OnIdiom Phone={StaticResource KindaWhite}}"
                        Placeholder="Etsi nimellä"
+                       Focused="ITextInput_Focused"
                        />
                 <Entry Text="{Binding LanguageHeadersParameter}" 
-                       BackgroundColor="{StaticResource KindaWhite}"
+                       BackgroundColor="{OnIdiom Phone={StaticResource KindaWhite}}"
                        Grid.Row="1"
-                       Grid.Column="1"
                        Placeholder="Etsi kielellä"
+                       Focused="ITextInput_Focused"
                        />
             </Grid>
             

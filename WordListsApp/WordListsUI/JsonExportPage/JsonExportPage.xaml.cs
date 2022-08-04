@@ -1,5 +1,7 @@
 //using CommunityToolkit.Maui.Behaviors;
 
+using WordListsUI.Helpers;
+
 namespace WordListsUI.JsonExportPage;
 
 public partial class JsonExportPage : ContentPage
@@ -12,8 +14,12 @@ public partial class JsonExportPage : ContentPage
 
 	public IJsonExportViewModel Model => (IJsonExportViewModel)BindingContext;
 
-	
-	
-
-	
+	private void ITextInput_Focused(object sender, FocusEventArgs e)
+	{
+        if (sender is ITextInput input)
+        {
+            // this does not work with editor
+            UIInteractionHelper.FocusITextInputText(input, this);
+        }
+    }
 }
