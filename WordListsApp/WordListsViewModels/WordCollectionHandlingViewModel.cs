@@ -1,4 +1,5 @@
-﻿using WordListsViewModels.Helpers;
+﻿using WordListsViewModels.Extensions;
+using WordListsViewModels.Helpers;
 
 namespace WordListsViewModels;
 

@@ -1,7 +1,9 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using WordDataAccessLibrary.JsonServices;
+using WordListsMauiHelpers;
+using WordListsMauiHelpers.DeviceAccess;
+using WordListsViewModels.Extensions;
 using WordListsViewModels.Helpers;
-using WordDataAccessLibrary.JsonServices;
+using static WordDataAccessLibrary.JsonServices.JsonExportDelegates;
 
 namespace WordListsViewModels;
 
@@ -13,39 +15,89 @@ public partial class JsonExportViewModel : IJsonExportViewModel
         _ = ResetCollections();
     }
 
-    
+    [ObservableProperty]
+    [AlsoNotifyChangeFor(nameof(VisibleCollections))]
+    string nameParameter = string.Empty;
 
     [ObservableProperty]
-    public List<WordCollectionOwner> availableCollections = new(){};
+    [AlsoNotifyChangeFor(nameof(VisibleCollections))]
+    string languageHeadersParameter = string.Empty;
+
+    public List<WordCollectionInfo> VisibleCollections 
+    {
+        get 
+        {
+            return AvailableCollections.Where(x => x.Owner.LanguageHeaders.Contains(LanguageHeadersParameter))
+                                       .Where(x => x.Owner.Name.Contains(NameParameter))
+                                       .ToList(); 
+        } 
+    }
 
     [ObservableProperty]
-    public List<object> selectedCollections = new();
+    [AlsoNotifyChangeFor(nameof(VisibleCollections))]
+    List<WordCollectionInfo> availableCollections = new(){};
 
-    public IAsyncRelayCommand ExportSelections => new AsyncRelayCommand(async () =>
+    [ObservableProperty]
+    List<object> selectedCollections = new();
+
+    [ObservableProperty]
+    string exportPath = PathHelper.GetDefaultExportFilePath();
+
+
+    public IAsyncRelayCommand ExportAllVisibleCommand => new AsyncRelayCommand(async () =>
     {
-
+        await Export(VisibleCollections);
     });
-
-    public IAsyncRelayCommand ExportByName => new AsyncRelayCommand(async () =>
+    public IAsyncRelayCommand ExportSelectionsCommand => new AsyncRelayCommand(async () =>
     {
-
+        await Export(SelectedCollections.GetOwners());
     });
-
-    public IAsyncRelayCommand ExportByLanguage => new AsyncRelayCommand(async () =>
+    public IAsyncRelayCommand ChooseExportLocationCommand => new AsyncRelayCommand(async () =>
     {
-
+        string exportPath = await FilePickerService.GetUserSelectedFullPath(".json");
+        if (string.IsNullOrWhiteSpace(exportPath)) return;
+        ExportPath = exportPath;
     });
-
-    public IAsyncRelayCommand ExportAllShown => new AsyncRelayCommand(async () =>
+    public IAsyncRelayCommand CopyPathToClipBoardCommand => new AsyncRelayCommand(async () =>
     {
-
+        await ClipboardAccess.SetStringAsync(ExportPath);
     });
-
-
-
 
     public async Task ResetCollections()
     {
-        AvailableCollections = (await WordCollectionOwnerService.GetAll()).SortByName();
+        AvailableCollections = await WordCollectionInfoService.GetAll();
     }
+    private async Task Export(List<WordCollectionInfo> infos)
+    {
+        string path = ExportPath;
+
+        List<WordCollectionOwner> owners = infos.Select(x => x.Owner).ToList();
+
+        if (owners is null || owners.Count == 0)
+        {
+            EmptyExportAttempted?.Invoke(this, new(JsonAction.ConfigureExport)
+            {
+                Success = false,
+                MoreInfo = (owners is null) ? "owners is null" : "owners is empty list"
+            });
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            EmptyExportAttempted?.Invoke(this, new(JsonAction.ConfigureExport)
+            {
+                Success = false,
+                MoreInfo = $"{nameof(path)} is null or empty"
+            });
+            return;
+        }
+
+        JsonActionArgs result = await JsonExportService.ExportByOwners(owners, path);
+        ExportCompleted?.Invoke(this, result);
+    }
+
+
+
+    public event ExportFailEventHandler? EmptyExportAttempted;
+    public event ExportSuccessfullEventHandler? ExportCompleted;
 }

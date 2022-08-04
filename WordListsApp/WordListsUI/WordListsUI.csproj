@@ -17,6 +17,46 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
+	  <NoWarn>1701;1702;CS0436;</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
+	  <NoWarn>1701;1702;CS0436;</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
+	  <NoWarn>1701;1702;CS0436;</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">
+	  <NoWarn>1701;1702;CS0436;</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-ios|AnyCPU'">
+	  <NoWarn>1701;1702;CS0436;</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-ios|AnyCPU'">
+	  <NoWarn>1701;1702;CS0436;</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-maccatalyst|AnyCPU'">
+	  <NoWarn>1701;1702;CS0436;</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-maccatalyst|AnyCPU'">
+	  <NoWarn>1701;1702;CS0436;</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|AnyCPU'">
+	  <NoWarn>1701;1702;CS0436;</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041.0|AnyCPU'">
+	  <NoWarn>1701;1702;CS0436;</NoWarn>
+	</PropertyGroup>
+
 	<ItemGroup>
 	  <PackageReference Include="CommunityToolkit.Mvvm" Version="7.1.2" />
 	</ItemGroup>

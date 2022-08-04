@@ -2,3 +2,6 @@
 
 # CA2208: Instantiate argument exceptions correctly
 dotnet_diagnostic.CA2208.severity = none
+
+# CS0436: Type conflicts with imported type
+dotnet_diagnostic.CS0436.severity = none

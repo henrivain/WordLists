@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 namespace WordDataAccessLibrary.JsonServices;
-public class ExportWordCollection : IJsonWordCollection
+public class ExportWordCollection : IExportWordCollection
 {
     public string Name
     {
@@ -30,7 +30,7 @@ public class ExportWordCollection : IJsonWordCollection
 
 
 
-    public IJsonWordCollection FromWordCollection(WordCollection collection)
+    public IExportWordCollection FromWordCollection(WordCollection collection)
     {
         if (collection is null) return null;
         FromWordCollectionOwner(collection.Owner);
@@ -38,7 +38,7 @@ public class ExportWordCollection : IJsonWordCollection
         return this;
     }
 
-    public IJsonWordCollection FromWordCollectionOwner(WordCollectionOwner owner)
+    public IExportWordCollection FromWordCollectionOwner(WordCollectionOwner owner)
     {
         if (owner is null) return null;
         Name = owner.Name;
@@ -47,7 +47,7 @@ public class ExportWordCollection : IJsonWordCollection
         return this;
     }
 
-    public IJsonWordCollection WordPairsFromList(List<WordPair> pairs)
+    public IExportWordCollection WordPairsFromList(List<WordPair> pairs)
     {
         if (pairs is null)
         {
@@ -80,8 +80,8 @@ public class ExportWordCollection : IJsonWordCollection
     }
   
     /// <param name="objectAsJson"></param>
-    /// <returns>JsonWordCollection matching string or null if argument null or otherwise bad</returns>
-    public static ExportWordCollection ParseFromJson(string objectAsJson)
+    /// <returns>JsonWordCollection matching string, null if argument null or otherwise bad</returns>
+    public static IExportWordCollection ParseFromJson(string objectAsJson)
     {
         if (objectAsJson is null) return null;
         try
@@ -100,4 +100,8 @@ public class ExportWordCollection : IJsonWordCollection
     string _description = string.Empty;
     string _languageHeaders = string.Empty;
     ExportWordPair[] _wordPairs = Array.Empty<ExportWordPair>();
+
+
+
+
 }

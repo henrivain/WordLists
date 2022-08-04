@@ -32,7 +32,7 @@
                 </VerticalStackLayout.Resources>
                 <Entry Text="{Binding DataParameter}"
                     Placeholder="Avainsana"
-                    MaxLength="24"
+                    MaxLength="36"
                     WidthRequest="300"
                     HorizontalOptions="Center"
                     Margin="0,20"
@@ -96,7 +96,7 @@
                                 Margin="20,0,20,100"
                                 HorizontalOptions="Center"
                                 >
-                    <!-- SelectionMode="Single" (crashes if items are null -not sure) -->
+                    <!-- SelectionMode="Single" MauiBug #9060-->
                     <CollectionView.EmptyView>
                         <Grid>
                             <Label Text="Sopivia sanastoja ei löytynyt" HorizontalTextAlignment="Center"

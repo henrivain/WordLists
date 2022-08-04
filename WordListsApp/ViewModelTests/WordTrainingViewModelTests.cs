@@ -84,6 +84,23 @@ public partial class WordTrainingViewModelTests
         Assert.Equal(description, viewModel.Description);
     }
 
+    [Fact]
+    public void StartNew_EmptyCollection_ShouldSet_MaxWordIndex_AndWordIndex_One()
+    {
+        // Arrange
+        var viewModel = _viewModel;
+        WordCollection testCollection = new()
+        {
+            WordPairs = new()
+        };
+        // Act
+
+        viewModel.StartNew(testCollection);
+
+        // Assert
+        Assert.Equal(1, viewModel.MaxWordIndex);
+        Assert.Equal(1, viewModel.WordIndex);
+    }
 
 
     [Theory]

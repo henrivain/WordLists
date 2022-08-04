@@ -5,7 +5,7 @@ using WordDataAccessLibrary.JsonServices;
 namespace WordDataTests.ServiceTests.JsonServices;
 public class IJsonWordCollectionTests
 {
-    readonly IJsonWordCollection _jsonCollection = new ExportWordCollection();
+    readonly IExportWordCollection _jsonCollection = new ExportWordCollection();
 
     [Theory]
     [InlineData("name", "description", "lang-headers")]
@@ -213,7 +213,7 @@ public class IJsonWordCollectionTests
 
         // Act 
         string json = jsonCollection.GetAsJson();
-        ExportWordCollection resultCollection = ExportWordCollection.ParseFromJson(json);
+        IExportWordCollection resultCollection = ExportWordCollection.ParseFromJson(json);
 
         // Assert
 
@@ -229,7 +229,7 @@ public class IJsonWordCollectionTests
     public void ParseFromJson_WithBadArgument_ShouldReturnNull(string badValue)
     {
         // Arrange & Act 
-        ExportWordCollection resultCollection = 
+        IExportWordCollection resultCollection = 
             ExportWordCollection.ParseFromJson(badValue);
 
         // Assert

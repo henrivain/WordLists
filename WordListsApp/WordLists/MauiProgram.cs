@@ -33,6 +33,6 @@ public static class MauiProgram
 		builder.Services.AddAbstractFactory<IListGeneratorViewModel, ListGeneratorViewModel>();
 		builder.Services.AddAbstractFactory<IJsonExportViewModel, JsonExportViewModel>();
 
-		return builder.Build();
+        return builder.Build();
 	}
 }

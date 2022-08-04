@@ -35,7 +35,7 @@
                            Text="{Binding CollectionName}"
                            Focused="ITextInput_Focused"
                            SemanticProperties.Hint="Collection name"
-                           MaxLength="24"
+                           MaxLength="40"
                            WidthRequest="300"
                            HorizontalOptions="Start"
                            />

@@ -1,8 +1,8 @@
 ﻿namespace WordDataAccessLibrary.JsonServices;
 
-public class JsonActionResult
+public class JsonActionArgs
 {
-    public JsonActionResult(JsonAction actionType)
+    public JsonActionArgs(JsonAction actionType)
     {
         ActionType = actionType;
     }
@@ -13,5 +13,5 @@ public class JsonActionResult
 
     public bool Success { get; set; } = false;
 
-    public string ModeInfo { get; set; } = string.Empty;
+    public string MoreInfo { get; set; } = string.Empty;
 }

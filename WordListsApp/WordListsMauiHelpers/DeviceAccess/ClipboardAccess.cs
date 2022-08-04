@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WordDataAccessLibrary.DeviceAccess;
+﻿namespace WordListsMauiHelpers.DeviceAccess;
 public static class ClipboardAccess
 {
     /// <summary>
@@ -23,6 +17,7 @@ public static class ClipboardAccess
     /// <returns>awaitable task</returns>
     public static async Task SetStringAsync(string text)
     {
+        if (text is null) return;
         await Clipboard.SetTextAsync(text);
     }
 }

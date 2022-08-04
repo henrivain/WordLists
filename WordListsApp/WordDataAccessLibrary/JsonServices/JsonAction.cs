@@ -1,5 +1,5 @@
 ﻿namespace WordDataAccessLibrary.JsonServices;
 public enum JsonAction
 {
-    Export, Import, Parse, NotDefined
+    ConfigureExport, Export, ConfigureImport, Import, Parse, NotDefined
 }

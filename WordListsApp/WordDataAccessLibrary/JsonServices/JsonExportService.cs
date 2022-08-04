@@ -1,41 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WordDataAccessLibrary.DataBaseActions;
+﻿using WordDataAccessLibrary.DataBaseActions;
+using WordDataAccessLibrary.Extensions;
 
 namespace WordDataAccessLibrary.JsonServices;
-public class JsonExportService
+public static class JsonExportService
 {
-    //public async Task<JsonActionResult> ExportAsync()
-    //{
-    //    throw new NotImplementedException();
-    //    //return new(JsonAction.NotDefined);
-    //}
-    public static async Task ExportJson(List<IJsonWordCollection> exportCollections, string path)
+    public static async Task<JsonActionArgs> ExportJson(List<IExportWordCollection> exportCollections, string path)
     {
         path = path.Trim();
         if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
         if (path.EndsWith(".json") is false) path += ".json";
 
-
-
+        await Task.Delay(1);
         throw new NotImplementedException();
     }
 
-    public static async Task ExportCollections(List<WordCollectionOwner> owners)
+    public static async Task<JsonActionArgs> ExportByOwners(List<WordCollectionOwner> owners, string path)
     {
-        List<IJsonWordCollection> exportCollections = new();
-
-        foreach (WordCollectionOwner owner in owners)
-        {
-            WordCollection collection = await WordCollectionService.GetWordCollection(owner.Id);
-            ExportWordCollection jsonCollection = new();
-            if (jsonCollection.FromWordCollection(collection) is null) continue;
-            exportCollections.Add(jsonCollection);
-        }
-
-        await ExportJson(exportCollections, null);
+        List<WordCollection> collections = await WordCollectionService.GetWordCollectionsById(owners.Select(x => x.Id).ToArray());
+        return await ExportJson(collections.ToIJsonCollection(), path);
     }
+
+    
 }

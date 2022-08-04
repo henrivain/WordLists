@@ -79,17 +79,25 @@ public static class WordCollectionService
         
         if (owner is null)
         {
-            return new WordCollection(){Owner = new(){ Name = "WordCollection was not found" }};
+            Debug.WriteLine($"{nameof(WordCollectionService)}: {nameof(WordCollectionOwner)} with id {id} was not found");
+            return null;
         }
 
         List<WordPair> pairs = await WordPairService.GetByOwner(owner);
-
-        return new()
-        {
-            Owner = owner,
-            WordPairs = pairs
-        };
+        return new(owner, pairs);
     }
+
+
+    public static async Task<List<WordCollection>> GetWordCollectionsById(int[] ids)
+    {
+        List<WordCollection> result = new();
+        foreach (int id in ids)
+        {
+            result.Add(await GetWordCollection(id));
+        }
+        return result.Where(x => x is not null).ToList();
+    }
+
 
     /// <summary>
     /// Remove WordCollection with matching id (remove owner and all child word pairs with same id)
@@ -118,8 +126,7 @@ public static class WordCollectionService
         if (verifyByTrue.ToLower() != "true") throw new InvalidOperationException("\"true\" must be passed. !WARNING! DELETES ALL OBJECTS FROM DATABASE");
         await Init();
         Debug.WriteLine($"{nameof(WordCollectionService)}: Delete all {nameof(WordCollectionOwner)}s and {nameof(WordPair)}s");
-        int removedObjects = 0;
-        removedObjects += await db.DeleteAllAsync<WordCollectionOwner>();
+        int removedObjects = await db.DeleteAllAsync<WordCollectionOwner>();
         removedObjects += await db.DeleteAllAsync<WordPair>();
         Debug.WriteLine($"{nameof(WordCollectionService)}: Delete completed");
 

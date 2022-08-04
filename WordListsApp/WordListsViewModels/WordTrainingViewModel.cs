@@ -197,6 +197,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     }
     private void ShowCollectionIsEmpty()
     {
+        MaxWordIndex = 1;
         CanGoNext = false;
         CanGoPrevious = false;
         IsEmptyCollection = false;

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using WordDataAccessLibrary.DeviceAccess;
 using WordDataAccessLibrary.Generators;
 using WordDataAccessLibrary.Helpers;
+using WordListsMauiHelpers.DeviceAccess;
 
 namespace WordListsViewModels;
 
