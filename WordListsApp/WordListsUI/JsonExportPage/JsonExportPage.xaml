@@ -118,6 +118,7 @@
             <Grid ColumnDefinitions="auto, *" HorizontalOptions="Center" Margin="0,0,0,50">
                 <Button Command="{Binding ChooseExportLocationCommand}" 
                         Text="Valitse sijainti" 
+                        IsEnabled="{OnPlatform Android=false, Default=true}"
                         HorizontalOptions="Center" Margin="0,0,10,0" />
 
 

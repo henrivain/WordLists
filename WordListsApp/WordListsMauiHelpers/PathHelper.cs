@@ -20,10 +20,15 @@ public class PathHelper
     /// <returns>downloads folder on windows, else path to myDocuments</returns>
     public static string GetDefaultExportFilePath()
     {
+        return Path.Combine(GetDefaultExportFolderPath(), GetNewExportFileName());
+    }
+
+    public static string GetNewExportFileName()
+    {
         string date = DateTime.Now.ToString("G")
                                   .Replace(" ", string.Empty)
                                   .Replace(".", string.Empty);
-        return Path.Combine(GetDefaultExportFolderPath(), $"WordListsExport{date}.json");
+        return $"WordListsExport{date}.json";
     }
 
 }

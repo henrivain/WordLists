@@ -54,7 +54,7 @@ public partial class JsonExportViewModel : IJsonExportViewModel
     });
     public IAsyncRelayCommand ChooseExportLocationCommand => new AsyncRelayCommand(async () =>
     {
-        string exportPath = await FilePickerService.GetUserSelectedFullPath(".json");
+        string exportPath = await FilePickerService.GetUserSelectedJsonExportPath();
         if (string.IsNullOrWhiteSpace(exportPath)) return;
         ExportPath = exportPath;
     });
@@ -95,8 +95,6 @@ public partial class JsonExportViewModel : IJsonExportViewModel
         JsonActionArgs result = await JsonExportService.ExportByOwners(owners, path);
         ExportCompleted?.Invoke(this, result);
     }
-
-
 
     public event ExportFailEventHandler? EmptyExportAttempted;
     public event ExportSuccessfullEventHandler? ExportCompleted;
