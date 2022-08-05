@@ -1,6 +1,6 @@
 ﻿namespace WordDataAccessLibrary.ExportServices;
 
-public class ExportActionResult
+public struct ExportActionResult
 {
     public ExportActionResult(ExportAction actionType)
     {

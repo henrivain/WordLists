@@ -11,7 +11,7 @@ public partial class ListGeneratorPage : ContentPage
 	public ListGeneratorPage(IAbstractFactory<IListGeneratorViewModel> modelFactory)
 	{
 		ModelFactory = modelFactory;
-		BindingContext = modelFactory.Create(); ;
+		BindingContext = modelFactory.Create();
 		InitializeComponent();
         Model.CollectionAddedEvent += Model_CollectionAddedEvent;
     }

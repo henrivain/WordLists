@@ -6,6 +6,7 @@ using WordDataAccessLibrary.DataBaseActions.Interfaces;
 
 using static WordDataAccessLibrary.ExportServices.ExportDelegates;
 using WordDataAccessLibrary.ExportServices;
+using System.Collections.Generic;
 
 namespace WordListsViewModels;
 
@@ -13,7 +14,7 @@ namespace WordListsViewModels;
 public partial class JsonExportViewModel : IJsonExportViewModel
 {
     public JsonExportViewModel(
-        IExportService exportService, 
+        ICollectionExportService exportService, 
         IWordCollectionService collectionService,
         IWordCollectionInfoService collectionInfoService
         )
@@ -24,9 +25,18 @@ public partial class JsonExportViewModel : IJsonExportViewModel
         _ = ResetCollections();
     }
 
-    private IExportService ExportService { get; }
+    private ICollectionExportService ExportService { get; }
     public IWordCollectionService CollectionService { get; }
     public IWordCollectionInfoService CollectionInfoService { get; }
+
+    [ObservableProperty]
+    bool removeUserDataFromWordPairs = true;
+
+    [ObservableProperty]
+    bool canExportAllVisible = false;
+
+    [ObservableProperty]
+    bool canExportSelected = false;
 
     [ObservableProperty]
     [AlsoNotifyChangeFor(nameof(VisibleCollections))]
@@ -40,9 +50,13 @@ public partial class JsonExportViewModel : IJsonExportViewModel
     {
         get 
         {
-            return AvailableCollections.Where(x => x.Owner.LanguageHeaders.Contains(LanguageHeadersParameter))
+            List<WordCollectionInfo> fittingCollections = AvailableCollections
+                                       .Where(x => x.Owner.LanguageHeaders.Contains(LanguageHeadersParameter))
                                        .Where(x => x.Owner.Name.Contains(NameParameter))
-                                       .ToList(); 
+                                       .ToList();
+
+            CanExportAllVisible = fittingCollections.Count > 0;
+            return fittingCollections;
         } 
     }
 
@@ -50,12 +64,15 @@ public partial class JsonExportViewModel : IJsonExportViewModel
     [AlsoNotifyChangeFor(nameof(VisibleCollections))]
     List<WordCollectionInfo> availableCollections = new(){};
 
+
     [ObservableProperty]
+    [AlsoNotifyChangeFor(nameof(CanExportSelected))]
     List<object> selectedCollections = new();
+
+
 
     [ObservableProperty]
     string exportPath = PathHelper.GetDefaultExportFilePath();
-
 
     public IAsyncRelayCommand ExportAllVisibleCommand => new AsyncRelayCommand(async () =>
     {
@@ -75,11 +92,27 @@ public partial class JsonExportViewModel : IJsonExportViewModel
     {
         await ClipboardAccess.SetStringAsync(ExportPath);
     });
+    public IRelayCommand SelectionChangedCommand => new RelayCommand(() =>
+    {
+        CanExportSelected = SelectedCollections.Count > 0;
+    });
 
     public async Task ResetCollections()
     {
         AvailableCollections = await CollectionInfoService.GetAll();
     }
+
+
+
+    public event ExportFailEventHandler? EmptyExportAttempted;
+    public event ExportSuccessfullEventHandler? ExportCompleted;
+
+
+
+
+
+
+
     private async Task Export(List<WordCollectionInfo> infos)
     {
         string path = ExportPath;
@@ -88,29 +121,27 @@ public partial class JsonExportViewModel : IJsonExportViewModel
 
         if (owners is null || owners.Count == 0)
         {
-            EmptyExportAttempted?.Invoke(this, new(ExportAction.ConfigureExport)
-            {
-                Success = false,
-                MoreInfo = (owners is null) ? "owners is null" : "owners is empty list"
-            });
+            InvokeEmptyExportEvent((owners is null) ? "owners is null" : "owners is empty list");
             return;
         }
         if (string.IsNullOrWhiteSpace(path))
         {
-            EmptyExportAttempted?.Invoke(this, new(ExportAction.ConfigureExport)
-            {
-                Success = false,
-                MoreInfo = $"{nameof(path)} is null or empty"
-            });
+            InvokeEmptyExportEvent($"{nameof(path)} is null or empty");
             return;
         }
 
-        ExportActionResult result = await ExportService.ExportByCollectionOwners(owners, path);
+        ExportActionResult result = await ExportService.ExportByCollectionOwners(owners, path, RemoveUserDataFromWordPairs);
         ExportCompleted?.Invoke(this, result);
     }
 
+    private void InvokeEmptyExportEvent(string text)
+    {
+        EmptyExportAttempted?.Invoke(this, new(ExportAction.ConfigureExport)
+        {
+            Success = false,
+            MoreInfo = text
+        });
+    }
 
 
-    public event ExportFailEventHandler? EmptyExportAttempted;
-    public event ExportSuccessfullEventHandler? ExportCompleted;
 }

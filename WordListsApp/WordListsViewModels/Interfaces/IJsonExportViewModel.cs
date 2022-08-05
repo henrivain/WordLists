@@ -13,11 +13,15 @@ public interface IJsonExportViewModel
     string LanguageHeadersParameter { get; set; }
     string ExportPath { get; set; }
 
+    bool CanExportAllVisible { get; }
+    bool CanExportSelected { get; }
+    bool RemoveUserDataFromWordPairs { get; set; }
 
     IAsyncRelayCommand ExportSelectionsCommand { get; }
     IAsyncRelayCommand ExportAllVisibleCommand { get; }
     IAsyncRelayCommand ChooseExportLocationCommand { get; }
     IAsyncRelayCommand CopyPathToClipBoardCommand { get; }
+    IRelayCommand SelectionChangedCommand { get; }
 
     event ExportFailEventHandler? EmptyExportAttempted;
 

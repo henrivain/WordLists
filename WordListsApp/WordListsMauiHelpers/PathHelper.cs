@@ -1,15 +1,21 @@
-﻿namespace WordListsMauiHelpers;
+﻿using Microsoft.Maui.Controls.PlatformConfiguration;
+
+
+namespace WordListsMauiHelpers;
 public class PathHelper
 {
-    /// <summary>
-    /// Returns default export path for used paltform
-    /// </summary>
-    /// <returns>downloads folder on windows, else path to myDocuments</returns>
+
+    /// <returns>downloads folder on windows and android, else path to myDocuments</returns>
     public static string GetDefaultExportFolderPath()
     {
 #if WINDOWS
         return Path.Combine(Environment.GetEnvironmentVariable("USERPROFILE"), "Downloads");
+
+#elif ANDROID
+        return "/storage/emulated/0/Download/";
 #else
+        // hardcoded is kinda bad, but havent found any not obsolete way (one of bad one under)
+        // Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).Path;
         return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 #endif
     }
@@ -27,6 +33,10 @@ public class PathHelper
     {
         string date = DateTime.Now.ToString("G")
                                   .Replace(" ", string.Empty)
+                                  .Replace("/", string.Empty)
+                                  .Replace(":", string.Empty)
+                                  .Replace("PM", string.Empty)
+                                  .Replace("AM", string.Empty)
                                   .Replace(".", string.Empty);
         return $"WordListsExport{date}.json";
     }

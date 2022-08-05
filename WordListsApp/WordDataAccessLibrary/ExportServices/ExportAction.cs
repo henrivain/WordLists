@@ -1,5 +1,5 @@
 ﻿namespace WordDataAccessLibrary.ExportServices;
 public enum ExportAction
 {
-    ConfigureExport, Export, Parse, NotDefined
+    ConfigureExport, CreateFolder, WriteFile, Export, ParseData, NotDefined
 }

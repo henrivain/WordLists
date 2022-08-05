@@ -53,8 +53,6 @@
                         <Setter Property="MinimumWidthRequest" Value="{OnIdiom Phone='300'}"/>
                         <Setter Property="Grid.Column" Value="1"/>
                     </Style>
-                  
-
                 </Grid.Resources>
                 <Label Text="Etsi nimellä" 
                        VerticalOptions="Center"
@@ -77,12 +75,16 @@
             </Grid>
             
 
+
+
+
             <CollectionView ItemSizingStrategy="MeasureAllItems" 
                             SelectedItems="{Binding SelectedCollections}"
                             ItemsSource="{Binding VisibleCollections}"
                             SelectionMode="Multiple"
-                            Margin="20"
+                            Margin="{OnIdiom Default='20', Desktop='60,20'}"
                             BackgroundColor="{OnPlatform Android={StaticResource WordListBackground}}"
+                            SelectionChangedCommand="{Binding SelectionChangedCommand}"
                             >
                 <CollectionView.Resources>
                     <Style TargetType="{x:Type CheckBox}">
@@ -115,27 +117,27 @@
                 </CollectionView.ItemsLayout>
             </CollectionView>
 
-            <Grid ColumnDefinitions="auto, *" HorizontalOptions="Center" Margin="0,0,0,50">
+            <Grid ColumnDefinitions="{OnIdiom Phone='*', Default='auto, *'}" HorizontalOptions="Center" Margin="0,0,0,50">
                 <Button Command="{Binding ChooseExportLocationCommand}" 
+                        IsVisible="{OnPlatform Android=false, Default=true}"
                         Text="Valitse sijainti" 
-                        IsEnabled="{OnPlatform Android=false, Default=true}"
-                        HorizontalOptions="Center" Margin="0,0,10,0" />
+                        HorizontalOptions="Start" Margin="0,0,10,0" />
 
 
                 <Border HorizontalOptions="Start"
-                  BackgroundColor="#45000000" 
-                  Padding="10"
+                        BackgroundColor="#45000000" 
+                        Padding="10"
                         Grid.Column="1"
                   >
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding CopyPathToClipBoardCommand}"/>
                     </Border.GestureRecognizers>
-                    <Grid ColumnDefinitions="{OnIdiom Phone='0,20', Default='auto,30'}" 
+                    <Grid ColumnDefinitions="auto,30" 
                           HorizontalOptions="Center"
                           >
-                        <Label Text="{Binding ExportPath}" 
+                        <Label Text="{OnIdiom Desktop={Binding ExportPath}, Default='kopioi sijainti leikepöydälle'}" 
                                LineBreakMode="CharacterWrap" 
-                               IsVisible="{OnIdiom Phone=false, Default=true}"
+                               IsVisible="true"
                                />
                         <Image Source="copy_icon.png" 
                            Grid.Column="1"
@@ -146,8 +148,39 @@
                     </Grid>
                 </Border>
             </Grid>
+            <VerticalStackLayout Margin="0,0,0,20">
+                <VerticalStackLayout.Resources>
+                    <Style TargetType="{x:Type Label}">
+                        <Setter Property="Margin" Value="{OnIdiom Desktop='0,0,0,5', Default='40,0,40,05'}"/>
+                        <Setter Property="TextColor" Value="{StaticResource UnImportantText}"/>
+                    </Style>
+                </VerticalStackLayout.Resources>
+                <Label Text="Vie joko kaikki valitut sanastot tai tällä hetkellä näkyvät sanastot" 
+                   HorizontalTextAlignment="Center"
+                   />
+                <Label Text="Huomaa, että jos etsit sanastoja, jo valitut sanastot pysyvät valittuina"
+                   HorizontalTextAlignment="Center"
+                   />
+            </VerticalStackLayout>
 
-            <Grid ColumnDefinitions="*,*">
+
+
+            <VerticalStackLayout Margin="0,0,0,40">
+                <HorizontalStackLayout HorizontalOptions="Center" 
+                                >
+                    <Label Text="Poista etenemistiedot sanastoista" 
+                           Margin="{OnPlatform WinUI='70,0,20,0', Default='0,0,0,0'}" 
+                           VerticalTextAlignment="Center"
+                           />
+                    <Switch IsToggled="{Binding RemoveUserDataFromWordPairs}" 
+                            VerticalOptions="Center"
+                            Grid.Row="0"
+                            />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+            
+            
+            <Grid ColumnDefinitions="*,*" Margin="0,0,0,30">
                 <Grid.Resources>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Padding" Value="30,10"/>
@@ -155,11 +188,13 @@
                     </Style>
                 </Grid.Resources>
                 <Button Text="Vie näkyvät" 
+                        IsEnabled="{Binding CanExportAllVisible}"
                         Command="{Binding ExportAllVisibleCommand}" 
                         HorizontalOptions="End" 
                         />
-                <Button Text="Vie valitut" 
+                <Button Text="Vie valitut"
                         Command="{Binding ExportSelectionsCommand}" 
+                        IsEnabled="{Binding CanExportSelected}"
                         Grid.Column="1"
                         HorizontalOptions="Start" 
                         />

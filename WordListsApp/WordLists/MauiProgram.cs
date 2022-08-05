@@ -42,8 +42,10 @@ public static class MauiProgram
 		builder.Services.AddSingleton<IWordCollectionOwnerService, WordCollectionOwnerService>();
 		builder.Services.AddSingleton<IWordPairService, WordPairService>();
 		builder.Services.AddSingleton<IWordCollectionService, WordCollectionService>();
-		builder.Services.AddSingleton<IExportService, JsonWordCollectionExportService>();
+		builder.Services.AddSingleton<ICollectionExportService, JsonWordCollectionExportService>();
 		builder.Services.AddSingleton<IWordCollectionInfoService, WordCollectionInfoService>();
+
+
 
         return builder.Build();
 	}
