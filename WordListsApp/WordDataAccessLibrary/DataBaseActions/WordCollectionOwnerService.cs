@@ -1,5 +1,6 @@
 ﻿using SQLite;
 using System.Diagnostics;
+using WordDataAccessLibrary.DataBaseActions.Interfaces;
 
 namespace WordDataAccessLibrary.DataBaseActions;
 
@@ -7,11 +8,11 @@ namespace WordDataAccessLibrary.DataBaseActions;
 /// This class implements only getters, because WordCollectionOwners should be removed only as a part of WordCollection
 /// <para/> See => WordCollectionService
 /// </summary>
-public static class WordCollectionOwnerService
+public class WordCollectionOwnerService : IWordCollectionOwnerService
 {
     static SQLiteAsyncConnection db;
 
-    private static async Task Init()
+    private async Task Init()
     {
         if (db is not null) return;
 
@@ -28,7 +29,7 @@ public static class WordCollectionOwnerService
         Debug.WriteLine($"{nameof(WordCollectionOwnerService)}: Table created");
 
     }
-    public static async Task<List<WordCollectionOwner>> GetAll()
+    public async Task<List<WordCollectionOwner>> GetAll()
     {
         await Init();
 
@@ -36,7 +37,7 @@ public static class WordCollectionOwnerService
 
         return await db.Table<WordCollectionOwner>().ToListAsync();
     }
-    public static async Task<List<WordCollectionOwner>> GetByLanguage(string languageHeaders)
+    public async Task<List<WordCollectionOwner>> GetByLanguage(string languageHeaders)
     {
         await Init();
 
@@ -49,7 +50,7 @@ public static class WordCollectionOwnerService
                     .Contains(languageHeaders))
                         .ToListAsync();
     }
-    public static async Task<List<WordCollectionOwner>> GetByName(string name)
+    public async Task<List<WordCollectionOwner>> GetByName(string name)
     {
         await Init();
 
@@ -68,7 +69,7 @@ public static class WordCollectionOwnerService
     /// </summary>
     /// <param name="id"></param>
     /// <returns>WordCollectionOwner if found, else null</returns>
-    public static async Task<WordCollectionOwner> GetById(int id)
+    public async Task<WordCollectionOwner> GetById(int id)
     {
         await Init();
 

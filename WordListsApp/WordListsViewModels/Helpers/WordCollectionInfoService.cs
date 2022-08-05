@@ -1,11 +1,19 @@
 ﻿using WordListsViewModels.Extensions;
+using WordDataAccessLibrary.DataBaseActions.Interfaces;
 
 namespace WordListsViewModels.Helpers;
-internal static class WordCollectionInfoService
+public class WordCollectionInfoService : IWordCollectionInfoService
 {
-    internal static async Task<List<WordCollectionInfo>> GetAll()
+    public WordCollectionInfoService(IWordCollectionService collectionService)
     {
-        List<WordCollection> collections = await WordCollectionService.GetWordCollections();
+        CollectionService = collectionService;
+    }
+
+    IWordCollectionService CollectionService { get; }
+
+    public async Task<List<WordCollectionInfo>> GetAll()
+    {
+        List<WordCollection> collections = await CollectionService.GetWordCollections();
 
         return collections.Select(x => new WordCollectionInfo(x.Owner, x.WordPairs.Count))
                           .ToList()

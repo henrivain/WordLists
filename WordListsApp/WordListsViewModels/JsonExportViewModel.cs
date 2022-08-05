@@ -3,6 +3,8 @@ using WordListsMauiHelpers;
 using WordListsMauiHelpers.DeviceAccess;
 using WordListsViewModels.Extensions;
 using WordListsViewModels.Helpers;
+using WordDataAccessLibrary.DataBaseActions.Interfaces;
+
 using static WordDataAccessLibrary.JsonServices.JsonExportDelegates;
 
 namespace WordListsViewModels;
@@ -10,10 +12,21 @@ namespace WordListsViewModels;
 [INotifyPropertyChanged]
 public partial class JsonExportViewModel : IJsonExportViewModel
 {
-    public JsonExportViewModel()
+    public JsonExportViewModel(
+        IExportService exportService, 
+        IWordCollectionService collectionService,
+        IWordCollectionInfoService collectionInfoService
+        )
     {
+        ExportService = exportService;
+        CollectionService = collectionService;
+        CollectionInfoService = collectionInfoService;
         _ = ResetCollections();
     }
+
+    private IExportService ExportService { get; }
+    public IWordCollectionService CollectionService { get; }
+    public IWordCollectionInfoService CollectionInfoService { get; }
 
     [ObservableProperty]
     [AlsoNotifyChangeFor(nameof(VisibleCollections))]
@@ -65,7 +78,7 @@ public partial class JsonExportViewModel : IJsonExportViewModel
 
     public async Task ResetCollections()
     {
-        AvailableCollections = await WordCollectionInfoService.GetAll();
+        AvailableCollections = await CollectionInfoService.GetAll();
     }
     private async Task Export(List<WordCollectionInfo> infos)
     {
@@ -92,9 +105,11 @@ public partial class JsonExportViewModel : IJsonExportViewModel
             return;
         }
 
-        JsonActionArgs result = await JsonExportService.ExportByOwners(owners, path);
+        JsonActionArgs result = await ExportService.ExportByOwners(owners, path);
         ExportCompleted?.Invoke(this, result);
     }
+
+
 
     public event ExportFailEventHandler? EmptyExportAttempted;
     public event ExportSuccessfullEventHandler? ExportCompleted;

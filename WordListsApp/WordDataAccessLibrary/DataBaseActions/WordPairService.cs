@@ -1,19 +1,15 @@
 ﻿using SQLite;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using WordDataAccessLibrary.DataBaseActions.Interfaces;
 
 namespace WordDataAccessLibrary.DataBaseActions;
 
 
-public static class WordPairService
+public class WordPairService : IWordPairService
 {
-    static SQLiteAsyncConnection db;
+    SQLiteAsyncConnection db;
 
-    private static async Task Init()
+    private async Task Init()
     {
         if (db is not null) return;
 
@@ -25,14 +21,14 @@ public static class WordPairService
 
         await db.CreateTableAsync<WordPair>();
     }
-    public static async Task<List<WordPair>> GetAll()
+    public async Task<List<WordPair>> GetAll()
     {
         Debug.WriteLine($"{nameof(WordPairService)}: Get all {nameof(WordPair)}s");
 
         await Init();
         return await db.Table<WordPair>().ToListAsync();
     }
-    public static async Task<List<WordPair>> GetByOwnerId(int ownerId)
+    public async Task<List<WordPair>> GetByOwnerId(int ownerId)
     {
         Debug.WriteLine($"{nameof(WordPairService)}: Get by owner id: {ownerId}");
 
@@ -41,13 +37,13 @@ public static class WordPairService
             .Where(x => x.OwnerId == ownerId)
                 .ToListAsync();
     }
-    public static async Task<List<WordPair>> GetByOwner(WordCollectionOwner owner)
+    public async Task<List<WordPair>> GetByOwner(WordCollectionOwner owner)
     {
         Debug.WriteLine($"{nameof(WordPairService)}: Get by {nameof(WordCollectionOwner)}");
 
         return await GetByOwnerId(owner.Id);
     }
-    public static async Task<List<WordPair>> GetByIdAndLearnState(int ownerId, WordLearnState learnState)
+    public async Task<List<WordPair>> GetByIdAndLearnState(int ownerId, WordLearnState learnState)
     {
         await Init();
 
@@ -58,8 +54,7 @@ public static class WordPairService
             .Where(x => x.LearnState == learnState)
             .ToListAsync();
     }
-
-    public static async Task UpdatePairsAsync(WordCollection collection)
+    public async Task UpdatePairsAsync(WordCollection collection)
     {
         await Init();
 
@@ -71,8 +66,7 @@ public static class WordPairService
             await db.UpdateAsync(pair);
         }
     }
-
-    public static async Task InsertPairsAsync(WordCollection collection)
+    public async Task InsertPairsAsync(WordCollection collection)
     {
         await Init();
 

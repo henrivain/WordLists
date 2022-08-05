@@ -1,10 +1,15 @@
-﻿using WordDataAccessLibrary;
+﻿using WordDataAccessLibrary.DataBaseActions;
 
 namespace ViewModelTests;
 
 public partial class WordTrainingViewModelTests
 {
-    readonly IWordTrainingViewModel _viewModel = new WordTrainingViewModel();
+    public WordTrainingViewModelTests()
+    {
+        _viewModel = new WordTrainingViewModel(new WordCollectionService(null, null));
+    }
+
+    readonly IWordTrainingViewModel _viewModel;
 
     [Theory]
     [InlineData("", "", "")]

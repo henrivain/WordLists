@@ -1,18 +1,22 @@
 using System.Diagnostics;
 using WordDataAccessLibrary;
 using WordDataAccessLibrary.DataBaseActions;
+using WordDataAccessLibrary.DataBaseActions.Interfaces;
 
 namespace WordListsUI.StartTrainingPage;
 
 public partial class StartTrainingPage : ContentPage
 {
-	public StartTrainingPage(IStartTrainingViewModel model)
+	public StartTrainingPage(IStartTrainingViewModel model, IWordCollectionService collectionService)
 	{
 		BindingContext = model;
         InitializeComponent();
-    }
+		CollectionService = collectionService;
+	}
 
     public IStartTrainingViewModel Model => (IStartTrainingViewModel)BindingContext;
+
+	public IWordCollectionService CollectionService { get; }
 
 	private async void ContentPage_Loaded(object sender, EventArgs e)
 	{
@@ -41,7 +45,7 @@ public partial class StartTrainingPage : ContentPage
 
 	private async Task<Dictionary<string, object>> BuildPageChangeParameter(int id)
 	{
-		WordCollection collection = await WordCollectionService.GetWordCollection(id);
+		WordCollection collection = await CollectionService.GetWordCollection(id);
 
 		if (Model.ShowLearnedWords is false)
 		{

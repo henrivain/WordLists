@@ -1,11 +1,17 @@
 ﻿using WordListsViewModels.Extensions;
 using WordListsViewModels.Helpers;
+using WordDataAccessLibrary.DataBaseActions.Interfaces;
 
 namespace WordListsViewModels;
 
 [INotifyPropertyChanged]
 public partial class WordCollectionHandlingViewModel : IWordCollectionHandlingViewModel
 {
+    public WordCollectionHandlingViewModel(IWordCollectionService collectionService)
+    {
+        CollectionService = collectionService;
+    }
+
     [ObservableProperty]
     List<WordCollectionInfo> availableCollections = new();
 
@@ -17,10 +23,11 @@ public partial class WordCollectionHandlingViewModel : IWordCollectionHandlingVi
         await ResetCollections();
     });
 
+    public IWordCollectionService CollectionService { get; }
 
     public async Task ResetCollections()
     {
-        List<WordCollection> collections = await WordCollectionService.GetWordCollections();
+        List<WordCollection> collections = await CollectionService.GetWordCollections();
 
         List<WordCollectionInfo> collectionInfos = new();
         foreach (var collection in collections)
@@ -34,7 +41,7 @@ public partial class WordCollectionHandlingViewModel : IWordCollectionHandlingVi
     {
         WordCollectionInfo info = AvailableCollections.FirstOrDefault(x => x.Owner.Id == id);
         
-        await WordCollectionService.DeleteWordCollection(id);
+        await CollectionService.DeleteWordCollection(id);
 
         await ResetCollections();
 

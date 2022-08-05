@@ -26,4 +26,8 @@
     <ProjectReference Include="..\WordListsViewModels\WordListsViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Injectable\" />
+  </ItemGroup>
+
 </Project>

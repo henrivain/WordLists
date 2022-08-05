@@ -1,10 +1,18 @@
-﻿using WordListsViewModels.Extensions;
+﻿using WordDataAccessLibrary.DataBaseActions.Interfaces;
+using WordListsViewModels.Extensions;
 
 namespace WordListsViewModels;
 
 [INotifyPropertyChanged]
 public partial class StartTrainingViewModel : IStartTrainingViewModel
 {
+    public StartTrainingViewModel(IWordCollectionOwnerService ownerService)
+    {
+        OwnerService = ownerService;
+    }
+
+    IWordCollectionOwnerService OwnerService { get; }
+
     [ObservableProperty]
     List<WordCollectionOwner> availableCollections = new();
 
@@ -16,12 +24,12 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
 
     public IAsyncRelayCommand UpdateCollectionsByName => new AsyncRelayCommand(async () =>
     {
-        AvailableCollections = (await WordCollectionOwnerService.GetByName(DataParameter)).SortByName();
+        AvailableCollections = (await OwnerService.GetByName(DataParameter)).SortByName();
     });    
     
     public IAsyncRelayCommand UpdateCollectionsByLanguage => new AsyncRelayCommand(async () =>
     {
-        AvailableCollections = (await WordCollectionOwnerService.GetByLanguage(DataParameter)).SortByName();
+        AvailableCollections = (await OwnerService.GetByLanguage(DataParameter)).SortByName();
     });
 
     public IAsyncRelayCommand UpdateCollections => new AsyncRelayCommand(async () =>
@@ -59,7 +67,7 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
     public async Task ResetCollections()
     {
         IsRefreshing = true;   
-        AvailableCollections = (await WordCollectionOwnerService.GetAll()).SortByName();
+        AvailableCollections = (await OwnerService.GetAll()).SortByName();
         IsRefreshing = false;
     }
 }

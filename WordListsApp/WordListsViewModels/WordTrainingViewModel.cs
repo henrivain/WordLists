@@ -1,16 +1,19 @@
-﻿namespace WordListsViewModels;
+﻿using WordDataAccessLibrary.DataBaseActions.Interfaces;
+namespace WordListsViewModels;
 
 [INotifyPropertyChanged]
 public partial class WordTrainingViewModel : IWordTrainingViewModel
 {
-    public WordTrainingViewModel()
+    public WordTrainingViewModel(IWordCollectionService collectionService)
     {
         StartNew(new());
+        CollectionService = collectionService;
     }
 
-    public WordTrainingViewModel(WordCollection collection)
+    public WordTrainingViewModel(IWordCollectionService collectionService, WordCollection collection)
     {
         StartNew(collection);
+        CollectionService = collectionService;
     }
 
     public WordCollection WordCollection { get; set; } = new();
@@ -101,7 +104,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     }
     public async Task StartNewAsync(int collectionId)
     {
-        WordCollection collection = await WordCollectionService.GetWordCollection(collectionId);
+        WordCollection collection = await CollectionService.GetWordCollection(collectionId);
         if (collection is null)
         {
             StartNew(new WordCollection()
@@ -155,6 +158,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     
     private bool IsListCompleted { get; set; } = false;
     private bool IsEmptyCollection { get; set; } = false;
+    public IWordCollectionService CollectionService { get; }
 
     private void StartNewWithIndex(WordCollection collection, int startIndex)
     {
@@ -225,7 +229,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     }
     private async Task UpdateCollectionToDataBase()
     {
-        await WordCollectionService.SaveProgression(WordCollection);
+        await CollectionService.SaveProgression(WordCollection);
     }
 
     private readonly WordPair CompletedView = new()

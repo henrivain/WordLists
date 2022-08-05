@@ -2,6 +2,7 @@
 using WordDataAccessLibrary.Generators;
 using WordDataAccessLibrary.Helpers;
 using WordListsMauiHelpers.DeviceAccess;
+using WordDataAccessLibrary.DataBaseActions.Interfaces;
 
 namespace WordListsViewModels;
 
@@ -9,6 +10,12 @@ namespace WordListsViewModels;
 [QueryProperty(nameof(Owner), nameof(WordCollectionOwner))]
 public partial class ListGeneratorViewModel : IListGeneratorViewModel
 {
+    public ListGeneratorViewModel(IWordCollectionService collectionService)
+    {
+        CollectionService = collectionService;
+    }
+
+
     [AlsoNotifyChangeFor(nameof(CanSave))]
     [ObservableProperty]
     List<WordPair> wordPairs = new();
@@ -43,7 +50,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
                 throw new InvalidOperationException();
                 //return;
             }
-            int id = await WordCollectionService.AddWordCollection(GetData());
+            int id = await CollectionService.AddWordCollection(GetData());
 
             LableVisible = false;
             CollectionAddedEvent?.Invoke(this, new("Added wordCollection successfully", id));
@@ -75,8 +82,9 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
 
     public Parser UseParser { get; set; } = Parser.Otava;
 
-
     public bool LableVisible { get; set; } = false;
+    
+    public IWordCollectionService CollectionService { get; }
 
     public enum Parser
     {

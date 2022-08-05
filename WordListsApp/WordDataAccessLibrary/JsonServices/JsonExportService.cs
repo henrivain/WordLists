@@ -1,10 +1,18 @@
 ﻿using WordDataAccessLibrary.DataBaseActions;
+using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordDataAccessLibrary.Extensions;
 
 namespace WordDataAccessLibrary.JsonServices;
-public static class JsonExportService
+public class JsonExportService : IExportService
 {
-    public static async Task<JsonActionArgs> ExportJson(List<IExportWordCollection> exportCollections, string path)
+    public JsonExportService(IWordCollectionService collectionService)
+    {
+        CollectionService = collectionService;
+    }
+
+    IWordCollectionService CollectionService { get; }
+
+    public async Task<JsonActionArgs> Export(List<IExportWordCollection> exportCollections, string path)
     {
         path = path.Trim();
         if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
@@ -14,11 +22,11 @@ public static class JsonExportService
         throw new NotImplementedException();
     }
 
-    public static async Task<JsonActionArgs> ExportByOwners(List<WordCollectionOwner> owners, string path)
+    public async Task<JsonActionArgs> ExportByOwners(List<WordCollectionOwner> owners, string path)
     {
-        List<WordCollection> collections = await WordCollectionService.GetWordCollectionsById(owners.Select(x => x.Id).ToArray());
-        return await ExportJson(collections.ToIJsonCollection(), path);
+        List<WordCollection> collections = await CollectionService.GetWordCollectionsById(owners.Select(x => x.Id).ToArray());
+        return await Export(collections.ToIJsonCollection(), path);
     }
 
-    
+
 }

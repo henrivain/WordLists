@@ -1,4 +1,9 @@
-﻿using WordListsMauiHelpers.Factories;
+﻿using WordDataAccessLibrary.DataBaseActions;
+using WordDataAccessLibrary.DataBaseActions.Interfaces;
+using WordDataAccessLibrary.JsonServices;
+using WordListsMauiHelpers.DeviceAccess;
+using WordListsViewModels.Helpers;
+using WordListsMauiHelpers.Factories;
 using WordListsUI.JsonExportPage;
 using WordListsUI.ListGeneratorPage;
 using WordListsUI.StartTrainingPage;
@@ -32,6 +37,12 @@ public static class MauiProgram
 		builder.Services.AddTransient<IWordCollectionHandlingViewModel, WordCollectionHandlingViewModel>();
 		builder.Services.AddAbstractFactory<IListGeneratorViewModel, ListGeneratorViewModel>();
 		builder.Services.AddAbstractFactory<IJsonExportViewModel, JsonExportViewModel>();
+
+		builder.Services.AddSingleton<IWordCollectionOwnerService, WordCollectionOwnerService>();
+		builder.Services.AddSingleton<IWordPairService, WordPairService>();
+		builder.Services.AddSingleton<IWordCollectionService, WordCollectionService>();
+		builder.Services.AddSingleton<IExportService, JsonExportService>();
+		builder.Services.AddSingleton<IWordCollectionInfoService, WordCollectionInfoService>();
 
         return builder.Build();
 	}
