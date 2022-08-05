@@ -1,33 +1,31 @@
 ﻿using Newtonsoft.Json;
 
-namespace WordDataAccessLibrary.JsonServices;
+namespace WordDataAccessLibrary.ExportServices;
 public class ExportWordCollection : IExportWordCollection
 {
     public string Name
     {
         get => _name;
-        set => _name = (value is null) ? string.Empty : value;
+        set => _name = value is null ? string.Empty : value;
     }
 
     public string Description
     {
         get => _description;
-        set => _description = (value is null) ? string.Empty : value;
+        set => _description = value is null ? string.Empty : value;
     }
 
     public string LanguageHeaders
     {
         get => _languageHeaders;
-        set => _languageHeaders = (value is null) ? string.Empty : value;
+        set => _languageHeaders = value is null ? string.Empty : value;
     }
 
-    public ExportWordPair[] WordPairs 
-    { 
+    public ExportWordPair[] WordPairs
+    {
         get => _wordPairs;
-        set => _wordPairs = value ?? Array.Empty<ExportWordPair>(); 
+        set => _wordPairs = value ?? Array.Empty<ExportWordPair>();
     }
-
-
 
 
     public IExportWordCollection FromWordCollection(WordCollection collection)
@@ -65,20 +63,6 @@ public class ExportWordCollection : IExportWordCollection
         return this;
     }
 
-    /// <summary>
-    /// Get object as json string, Object must have name or InvalidDataException is thrown
-    /// </summary>
-    /// <returns></returns>
-    /// <exception cref="InvalidDataException"></exception>
-    public string GetAsJson()
-    {
-        if (string.IsNullOrWhiteSpace(Name))
-        {
-            throw new InvalidDataException($"{nameof(Name)} should not be null or empty");
-        }
-        return JsonConvert.SerializeObject(this, Formatting.Indented);
-    }
-  
     /// <param name="objectAsJson"></param>
     /// <returns>JsonWordCollection matching string, null if argument null or otherwise bad</returns>
     public static IExportWordCollection ParseFromJson(string objectAsJson)
@@ -100,8 +84,5 @@ public class ExportWordCollection : IExportWordCollection
     string _description = string.Empty;
     string _languageHeaders = string.Empty;
     ExportWordPair[] _wordPairs = Array.Empty<ExportWordPair>();
-
-
-
 
 }

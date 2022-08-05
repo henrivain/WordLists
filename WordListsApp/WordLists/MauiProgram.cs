@@ -1,6 +1,5 @@
 ﻿using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
-using WordDataAccessLibrary.JsonServices;
 using WordListsMauiHelpers.DeviceAccess;
 using WordListsViewModels.Helpers;
 using WordListsMauiHelpers.Factories;
@@ -11,6 +10,8 @@ using WordListsUI.WordCollectionHandlingPage;
 using WordListsUI.WordTrainingPage;
 using WordListsViewModels;
 using WordListsViewModels.Interfaces;
+using WordDataAccessLibrary.ExportServices;
+using WordDataAccessLibrary.ExportServices.JsonServices;
 
 namespace WordLists;
 
@@ -41,7 +42,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<IWordCollectionOwnerService, WordCollectionOwnerService>();
 		builder.Services.AddSingleton<IWordPairService, WordPairService>();
 		builder.Services.AddSingleton<IWordCollectionService, WordCollectionService>();
-		builder.Services.AddSingleton<IExportService, JsonExportService>();
+		builder.Services.AddSingleton<IExportService, JsonWordCollectionExportService>();
 		builder.Services.AddSingleton<IWordCollectionInfoService, WordCollectionInfoService>();
 
         return builder.Build();

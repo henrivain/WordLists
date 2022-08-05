@@ -1,4 +1,4 @@
-﻿namespace WordDataAccessLibrary.JsonServices;
+﻿namespace WordDataAccessLibrary.ExportServices;
 
 public interface IExportWordCollection
 {
@@ -9,5 +9,4 @@ public interface IExportWordCollection
     IExportWordCollection FromWordCollection(WordCollection collection);
     IExportWordCollection FromWordCollectionOwner(WordCollectionOwner owner);
     IExportWordCollection WordPairsFromList(List<WordPair> pairs);
-    string GetAsJson();
 }

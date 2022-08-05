@@ -1,4 +1,4 @@
-﻿using WordDataAccessLibrary.JsonServices;
+﻿using WordDataAccessLibrary.ExportServices;
 
 namespace WordDataAccessLibrary.Extensions;
 internal static class WordCollectionExtensions

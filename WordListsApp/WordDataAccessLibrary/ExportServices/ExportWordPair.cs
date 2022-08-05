@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WordDataAccessLibrary.JsonServices;
+namespace WordDataAccessLibrary.ExportServices;
 public class ExportWordPair
 {
     public ExportWordPair(string nativeLanguageWord, string foreignLanguageWord, int wordLearnStateId, int indexInVocalbulary = -1)
@@ -12,7 +12,7 @@ public class ExportWordPair
         NativeLanguageWord = nativeLanguageWord ?? string.Empty;
         ForeignLanguageWord = foreignLanguageWord ?? string.Empty;
         WordLearnStateId = wordLearnStateId;
-        IndexInVocalbulary = (indexInVocalbulary < -1) ? -1 : indexInVocalbulary;
+        IndexInVocalbulary = indexInVocalbulary < -1 ? -1 : indexInVocalbulary;
     }
 
     public string NativeLanguageWord { get; }

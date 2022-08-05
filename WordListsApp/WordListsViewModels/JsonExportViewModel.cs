@@ -1,11 +1,11 @@
-﻿using WordDataAccessLibrary.JsonServices;
-using WordListsMauiHelpers;
+﻿using WordListsMauiHelpers;
 using WordListsMauiHelpers.DeviceAccess;
 using WordListsViewModels.Extensions;
 using WordListsViewModels.Helpers;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 
-using static WordDataAccessLibrary.JsonServices.JsonExportDelegates;
+using static WordDataAccessLibrary.ExportServices.ExportDelegates;
+using WordDataAccessLibrary.ExportServices;
 
 namespace WordListsViewModels;
 
@@ -88,7 +88,7 @@ public partial class JsonExportViewModel : IJsonExportViewModel
 
         if (owners is null || owners.Count == 0)
         {
-            EmptyExportAttempted?.Invoke(this, new(JsonAction.ConfigureExport)
+            EmptyExportAttempted?.Invoke(this, new(ExportAction.ConfigureExport)
             {
                 Success = false,
                 MoreInfo = (owners is null) ? "owners is null" : "owners is empty list"
@@ -97,7 +97,7 @@ public partial class JsonExportViewModel : IJsonExportViewModel
         }
         if (string.IsNullOrWhiteSpace(path))
         {
-            EmptyExportAttempted?.Invoke(this, new(JsonAction.ConfigureExport)
+            EmptyExportAttempted?.Invoke(this, new(ExportAction.ConfigureExport)
             {
                 Success = false,
                 MoreInfo = $"{nameof(path)} is null or empty"
@@ -105,7 +105,7 @@ public partial class JsonExportViewModel : IJsonExportViewModel
             return;
         }
 
-        JsonActionArgs result = await ExportService.ExportByOwners(owners, path);
+        ExportActionResult result = await ExportService.ExportByCollectionOwners(owners, path);
         ExportCompleted?.Invoke(this, result);
     }
 

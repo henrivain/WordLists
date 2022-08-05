@@ -1,13 +1,13 @@
-﻿namespace WordDataAccessLibrary.JsonServices;
+﻿namespace WordDataAccessLibrary.ExportServices;
 
-public class JsonActionArgs
+public class ExportActionResult
 {
-    public JsonActionArgs(JsonAction actionType)
+    public ExportActionResult(ExportAction actionType)
     {
         ActionType = actionType;
     }
 
-    public JsonAction ActionType { get; }
+    public ExportAction ActionType { get; }
 
     public string UsedPath { get; set; } = string.Empty;
 
