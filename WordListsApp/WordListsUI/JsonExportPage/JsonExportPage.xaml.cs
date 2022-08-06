@@ -1,7 +1,5 @@
-//using CommunityToolkit.Maui.Behaviors;
-
 using WordListsUI.Helpers;
-using WordDataAccessLibrary.BackupServices;
+using WordDataAccessLibrary.CollectionBackupServices;
 using WordListsMauiHelpers.Factories;
 
 namespace WordListsUI.JsonExportPage;
@@ -17,7 +15,7 @@ public partial class JsonExportPage : ContentPage
 		Model.EmptyExportAttempted += Model_EmptyExportAttempted;
 	}
 
-	private async void Model_EmptyExportAttempted(object sender, ExportActionResult e)
+    private async void Model_EmptyExportAttempted(object sender, ExportActionResult e)
 	{
         await DisplayAlert("Sanastoja ei valittu!", "Et voi vied‰ tyhj‰‰ sanastokokonaisuutta", "OK");
         // have to add again because these don't fire again (dotnet/maui bug)

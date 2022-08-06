@@ -1,6 +1,5 @@
 ﻿using WordDataAccessLibrary;
-using WordDataAccessLibrary.BackupServices;
-using WordDataAccessLibrary.ExportServices;
+using WordDataAccessLibrary.CollectionBackupServices;
 
 namespace WordDataTests.ServiceTests.ExportServiceTests;
 public class ExportWordCollectionTests

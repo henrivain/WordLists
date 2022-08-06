@@ -1,7 +1,7 @@
-﻿using WordDataAccessLibrary.DataBaseActions;
+﻿using WordDataAccessLibrary.CollectionBackupServices;
+using WordDataAccessLibrary.CollectionBackupServices.JsonServices;
+using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
-using WordListsMauiHelpers.DeviceAccess;
-using WordListsViewModels.Helpers;
 using WordListsMauiHelpers.Factories;
 using WordListsUI.JsonExportPage;
 using WordListsUI.ListGeneratorPage;
@@ -9,9 +9,8 @@ using WordListsUI.StartTrainingPage;
 using WordListsUI.WordCollectionHandlingPage;
 using WordListsUI.WordTrainingPage;
 using WordListsViewModels;
+using WordListsViewModels.Helpers;
 using WordListsViewModels.Interfaces;
-using WordDataAccessLibrary.ExportServices;
-using WordDataAccessLibrary.BackupServices.JsonServices;
 
 namespace WordLists;
 

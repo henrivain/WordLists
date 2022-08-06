@@ -1,13 +1,10 @@
-﻿using WordListsMauiHelpers;
+﻿using WordDataAccessLibrary.CollectionBackupServices;
+using WordDataAccessLibrary.DataBaseActions.Interfaces;
+using WordListsMauiHelpers;
 using WordListsMauiHelpers.DeviceAccess;
 using WordListsViewModels.Extensions;
 using WordListsViewModels.Helpers;
-using WordDataAccessLibrary.DataBaseActions.Interfaces;
-
-using static WordDataAccessLibrary.BackupServices.ExportDelegates;
-using WordDataAccessLibrary.ExportServices;
-using System.Collections.Generic;
-using WordDataAccessLibrary.BackupServices;
+using static WordDataAccessLibrary.CollectionBackupServices.BackupDelegates;
 
 namespace WordListsViewModels;
 
@@ -137,7 +134,7 @@ public partial class JsonExportViewModel : IJsonExportViewModel
 
     private void InvokeEmptyExportEvent(string text)
     {
-        EmptyExportAttempted?.Invoke(this, new(ExportAction.ConfigureExport)
+        EmptyExportAttempted?.Invoke(this, new(BackupAction.Configure)
         {
             Success = false,
             MoreInfo = text

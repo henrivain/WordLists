@@ -1,5 +1,5 @@
 ﻿using WordListsViewModels.Helpers;
-using static WordDataAccessLibrary.BackupServices.ExportDelegates;
+using static WordDataAccessLibrary.CollectionBackupServices.BackupDelegates;
 
 namespace WordListsViewModels.Interfaces;
 public interface IJsonExportViewModel
