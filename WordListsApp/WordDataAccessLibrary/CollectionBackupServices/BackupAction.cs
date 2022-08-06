@@ -1,5 +1,5 @@
 ﻿namespace WordDataAccessLibrary.CollectionBackupServices;
 public enum BackupAction
 {
-    Configure, CreateFolder, WriteFile, ParseData, NotDefined
+    Configure, CreateFolder, WriteFile, ReadFile, ParseData, VersionCheck, NotDefined
 }

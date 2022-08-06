@@ -1,5 +1,7 @@
-﻿namespace WordDataAccessLibrary.CollectionBackupServices;
-public class ExportWordPair
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WordDataAccessLibrary.CollectionBackupServices;
+public struct ExportWordPair
 {
     public ExportWordPair(string nativeLanguageWord, string foreignLanguageWord, int wordLearnStateId, int indexInVocalbulary = -1)
     {
@@ -32,5 +34,32 @@ public class ExportWordPair
             pair.ForeignLanguageWord,
             pair.WordLearnStateId,
             pair.IndexInVocalbulary);
+    }
+    public WordPair ToWordPair()
+    {
+        return new()
+        {
+            ForeignLanguageWord = ForeignLanguageWord,
+            NativeLanguageWord = NativeLanguageWord,
+            IndexInVocalbulary = IndexInVocalbulary,
+            LearnState = LearnState,
+        };
+    }
+
+
+
+    public static bool operator ==(ExportWordPair left, ExportWordPair right)
+    {
+        return left.Equals(right);
+    }
+    public static bool operator !=(ExportWordPair left, ExportWordPair right)
+    {
+        return !(left == right);
+    }
+
+    [EnumDataType(typeof(WordLearnState))]
+    private WordLearnState LearnState
+    {
+        get => (WordLearnState)WordLearnStateId;
     }
 }

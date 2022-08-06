@@ -2,11 +2,12 @@
 using System.Diagnostics;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordDataAccessLibrary.Extensions;
+using WordDataAccessLibrary.Helpers;
 
 namespace WordDataAccessLibrary.CollectionBackupServices.JsonServices;
-public class JsonWordCollectionExportService : ICollectionExportService
+public class WordCollectionExportService : ICollectionExportService
 {
-    public JsonWordCollectionExportService(IWordCollectionService collectionService)
+    public WordCollectionExportService(IWordCollectionService collectionService)
     {
         CollectionService = collectionService;
     }
@@ -19,17 +20,19 @@ public class JsonWordCollectionExportService : ICollectionExportService
 
         path = path.Trim();
         if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
-        if (path.EndsWith(".json") is false) path += ".json";
+
+        string requiredExtension = AppFileExtension.GetExtension(FileExtension.Wordlist);
+        if (path.EndsWith(requiredExtension) is false) path += requiredExtension;
 
         result = CanCreateFolderSuccessfully(path);
         if (result.Success is false) return result;
 
         (string json, result) = ConvertDataToJson(exportCollections);
         if (result.Success is false) return result;
-        return await WriteJsonFile(path, json);
+        return await WriteWordListFile(path, json);
     }
 
-    private static async Task<ExportActionResult> WriteJsonFile(string path, string data)
+    private static async Task<ExportActionResult> WriteWordListFile(string path, string data)
     {
         try
         {
@@ -120,7 +123,8 @@ public class JsonWordCollectionExportService : ICollectionExportService
             return (string.Empty, actionResult);
         }
 
-        string result = JsonConvert.SerializeObject(exportCollections.ToArray(), Formatting.Indented);
+        JsonBackupStruct data = new(exportCollections.ToArray());
+        string result = JsonConvert.SerializeObject(data, Formatting.Indented);
         if (string.IsNullOrWhiteSpace(result))
         {
             actionResult.MoreInfo = $"Parsed {nameof(result)} is empty or null, and should not be";

@@ -10,7 +10,7 @@ public class JsonWordCollectionExportServiceTests
 	public void ConvertDataToJson_WithNull_ShouldThrow_ArgumentException()
 	{
         // Arrange & Act
-        ExportActionResult result = JsonWordCollectionExportService.ConvertDataToJson(null).result;
+        ExportActionResult result = WordCollectionExportService.ConvertDataToJson(null).result;
 
         // Assert
         Assert.False(result.Success);
@@ -20,7 +20,7 @@ public class JsonWordCollectionExportServiceTests
     public void ConvertDataToJson_WithEmptyList_ShouldReturn_SuccessFalse()
     {
         // Arrange & Act
-        ExportActionResult result = JsonWordCollectionExportService.ConvertDataToJson(new()).result;
+        ExportActionResult result = WordCollectionExportService.ConvertDataToJson(new()).result;
 
         // Assert
         Assert.False(result.Success);
@@ -64,7 +64,7 @@ public class JsonWordCollectionExportServiceTests
             """;
 
         // Act
-        string result = JsonWordCollectionExportService.ConvertDataToJson(collections).json;
+        string result = WordCollectionExportService.ConvertDataToJson(collections).json;
 
         // Assert
         Assert.Equal(shouldMatch, result);

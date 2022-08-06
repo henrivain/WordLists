@@ -21,4 +21,8 @@
 	  <Folder Include="Platforms\Android\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\WordDataAccessLibrary\WordDataAccessLibrary.csproj" />
+	</ItemGroup>
+
 </Project>

@@ -9,4 +9,5 @@ public interface IExportWordCollection
     IExportWordCollection FromWordCollection(WordCollection collection);
     IExportWordCollection FromWordCollectionOwner(WordCollectionOwner owner);
     IExportWordCollection WordPairsFromList(List<WordPair> pairs);
+    WordCollection GetAsWordCollection();
 }

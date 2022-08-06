@@ -12,6 +12,7 @@
     xmlns:info="clr-namespace:WordListsUI.AppInfoPage;assembly=WordListsUI"
     xmlns:handling="clr-namespace:WordListsUI.WordCollectionHandlingPage;assembly=WordListsUI"
     xmlns:export="clr-namespace:WordListsUI.JsonExportPage;assembly=WordListsUI"
+    xmlns:import="clr-namespace:WordListsUI.JsonImportPage;assembly=WordListsUI"
     >
 
     <TabBar FlyoutDisplayOptions="AsMultipleItems">
@@ -41,6 +42,12 @@
             <ShellContent Title="Hallitse sanastoja"
                           ContentTemplate="{DataTemplate handling:WordCollectionHandlingPage}"
                           />
+            <ShellContent Title="Vie"
+                          ContentTemplate="{DataTemplate export:JsonExportPage}"
+                          />
+            <ShellContent Title="Tuo"
+                          ContentTemplate="{DataTemplate import:JsonImportPage}"
+                          />
         </Tab>
 
 
@@ -48,12 +55,5 @@
         <ShellContent Title="Tietoa"
                       ContentTemplate="{DataTemplate info:AppInfoPage}"
                       />
-
-        <ShellContent Title="Vie"
-                      ContentTemplate="{DataTemplate export:JsonExportPage}"
-                      />
-
     </TabBar>
-    
-
 </Shell>

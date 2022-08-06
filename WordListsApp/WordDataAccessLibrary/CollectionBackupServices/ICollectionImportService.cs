@@ -2,4 +2,5 @@
 
 public interface ICollectionImportService
 {
+    Task<(ImportActionResult, IEnumerable<IExportWordCollection>)> Import(string path);
 }

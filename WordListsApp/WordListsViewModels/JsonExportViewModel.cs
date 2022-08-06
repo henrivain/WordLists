@@ -70,7 +70,7 @@ public partial class JsonExportViewModel : IJsonExportViewModel
 
 
     [ObservableProperty]
-    string exportPath = PathHelper.GetDefaultExportFilePath();
+    string exportPath = PathHelper.GetDefaultBackupFilePath();
 
     public IAsyncRelayCommand ExportAllVisibleCommand => new AsyncRelayCommand(async () =>
     {
@@ -82,7 +82,7 @@ public partial class JsonExportViewModel : IJsonExportViewModel
     });
     public IAsyncRelayCommand ChooseExportLocationCommand => new AsyncRelayCommand(async () =>
     {
-        string exportPath = await FilePickerService.GetUserSelectedJsonExportPath();
+        string exportPath = await FilePickerService.GetUserSelectedExportPath();
         if (string.IsNullOrWhiteSpace(exportPath)) return;
         ExportPath = exportPath;
     });

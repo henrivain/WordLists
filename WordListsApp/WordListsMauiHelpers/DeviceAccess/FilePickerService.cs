@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using WordDataAccessLibrary.Helpers;
 
 [assembly: InternalsVisibleTo("WordListsMauiHelpersTests")]
 
@@ -28,22 +29,24 @@ public static class FilePickerService
         }
     }
 
-
-    public static async Task<string> GetUserSelectedJsonExportPath()
+    /// <summary>
+    /// Get path to .json file. In windows, user choose folder and filename is automatically generated. 
+    /// On other platforms user choose .json file and its path will be returned;
+    /// </summary>
+    /// <returns>path to json file or null, if fails or user exits</returns>
+    public static async Task<string> GetUserSelectedExportPath()
     {
 #if WINDOWS
         string resultPath = await new FolderPicker().PickAsync();
         if (string.IsNullOrWhiteSpace(resultPath)) return null;
-        return Path.Combine(resultPath, PathHelper.GetNewExportFileName());
+        return Path.Combine(resultPath, PathHelper.GetNewBackupFileName());
 #else
         return await GetUserSelectedFullPath(new()
         {
-            ".json"
+            AppFileExtension.GetExtension(FileExtension.Wordlist)
         });
 #endif
     }
-
-    
     internal static List<string> GetValidFileExtensions(List<string> extensions)
     {
         extensions ??= new();
@@ -51,7 +54,6 @@ public static class FilePickerService
                          .Select(x => x.StartsWith(".") ? x : $".{x}")
                          .ToList();
     }
-
     private static FilePickerFileType GetFileTypesWithExtension(List<string> extensions)
     {
 

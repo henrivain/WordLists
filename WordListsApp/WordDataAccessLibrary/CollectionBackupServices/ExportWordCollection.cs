@@ -1,8 +1,14 @@
 ﻿using Newtonsoft.Json;
 
 namespace WordDataAccessLibrary.CollectionBackupServices;
-public class ExportWordCollection : IExportWordCollection
+
+/// <summary>
+/// Removes id data and owner data from wordCollection for export
+/// </summary>
+public struct ExportWordCollection : IExportWordCollection
 {
+    public ExportWordCollection(){}
+
     public string Name
     {
         get => _name;
@@ -63,6 +69,20 @@ public class ExportWordCollection : IExportWordCollection
         return this;
     }
 
+    public WordCollection GetAsWordCollection()
+    {
+        return new()
+        {
+            Owner = new()
+            {
+                Name = Name,
+                Description = Description,
+                LanguageHeaders = LanguageHeaders
+            },
+            WordPairs = WordPairs.Select(x => x.ToWordPair()).ToList()
+        };
+    }
+
     /// <param name="objectAsJson"></param>
     /// <returns>JsonWordCollection matching string, null if argument null or otherwise bad</returns>
     public static IExportWordCollection ParseFromJson(string objectAsJson)
@@ -85,4 +105,5 @@ public class ExportWordCollection : IExportWordCollection
     string _languageHeaders = string.Empty;
     ExportWordPair[] _wordPairs = Array.Empty<ExportWordPair>();
 
+   
 }

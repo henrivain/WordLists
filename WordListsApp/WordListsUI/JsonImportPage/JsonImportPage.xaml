@@ -2,12 +2,27 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.JsonImportPage.JsonImportPage"
-             Title="JsonImportPage"
-             xmlns:viewModel="clr-namespace:WordListsViewModels;assembly=WordListsViewModels"
-             x:DataType="{x:Type viewModel:JsonImportViewModel}"
+             Title="Tuo"
+             xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
+             x:DataType="{x:Type viewModel:IJsonImportViewModel}"
              >
     <VerticalStackLayout>
+        <Label Text="Tuo sanastoja ulkoisesta .wordlist tiedostosta"
+               
+               />
+        <Label Text="valittu sijainti" HorizontalOptions="Center"/>
+        <HorizontalStackLayout HorizontalOptions="Center">
+            <Button Text="Valitse" Padding="20,0" Command="{Binding SelectFile}" HorizontalOptions="Center"/>
 
+            <Border BackgroundColor="#45000000" 
+                        Grid.Column="1"
+                HorizontalOptions="Center"
+                MinimumWidthRequest="400"
+                  >
+                <Label Text="{Binding ImportPath}"  Padding="10"
+                               />
+            </Border>
+        </HorizontalStackLayout>
 
 
     </VerticalStackLayout>
