@@ -123,7 +123,7 @@ public class WordCollectionExportService : ICollectionExportService
             return (string.Empty, actionResult);
         }
 
-        JsonBackupStruct data = new(exportCollections.ToArray());
+        JsonBackupStruct data = new(exportCollections.Select(x => (ExportWordCollection)x).ToArray());
         string result = JsonConvert.SerializeObject(data, Formatting.Indented);
         if (string.IsNullOrWhiteSpace(result))
         {
@@ -133,6 +133,9 @@ public class WordCollectionExportService : ICollectionExportService
         actionResult.Success = true;
         return (result, actionResult);
     }
+
+
+   
 
 }
 

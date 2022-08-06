@@ -10,7 +10,7 @@ namespace WordListsViewModels;
 public partial class JsonImportViewModel : IJsonImportViewModel
 {
     // import checks, that path value is not this when starting import
-    private const string DefaultPathInfo = "Valitse tiedosto napista";
+    private const string DefaultPathInfo = "Valitse tiedosto...";
 
     public JsonImportViewModel(
         ICollectionImportService importService, 
@@ -24,13 +24,20 @@ public partial class JsonImportViewModel : IJsonImportViewModel
     [ObservableProperty]
     string importPath = DefaultPathInfo;
 
+    [ObservableProperty]
+    bool canImport = false;
+
     public IAsyncRelayCommand SelectFile => new AsyncRelayCommand(async () =>
     {
         string path = await FilePickerService.GetUserSelectedFullPath(new() 
         { 
             AppFileExtension.GetExtension(FileExtension.Wordlist) 
         });
-        if (string.IsNullOrWhiteSpace(path) is false) ImportPath = path;
+        if (string.IsNullOrWhiteSpace(path) is false)
+        {
+            ImportPath = path;
+            CanImport = true;
+        }
     });
     public IAsyncRelayCommand Import => new AsyncRelayCommand(
         async () => await ImportAndSaveCollectionsAsync());
@@ -71,7 +78,7 @@ public partial class JsonImportViewModel : IJsonImportViewModel
         await SaveConvertedCollections(exportCollections);
         ImportSuccessfull?.Invoke(this, new(BackupAction.ParseData)
         {
-            MoreInfo = $"Imported and saved {exportCollections.Count()} word collections to database",
+            MoreInfo = $"Tuotu ja tallennettu {exportCollections.Count()} sanastoa",
             Success = true
         });
     }

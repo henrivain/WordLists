@@ -4,6 +4,7 @@ namespace WordListsViewModels.Interfaces;
 public interface IJsonImportViewModel
 {
     string ImportPath { get; }
+    bool CanImport { get; }
     IAsyncRelayCommand SelectFile { get; }
     IAsyncRelayCommand Import { get; }
 

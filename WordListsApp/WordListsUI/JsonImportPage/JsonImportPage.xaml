@@ -8,22 +8,32 @@
              >
     <VerticalStackLayout>
         <Label Text="Tuo sanastoja ulkoisesta .wordlist tiedostosta"
-               
+               HorizontalOptions="Center"
+               FontSize="Large"
+               Margin="0,0,0,50"
                />
-        <Label Text="valittu sijainti" HorizontalOptions="Center"/>
-        <HorizontalStackLayout HorizontalOptions="Center">
-            <Button Text="Valitse" Padding="20,0" Command="{Binding SelectFile}" HorizontalOptions="Center"/>
+        <StackLayout Orientation="{OnIdiom Default=Vertical, Desktop=Horizontal}" HorizontalOptions="Center" >
+            <Button Text="Valitse" 
+                    Padding="20,0" 
+                    Command="{Binding SelectFile}" 
+                    HorizontalOptions="Center" 
+                    Margin="{OnIdiom Default='0,0,0,20', Desktop='0,0,10,0'}"/>
 
             <Border BackgroundColor="#45000000" 
-                        Grid.Column="1"
-                HorizontalOptions="Center"
-                MinimumWidthRequest="400"
+                    HorizontalOptions="Center"
+                    MinimumWidthRequest="400"
                   >
-                <Label Text="{Binding ImportPath}"  Padding="10"
-                               />
+                <Label Text="{Binding ImportPath}"
+                       Padding="20,10"
+                       />
             </Border>
-        </HorizontalStackLayout>
-
-
+        </StackLayout>
+        <Button Command="{Binding Import}" 
+                IsEnabled="{Binding CanImport}"
+                Text="Tuo"
+                HorizontalOptions="Center"
+                Padding="30,10"
+                Margin="0,50,0,0"
+                />
     </VerticalStackLayout>
 </ContentPage>

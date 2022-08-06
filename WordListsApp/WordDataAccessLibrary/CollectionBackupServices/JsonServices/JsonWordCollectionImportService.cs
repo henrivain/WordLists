@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using WordDataAccessLibrary.Helpers;
 
 namespace WordDataAccessLibrary.CollectionBackupServices.JsonServices;
 public class JsonWordCollectionImportService : ICollectionImportService
@@ -6,11 +7,12 @@ public class JsonWordCollectionImportService : ICollectionImportService
 
 	public async Task<(ImportActionResult, IEnumerable<IExportWordCollection>)> Import(string path)
 	{
-		if (string.IsNullOrWhiteSpace(path) || Path.GetExtension(path) is not ".json")
+		string requiredExtension = AppFileExtension.GetExtension((FileExtension.Wordlist));
+        if (string.IsNullOrWhiteSpace(path) || Path.GetExtension(path) != requiredExtension)
 		{
 			return (new ImportActionResult(BackupAction.Configure)
 			{
-				MoreInfo = "Bad path (empty or no '.json')",
+				MoreInfo = $"Bad path (empty or no '{requiredExtension}')",
 				UsedPath = path,
 				Success = false
 			}, null);
@@ -59,7 +61,7 @@ public class JsonWordCollectionImportService : ICollectionImportService
 			return (result, null);
 		}
 		result.Success = true;
-        return (result, parsedData?.Collections);
+        return (result, parsedData?.Collections.Select(x => (IExportWordCollection)x));
 	}
 
 	private static async Task<(ImportActionResult, string)> ReadJsonString(string path)
