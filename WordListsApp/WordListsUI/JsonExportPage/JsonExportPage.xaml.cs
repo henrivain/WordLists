@@ -1,7 +1,7 @@
 //using CommunityToolkit.Maui.Behaviors;
 
 using WordListsUI.Helpers;
-using WordDataAccessLibrary.ExportServices;
+using WordDataAccessLibrary.BackupServices;
 using WordListsMauiHelpers.Factories;
 
 namespace WordListsUI.JsonExportPage;
@@ -21,14 +21,10 @@ public partial class JsonExportPage : ContentPage
 	{
         await DisplayAlert("Sanastoja ei valittu!", "Et voi vied‰ tyhj‰‰ sanastokokonaisuutta", "OK");
         // have to add again because these don't fire again (dotnet/maui bug)
-		Model.EmptyExportAttempted -= Model_EmptyExportAttempted;
-		Model.EmptyExportAttempted += Model_EmptyExportAttempted;
     }
     private async void Model_ExportCompleted(object sender, ExportActionResult e)
 	{
         // have to add again because these don't fire again (dotnet/maui bug)
-		Model.ExportCompleted -= Model_ExportCompleted;
-		Model.ExportCompleted += Model_ExportCompleted;
 		if (e.Success)
 		{
             await DisplayAlert("Sanastot viety!", $"Sanastot on viety onnistuneesti hakemistoon: {e.UsedPath}", "OK");

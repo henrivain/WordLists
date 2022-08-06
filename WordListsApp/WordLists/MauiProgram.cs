@@ -11,7 +11,7 @@ using WordListsUI.WordTrainingPage;
 using WordListsViewModels;
 using WordListsViewModels.Interfaces;
 using WordDataAccessLibrary.ExportServices;
-using WordDataAccessLibrary.ExportServices.JsonServices;
+using WordDataAccessLibrary.BackupServices.JsonServices;
 
 namespace WordLists;
 

@@ -14,7 +14,7 @@ public class PathHelper
 #elif ANDROID
         return "/storage/emulated/0/Download/";
 #else
-        // hardcoded is kinda bad, but havent found any not obsolete way (one of bad one under)
+        // hardcoded is kinda bad, but haven't found any not obsolete way (one of bad one under)
         // Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).Path;
         return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 #endif

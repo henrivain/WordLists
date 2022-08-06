@@ -1,5 +1,6 @@
 ﻿using WordDataAccessLibrary.ExportServices;
 using System.Runtime.CompilerServices;
+using WordDataAccessLibrary.BackupServices;
 
 [assembly: InternalsVisibleTo("WordDataTests")]
 namespace WordDataAccessLibrary.Extensions;
