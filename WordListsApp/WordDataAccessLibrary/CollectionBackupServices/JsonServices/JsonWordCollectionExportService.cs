@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System.Diagnostics;
-using WordDataAccessLibrary.CollectionBackupServices;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordDataAccessLibrary.Extensions;
 
@@ -38,7 +37,7 @@ public class JsonWordCollectionExportService : ICollectionExportService
             {
                 await sw.WriteAsync(data);
             }
-            return new(ExportAction.WriteFile)
+            return new(BackupAction.WriteFile)
             {
                 Success = true,
                 MoreInfo = "Export Successfull",
@@ -47,7 +46,7 @@ public class JsonWordCollectionExportService : ICollectionExportService
         }
         catch (Exception ex)
         {
-            ExportActionResult result = new(ExportAction.WriteFile)
+            ExportActionResult result = new(BackupAction.WriteFile)
             {
                 Success = false,
                 MoreInfo = $"Exception throw whilst trying to write to file: {ex}, {ex.Message}",
@@ -67,14 +66,14 @@ public class JsonWordCollectionExportService : ICollectionExportService
         try
         {
             Directory.CreateDirectory(Path.GetDirectoryName(path));
-            return new(ExportAction.CreateFolder)
+            return new(BackupAction.CreateFolder)
             {
                 Success = true
             };
         }
         catch (Exception ex)
         {
-            ExportActionResult result = new(ExportAction.CreateFolder)
+            ExportActionResult result = new(BackupAction.CreateFolder)
             {
                 Success = false,
                 UsedPath = path,
@@ -106,7 +105,7 @@ public class JsonWordCollectionExportService : ICollectionExportService
 
     public static (string json, ExportActionResult result) ConvertDataToJson(List<IExportWordCollection> exportCollections)
     {
-        ExportActionResult actionResult = new(ExportAction.ParseData)
+        ExportActionResult actionResult = new(BackupAction.ParseData)
         {
             Success = false
         };

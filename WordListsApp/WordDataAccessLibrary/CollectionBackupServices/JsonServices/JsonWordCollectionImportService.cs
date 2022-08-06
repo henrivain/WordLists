@@ -1,13 +1,12 @@
-﻿using Newtonsoft.Json;
-using System.Diagnostics;
-using WordDataAccessLibrary.DataBaseActions.Interfaces;
-using WordDataAccessLibrary.Extensions;
-
-namespace WordDataAccessLibrary.CollectionBackupServices.JsonServices;
+﻿namespace WordDataAccessLibrary.CollectionBackupServices.JsonServices;
 public class JsonWordCollectionImportService : ICollectionImportService
 {
-    
+	public JsonWordCollectionImportService(ICollectionImportService importService)
+	{
+		ImportService = importService;
+	}
 
+	public ICollectionImportService ImportService { get; }
 }
 
 

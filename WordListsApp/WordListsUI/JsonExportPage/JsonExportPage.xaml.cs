@@ -9,7 +9,7 @@ public partial class JsonExportPage : ContentPage
 	public JsonExportPage(IAbstractFactory<IJsonExportViewModel> modelFactory)
 	{
         ModelFactory = modelFactory;
-        BindingContext = modelFactory.Create();
+        BindingContext = ModelFactory.Create();
         InitializeComponent();
 		Model.ExportCompleted += Model_ExportCompleted;
 		Model.EmptyExportAttempted += Model_EmptyExportAttempted;
@@ -32,9 +32,8 @@ public partial class JsonExportPage : ContentPage
         bool accepted = await DisplayAlert("Jotain meni pieleen :(", $"Vienti epäonnistui, syy: \"{e.MoreInfo}\"", "Poistu", "Yritä uudelleen");
 		if (accepted) BindingContext = ModelFactory.Create();
     }
-
     public IJsonExportViewModel Model => (IJsonExportViewModel)BindingContext;
-    IAbstractFactory<IJsonExportViewModel> ModelFactory { get; }
+    private IAbstractFactory<IJsonExportViewModel> ModelFactory { get; }
     private void ITextInput_Focused(object sender, FocusEventArgs e)
 	{
         if (sender is ITextInput input)

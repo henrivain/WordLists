@@ -7,9 +7,8 @@
              x:DataType="{x:Type viewModel:JsonImportViewModel}"
              >
     <VerticalStackLayout>
-    
-    
-    
-    
+
+
+
     </VerticalStackLayout>
 </ContentPage>

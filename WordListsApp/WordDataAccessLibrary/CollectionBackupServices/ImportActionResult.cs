@@ -1,12 +1,12 @@
 ﻿namespace WordDataAccessLibrary.CollectionBackupServices;
-public class ImportActionResult
+public struct ImportActionResult
 {
-    public ImportActionResult(ExportAction actionType)
+    public ImportActionResult(BackupAction actionType)
     {
         ActionType = actionType;
     }
 
-    public ExportAction ActionType { get; }
+    public BackupAction ActionType { get; }
 
     public string UsedPath { get; set; } = string.Empty;
 

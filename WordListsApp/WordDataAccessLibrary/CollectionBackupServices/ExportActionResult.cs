@@ -2,12 +2,12 @@
 
 public struct ExportActionResult
 {
-    public ExportActionResult(ExportAction actionType)
+    public ExportActionResult(BackupAction actionType)
     {
         ActionType = actionType;
     }
 
-    public ExportAction ActionType { get; }
+    public BackupAction ActionType { get; }
 
     public string UsedPath { get; set; } = string.Empty;
 
