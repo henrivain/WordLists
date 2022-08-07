@@ -2,32 +2,35 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.WordDataPages.WordDataPage"
+             xmlns:menu="clr-namespace:WordListsUI.Components.SideMenu"
              Title="Hallitse">
-
+   
     <Grid>
-        <Grid BackgroundColor="AliceBlue" 
-              HorizontalOptions="Start"
-              WidthRequest="200">
-           
+        <ScrollView BackgroundColor="Gray">
+            <ScrollView.GestureRecognizers>
+                <TapGestureRecognizer Tapped="HideMenu"/>
+            </ScrollView.GestureRecognizers>
             <VerticalStackLayout>
-                <Grid BackgroundColor="White" 
-                      x:Name="menu"
-                      HeightRequest="35" 
-                      ColumnDefinitions="*,35">
-                    <ImageButton Source="hamburger_icon.png" 
-                                 Margin="5"
-                                 Grid.Column="1"
-                                 />
-                </Grid>
-                <VerticalStackLayout>
-                    
-                </VerticalStackLayout>
-            </VerticalStackLayout>
-        </Grid>
-        <ScrollView Grid.Column="1">
-            <VerticalStackLayout>
-                
+
             </VerticalStackLayout>
         </ScrollView>
+        <menu:SideMenu x:Name="menu">
+            <menu:SideMenu.MenuItems>
+                <Grid BackgroundColor="Green" WidthRequest="200">
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type Label}">
+                            <Setter Property="BackgroundColor" Value="Black"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Label Text="laksdj" TextColor="Black"/>
+                    <Label Text="laksdj"/>
+                    <Label Text="laksdj"/>
+                    <Label Text="laksdj"/>
+                    <Label Text="laksdj"/>
+                </Grid>
+            </menu:SideMenu.MenuItems>
+        </menu:SideMenu>
+        
+        
     </Grid>
 </ContentPage>

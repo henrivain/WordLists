@@ -7,4 +7,9 @@ public partial class WordDataPage : ContentPage
 		InitializeComponent();
 	}
 
+
+	private void HideMenu(object sender, EventArgs e)
+	{
+		menu.Collapse(sender, e);
+	}
 }

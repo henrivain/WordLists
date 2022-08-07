@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WordListsUI.Components.SideMenu.SideMenu"
+             xmlns:local="clr-namespace:WordListsUI.Components.SideMenu"
+             x:DataType="{x:Type local:SideMenu}"
+             >
+    <ContentView.Resources>
+        <x:Int16 x:Key="MaxMenuWidth">200</x:Int16>
+        <x:Int16 x:Key="MinMenuWidth">35</x:Int16>
+        <x:String x:Key="Title">Title</x:String>
+        <Color x:Key="MenuColor">AliceBlue</Color>
+        <Color x:Key="TopSideColor">White</Color>
+        <x:String x:Key="HamburgerImageSource">hamburger_icon.png</x:String>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <Grid x:Name="sideMenu"
+              BackgroundColor="{DynamicResource MenuColor}" 
+              HorizontalOptions="Start"
+              WidthRequest="200"
+              >
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Tapped="Open"/>
+                <SwipeGestureRecognizer Direction="Left" Swiped="Collapse"/>
+                <SwipeGestureRecognizer Direction="Right" Swiped="Open"/>
+            </Grid.GestureRecognizers>
+            
+            <Grid RowDefinitions="35, *">
+                <Grid BackgroundColor="{DynamicResource TopSideColor}" 
+                      x:Name="menu"
+                      ColumnDefinitions="*,35"
+                      >
+                    <Label TextColor="Black" Text="{DynamicResource Title}" 
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Center"
+                           Margin="10,0,0,0"
+                           LineBreakMode="NoWrap"
+                           />
+                    <ImageButton Source="{DynamicResource HamburgerImageSource}" 
+                                 Margin="5"
+                                 Grid.Column="1"
+                                 Clicked="TapGestureRecognizer_Tapped"
+                                 />
+                </Grid>
+                <VerticalStackLayout Grid.Row="1">
+                    <!-- this does not show anything -->
+                    <ContentPresenter x:Name="presenter" Content="{Binding MenuItems}"/>
+                </VerticalStackLayout>
+            </Grid>
+           
+        </Grid>
+    </ContentView.Content>
+</ContentView>
