@@ -32,7 +32,7 @@ public class JsonWordCollectionExportServiceTests
         // Arrange
         List<IExportWordCollection> collections = new()
         {
-            new ExportWordCollection()
+            new DefaultExportWordCollection()
             {
                 Description = "this is description",
                 Name = "name",
@@ -48,10 +48,10 @@ public class JsonWordCollectionExportServiceTests
             $$"""
             [
               {
-                "{{nameof(ExportWordCollection.Name)}}": "name",
-                "{{nameof(ExportWordCollection.Description)}}": "this is description",
-                "{{nameof(ExportWordCollection.LanguageHeaders)}}": "fi-en",
-                "{{nameof(ExportWordCollection.WordPairs)}}": [
+                "{{nameof(DefaultExportWordCollection.Name)}}": "name",
+                "{{nameof(DefaultExportWordCollection.Description)}}": "this is description",
+                "{{nameof(DefaultExportWordCollection.LanguageHeaders)}}": "fi-en",
+                "{{nameof(DefaultExportWordCollection.WordPairs)}}": [
                   {
                     "{{nameof(ExportWordPair.NativeLanguageWord)}}": "native",
                     "{{nameof(ExportWordPair.ForeignLanguageWord)}}": "foreign",

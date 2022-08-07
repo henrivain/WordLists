@@ -4,15 +4,15 @@ using WordDataAccessLibrary.Helpers;
 namespace WordDataAccessLibrary.CollectionBackupServices.JsonServices;
 public class JsonWordCollectionImportService : ICollectionImportService
 {
+	readonly string _requiredFileExtension = AppFileExtension.Get(FileExtension.Wordlist);
 
 	public async Task<(ImportActionResult, IEnumerable<IExportWordCollection>)> Import(string path)
 	{
-		string requiredExtension = AppFileExtension.GetExtension((FileExtension.Wordlist));
-        if (string.IsNullOrWhiteSpace(path) || Path.GetExtension(path) != requiredExtension)
+        if (Path.GetExtension(path) != _requiredFileExtension)
 		{
 			return (new ImportActionResult(BackupAction.Configure)
 			{
-				MoreInfo = $"Bad path (empty or no '{requiredExtension}')",
+				MoreInfo = $"Bad path (empty or no '{_requiredFileExtension}')",
 				UsedPath = path,
 				Success = false
 			}, null);
@@ -22,7 +22,6 @@ public class JsonWordCollectionImportService : ICollectionImportService
 		(result, string jsonData) = await ReadJsonString(path);
 
 		if (result.Success is false) return (result, null);
-
 		return JsonToExportCollections(jsonData);
 	}
 
@@ -40,7 +39,7 @@ public class JsonWordCollectionImportService : ICollectionImportService
         }
 		catch(Exception ex)
 		{
-            result.MoreInfo = $"Parsing json data to {nameof(JsonBackupStruct)} failed because of {ex}, {ex.Message}";
+            result.MoreInfo = $"Parsing json data into '{nameof(JsonBackupStruct)}' failed because of {ex}, {ex.Message}";
 #if DEBUG
 			throw;
 #else
@@ -86,7 +85,7 @@ public class JsonWordCollectionImportService : ICollectionImportService
 		catch (Exception ex)
 		{
             result.MoreInfo = $"{nameof(JsonWordCollectionImportService)} " +
-                $"Read file at {nameof(ImportActionResult.UsedPath)} failed because of {ex}, {ex.Message}";
+                $"Read file at '{nameof(ImportActionResult.UsedPath)}' failed because of {ex}, {ex.Message}";
 
 #if DEBUG
             throw;

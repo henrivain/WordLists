@@ -1,7 +1,7 @@
 ﻿namespace WordDataAccessLibrary.Helpers;
 public static class AppFileExtension
 {
-    public static string GetExtension(FileExtension extension)
+    public static string Get(FileExtension extension)
     {
         return extension switch
         {

@@ -6,12 +6,12 @@ namespace WordDataAccessLibrary.CollectionBackupServices.JsonServices;
 /// </summary>
 public struct JsonBackupStruct
 {
-    public JsonBackupStruct(ExportWordCollection[] collections)
+    public JsonBackupStruct(DefaultExportWordCollection[] collections)
     {
         Collections = collections;
     }
-    public string ParserVersion { get; set; } = AssemblyHelper.CurrentAssembly.VersionString;
-    public string ParserAppName { get; set; } = AssemblyHelper.EntryAssembly.Name;
+    public string ParserVersion { get; set; } = AssemblyHelper.CurrentAssembly.VersionString ?? "v0.0.0";
+    public string ParserAppName { get; set; } = AssemblyHelper.EntryAssembly.Name ?? string.Empty;
     public DateTime DateCreated { get; set; } = DateTime.Now;
-    public ExportWordCollection[] Collections { get; set; }
+    public DefaultExportWordCollection[] Collections { get; set; }
 }

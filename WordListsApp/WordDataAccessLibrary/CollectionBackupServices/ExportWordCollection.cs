@@ -5,9 +5,9 @@ namespace WordDataAccessLibrary.CollectionBackupServices;
 /// <summary>
 /// Removes id data and owner data from wordCollection for export
 /// </summary>
-public struct ExportWordCollection : IExportWordCollection
+public struct DefaultExportWordCollection : IExportWordCollection
 {
-    public ExportWordCollection(){}
+    public DefaultExportWordCollection(){}
 
     public string Name
     {
@@ -90,7 +90,7 @@ public struct ExportWordCollection : IExportWordCollection
         if (objectAsJson is null) return null;
         try
         {
-            return JsonConvert.DeserializeObject<ExportWordCollection>(objectAsJson);
+            return JsonConvert.DeserializeObject<DefaultExportWordCollection>(objectAsJson);
         }
         catch (JsonReaderException)
         {

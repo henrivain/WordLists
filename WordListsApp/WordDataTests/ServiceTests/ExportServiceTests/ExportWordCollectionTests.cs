@@ -4,7 +4,7 @@ using WordDataAccessLibrary.CollectionBackupServices;
 namespace WordDataTests.ServiceTests.ExportServiceTests;
 public class ExportWordCollectionTests
 {
-    readonly IExportWordCollection _exportWordCollection = new ExportWordCollection();
+    readonly IExportWordCollection _exportWordCollection = new DefaultExportWordCollection();
 
     [Theory]
     [InlineData("name", "description", "lang-headers")]
@@ -120,7 +120,7 @@ public class ExportWordCollectionTests
     {
         // Arrange & Act 
         IExportWordCollection resultCollection =
-            ExportWordCollection.ParseFromJson(badValue);
+            DefaultExportWordCollection.ParseFromJson(badValue);
 
         // Assert
         Assert.Null(resultCollection);

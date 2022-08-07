@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WordListsUI.WordCollectionHandlingPage.WordCollectionHandlingPage"
+             x:Class="WordListsUI.WordDataPages.WordCollectionEditPage.WordCollectionEditPage"
              Title="Muokkaa sanastoja"
              xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
              xmlns:viewModelHelpers="clr-namespace:WordListsViewModels.Helpers;assembly=WordListsViewModels"

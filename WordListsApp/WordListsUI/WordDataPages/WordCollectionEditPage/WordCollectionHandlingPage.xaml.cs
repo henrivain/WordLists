@@ -1,8 +1,8 @@
-namespace WordListsUI.WordCollectionHandlingPage;
+namespace WordListsUI.WordDataPages.WordCollectionEditPage;
 
-public partial class WordCollectionHandlingPage : ContentPage
+public partial class WordCollectionEditPage : ContentPage
 {
-	public WordCollectionHandlingPage(IWordCollectionHandlingViewModel model)
+	public WordCollectionEditPage(IWordCollectionHandlingViewModel model)
 	{
 		BindingContext = model;
 		InitializeComponent();

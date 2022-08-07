@@ -3,6 +3,7 @@
 namespace WordListsViewModels.Interfaces;
 public interface IJsonImportViewModel
 {
+    string AcceptableFileExtensions { get; }
     string ImportPath { get; }
     bool CanImport { get; }
     IAsyncRelayCommand SelectFile { get; }
@@ -11,6 +12,8 @@ public interface IJsonImportViewModel
     event ImportFailEventHandler? EmptyImportAttempted;
 
     event ImportFailEventHandler? ImportActionFailed;
+
+    event FileAccessEventHandler? SelectFileAttempted;
 
     event ImportSuccessfullEventHandler? ImportSuccessfull;
 }

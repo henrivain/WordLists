@@ -3,7 +3,7 @@ using WordListsUI.Helpers;
 using WordDataAccessLibrary.DataBaseActions;
 using WordListsViewModels.Interfaces;
 
-namespace WordListsUI.ListGeneratorPage;
+namespace WordListsUI.WordDataPages.ListGeneratorPage;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class ListGeneratorPage : ContentPage

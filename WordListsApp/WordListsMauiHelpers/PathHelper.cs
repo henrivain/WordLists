@@ -38,7 +38,7 @@ public class PathHelper
                                   .Replace("PM", string.Empty)
                                   .Replace("AM", string.Empty)
                                   .Replace(".", string.Empty);
-        return $"WordListsExport{date}{AppFileExtension.GetExtension(FileExtension.Wordlist)}";
+        return $"WordListsExport{date}{AppFileExtension.Get(FileExtension.Wordlist)}";
     }
 
 }

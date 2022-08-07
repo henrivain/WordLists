@@ -3,23 +3,25 @@
     x:Class="WordLists.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:WordLists"
+    xmlns:home="clr-namespace:WordListsUI.HomePage;assembly=WordListsUI"
     xmlns:UIComponents="clr-namespace:WordListsUI;assembly=WordListsUI"
-    xmlns:generator="clr-namespace:WordListsUI.ListGeneratorPage;assembly=WordListsUI"
+    xmlns:generator="clr-namespace:WordListsUI.WordDataPages.ListGeneratorPage;assembly=WordListsUI"
     xmlns:welcome="clr-namespace:WordListsUI.WelcomePage;assembly=WordListsUI"
     xmlns:startTraining="clr-namespace:WordListsUI.StartTrainingPage;assembly=WordListsUI"
     xmlns:training="clr-namespace:WordListsUI.WordTrainingPage;assembly=WordListsUI"
     xmlns:info="clr-namespace:WordListsUI.AppInfoPage;assembly=WordListsUI"
-    xmlns:handling="clr-namespace:WordListsUI.WordCollectionHandlingPage;assembly=WordListsUI"
-    xmlns:export="clr-namespace:WordListsUI.JsonExportPage;assembly=WordListsUI"
-    xmlns:import="clr-namespace:WordListsUI.JsonImportPage;assembly=WordListsUI"
+    xmlns:handling="clr-namespace:WordListsUI.WordDataPages.WordCollectionEditPage;assembly=WordListsUI"
+    xmlns:export="clr-namespace:WordListsUI.WordDataPages.JsonExportPage;assembly=WordListsUI"
+    xmlns:import="clr-namespace:WordListsUI.WordDataPages.JsonImportPage;assembly=WordListsUI"
+    xmlns:dataHandle="clr-namespace:WordListsUI.WordDataPages;assembly=WordListsUI"
+
     >
 
     <TabBar FlyoutDisplayOptions="AsMultipleItems">
         <!-- Welcome page -->
 
         <ShellContent Title="Koti"
-                      ContentTemplate="{DataTemplate local:MainPage}"
+                      ContentTemplate="{DataTemplate home:HomePage}"
                       />
 
 
@@ -35,12 +37,18 @@
 
         <!-- Word list handling -->
 
+      
+        <ShellContent Title="Hallitse" 
+                      ContentTemplate="{DataTemplate dataHandle:WordDataPage}"
+                      >
+        </ShellContent>
         <Tab Title="Hallitse">
+            
             <ShellContent Title="Luo otavasta"
                           ContentTemplate="{DataTemplate generator:ListGeneratorPage}"
                           />
             <ShellContent Title="Hallitse sanastoja"
-                          ContentTemplate="{DataTemplate handling:WordCollectionHandlingPage}"
+                          ContentTemplate="{DataTemplate handling:WordCollectionEditPage}"
                           />
             <ShellContent Title="Vie"
                           ContentTemplate="{DataTemplate export:JsonExportPage}"

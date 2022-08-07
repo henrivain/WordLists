@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WordListsUI.WordDataPages.WordDataPage"
+             Title="Hallitse">
+
+    <Grid>
+        <Grid BackgroundColor="AliceBlue" 
+              HorizontalOptions="Start"
+              WidthRequest="200">
+           
+            <VerticalStackLayout>
+                <Grid BackgroundColor="White" 
+                      x:Name="menu"
+                      HeightRequest="35" 
+                      ColumnDefinitions="*,35">
+                    <ImageButton Source="hamburger_icon.png" 
+                                 Margin="5"
+                                 Grid.Column="1"
+                                 />
+                </Grid>
+                <VerticalStackLayout>
+                    
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
+        <ScrollView Grid.Column="1">
+            <VerticalStackLayout>
+                
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

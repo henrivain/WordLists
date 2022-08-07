@@ -17,7 +17,11 @@ public static class FilePickerService
             FileResult result = await FilePicker.Default.PickAsync(new()
             {
                 PickerTitle = "Valitse sijainti vietävälle tiedostolle",
-                FileTypes = GetFileTypesWithExtension(fileExtensions ?? new())
+#if ANDROID
+                FileTypes = GetFileTypesWithExtension(null)     // file extension don't work currently 7.8.2022
+#else
+                FileTypes = GetFileTypesWithExtension(fileExtensions)
+#endif
             });
             if (string.IsNullOrWhiteSpace(result?.FullPath)) return null;
             return result.FullPath;
@@ -43,7 +47,7 @@ public static class FilePickerService
 #else
         return await GetUserSelectedFullPath(new()
         {
-            AppFileExtension.GetExtension(FileExtension.Wordlist)
+            AppFileExtension.Get(FileExtension.Wordlist)
         });
 #endif
     }
@@ -56,7 +60,7 @@ public static class FilePickerService
     }
     private static FilePickerFileType GetFileTypesWithExtension(List<string> extensions)
     {
-
+        extensions ??= new();
 
         return new(new Dictionary<DevicePlatform, IEnumerable<string>>
                 {

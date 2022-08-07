@@ -2,6 +2,7 @@ using System.Diagnostics;
 using WordDataAccessLibrary;
 using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
+using WordListsMauiHelpers.PageRouting;
 
 namespace WordListsUI.StartTrainingPage;
 
@@ -39,7 +40,7 @@ public partial class StartTrainingPage : ContentPage
 
 		if (id is not -1)
 		{
-			await Shell.Current.GoToAsync($"Training/{nameof(WordTrainingPage.WordTrainingPage)}", await BuildPageChangeParameter(id));
+			await Shell.Current.GoToAsync($"{PageRoutes.GetParentRoute(Route.Training)}/{nameof(WordTrainingPage.WordTrainingPage)}", await BuildPageChangeParameter(id));
 		}
 	}
 
