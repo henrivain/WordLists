@@ -11,6 +11,10 @@
     <Color x:Key="WordListBackground">#F0F8FF</Color>   <!-- Alice blue -->
     <Color x:Key="SelectedWordListBackground">#d0e4f5</Color>   <!-- Alice blue -->
     <Color x:Key="BinIconBackground">#8ba2a6</Color>   <!-- Alice blue -->
+    
+    <Color x:Key="SideMenuBackground">#1E2226</Color>   <!-- Alice blue -->
+    <Color x:Key="SideMenuFieldBackground">#282E33</Color>   <!-- Alice blue -->
+    <Color x:Key="SideMenuTopSideBackground">#1A1E21</Color>   <!-- Alice blue -->
 
     <!--was #1c1b4d</Color>-->
     <Color x:Key="FlipCardColor">#8394A8</Color>

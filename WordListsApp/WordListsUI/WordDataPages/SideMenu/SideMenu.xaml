@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      x:Class="WordListsUI.WordDataPages.SideMenu.SideMenu"
+      xmlns:local="clr-namespace:WordListsUI.WordDataPages.SideMenu"
+      x:DataType="{x:Type local:SideMenu}"
+      BackgroundColor="{StaticResource SideMenuBackground}" 
+      HorizontalOptions="Start"
+      WidthRequest="{Binding MenuWidth_Opened}"
+      >
+    <Grid.RowDefinitions>
+        <RowDefinition Height="{Binding MenuWidth_Collapsed}"/>
+        <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Grid.Resources>
+        <x:String x:Key="HamburgerImageSource">hamburger_icon.png</x:String>
+    </Grid.Resources>
+    
+    <Grid.GestureRecognizers>
+        <TapGestureRecognizer Tapped="Open"/>
+        <SwipeGestureRecognizer Direction="Left" Swiped="Collapse"/>
+        <SwipeGestureRecognizer Direction="Right" Swiped="Open"/>
+    </Grid.GestureRecognizers>
+
+    <Grid BackgroundColor="{Binding TopSideColor}" 
+          x:Name="menu"
+          
+          >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="{Binding MenuWidth_Collapsed}"/>
+        </Grid.ColumnDefinitions>
+        <Label TextColor="White" 
+               FontSize="Micro"
+               Text="{Binding Title}" 
+               HorizontalTextAlignment="Start"
+               VerticalTextAlignment="Center"
+               Margin="10,0,0,0"
+               LineBreakMode="NoWrap"
+               />
+        <ImageButton Source="{DynamicResource HamburgerImageSource}" 
+                     Margin="8"
+                     Grid.Column="1"
+                     Clicked="TapGestureRecognizer_Tapped"
+                     BackgroundColor="{Binding TopSideColor}"
+                     />
+    </Grid>
+    <!-- Binding is also set after loaded event because setting it here does not work somehow -->
+    <ContentPresenter Grid.Row="1" 
+                      Content="{Binding MenuItems}" 
+                      Loaded="ContentPresenter_SetMenuItemsBinding"
+                      />
+</Grid>

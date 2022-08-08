@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        x:Class="WordListsUI.WordDataPages.SideMenu.MenuField.SideMenuField"
+        xmlns:local="clr-namespace:WordListsUI.WordDataPages.SideMenu.MenuField"
+        x:DataType="{x:Type local:SideMenuField}"
+        Margin="5,5"
+        >
+    <Border StrokeThickness="0" x:Name="mainBorder">
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer Tapped="Field_Tapped"/>
+        </Border.GestureRecognizers>
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="6"/>
+        </Border.StrokeShape>
+        <Grid ColumnDefinitions="30,*"  HeightRequest="{Binding IconWidth}">
+            <Image Source="{Binding IconSource}" 
+                   WidthRequest="{Binding IconWidth}" 
+                   Margin="10"
+                   />
+            <Label Text="{Binding Text}"
+                   Grid.Column="1"
+                   VerticalTextAlignment="Center"
+                   LineBreakMode="NoWrap"
+                   Margin="2,0,0,0"
+                   />
+        </Grid>
+    </Border>
+    
+</Grid>

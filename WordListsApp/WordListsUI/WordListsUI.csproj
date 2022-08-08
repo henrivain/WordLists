@@ -80,7 +80,10 @@
 	  <MauiXaml Update="AppInfoPage\AppInfoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Components\SideMenu\SideMenu.xaml">
+	  <MauiXaml Update="WordDataPages\SideMenu\MenuField\SideMenuField.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="WordDataPages\SideMenu\SideMenu.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="HomePage\HomePage.xaml">

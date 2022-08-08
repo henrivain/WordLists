@@ -2,11 +2,15 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.WordDataPages.WordDataPage"
-             xmlns:menu="clr-namespace:WordListsUI.Components.SideMenu"
-             Title="Hallitse">
+             xmlns:menu="clr-namespace:WordListsUI.WordDataPages.SideMenu"
+             xmlns:menuItem="clr-namespace:WordListsUI.WordDataPages.SideMenu.MenuField"
+             Title="Hallitse"
+             BackgroundColor="{StaticResource PageBackground}"
+             >
+    
    
     <Grid>
-        <ScrollView BackgroundColor="Gray">
+        <ScrollView>
             <ScrollView.GestureRecognizers>
                 <TapGestureRecognizer Tapped="HideMenu"/>
             </ScrollView.GestureRecognizers>
@@ -14,23 +18,31 @@
 
             </VerticalStackLayout>
         </ScrollView>
-        <menu:SideMenu x:Name="menu">
+        <menu:SideMenu x:Name="menu" 
+                       Title="Hallitse sanastoja"
+                       MenuWidth_Collapsed="40" >
             <menu:SideMenu.MenuItems>
-                <Grid BackgroundColor="Green" WidthRequest="200">
-                    <Grid.Resources>
-                        <Style TargetType="{x:Type Label}">
-                            <Setter Property="BackgroundColor" Value="Black"/>
-                        </Style>
-                    </Grid.Resources>
-                    <Label Text="laksdj" TextColor="Black"/>
-                    <Label Text="laksdj"/>
-                    <Label Text="laksdj"/>
-                    <Label Text="laksdj"/>
-                    <Label Text="laksdj"/>
-                </Grid>
+                <VerticalStackLayout>
+                    <menuItem:SideMenuField IconSource="arrow.png"
+                                            Text="hallitse"  
+                                            />
+                    <menuItem:SideMenuField IconSource="letsgoicon.png"
+                                            Text="luo sanastoja"
+                                            />
+                    <menuItem:SideMenuField IconSource="bin_icon.png"
+                                            Text="poista sanastoja"
+                                            />
+                    
+                    <menuItem:SideMenuField IconSource="arrow.png"
+                                            Text="Vie"
+                                            IsSelected="True"
+                                            />
+                    <menuItem:SideMenuField IconSource="copy_icon.png"
+                                            Text="Tuo"
+                                            IsSelected="True"
+                                            />
+                </VerticalStackLayout>
             </menu:SideMenu.MenuItems>
         </menu:SideMenu>
-        
-        
     </Grid>
 </ContentPage>
