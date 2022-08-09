@@ -36,27 +36,10 @@
         </Tab>
 
         <!-- Word list handling -->
-
-      
         <ShellContent Title="Hallitse" 
                       ContentTemplate="{DataTemplate dataHandle:WordDataPage}"
                       >
         </ShellContent>
-        <Tab Title="Hallitse">
-            
-            <ShellContent Title="Luo otavasta"
-                          ContentTemplate="{DataTemplate generator:ListGeneratorPage}"
-                          />
-            <ShellContent Title="Hallitse sanastoja"
-                          ContentTemplate="{DataTemplate handling:WordCollectionEditPage}"
-                          />
-            <ShellContent Title="Vie"
-                          ContentTemplate="{DataTemplate export:JsonExportPage}"
-                          />
-            <ShellContent Title="Tuo"
-                          ContentTemplate="{DataTemplate import:JsonImportPage}"
-                          />
-        </Tab>
 
 
         <!-- App information page -->

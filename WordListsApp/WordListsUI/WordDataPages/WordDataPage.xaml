@@ -3,18 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.WordDataPages.WordDataPage"
              xmlns:menu="clr-namespace:WordListsUI.Components.SideMenu"
-             Title="Hallitse"
+             Title="Hallitse sanastoja"
              BackgroundColor="{StaticResource PageBackground}"
              xmlns:base="clr-namespace:WordListsUI.WordDataPages"
-             x:DataType="{x:Type base:WordDataPage}"
+             xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
+             x:DataType="{x:Type viewModel:IWordDataViewModel}"
              >
     <Grid>
         <ScrollView Margin="40,0,0,0">
             <ScrollView.GestureRecognizers>
                 <TapGestureRecognizer Tapped="HideMenu"/>
             </ScrollView.GestureRecognizers>
-            <VerticalStackLayout>
-
+            <VerticalStackLayout Margin="20">
+                <Label>Sanastojen muokkaaminen</Label>
+                
+                
+                
             </VerticalStackLayout>
         </ScrollView>
         <menu:SideMenu x:Name="menu" 

@@ -39,14 +39,12 @@ public static class MauiProgram
 		builder.Services.AddTransient<IStartTrainingViewModel, StartTrainingViewModel>();
 		builder.Services.AddTransient<IWordCollectionHandlingViewModel, WordCollectionHandlingViewModel>();
 		builder.Services.AddAbstractFactory<IListGeneratorViewModel, ListGeneratorViewModel>();
+        builder.Services.AddTransient<IWordDataViewModel, WordDataViewModel>();
 
         builder.Services.AddTransient<JsonExportPage>();
         builder.Services.AddTransient<JsonImportPage>();
         builder.Services.AddAbstractFactory<IJsonExportViewModel, JsonExportViewModel>();
 		builder.Services.AddAbstractFactory<IJsonImportViewModel, JsonImportViewModel>();
-
-
-
 
 		builder.Services.AddSingleton<IWordCollectionOwnerService, WordCollectionOwnerService>();
 		builder.Services.AddSingleton<IWordPairService, WordPairService>();

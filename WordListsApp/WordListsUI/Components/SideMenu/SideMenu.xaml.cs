@@ -71,7 +71,7 @@ public partial class SideMenu : Grid
     public static readonly BindableProperty MenuItemsProperty = BindableProperty.Create(
         nameof(MenuItems), typeof(View), typeof(SideMenu));
 
-    bool _isCollapsed = false;
+    bool _isCollapsed = true;
 
     private void ContentPresenter_SetMenuItemsBinding(object sender, EventArgs e)
     {
