@@ -15,10 +15,57 @@
                 <TapGestureRecognizer Tapped="HideMenu"/>
             </ScrollView.GestureRecognizers>
             <VerticalStackLayout Margin="20">
-                <Label>Sanastojen muokkaaminen</Label>
-                
-                
-                
+                <Label Text="Tietoja sinun sanastoistasi" />
+                <Label Text="Sinulla on:" />
+                <VerticalStackLayout Margin="10,0,0,0">
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding WordListCount}" />
+                                <Span Text=" sanastoa" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding WordCount}" />
+                                <Span Text=" sanaa" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Text="joista" />
+                    <VerticalStackLayout Margin="10">
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding LearnedWordCount}" />
+                                    <Span Text=" osaat" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding MightKnowWordCount}" />
+                                    <Span Text=" olet kuullut" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding MightKnowWordCount}"/>
+                                    <Span Text=" on täysin tuntemattomia" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+
+
+
             </VerticalStackLayout>
         </ScrollView>
         <menu:SideMenu x:Name="menu" 
