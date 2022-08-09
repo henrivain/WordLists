@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<VerticalStackLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               x:Class="WordListsUI.WordDataPages.WordDataMenuItems"
+               x:DataType="{x:Type local:WordDataMenuItems}"
+               xmlns:local="clr-namespace:WordListsUI.WordDataPages"
+               xmlns:menu="clr-namespace:WordListsUI.Components.SideMenu"
+               xmlns:field="clr-namespace:WordListsUI.Components.SideMenu.MenuField"
+               >
+    <VerticalStackLayout.Resources>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="TextColor" Value="White"/>
+        </Style>
+        <Style TargetType="{x:Type field:SideMenuField}">
+            <Setter Property="BackgroundColor" Value="{StaticResource SideMenuBackground}"/>
+        </Style>
+    </VerticalStackLayout.Resources>
+    <field:SideMenuField IconSource="arrow.png"
+                         Text="hallitse"  
+                         x:Name="manageDataField"
+                         Loaded="ManageDataField_Loaded"
+                         />
+    <field:SideMenuField IconSource="letsgoicon.png"
+                         Text="luo sanastoja"
+                         x:Name="createDataField"
+                         Loaded="CreateDataField_Loaded"
+                         />
+    <field:SideMenuField IconSource="bin_icon.png"
+                         Text="poista sanastoja"
+                         x:Name="deleteDataField"
+                         Loaded="DeleteDataField_Loaded"
+                         />
+    <field:SideMenuField IconSource="arrow.png"
+                         Text="Vie"
+                         x:Name="exportDataField"
+                         Loaded="ExportDataField_Loaded"
+                         />
+    <field:SideMenuField IconSource="copy_icon.png"
+                         Text="Tuo"
+                         x:Name="importDataField"
+                         Loaded="ImportDataField_Loaded"
+                         />
+</VerticalStackLayout>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-      x:Class="WordListsUI.WordDataPages.SideMenu.SideMenu"
-      xmlns:local="clr-namespace:WordListsUI.WordDataPages.SideMenu"
+      x:Class="WordListsUI.Components.SideMenu.SideMenu"
+      xmlns:local="clr-namespace:WordListsUI.Components.SideMenu"
       x:DataType="{x:Type local:SideMenu}"
       BackgroundColor="{StaticResource SideMenuBackground}" 
       HorizontalOptions="Start"
-      WidthRequest="{Binding MenuWidth_Opened}"
+      WidthRequest="{Binding MenuWidth_Collapsed}"
       >
     <Grid.RowDefinitions>
         <RowDefinition Height="{Binding MenuWidth_Collapsed}"/>
@@ -17,7 +17,6 @@
     </Grid.Resources>
     
     <Grid.GestureRecognizers>
-        <TapGestureRecognizer Tapped="Open"/>
         <SwipeGestureRecognizer Direction="Left" Swiped="Collapse"/>
         <SwipeGestureRecognizer Direction="Right" Swiped="Open"/>
     </Grid.GestureRecognizers>
@@ -30,8 +29,8 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="{Binding MenuWidth_Collapsed}"/>
         </Grid.ColumnDefinitions>
-        <Label TextColor="White" 
-               FontSize="Micro"
+        <Label TextColor="White"
+               FontSize="{OnPlatform WinUI=Micro, Android=Medium, Default=Micro}"
                Text="{Binding Title}" 
                HorizontalTextAlignment="Start"
                VerticalTextAlignment="Center"

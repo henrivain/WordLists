@@ -47,4 +47,9 @@ public partial class WordCollectionEditPage : ContentPage
             }
         }
 	}
+
+	private void HideMenu(object sender, EventArgs e)
+	{
+		menu.Collapse(sender, e);
+	}
 }

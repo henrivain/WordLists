@@ -26,9 +26,6 @@
     <Color x:Key="NeverHeardWord">#66c0d1</Color>
     
     
-    <Color x:Key="InterestingFlipCardColor">#334533</Color>
-    
-    
 
     <Color x:Key="Primary">#512BD4</Color>
     <Color x:Key="Secondary">#DFD8F7</Color>

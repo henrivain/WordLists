@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace WordListsUI.WordDataPages.SideMenu.MenuField;
+namespace WordListsUI.Components.SideMenu.MenuField;
 
 public partial class SideMenuField : Grid
 {
@@ -35,7 +35,11 @@ public partial class SideMenuField : Grid
         get => (string)GetValue(TextProperty);
         set => SetValue(TextProperty, value);
     }
-
+    public new Color BackgroundColor
+    {
+        get => (Color)GetValue(BackgroundColorProperty);
+        set => SetValue(BackgroundColorProperty, value);
+    }
 
     public string TargetUIRoute { get; set; } = null;
 
@@ -47,7 +51,7 @@ public partial class SideMenuField : Grid
             Debug.WriteLine($"{nameof(SideMenuField)} can't go to empty route");
             return;
         }
-        await Shell.Current.GoToAsync(TargetUIRoute);
+        await Shell.Current.GoToAsync(TargetUIRoute, false);
     }
 
 
@@ -83,6 +87,8 @@ public partial class SideMenuField : Grid
     public static readonly BindableProperty TextProperty = BindableProperty.Create(
         nameof(Text), typeof(string), typeof(SideMenuField), defaultValue:"My text");
 
-  
-   
+    public static readonly new BindableProperty BackgroundColorProperty = BindableProperty.Create(
+        nameof(BackgroundColor), typeof(Color), typeof(SideMenu));
+
+
 }

@@ -2,15 +2,14 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.WordDataPages.WordDataPage"
-             xmlns:menu="clr-namespace:WordListsUI.WordDataPages.SideMenu"
-             xmlns:menuItem="clr-namespace:WordListsUI.WordDataPages.SideMenu.MenuField"
+             xmlns:menu="clr-namespace:WordListsUI.Components.SideMenu"
              Title="Hallitse"
              BackgroundColor="{StaticResource PageBackground}"
+             xmlns:base="clr-namespace:WordListsUI.WordDataPages"
+             x:DataType="{x:Type base:WordDataPage}"
              >
-    
-   
     <Grid>
-        <ScrollView>
+        <ScrollView Margin="40,0,0,0">
             <ScrollView.GestureRecognizers>
                 <TapGestureRecognizer Tapped="HideMenu"/>
             </ScrollView.GestureRecognizers>
@@ -20,28 +19,11 @@
         </ScrollView>
         <menu:SideMenu x:Name="menu" 
                        Title="Hallitse sanastoja"
-                       MenuWidth_Collapsed="40" >
+                       MenuWidth_Collapsed="40"
+                       IsCollapsed="True"
+                       >
             <menu:SideMenu.MenuItems>
-                <VerticalStackLayout>
-                    <menuItem:SideMenuField IconSource="arrow.png"
-                                            Text="hallitse"  
-                                            />
-                    <menuItem:SideMenuField IconSource="letsgoicon.png"
-                                            Text="luo sanastoja"
-                                            />
-                    <menuItem:SideMenuField IconSource="bin_icon.png"
-                                            Text="poista sanastoja"
-                                            />
-                    
-                    <menuItem:SideMenuField IconSource="arrow.png"
-                                            Text="Vie"
-                                            IsSelected="True"
-                                            />
-                    <menuItem:SideMenuField IconSource="copy_icon.png"
-                                            Text="Tuo"
-                                            IsSelected="True"
-                                            />
-                </VerticalStackLayout>
+                <base:WordDataMenuItems SelectedItem="{x:Static base:SelectedMenuItem.Main}"/>
             </menu:SideMenu.MenuItems>
         </menu:SideMenu>
     </Grid>

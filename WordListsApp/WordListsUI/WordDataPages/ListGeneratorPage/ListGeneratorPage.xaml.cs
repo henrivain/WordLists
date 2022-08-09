@@ -44,5 +44,8 @@ public partial class ListGeneratorPage : ContentPage
 		BindingContext = ModelFactory.Create();
 	}
 
-
+	private void HideMenu(object sender, EventArgs e)
+	{
+		menu.Collapse(sender, e);
+	}
 }

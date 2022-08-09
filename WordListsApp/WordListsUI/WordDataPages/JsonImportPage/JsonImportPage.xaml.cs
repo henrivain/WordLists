@@ -58,4 +58,9 @@ public partial class JsonImportPage : ContentPage
         };
         parent.Commit(this, "opacityAnimation", 16, 6000);
     }
+
+    private void HideMenu(object sender, EventArgs e)
+    {
+        menu.Collapse(sender, e);
+    }
 }

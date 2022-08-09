@@ -17,10 +17,10 @@ public partial class AppShell : Shell
 	{
 		InitializeComponent();
 
-        string training = PageRoutes.GetParentRoute(Route.Training);
-        string handling = PageRoutes.GetParentRoute(Route.WordHandling);
-        string lifetime = PageRoutes.GetParentRoute(Route.LifeTime);
-        string backup = PageRoutes.GetParentRoute(Route.Backup);
+        string training = PageRoutes.GetRoute(Route.Training);
+        string handling = PageRoutes.GetRoute(Route.WordHandling);
+        string lifetime = PageRoutes.GetRoute(Route.LifeTime);
+        string backup = PageRoutes.GetRoute(Route.Backup);
 
         Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
         Routing.RegisterRoute(nameof(AppInfoPage), typeof(AppInfoPage));

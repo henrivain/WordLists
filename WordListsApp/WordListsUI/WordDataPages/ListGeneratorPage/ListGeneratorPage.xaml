@@ -8,29 +8,35 @@
              x:DataType="{x:Type viewModel:IListGeneratorViewModel}"
              x:Name="listGeneratorView"
              BackgroundColor="{StaticResource PageBackground}"
+             xmlns:base="clr-namespace:WordListsUI.WordDataPages"
+             xmlns:menu="clr-namespace:WordListsUI.Components.SideMenu"
              >
-    <ScrollView>
-        <VerticalStackLayout >
-            <VerticalStackLayout.Resources>
-                <Style TargetType="{x:Type Label}">
-                    <Setter Property="TextColor" Value="{StaticResource UnImportantText}"/>
-                </Style>
-                <Style TargetType="{x:Type Entry}">
-                    <Setter Property="Margin" Value="0,5,0,10"/>
-                    <Setter Property="TextColor" Value="Black"/>
-                    <Setter Property="BackgroundColor" Value="{StaticResource KindaWhite}"/>
-                    <Setter Property="PlaceholderColor" Value="{StaticResource UnImportantText}"/>
-                </Style>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Margin" Value="0,20"/>
-                </Style>
-            </VerticalStackLayout.Resources>
-            <VerticalStackLayout Padding="30">
-                <VerticalStackLayout HorizontalOptions="Center">
+    <Grid>
+        <ScrollView Margin="40,0,0,0">
+            <ScrollView.GestureRecognizers>
+                <TapGestureRecognizer Tapped="HideMenu"/>
+            </ScrollView.GestureRecognizers>
+            <VerticalStackLayout >
+                <VerticalStackLayout.Resources>
+                    <Style TargetType="{x:Type Label}">
+                        <Setter Property="TextColor" Value="{StaticResource UnImportantText}"/>
+                    </Style>
+                    <Style TargetType="{x:Type Entry}">
+                        <Setter Property="Margin" Value="0,5,0,10"/>
+                        <Setter Property="TextColor" Value="Black"/>
+                        <Setter Property="BackgroundColor" Value="{StaticResource KindaWhite}"/>
+                        <Setter Property="PlaceholderColor" Value="{StaticResource UnImportantText}"/>
+                    </Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Margin" Value="0,20"/>
+                    </Style>
+                </VerticalStackLayout.Resources>
+                <VerticalStackLayout Padding="30">
+                    <VerticalStackLayout HorizontalOptions="Center">
 
 
-                    <Label Text="Otsikko" />
-                    <Entry Placeholder="Minun sanastoni 1"
+                        <Label Text="Otsikko" />
+                        <Entry Placeholder="Minun sanastoni 1"
                            Text="{Binding CollectionName}"
                            Focused="ITextInput_Focused"
                            SemanticProperties.Hint="Collection name"
@@ -40,8 +46,8 @@
                            />
 
 
-                    <Label Text="Kielet"/>
-                    <Entry Placeholder="fi-en"
+                        <Label Text="Kielet"/>
+                        <Entry Placeholder="fi-en"
                            Grid.Row="1"
                            Text="{Binding LanguageHeaders}"
                            Focused="ITextInput_Focused"
@@ -51,32 +57,32 @@
                            WidthRequest="120"
                            HorizontalOptions="Start"
                            />
+                    </VerticalStackLayout>
                 </VerticalStackLayout>
-            </VerticalStackLayout>
-            <Button Text="Uusi leikepöydältä" 
+                <Button Text="Uusi leikepöydältä" 
                     HorizontalOptions="Center" 
                     Command="{Binding GeneratePairsCommand}"
                     />
-            <CollectionView ItemsLayout="VerticalList"
+                <CollectionView ItemsLayout="VerticalList"
                             Margin="20"
                             ItemsSource="{Binding WordPairs}"
                             ItemSizingStrategy="MeasureAllItems"
                             BackgroundColor="{StaticResource WordListBackground}"
                             >
-                <CollectionView.EmptyView>
-                    <Label Padding="40"
+                    <CollectionView.EmptyView>
+                        <Label Padding="40"
                            TextColor="{StaticResource UnImportantText}"
                            HorizontalTextAlignment="Center"
                            Text="Import word list from clipboard to generate new list!" 
                            HorizontalOptions="Center"
                        />
-                </CollectionView.EmptyView>
-                
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid ColumnDefinitions="5*, *, 5*" 
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="5*, *, 5*" 
                               VerticalOptions="Fill" >
-                            <Label LineBreakMode="WordWrap"
+                                <Label LineBreakMode="WordWrap"
                                 Grid.Column="0"
                                 HorizontalTextAlignment="Start"
                                 HorizontalOptions="End"
@@ -84,7 +90,7 @@
                                 x:DataType="{x:Type wordData:WordPair}"
                                 Text="{Binding NativeLanguageWord}"
                                 />
-                            <Label LineBreakMode="WordWrap"
+                                <Label LineBreakMode="WordWrap"
                                 Grid.Column="2"
                                 HorizontalTextAlignment="Start"
                                 HorizontalOptions="Start"
@@ -92,22 +98,32 @@
                                 x:DataType="{x:Type wordData:WordPair}"
                                 Text="{Binding ForeignLanguageWord}"
                                 />
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-            <Button Text="Vaihda kielet" 
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <Button Text="Vaihda kielet" 
                     IsEnabled="{Binding CanSave}"
                     HorizontalOptions="Center"
                     Command="{Binding FlipSides}"
                     />
-            <Button Text="Save to database" 
+                <Button Text="Save to database" 
                     Command="{Binding SaveCollection}" 
                     HorizontalOptions="Center"/>
 
-            <Label Text="Tallenna" IsVisible="{Binding LableVisible}"/>
-            <!-- IsEnabled="{Binding CanSave}"--> 
-            <Button Text="Aloita alusta" Clicked="StartAgainBtn_Click" HorizontalOptions="Center"/>
-        </VerticalStackLayout>
-    </ScrollView>
+                <Label Text="Tallenna" IsVisible="{Binding LableVisible}"/>
+                <!-- IsEnabled="{Binding CanSave}"-->
+                <Button Text="Aloita alusta" Clicked="StartAgainBtn_Click" HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+        </ScrollView>
+        <menu:SideMenu x:Name="menu" 
+                       Title="Hallitse sanastoja"
+                       MenuWidth_Collapsed="40"
+                       IsCollapsed="True"
+                       >
+            <menu:SideMenu.MenuItems>
+                <base:WordDataMenuItems SelectedItem="{x:Static base:SelectedMenuItem.Create}"/>
+            </menu:SideMenu.MenuItems>
+        </menu:SideMenu>
+    </Grid>
 </ContentPage>

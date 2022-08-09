@@ -42,4 +42,9 @@ public partial class JsonExportPage : ContentPage
             UIInteractionHelper.FocusITextInputText(input, this);
         }
     }
+
+    private void HideMenu(object sender, EventArgs e)
+    {
+        menu.Collapse(sender, e);
+    }
 }

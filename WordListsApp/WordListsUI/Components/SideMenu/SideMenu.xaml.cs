@@ -1,4 +1,4 @@
-namespace WordListsUI.WordDataPages.SideMenu;
+namespace WordListsUI.Components.SideMenu;
 public partial class SideMenu : Grid
 {
 	public SideMenu()
@@ -7,18 +7,27 @@ public partial class SideMenu : Grid
         InitializeComponent();
 	}
 
-
     public void Collapse(object sender, EventArgs e)
     {
-        if (IsCollapsed is false) ChangeMenuWidth();
+        IsCollapsed = true;
     }
     public void Open(object sender, EventArgs e)
     {
-        if (IsCollapsed) ChangeMenuWidth();
+        IsCollapsed = false;
     }
     
-    
     public string HamburgerImageSource { set => Resources["HamburgerImageSource"] = value; }
+
+    public bool IsCollapsed
+    {
+        get => _isCollapsed;
+        set
+        {
+            _isCollapsed = value;
+            ChangeWidth(this, value ? MenuWidth_Collapsed : MenuWidth_Opened);
+        }
+
+    }
 
     public string Title
     {
@@ -28,7 +37,6 @@ public partial class SideMenu : Grid
     public static readonly BindableProperty TitleProperty = BindableProperty.Create(
         nameof(Title), typeof(string), typeof(SideMenu), defaultValue: "Title");
 
-
     public Color TopSideColor
     {
         get => (Color)GetValue(TopSideColorProperty);
@@ -36,8 +44,6 @@ public partial class SideMenu : Grid
     }
     public static readonly BindableProperty TopSideColorProperty = BindableProperty.Create(
         nameof(TopSideColor), typeof(Color), typeof(SideMenu), defaultValue: Color.FromArgb("#1A1E21"));
-
-
 
     public double MenuWidth_Opened
     {
@@ -65,7 +71,7 @@ public partial class SideMenu : Grid
     public static readonly BindableProperty MenuItemsProperty = BindableProperty.Create(
         nameof(MenuItems), typeof(View), typeof(SideMenu));
 
-    private bool IsCollapsed { get; set; } = false;
+    bool _isCollapsed = false;
 
     private void ContentPresenter_SetMenuItemsBinding(object sender, EventArgs e)
     {
@@ -76,11 +82,6 @@ public partial class SideMenu : Grid
     }
     private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
     {
-        ChangeMenuWidth();
-    }
-    private void ChangeMenuWidth()
-    {
-        ChangeWidth(this, IsCollapsed ?  MenuWidth_Opened : MenuWidth_Collapsed);
         IsCollapsed = !IsCollapsed;
     }
     private static void ChangeWidth(View view, double width)
@@ -93,14 +94,14 @@ public partial class SideMenu : Grid
     {
         if (bindable is SideMenu menu && menu.IsCollapsed)
         {
-            menu.Collapse(menu, null);
+            menu.IsCollapsed = true;
         }
     }
     private static void MenuWidth_OpenedPropertyChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is SideMenu menu && menu.IsCollapsed is false)
         {
-            menu.Open(menu, null);
+            menu.IsCollapsed = false;
         }
     }
 

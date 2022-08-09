@@ -6,66 +6,76 @@
              xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
              x:DataType="{x:Type viewModel:IJsonImportViewModel}"
              BackgroundColor="{StaticResource PageBackground}"
-             >
-    <VerticalStackLayout>
-        <VerticalStackLayout.Resources>
-            <Style TargetType="{x:Type Label}">
-                <Setter Property="HorizontalTextAlignment" Value="Center"/>
-                <Setter Property="TextColor" Value="{StaticResource UnImportantText}"/>
-            </Style>
-        </VerticalStackLayout.Resources>
-        <Label Text="Tuo sanastoja ulkoisesta .wordlist tiedostosta"
-               HorizontalTextAlignment="Center"
-               FontSize="Large"
-               Margin="0,20,0,50"
-               />
-        
-        <StackLayout Orientation="{OnIdiom Default=Vertical, Desktop=Horizontal}" 
-                     HorizontalOptions="Center" 
-                     Margin="0,20"
-                     >
-
-            <Grid Margin="{OnIdiom Default='0,0,0,20', Desktop='0,0,10,0'}"
-                  >
-                <Button Text="Valitse" 
-                        Padding="{OnPlatform Default='20,0', Android='20,10'}" 
-                        Command="{Binding SelectFile}" 
-                        HorizontalOptions="Center" 
-                        />
-                <Label x:Name="wrongFileTypeLabel"
+             xmlns:menu="clr-namespace:WordListsUI.Components.SideMenu"
+             xmlns:base="clr-namespace:WordListsUI.WordDataPages">
+    <Grid>
+        <ScrollView Margin="40,0,0,0">
+            <ScrollView.GestureRecognizers>
+                <TapGestureRecognizer Tapped="HideMenu" />
+            </ScrollView.GestureRecognizers>
+            <VerticalStackLayout>
+                <VerticalStackLayout.Resources>
+                    <Style TargetType="{x:Type Label}">
+                        <Setter Property="HorizontalTextAlignment"
+                                Value="Center" />
+                        <Setter Property="TextColor"
+                                Value="{StaticResource UnImportantText}" />
+                    </Style>
+                </VerticalStackLayout.Resources>
+                <Label Text="Tuo sanastoja ulkoisesta .wordlist tiedostosta"
                        HorizontalTextAlignment="Center"
-                       Margin="0,-20"
-                       TextColor="Red"
-                       Opacity="0"
-                       IsVisible="{OnPlatform Android=true, Default=false}"
-                       >
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="Tiedostolla tulee olla pääte "/>
-                            <Span Text="{Binding AcceptableFileExtensions}" 
-                              FontAttributes="Bold"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-            </Grid>
-           
-            <Border BackgroundColor="#45000000" 
-                    HorizontalOptions="Center"
-                    MinimumWidthRequest="350"
-                    >
-                <Grid>
-                    <Label Text="{Binding ImportPath}"
-                           Padding="{OnIdiom Default='20,10', Phone='10'}"
-                           />
-                </Grid>
-            </Border>
-        </StackLayout>
-        <Button Command="{Binding Import}" 
-                IsEnabled="{Binding CanImport}"
-                Text="Tuo"
-                HorizontalOptions="Center"
-                Padding="30,10"
-                Margin="0,50,0,0"
-                />
-    </VerticalStackLayout>
+                       FontSize="Large"
+                       Margin="0,20,0,50" />
+
+                <StackLayout Orientation="{OnIdiom Default=Vertical, Desktop=Horizontal}"
+                             HorizontalOptions="Center"
+                             Margin="0,20">
+
+                    <Grid Margin="{OnIdiom Default='0,0,0,20', Desktop='0,0,10,0'}">
+                        <Button Text="Valitse"
+                                Padding="{OnPlatform Default='20,0', Android='20,10'}"
+                                Command="{Binding SelectFile}"
+                                HorizontalOptions="Center" />
+                        <Label x:Name="wrongFileTypeLabel"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,-20"
+                               TextColor="Red"
+                               Opacity="0"
+                               IsVisible="{OnPlatform Android=true, Default=false}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Tiedostolla tulee olla pääte " />
+                                    <Span Text="{Binding AcceptableFileExtensions}"
+                                          FontAttributes="Bold" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>
+
+                    <Border BackgroundColor="#45000000"
+                            HorizontalOptions="Center"
+                            MinimumWidthRequest="350">
+                        <Grid>
+                            <Label Text="{Binding ImportPath}"
+                                   Padding="{OnIdiom Default='20,10', Phone='10'}" />
+                        </Grid>
+                    </Border>
+                </StackLayout>
+                <Button Command="{Binding Import}"
+                        IsEnabled="{Binding CanImport}"
+                        Text="Tuo"
+                        HorizontalOptions="Center"
+                        Padding="30,10"
+                        Margin="0,50,0,0" />
+            </VerticalStackLayout>
+        </ScrollView>
+        <menu:SideMenu x:Name="menu"
+                       Title="Hallitse sanastoja"
+                       MenuWidth_Collapsed="40"
+                       IsCollapsed="True">
+            <menu:SideMenu.MenuItems>
+                <base:WordDataMenuItems SelectedItem="{x:Static base:SelectedMenuItem.Import}" />
+            </menu:SideMenu.MenuItems>
+        </menu:SideMenu>
+    </Grid>
 </ContentPage>

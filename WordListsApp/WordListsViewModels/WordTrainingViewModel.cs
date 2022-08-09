@@ -195,7 +195,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     private void ShowListCompleted()
     {
         IsListCompleted = true;
-        if (IsEmptyCollection) _ = UpdateCollectionToDataBase();
+        if (IsEmptyCollection is false) _ = UpdateCollectionToDataBase();
         CanGoNext = false;
         VisibleWordPair = CompletedView;
     }
