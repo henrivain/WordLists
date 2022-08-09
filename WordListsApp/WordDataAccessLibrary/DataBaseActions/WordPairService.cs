@@ -1,6 +1,7 @@
 ﻿using SQLite;
 using System.Diagnostics;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
+using System.Linq.Expressions;
 
 namespace WordDataAccessLibrary.DataBaseActions;
 
@@ -77,5 +78,15 @@ public class WordPairService : IWordPairService
             pair.OwnerId = collection.Owner.Id;
             await db.InsertAsync(pair);
         }
+    }
+    public async Task<int> CountItems()
+    {
+        await Init();
+        return await db.Table<WordPair>().CountAsync();
+    }
+    public async Task<int> CountItemsMatching(Expression<Func<WordPair, bool>> expression)
+    {
+        await Init();
+        return await db.Table<WordPair>().Where(expression).CountAsync();
     }
 }

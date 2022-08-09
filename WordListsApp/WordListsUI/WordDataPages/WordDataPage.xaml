@@ -12,7 +12,7 @@
     <Grid>
         <ScrollView Margin="40,0,0,0">
             <ScrollView.GestureRecognizers>
-                <TapGestureRecognizer Tapped="HideMenu"/>
+                <TapGestureRecognizer Tapped="HideMenu" />
             </ScrollView.GestureRecognizers>
             <VerticalStackLayout Margin="20">
                 <Label Text="Tietoja sinun sanastoistasi" />
@@ -34,8 +34,9 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Label Text="joista" />
-                    <VerticalStackLayout Margin="10">
+                    <Label Text="joista"
+                           Margin="10,10,0,0" />
+                    <VerticalStackLayout Margin="20,0,0,0">
                         <Label>
                             <Label.FormattedText>
                                 <FormattedString>
@@ -55,24 +56,27 @@
                         <Label>
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="{Binding MightKnowWordCount}"/>
+                                    <Span Text="{Binding NeverHeardWordCount}" />
                                     <Span Text=" on täysin tuntemattomia" />
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding NotSetWordCount}" />
+                                    <Span Text=" on läpikäymättömiä" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
                     </VerticalStackLayout>
-
                 </VerticalStackLayout>
-
-
-
             </VerticalStackLayout>
         </ScrollView>
-        <menu:SideMenu x:Name="menu" 
+        <menu:SideMenu x:Name="menu"
                        Title="Hallitse sanastoja"
                        MenuWidth_Collapsed="40"
-                       IsCollapsed="True"
-                       >
+                       IsCollapsed="True">
             <menu:SideMenu.MenuItems>
                 <base:WordDataMenuItems SelectedItem="{x:Static base:SelectedMenuItem.Main}"/>
             </menu:SideMenu.MenuItems>

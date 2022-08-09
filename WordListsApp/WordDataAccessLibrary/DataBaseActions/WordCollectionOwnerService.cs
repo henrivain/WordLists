@@ -90,4 +90,9 @@ public class WordCollectionOwnerService : IWordCollectionOwnerService
             #endif
         }
     }
+    public async Task<int> CountItems()
+    {
+        await Init();
+        return await db.Table<WordCollectionOwner>().CountAsync();
+    }
 }

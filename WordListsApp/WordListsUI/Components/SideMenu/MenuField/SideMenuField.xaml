@@ -16,7 +16,7 @@
         <Grid ColumnDefinitions="30,*"  HeightRequest="{Binding IconWidth}">
             <Image Source="{Binding IconSource}" 
                    WidthRequest="{Binding IconWidth}" 
-                   Margin="10"
+                   Margin="7"
                    />
             <Label Text="{Binding Text}"
                    Grid.Column="1"

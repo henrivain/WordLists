@@ -6,14 +6,14 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
 {
     public WordTrainingViewModel(IWordCollectionService collectionService)
     {
-        StartNew(new());
         CollectionService = collectionService;
+        StartNew(new());
     }
 
     public WordTrainingViewModel(IWordCollectionService collectionService, WordCollection collection)
     {
-        StartNew(collection);
         CollectionService = collectionService;
+        StartNew(collection);
     }
 
     public WordCollection WordCollection { get; set; } = new();
@@ -229,6 +229,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     }
     private async Task UpdateCollectionToDataBase()
     {
+        if (IsEmptyCollection) return;
         await CollectionService.SaveProgression(WordCollection);
     }
 

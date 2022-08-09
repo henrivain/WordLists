@@ -95,6 +95,8 @@
 	  <None Remove="Resources\Images\copy_icon.svg" />
 	  <None Remove="Resources\Images\hamburger_icon.svg" />
 	  <None Remove="Resources\Images\LetsGoIcon.svg" />
+	  <None Remove="Resources\Images\new_icon.svg" />
+	  <None Remove="Resources\Images\pencil_icon.svg" />
 	</ItemGroup>
 
 	<ItemGroup>

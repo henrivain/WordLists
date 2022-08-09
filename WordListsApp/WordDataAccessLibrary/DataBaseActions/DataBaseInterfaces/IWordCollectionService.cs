@@ -16,4 +16,5 @@ public interface IWordCollectionService
     /// <param name="verifyByTrue"></param>
     /// <returns>number of object deleted</returns>
     Task<int> DeleteAll(string verifyByTrue);
+    Task<int> CountItems();
 }

@@ -113,7 +113,6 @@ public class WordCollectionService : IWordCollectionService
         return new(owner, pairs);
     }
 
-
     public async Task<List<WordCollection>> GetWordCollectionsById(int[] ids)
     {
         List<WordCollection> result = new();
@@ -123,7 +122,6 @@ public class WordCollectionService : IWordCollectionService
         }
         return result.Where(x => x is not null).ToList();
     }
-
 
     /// <summary>
     /// Remove WordCollection with matching id (remove owner and all child word pairs with same id)
@@ -159,6 +157,10 @@ public class WordCollectionService : IWordCollectionService
         return removedObjects;
     }
 
+    public async Task<int> CountItems()
+    {
+       return await OwnerService.CountItems();
+    }
 
     
 }

@@ -1,11 +1,12 @@
 ﻿namespace WordListsViewModels.Interfaces;
 public interface IWordDataViewModel
 {
-    public int WordListCount { get; }
-    public int WordCount { get; }
-    public int LearnedWordCount { get; }
-    public int MightKnowWordCount { get; }
-    public int NeverHeardWordCount { get; }
+    int WordListCount { get; }
+    int WordCount { get; }
+    int LearnedWordCount { get; }
+    int MightKnowWordCount { get; }
+    int NeverHeardWordCount { get; }
+    int NotSetWordCount { get; }
 
-    public IAsyncRelayCommand UpdateData { get; }
+    IAsyncRelayCommand UpdateData { get; }
 }

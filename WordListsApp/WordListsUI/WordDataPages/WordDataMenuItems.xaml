@@ -15,12 +15,12 @@
             <Setter Property="BackgroundColor" Value="{StaticResource SideMenuBackground}"/>
         </Style>
     </VerticalStackLayout.Resources>
-    <field:SideMenuField IconSource="arrow.png"
+    <field:SideMenuField IconSource="pencil_icon.png"
                          Text="hallitse"  
                          x:Name="manageDataField"
                          Loaded="ManageDataField_Loaded"
                          />
-    <field:SideMenuField IconSource="letsgoicon.png"
+    <field:SideMenuField IconSource="new_icon.png"
                          Text="luo sanastoja"
                          x:Name="createDataField"
                          Loaded="CreateDataField_Loaded"
