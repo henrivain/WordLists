@@ -19,8 +19,10 @@
 		<ApplicationIdGuid>4A569C22-53DE-4869-B815-8DACFFFD87C5</ApplicationIdGuid>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
+		<ApplicationDisplayVersion>1.1</ApplicationDisplayVersion>
+		<Version>1.1.2.0</Version>
+		
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
@@ -90,13 +92,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\again_icon.svg" />
 	  <None Remove="Resources\Images\bin_icon.svg" />
 	  <None Remove="Resources\Images\bin_icon_with_border.svg" />
 	  <None Remove="Resources\Images\copy_icon.svg" />
 	  <None Remove="Resources\Images\hamburger_icon.svg" />
+	  <None Remove="Resources\Images\home_icon.svg" />
+	  <None Remove="Resources\Images\info_icon.svg" />
 	  <None Remove="Resources\Images\LetsGoIcon.svg" />
 	  <None Remove="Resources\Images\new_icon.svg" />
+	  <None Remove="Resources\Images\ok_icon.svg" />
 	  <None Remove="Resources\Images\pencil_icon.svg" />
+	  <None Remove="Resources\Images\training_icon.svg" />
 	</ItemGroup>
 
 	<ItemGroup>

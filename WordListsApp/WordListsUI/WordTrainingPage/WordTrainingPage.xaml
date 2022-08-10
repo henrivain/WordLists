@@ -6,127 +6,147 @@
              xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
              xmlns:windows="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;assembly=Microsoft.Maui.Controls"
              x:DataType="{x:Type viewModel:IWordTrainingViewModel}"
-             Title="Harjoittele" 
+             Title="Harjoittele"
              BackgroundColor="{StaticResource PageBackground}"
-             x:Name="WordTrainer"
-             >
+             x:Name="WordTrainer">
     <ContentPage.Resources>
         <Style TargetType="{x:Type Label}">
-            <Setter Property="TextColor" Value="White"></Setter>
+            <Setter Property="TextColor"
+                    Value="White"></Setter>
         </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
         <ScrollView>
-            <VerticalStackLayout >
+            <VerticalStackLayout>
+                <VerticalStackLayout.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="TextColor"
+                                Value="White" />
+                        <Setter Property="Margin"
+                                Value="5" />
+                    </Style>
+                </VerticalStackLayout.Resources>
                 <VerticalStackLayout Margin="40,20">
                     <Label Text="{Binding Title}"
-                    FontSize="Title"
-                    FontAttributes="Bold"
-                    LineBreakMode="TailTruncation"
-                    />
+                           FontSize="Title"
+                           FontAttributes="Bold"
+                           LineBreakMode="TailTruncation" />
                     <Label Text="{Binding LanguageHeaders}"
-                    Grid.Row="1"
-                    FontSize="Subtitle"    
-                    />
+                           Grid.Row="1"
+                           FontSize="Subtitle" />
                 </VerticalStackLayout>
 
                 <Grid HeightRequest="{OnIdiom Desktop='300', Default='200'}"
-                    Grid.Row="3"
-                    ColumnDefinitions="{OnIdiom Phone='0.1*, *, 0.1*', Default='*, *, *'}"
-                    SizeChanged="FlipperGrid_SizeChanged"
-                    >
+                      Grid.Row="3"
+                      ColumnDefinitions="{OnIdiom Phone='0.1*, *, 0.1*', Default='*, *, *'}"
+                      SizeChanged="FlipperGrid_SizeChanged">
                     <flipper:WordPairFlipCard Grid.Column="1"
                                               x:Name="flipper"
                                               VerticalOptions="FillAndExpand"
-                                              WordPair="{Binding VisibleWordPair}"
-                                              >
+                                              WordPair="{Binding VisibleWordPair}">
                     </flipper:WordPairFlipCard>
                 </Grid>
 
-                <Grid ColumnDefinitions="*, auto, *" Margin="0,25,0,50" >
+                <Grid ColumnDefinitions="*, auto, *"
+                      Margin="0,25,0,50">
                     <Grid.Resources>
                         <Style TargetType="{x:Type ImageButton}">
-                            <Setter Property="HeightRequest" Value="40"/>
-                            <Setter Property="WidthRequest" Value="40"/>
-                            <Setter Property="CornerRadius" Value="20"/>
-                            <Setter Property="Padding" Value="2"/>
-                            <Setter Property="Margin" Value="20,0"/>
+                            <Setter Property="HeightRequest"
+                                    Value="40" />
+                            <Setter Property="WidthRequest"
+                                    Value="40" />
+                            <Setter Property="CornerRadius"
+                                    Value="20" />
+                            <Setter Property="Padding"
+                                    Value="2" />
+                            <Setter Property="Margin"
+                                    Value="20,0" />
                         </Style>
                     </Grid.Resources>
-                    <ImageButton Source="arrow.png" 
-                                IsEnabled="{Binding CanGoPrevious}"
-                                BackgroundColor="Transparent"
-                                Rotation="180"
-                                HorizontalOptions="End"
-                                Clicked="Button_LastCard"
-                                >
-                    </ImageButton>
+                    <ImageButton Source="arrow.png"
+                                 IsEnabled="{Binding CanGoPrevious}"
+                                 BackgroundColor="Transparent"
+                                 Rotation="180"
+                                 HorizontalOptions="End"
+                                 Clicked="Button_LastCard" />
+
                     <Label Grid.Column="1"
-                        HorizontalOptions="Center"
-                        VerticalOptions="Center"
-                        >
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center">
                         <Label.Text>
                             <MultiBinding StringFormat="{}{0}/{1}">
-                                <Binding Path="WordIndex"/>
-                                <Binding Path="MaxWordIndex"/>
+                                <Binding Path="WordIndex" />
+                                <Binding Path="MaxWordIndex" />
                             </MultiBinding>
                         </Label.Text>
                     </Label>
-                    <ImageButton Source="arrow.png" 
-                                IsEnabled="{Binding CanGoNext}"
-                                BackgroundColor="Transparent"
-                                HorizontalOptions="Start"
-                                Grid.Column="2"
-                                Clicked="Button_NextCard"
-                                >
-                    </ImageButton>
+                    <HorizontalStackLayout Grid.Column="2">
+                        <ImageButton Source="arrow.png"
+                                     IsEnabled="{Binding CanGoNext}"
+                                     BackgroundColor="Transparent"
+                                     HorizontalOptions="Start"
+                                     Clicked="Button_NextCard" />
+
+                        <ImageButton Command="{Binding RestartCommand}"
+                                     Source="again_icon.png"
+                                     BackgroundColor="Transparent"
+                                     IsVisible="{Binding IsListCompleted}"
+                                     >
+                            <ImageButton.Triggers>
+                                <DataTrigger TargetType="{x:Type ImageButton}" Binding="{Binding IsEmptyCollection}" Value="false">
+                                    <Setter Property="IsEnabled"
+                                            Value="True" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="{x:Type ImageButton}"
+                                             Binding="{Binding IsEmptyCollection}"
+                                             Value="true">
+                                    <Setter Property="IsEnabled"
+                                            Value="false" />
+                                </DataTrigger>
+                            </ImageButton.Triggers>
+                        </ImageButton>
+
+                        <Image Source="ok_icon.png"
+                               IsVisible="{Binding ProgressSaved}"
+                               Margin="20,0,0,0"
+                               HeightRequest="15" />
+                    </HorizontalStackLayout>
+
+
                 </Grid>
-                <Grid ColumnDefinitions="*, *, *" HorizontalOptions="CenterAndExpand">
-                    <Grid.Resources>
-                        <Style TargetType="{x:Type Button}">
-                            <Setter Property="TextColor" Value="Black"/>
-                            <Setter Property="Margin" Value="5"/>
-                        </Style>
-                    </Grid.Resources>
-                    <Button Text="Osaan!" 
-                            Command="{Binding WordLearnedCommand}" 
-                            HorizontalOptions="Center" 
+                <Grid ColumnDefinitions="*, *, *"
+                      HorizontalOptions="CenterAndExpand">
+                    <Button Text="Osaan!"
+                            Command="{Binding WordLearnedCommand}"
+                            HorizontalOptions="Center"
                             BackgroundColor="{StaticResource LearnedWord}"
-                            Grid.Column="0"
-                            >
+                            Grid.Column="0">
                     </Button>
-                    <Button Text="Olen kuullut" 
-                        Command="{Binding MightKnowWordCommand}" 
-                        HorizontalOptions="Center"
-                        BackgroundColor="{StaticResource MightKnowWord}"
-                        Grid.Column="1"
-                        />
-                    <Button Text="En tiedä" 
-                        Command="{Binding WordNeverHeardCommand}" 
-                        HorizontalOptions="Center"
-                        BackgroundColor="{StaticResource NeverHeardWord}"
-                        Grid.Column="2"
-                        />
+                    <Button Text="Olen kuullut"
+                            Command="{Binding MightKnowWordCommand}"
+                            HorizontalOptions="Center"
+                            BackgroundColor="{StaticResource MightKnowWord}"
+                            Grid.Column="1" />
+                    <Button Text="En tiedä"
+                            Command="{Binding WordNeverHeardCommand}"
+                            HorizontalOptions="Center"
+                            BackgroundColor="{StaticResource NeverHeardWord}"
+                            Grid.Column="2" />
                 </Grid>
-                <Button Text="Poista merkintä" 
+                <Button Text="Poista merkintä"
                         Command="{Binding WordStateNotSetCommand}"
                         HorizontalOptions="Center"
                         Margin="0, 10"
-                        BackgroundColor="{StaticResource FlipCardColor}"
-                        TextColor="Black"
-                        />
-               
-                <Button Text="Tallenna eteneminen" 
-                    Grid.Row="1"
-                    VerticalOptions="End"
-                    Margin="0,50,0,0"
-                    HorizontalOptions="Center"
-                    Command="{Binding SaveProgression}"
-                    />
-            </VerticalStackLayout>
-            
+                        BackgroundColor="{StaticResource FlipCardColor}" />
 
-            
+                <Button Text="Tallenna eteneminen"
+                        Grid.Row="1"
+                        VerticalOptions="End"
+                        Margin="0,50,0,50"
+                        HorizontalOptions="Center"
+                        BackgroundColor="{StaticResource DarkerThanPage}"
+                        Command="{Binding SaveProgression}" />
+            </VerticalStackLayout>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>

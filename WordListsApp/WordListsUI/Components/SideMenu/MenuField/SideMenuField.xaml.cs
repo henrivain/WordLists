@@ -51,7 +51,7 @@ public partial class SideMenuField : Grid
             Debug.WriteLine($"{nameof(SideMenuField)} can't go to empty route");
             return;
         }
-        await Shell.Current.GoToAsync(TargetUIRoute, false);
+        await Shell.Current.GoToAsync(TargetUIRoute, true);
     }
 
 

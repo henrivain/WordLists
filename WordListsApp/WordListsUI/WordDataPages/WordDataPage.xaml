@@ -10,6 +10,16 @@
              x:DataType="{x:Type viewModel:IWordDataViewModel}"
              >
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="{x:Type Label}">
+                <Setter Property="TextColor"
+                        Value="White" />
+            </Style>
+            <Style TargetType="{x:Type Span}">
+                <Setter Property="TextColor"
+                        Value="White" />
+            </Style>
+        </Grid.Resources>
         <ScrollView Margin="40,0,0,0">
             <ScrollView.GestureRecognizers>
                 <TapGestureRecognizer Tapped="HideMenu" />

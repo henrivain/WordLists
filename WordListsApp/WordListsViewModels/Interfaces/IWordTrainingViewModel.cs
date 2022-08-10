@@ -13,8 +13,11 @@ public interface IWordTrainingViewModel
     int MaxWordIndex { get; set; }
     int LearnStateAsInt { get; set; }
 
-    bool CanGoNext { get; set; }
-    bool CanGoPrevious { get; set; }
+    bool CanGoNext { get; }
+    bool CanGoPrevious { get; }
+    bool ProgressSaved { get; }
+    bool IsListCompleted { get; }
+    bool IsEmptyCollection { get; }
 
     IAsyncRelayCommand SaveProgression { get; }
 
@@ -22,7 +25,7 @@ public interface IWordTrainingViewModel
     IRelayCommand WordLearnedCommand { get; }
     IRelayCommand MightKnowWordCommand { get; }
     IRelayCommand WordNeverHeardCommand { get; }
-
+    IRelayCommand RestartCommand { get; }
     void Next();
     void Previous();
 

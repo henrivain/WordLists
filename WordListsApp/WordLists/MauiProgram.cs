@@ -13,6 +13,7 @@ using WordListsViewModels.Helpers;
 using WordListsViewModels.Interfaces;
 using WordListsUI.WordDataPages;
 using WordListsUI.WordDataPages.JsonExportPage;
+using WordListsUI.AppInfoPage;
 
 namespace WordLists;
 
@@ -35,11 +36,13 @@ public static class MauiProgram
 		builder.Services.AddTransient<WordCollectionEditPage>();
 		builder.Services.AddTransient<ListGeneratorPage>();
 		builder.Services.AddTransient<WordDataPage>();
+		builder.Services.AddTransient<AppInfoPage>();
 		builder.Services.AddSingleton<IWordTrainingViewModel, WordTrainingViewModel>();
 		builder.Services.AddTransient<IStartTrainingViewModel, StartTrainingViewModel>();
 		builder.Services.AddTransient<IWordCollectionHandlingViewModel, WordCollectionHandlingViewModel>();
 		builder.Services.AddAbstractFactory<IListGeneratorViewModel, ListGeneratorViewModel>();
         builder.Services.AddTransient<IWordDataViewModel, WordDataViewModel>();
+        builder.Services.AddTransient<IAppInfoViewModel, AppInfoViewModel>();
 
         builder.Services.AddTransient<JsonExportPage>();
         builder.Services.AddTransient<JsonImportPage>();
@@ -52,6 +55,8 @@ public static class MauiProgram
 		builder.Services.AddSingleton<ICollectionExportService, WordCollectionExportService>();
 		builder.Services.AddSingleton<ICollectionImportService, JsonWordCollectionImportService>();
 		builder.Services.AddSingleton<IWordCollectionInfoService, WordCollectionInfoService>();
+
+		string n = typeof(MauiProgram).Assembly.GetName().ToString();
 
         return builder.Build();
 	}

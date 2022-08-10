@@ -5,7 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <Color x:Key="PageBackground">#262B31</Color>
-
+    <Color x:Key="DarkerThanPage">#1C1F24</Color>
+    
     <Color x:Key="UnImportantText">#6E6E6E</Color>
     <Color x:Key="KindaWhite">#B3B3B3</Color>
     <Color x:Key="WordListBackground">#F0F8FF</Color>   <!-- Alice blue -->

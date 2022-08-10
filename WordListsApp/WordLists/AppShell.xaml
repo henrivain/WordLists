@@ -22,11 +22,12 @@
 
         <ShellContent Title="Koti"
                       ContentTemplate="{DataTemplate home:HomePage}"
+                      Icon="home_icon.png"
                       />
 
 
         <!-- Word training -->
-        <Tab Title="Harjoitus">
+        <Tab Title="Harjoitus" Icon="training_icon.png">
             <ShellContent Title="Aloita uusi"
                           ContentTemplate="{DataTemplate startTraining:StartTrainingPage}"
                           />
@@ -36,14 +37,14 @@
         </Tab>
 
         <!-- Word list handling -->
-        <ShellContent Title="Hallitse" 
+        <ShellContent Title="Hallitse" Icon="pencil_icon.png"
                       ContentTemplate="{DataTemplate dataHandle:WordDataPage}"
                       >
         </ShellContent>
 
 
         <!-- App information page -->
-        <ShellContent Title="Tietoa"
+        <ShellContent Title="Tietoa" Icon="info_icon.png"
                       ContentTemplate="{DataTemplate info:AppInfoPage}"
                       />
     </TabBar>

@@ -22,7 +22,7 @@ public static class AssemblyHelper
         {
             Version? version = typeof(CurrentAssembly).Assembly.GetName().Version;
             if (version is null) return null;
-            return $"v{version.Major}.{version.Minor}.{version.MajorRevision}";
+            return $"v{version.Major}.{version.Minor}.{version.Build}";
         }
         private static string? GetAssemblyVersion()
         {
@@ -51,7 +51,7 @@ public static class AssemblyHelper
         {
             Version? version = Assembly.GetEntryAssembly()?.GetName().Version;
             if (version is null) return null;
-            return $"v{version.Major}.{version.Minor}.{version.MajorRevision}";
+            return $"v{version.Major}.{version.Minor}.{version.Build}";
         }
         private static string? GetAssemblyVersion()
         {

@@ -49,8 +49,14 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     [ObservableProperty]
     int learnStateAsInt = 0;
 
+    [ObservableProperty]
+    bool progressSaved = false;
 
-
+    [ObservableProperty]
+    bool isListCompleted = false;
+    
+    [ObservableProperty]
+    bool isEmptyCollection = false;
 
     public event CollectionUpdatedEventHandler? CollectionUpdated;
 
@@ -83,8 +89,6 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
             ShowCurrentWord();
         }
     }
-
-
     public void StartNew(WordCollection collection)
     {
         MaxWordIndex = collection.WordPairs.Count;
@@ -156,16 +160,25 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     });
 
     
-    private bool IsListCompleted { get; set; } = false;
-    private bool IsEmptyCollection { get; set; } = false;
     public IWordCollectionService CollectionService { get; }
+    public IRelayCommand RestartCommand => new RelayCommand(() =>
+    {
+        if (IsEmptyCollection) return;
+        WordIndex = 1;
+        UpdateWordPairUsingWordIndex();
+    });
 
     private void StartNewWithIndex(WordCollection collection, int startIndex)
     {
+        ProgressSaved = true;
         WordCollection = collection;
         SetCollectionInfo();
-
         WordIndex = startIndex;
+        UpdateWordPairUsingWordIndex();
+    }
+
+    private void UpdateWordPairUsingWordIndex()
+    {
         if (MaxWordIndex <= 0)
         {
             ShowCollectionIsEmpty();
@@ -180,7 +193,6 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
         Description = WordCollection.Owner.Description;
         LanguageHeaders = WordCollection.Owner.LanguageHeaders;
     }
-
     private void ShowCurrentWord()
     {
         IsListCompleted = false;
@@ -204,7 +216,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
         MaxWordIndex = 1;
         CanGoNext = false;
         CanGoPrevious = false;
-        IsEmptyCollection = false;
+        IsEmptyCollection = true;
         ShowListCompleted();
     }
 
@@ -222,6 +234,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     {
         if (IsListCompleted is false && VisibleWordPair is not null)
         {
+            ProgressSaved = false;
             VisibleWordPair.LearnState = state;
             Next();
             return;
@@ -231,6 +244,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     {
         if (IsEmptyCollection) return;
         await CollectionService.SaveProgression(WordCollection);
+        ProgressSaved = true;
     }
 
     private readonly WordPair CompletedView = new()

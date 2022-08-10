@@ -439,4 +439,14 @@ public partial class WordTrainingViewModelTests
         Assert.True(viewModel.CanGoNext);
     }
 
+    [Fact]
+    public void StartNew_WithEmptyCollection_ShouldSet_IsEmptyCollectio_True()
+    {
+        // Arrange
+        var viewModel = _viewModel;
+        // Act
+        viewModel.StartNew(new());
+        //Assert
+        Assert.True(viewModel.IsEmptyCollection);
+    }
 }
