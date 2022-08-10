@@ -27,7 +27,7 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Sanastot "
-                              FontSize="Header" />
+                              FontSize="{OnPlatform WinUI=Header, Default=Title}" />
                         <Span Text="for "
                               FontSize="Micro" />
                         <Span Text="{Binding AppEnvironment}"
@@ -36,7 +36,7 @@
                 </Label.FormattedText>
             </Label>
             <Label Text="by Henri Vainio"
-                   FontSize="Title" />
+                   FontSize="{OnPlatform WinUI=Title, Default=Small}" />
         </VerticalStackLayout>
         <Label FontSize="Small">
             <Label.FormattedText>

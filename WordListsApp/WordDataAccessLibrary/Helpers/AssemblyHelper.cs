@@ -50,8 +50,7 @@ public static class AssemblyHelper
         private static string? GetAssemblyVersionString()
         {
             Version? version = Assembly.GetEntryAssembly()?.GetName().Version;
-            if (version is null) return null;
-            return $"v{version.Major}.{version.Minor}.{version.Build}";
+            return version is null ? null : $"v{version.Major}.{version.Minor}.{version.Build}";
         }
         private static string? GetAssemblyVersion()
         {

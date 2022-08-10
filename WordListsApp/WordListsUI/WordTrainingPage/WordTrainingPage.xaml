@@ -59,8 +59,6 @@
                                     Value="20" />
                             <Setter Property="Padding"
                                     Value="2" />
-                            <Setter Property="Margin"
-                                    Value="20,0" />
                         </Style>
                     </Grid.Resources>
                     <ImageButton Source="arrow.png"
@@ -68,7 +66,8 @@
                                  BackgroundColor="Transparent"
                                  Rotation="180"
                                  HorizontalOptions="End"
-                                 Clicked="Button_LastCard" />
+                                 Clicked="Button_LastCard"
+                                 Margin="20,0" />
 
                     <Label Grid.Column="1"
                            HorizontalOptions="Center"
@@ -85,11 +84,11 @@
                                      IsEnabled="{Binding CanGoNext}"
                                      BackgroundColor="Transparent"
                                      HorizontalOptions="Start"
-                                     Clicked="Button_NextCard" />
+                                     Clicked="Button_NextCard"
+                                     Margin="20,0" />
 
                         <ImageButton Command="{Binding RestartCommand}"
                                      Source="again_icon.png"
-                                     BackgroundColor="Transparent"
                                      IsVisible="{Binding IsListCompleted}"
                                      >
                             <ImageButton.Triggers>
