@@ -74,6 +74,9 @@
 	  <Compile Update="WordDataPages\WordDataMenuItems.xaml.cs">
 	    <DependentUpon>WordDataMenuItems.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="WordTrainingPages\FlipCardTrainingPage\FlipCardTrainingPage.xaml.cs">
+	    <DependentUpon>FlipCardTrainingPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -116,7 +119,10 @@
 	  <MauiXaml Update="WelcomePage\WelcomePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="WordTrainingPages\WordTrainingPage\WordTrainingPage.xaml">
+	  <MauiXaml Update="WordTrainingPages\FlipCardTrainingPage\FlipCardTrainingPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="WordTrainingPages\WriteWordTrainingPage\WriteWordTrainingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

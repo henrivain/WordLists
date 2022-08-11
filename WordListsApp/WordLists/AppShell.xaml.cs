@@ -4,8 +4,9 @@ using WordListsUI.HomePage;
 using WordListsUI.WordDataPages.JsonImportPage;
 using WordListsUI.WordDataPages.ListGeneratorPage;
 using WordListsUI.WordTrainingPages.StartTrainingPage;
+using WordListsUI.WordTrainingPages.WriteWordTrainingPage;
 using WordListsUI.WordDataPages.WordCollectionEditPage;
-using WordListsUI.WordTrainingPages.WordTrainingPage;
+using WordListsUI.WordTrainingPages.FlipCardTrainingPage;
 using WordListsUI.WordDataPages;
 using WordListsUI.WordDataPages.JsonExportPage;
 
@@ -26,7 +27,8 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(AppInfoPage), typeof(AppInfoPage));
 
         Routing.RegisterRoute($"{training}/{nameof(StartTrainingPage)}", typeof(StartTrainingPage));
-		Routing.RegisterRoute($"{training}/{nameof(WordTrainingPage)}", typeof(WordTrainingPage));
+		Routing.RegisterRoute($"{training}/{nameof(FlipCardTrainingPage)}", typeof(FlipCardTrainingPage));
+		Routing.RegisterRoute($"{training}/{nameof(WriteWordTrainingPage)}", typeof(WriteWordTrainingPage));
 
         Routing.RegisterRoute($"{handling}/{nameof(WordDataPage)}", typeof(WordDataPage));
 		Routing.RegisterRoute($"{handling}/{lifetime}/{nameof(ListGeneratorPage)}", typeof(ListGeneratorPage));

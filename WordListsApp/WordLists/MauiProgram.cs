@@ -10,10 +10,11 @@ using WordListsUI.WordDataPages.JsonExportPage;
 using WordListsUI.WordDataPages.JsonImportPage;
 using WordListsUI.WordDataPages.ListGeneratorPage;
 using WordListsUI.WordDataPages.WordCollectionEditPage;
-using WordListsUI.WordTrainingPages.WordTrainingPage;
+using WordListsUI.WordTrainingPages.FlipCardTrainingPage;
 using WordListsViewModels;
 using WordListsViewModels.Helpers;
 using WordListsViewModels.Interfaces;
+using WordListsUI.WordTrainingPages.WriteWordTrainingPage;
 
 namespace WordLists;
 
@@ -31,18 +32,20 @@ public static class MauiProgram
 			});
 		// injecting appshell will make app buggy and starts to change visual element visibility
 
-		builder.Services.AddTransient<WordTrainingPage>();
+		builder.Services.AddTransient<FlipCardTrainingPage>();
 		builder.Services.AddTransient<StartTrainingPage>();
 		builder.Services.AddTransient<WordCollectionEditPage>();
 		builder.Services.AddTransient<ListGeneratorPage>();
 		builder.Services.AddTransient<WordDataPage>();
 		builder.Services.AddTransient<AppInfoPage>();
+		builder.Services.AddSingleton<WriteWordTrainingPage>();
 		builder.Services.AddSingleton<IWordTrainingViewModel, WordTrainingViewModel>();
 		builder.Services.AddTransient<IStartTrainingViewModel, StartTrainingViewModel>();
 		builder.Services.AddTransient<IWordCollectionHandlingViewModel, WordCollectionHandlingViewModel>();
 		builder.Services.AddAbstractFactory<IListGeneratorViewModel, ListGeneratorViewModel>();
         builder.Services.AddTransient<IWordDataViewModel, WordDataViewModel>();
         builder.Services.AddTransient<IAppInfoViewModel, AppInfoViewModel>();
+		builder.Services.AddTransient<IWriteWordViewModel, WriteWordViewModel>();
 
         builder.Services.AddTransient<JsonExportPage>();
         builder.Services.AddTransient<JsonImportPage>();
