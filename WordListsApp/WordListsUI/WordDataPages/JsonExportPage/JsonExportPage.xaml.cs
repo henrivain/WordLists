@@ -10,9 +10,8 @@ public partial class JsonExportPage : ContentPage
     {
         ModelFactory = modelFactory;
         BindingContext = ModelFactory.Create();
+        ContentPage_BindingContextChanged(this, EventArgs.Empty);
         InitializeComponent();
-        Model.ExportCompleted += Model_ExportCompleted;
-        Model.EmptyExportAttempted += Model_EmptyExportAttempted;
     }
 
     private async void Model_EmptyExportAttempted(object sender, ExportActionResult e)
@@ -46,5 +45,11 @@ public partial class JsonExportPage : ContentPage
     private void HideMenu(object sender, EventArgs e)
     {
         menu.Collapse(sender, e);
+    }
+
+    private void ContentPage_BindingContextChanged(object sender, EventArgs e)
+    {
+        Model.ExportCompleted += Model_ExportCompleted;
+        Model.EmptyExportAttempted += Model_EmptyExportAttempted;
     }
 }

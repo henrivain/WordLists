@@ -41,18 +41,15 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     public IAsyncRelayCommand SaveCollection => new AsyncRelayCommand(
         async () =>
         {
-            LableVisible = true;
             // implement save on top of old instance if that saved
             if (WordPairs.Count is 0)
             {
                 Debug.WriteLine($"{nameof(SaveCollection)}: Can't add empty word collection");
-                LableVisible = false;
                 throw new InvalidOperationException();
                 //return;
             }
             int id = await CollectionService.AddWordCollection(GetData());
 
-            LableVisible = false;
             CollectionAddedEvent?.Invoke(this, new("Added wordCollection successfully", id));
         });
 
@@ -82,7 +79,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
 
     public Parser UseParser { get; set; } = Parser.Otava;
 
-    public bool LableVisible { get; set; } = false;
+
     
     public IWordCollectionService CollectionService { get; }
 

@@ -38,23 +38,14 @@ public class WordPairService : IWordPairService
             .Where(x => x.OwnerId == ownerId)
                 .ToListAsync();
     }
-    public async Task<List<WordPair>> GetByOwner(WordCollectionOwner owner)
-    {
-        Debug.WriteLine($"{nameof(WordPairService)}: Get by {nameof(WordCollectionOwner)}");
-
-        return await GetByOwnerId(owner.Id);
-    }
-    public async Task<List<WordPair>> GetByIdAndLearnState(int ownerId, WordLearnState learnState)
+    public async Task<List<WordPair>> GetByOwner(WordCollectionOwner owner) => await GetByOwnerId(owner.Id);
+    public async Task<List<WordPair>> GetByExpression(Expression<Func<WordPair, bool>> expression)
     {
         await Init();
-
-        Debug.WriteLine($"{nameof(WordPairService)}: Get all by {nameof(ownerId)} and {nameof(WordLearnState)}.{learnState}");
-
-        return await db.Table<WordPair>()
-            .Where(x => x.OwnerId == ownerId)
-            .Where(x => x.LearnState == learnState)
-            .ToListAsync();
+        Debug.WriteLine($"Get {nameof(WordPair)}s by expression");
+        return await db.Table<WordPair>().Where(expression).ToListAsync();
     }
+
     public async Task UpdatePairsAsync(WordCollection collection)
     {
         await Init();

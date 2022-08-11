@@ -1,4 +1,5 @@
 ﻿using WordDataAccessLibrary.Helpers;
+#nullable enable
 
 namespace WordDataAccessLibrary.CollectionBackupServices.JsonServices;
 /// <summary>
@@ -10,7 +11,7 @@ public struct JsonBackupStruct
     {
         Collections = collections;
     }
-    public string ParserVersion { get; set; } = AssemblyHelper.CurrentAssembly.VersionString ?? "v0.0.0";
+    public string ParserVersion { get; set; } = AssemblyHelper.CurrentAssembly.VersionString ?? "Unknown";
     public string ParserAppName { get; set; } = AssemblyHelper.EntryAssembly.Name ?? string.Empty;
     public DateTime DateCreated { get; set; } = DateTime.Now;
     public DefaultExportWordCollection[] Collections { get; set; }

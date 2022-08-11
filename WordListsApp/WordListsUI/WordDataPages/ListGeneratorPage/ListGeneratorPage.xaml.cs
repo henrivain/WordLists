@@ -12,16 +12,8 @@ public partial class ListGeneratorPage : ContentPage
 	{
 		ModelFactory = modelFactory;
 		BindingContext = modelFactory.Create();
+		ContentPage_BindingContextChanged(this, EventArgs.Empty);
 		InitializeComponent();
-        Model.CollectionAddedEvent += Model_CollectionAddedEvent;
-    }
-
-	private async void Model_CollectionAddedEvent(object sender, DataBaseActionArgs e)
-	{
-		BindingContext = ModelFactory.Create();
-		await DisplayAlert("Onnistui!", $"Sanasto lisätty onnistuneesti säilytykseen id:llä {e.RefId}", "OK");
-		Model.CollectionAddedEvent -= Model_CollectionAddedEvent;
-		Model.CollectionAddedEvent += Model_CollectionAddedEvent;
     }
 
 
@@ -37,15 +29,21 @@ public partial class ListGeneratorPage : ContentPage
             UIInteractionHelper.FocusITextInputText(input, this);
 		}
 	}
-
-	
-	private void StartAgainBtn_Click(object sender, EventArgs e)
+	private async void Model_CollectionAddedEvent(object sender, DataBaseActionArgs e)
+	{
+		BindingContext = ModelFactory.Create();
+		await DisplayAlert("Onnistui!", $"Sanasto lisätty onnistuneesti säilytykseen id:llä {e.RefId}", "OK");
+    }
+    private void StartAgainBtn_Click(object sender, EventArgs e)
 	{
 		BindingContext = ModelFactory.Create();
 	}
-
 	private void HideMenu(object sender, EventArgs e)
 	{
 		menu.Collapse(sender, e);
 	}
+	private void ContentPage_BindingContextChanged(object sender, EventArgs e)
+	{
+        Model.CollectionAddedEvent += Model_CollectionAddedEvent;
+    }
 }

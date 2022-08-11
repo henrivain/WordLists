@@ -8,7 +8,7 @@ public interface IWordCollectionService
     Task<List<WordCollection>> GetWordCollections();
     Task<WordCollection> GetWordCollection(int id);
     Task<List<WordCollection>> GetWordCollectionsById(int[] ids);
-    Task DeleteWordCollection(int OwnerId);
+    Task<int> DeleteWordCollection(int OwnerId);
 
     /// <summary>
     /// WARNING!!!  DELETES ALL OBJECTS FROM DATABASE! execute by passing "true" as parameter, otherwise will not run

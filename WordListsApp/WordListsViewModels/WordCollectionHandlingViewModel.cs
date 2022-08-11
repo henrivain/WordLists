@@ -40,15 +40,14 @@ public partial class WordCollectionHandlingViewModel : IWordCollectionHandlingVi
     public async Task DeleteCollection(int id)
     {
         WordCollectionInfo info = AvailableCollections.FirstOrDefault(x => x.Owner.Id == id);
-        
-        await CollectionService.DeleteWordCollection(id);
+        int deletedobjects = await CollectionService.DeleteWordCollection(id);
 
         await ResetCollections();
 
         CollectionDeleted?.Invoke(this, new(
             id,
             text: $"Deleted {nameof(WordCollection)} from database with given id",
-            collectionName: info.Owner.Name
+            collectionName: info.Owner?.Name ?? "NULL"
             ));
         
     }

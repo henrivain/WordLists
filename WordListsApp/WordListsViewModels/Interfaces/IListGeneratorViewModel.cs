@@ -15,8 +15,6 @@ public interface IListGeneratorViewModel
 
     bool CanSave { get; }
 
-    bool LableVisible { get; }
-
     IAsyncRelayCommand GeneratePairsCommand { get; }
 
     IAsyncRelayCommand SaveCollection { get; }

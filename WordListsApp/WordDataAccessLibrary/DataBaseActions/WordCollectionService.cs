@@ -127,17 +127,18 @@ public class WordCollectionService : IWordCollectionService
     /// Remove WordCollection with matching id (remove owner and all child word pairs with same id)
     /// </summary>
     /// <param name="OwnerId"></param>
-    /// <returns>awaitable task</returns>
-    public async Task DeleteWordCollection(int OwnerId)
+    /// <returns>number of objects deleted</returns>
+    public async Task<int> DeleteWordCollection(int OwnerId)
     {
         Debug.WriteLine($"{nameof(WordCollectionService)}: Delete collection with id: {OwnerId}");
 
 
         await Init();
-        await db.DeleteAsync<WordCollectionOwner>(OwnerId);
-        await db.Table<WordPair>()
-                .Where(x => x.OwnerId == OwnerId)
-                .DeleteAsync();
+        int objectsDeleted = await db.DeleteAsync<WordCollectionOwner>(OwnerId);
+        objectsDeleted += await db.Table<WordPair>()
+                          .Where(x => x.OwnerId == OwnerId)
+                          .DeleteAsync();
+        return objectsDeleted;
     }
 
     /// <summary>

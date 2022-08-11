@@ -9,7 +9,9 @@
              x:DataType="{x:Type viewModel:IJsonExportViewModel}"
              BackgroundColor="{StaticResource PageBackground}"
              xmlns:menu="clr-namespace:WordListsUI.Components.SideMenu"
-             xmlns:base="clr-namespace:WordListsUI.WordDataPages">
+             xmlns:base="clr-namespace:WordListsUI.WordDataPages"
+             BindingContextChanged="ContentPage_BindingContextChanged"
+             >
     <ContentPage.Resources>
         <Style TargetType="{x:Type Label}">
             <Setter Property="TextColor"

@@ -10,12 +10,10 @@ public partial class JsonImportPage : ContentPage
 	{
         ModelFactory = modelFactory;
         BindingContext = ModelFactory.Create();
+        ContentPage_BindingContextChanged(this, EventArgs.Empty);
         InitializeComponent();
-        Model.EmptyImportAttempted += Model_EmptyImportAttempted;
-        Model.ImportActionFailed += Model_ImportActionFailed;
-        Model.ImportSuccessfull += Model_ImportSuccessfull;
-        Model.SelectFileAttempted += Model_SelectFileAttempted; ;
     }
+
 
     public IJsonImportViewModel Model => (IJsonImportViewModel)BindingContext;
     private IAbstractFactory<IJsonImportViewModel> ModelFactory { get; }
@@ -62,5 +60,14 @@ public partial class JsonImportPage : ContentPage
     private void HideMenu(object sender, EventArgs e)
     {
         menu.Collapse(sender, e);
+    }
+   
+
+    private void ContentPage_BindingContextChanged(object sender, EventArgs e)
+    {
+        Model.EmptyImportAttempted += Model_EmptyImportAttempted;
+        Model.ImportActionFailed += Model_ImportActionFailed;
+        Model.ImportSuccessfull += Model_ImportSuccessfull;
+        Model.SelectFileAttempted += Model_SelectFileAttempted;
     }
 }

@@ -6,6 +6,7 @@ public interface IJsonImportViewModel
     string AcceptableFileExtensions { get; }
     string ImportPath { get; }
     bool CanImport { get; }
+    bool IsImporting { get; }
     IAsyncRelayCommand SelectFile { get; }
     IAsyncRelayCommand Import { get; }
 

@@ -7,7 +7,9 @@
              x:DataType="{x:Type viewModel:IJsonImportViewModel}"
              BackgroundColor="{StaticResource PageBackground}"
              xmlns:menu="clr-namespace:WordListsUI.Components.SideMenu"
-             xmlns:base="clr-namespace:WordListsUI.WordDataPages">
+             xmlns:base="clr-namespace:WordListsUI.WordDataPages"
+             BindingContextChanged="ContentPage_BindingContextChanged"
+             >
     <Grid>
         <ScrollView Margin="40,0,0,0">
             <ScrollView.GestureRecognizers>
@@ -61,14 +63,21 @@
                         </Grid>
                     </Border>
                 </StackLayout>
+                <ActivityIndicator HeightRequest="{OnPlatform WinUI=30, Default=10}"
+                                   WidthRequest="{OnPlatform WinUI=30, Default=10}"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   Color="Orange"
+                                   IsRunning="{Binding IsImporting}" />
                 <Button Command="{Binding Import}"
                         IsEnabled="{Binding CanImport}"
                         Text="Tuo"
                         HorizontalOptions="Center"
                         Padding="30,10"
-                        Margin="0,50,0,0" />
+                        Margin="0,30,0,0" />
             </VerticalStackLayout>
         </ScrollView>
+        
         <menu:SideMenu x:Name="menu"
                        Title="Hallitse sanastoja"
                        MenuWidth_Collapsed="40"

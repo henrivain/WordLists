@@ -3,17 +3,17 @@ using WordDataAccessLibrary.CollectionBackupServices.JsonServices;
 using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsMauiHelpers.Factories;
+using WordListsUI.AppInfoPage;
+using WordListsUI.StartTrainingPage;
+using WordListsUI.WordDataPages;
+using WordListsUI.WordDataPages.JsonExportPage;
 using WordListsUI.WordDataPages.JsonImportPage;
 using WordListsUI.WordDataPages.ListGeneratorPage;
-using WordListsUI.StartTrainingPage;
 using WordListsUI.WordDataPages.WordCollectionEditPage;
 using WordListsUI.WordTrainingPage;
 using WordListsViewModels;
 using WordListsViewModels.Helpers;
 using WordListsViewModels.Interfaces;
-using WordListsUI.WordDataPages;
-using WordListsUI.WordDataPages.JsonExportPage;
-using WordListsUI.AppInfoPage;
 
 namespace WordLists;
 
@@ -55,8 +55,6 @@ public static class MauiProgram
 		builder.Services.AddSingleton<ICollectionExportService, WordCollectionExportService>();
 		builder.Services.AddSingleton<ICollectionImportService, JsonWordCollectionImportService>();
 		builder.Services.AddSingleton<IWordCollectionInfoService, WordCollectionInfoService>();
-
-		string n = typeof(MauiProgram).Assembly.GetName().ToString();
 
         return builder.Build();
 	}

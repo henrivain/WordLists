@@ -29,6 +29,9 @@ public partial class JsonImportViewModel : IJsonImportViewModel
 
     [ObservableProperty]
     bool canImport = false;
+
+    [ObservableProperty]
+    bool isImporting = false;
     public string AcceptableFileExtensions { get; } = 
         string.Join(" ", GetAcceptableImportFileExtensions());
 
@@ -89,14 +92,20 @@ public partial class JsonImportViewModel : IJsonImportViewModel
         ImportActionResult result;
         IEnumerable<IExportWordCollection> exportCollections;
 
+        IsImporting = true;
+
         (result, exportCollections) = await ImportService.Import(pathValidation.UsedPath);
         if (result.Success is false)
         {
+            IsImporting = false;
             ImportActionFailed?.Invoke(this, result);
             return;
         }
 
         await SaveConvertedCollections(exportCollections);
+
+        IsImporting = false;
+
         ImportSuccessfull?.Invoke(this, new(BackupAction.ParseData)
         {
             MoreInfo = $"Tuotu ja tallennettu {exportCollections.Count()} sanastoa",
