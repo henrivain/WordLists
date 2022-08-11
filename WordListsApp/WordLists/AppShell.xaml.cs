@@ -3,9 +3,9 @@ using WordListsUI.AppInfoPage;
 using WordListsUI.HomePage;
 using WordListsUI.WordDataPages.JsonImportPage;
 using WordListsUI.WordDataPages.ListGeneratorPage;
-using WordListsUI.StartTrainingPage;
+using WordListsUI.WordTrainingPages.StartTrainingPage;
 using WordListsUI.WordDataPages.WordCollectionEditPage;
-using WordListsUI.WordTrainingPage;
+using WordListsUI.WordTrainingPages.WordTrainingPage;
 using WordListsUI.WordDataPages;
 using WordListsUI.WordDataPages.JsonExportPage;
 

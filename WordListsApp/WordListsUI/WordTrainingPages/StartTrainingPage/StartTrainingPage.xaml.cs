@@ -4,7 +4,7 @@ using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsMauiHelpers.PageRouting;
 
-namespace WordListsUI.StartTrainingPage;
+namespace WordListsUI.WordTrainingPages.StartTrainingPage;
 
 public partial class StartTrainingPage : ContentPage
 {

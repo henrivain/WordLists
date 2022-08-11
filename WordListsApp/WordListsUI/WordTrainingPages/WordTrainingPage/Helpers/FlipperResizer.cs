@@ -1,4 +1,4 @@
-﻿namespace WordListsUI.WordTrainingPage.Helpers;
+﻿namespace WordListsUI.WordTrainingPages.WordTrainingPage.Helpers;
 internal static class FlipperResizer
 {
     internal static void Resize(Grid sender, double viewHeight)

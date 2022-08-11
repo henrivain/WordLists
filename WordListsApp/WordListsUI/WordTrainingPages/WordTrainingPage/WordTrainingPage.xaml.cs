@@ -2,7 +2,7 @@ using WordDataAccessLibrary;
 using WordDataAccessLibrary.DataBaseActions;
 using WordListsUI.Components.TextFlipCard;
 
-namespace WordListsUI.WordTrainingPage;
+namespace WordListsUI.WordTrainingPages.WordTrainingPage;
 
 [QueryProperty(nameof(StartCollection), nameof(StartCollection))]
 [QueryProperty(nameof(StartWordCollection), nameof(StartWordCollection))]
@@ -72,7 +72,7 @@ public partial class WordTrainingPage : ContentPage
         #if WINDOWS
         if (sender is Grid grid)
         {
-            Helpers.FlipperResizer.Resize(grid, Width);
+            WordTrainingPages.WordTrainingPage.Helpers.FlipperResizer.Resize(grid, Width);
         }
         #endif
     }
