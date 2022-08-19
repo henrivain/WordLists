@@ -28,7 +28,6 @@ public class UserInputWordValidator : IUserInputWordValidator
         return new(false)
         {
             ValidatedStringSpans = matchingStrings,
-            HasMatch = matchingStrings.Any(x => x.IsMatch is true),
             CharMatchPercentage = GetMatchPercentage(matchingStrings, correct)
         };
     }
