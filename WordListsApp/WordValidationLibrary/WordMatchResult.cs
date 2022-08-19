@@ -7,17 +7,15 @@ public class WordMatchResult
 		IsFullMatch = isFullMatch;
 		if (isFullMatch)
 		{
-			HasMatch = true;
 			CharMatchPercentage = 100;
 		}
 	}
 
     ushort _charMatchPercentage = 0;
 
-
     public bool IsFullMatch { get; }
 
-	public bool HasMatch { get; internal set; } = false;
+	public bool HasMatch => CharMatchPercentage is not 0;
 
     public ushort CharMatchPercentage 
 	{ 

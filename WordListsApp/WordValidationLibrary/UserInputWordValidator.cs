@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("WordValidationLibraryTests")]
 
@@ -47,8 +46,6 @@ public class UserInputWordValidator : IUserInputWordValidator
         if (correct.Length <= 0) return 100;
         return (ushort)((double)correctChars / correct.Length * 100);
     }
-
-
 
     internal static (string Input, bool[] ValidChars) GetCorrectCharsInInput(string input, string correct)
     {

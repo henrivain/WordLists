@@ -137,4 +137,5 @@ public class UserInputWordValidatorTests
         // Assert
         Assert.Equal(percentage, resultPercentage);
     }
+    
 }
