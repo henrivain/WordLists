@@ -3,89 +3,117 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.WordTrainingPages.WriteWordTrainingPage.WriteWordTrainingPage"
              xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
+             xmlns:itemModel ="clr-namespace:WordListsViewModels.Helpers;assembly=WordListsViewModels"
              x:DataType="{x:Type viewModel:IWriteWordViewModel}"
              Title="Kirjoita"
-             BackgroundColor="{StaticResource PageBackground}">
-    <VerticalStackLayout>
-        <Label Text="Treenaa sanoja kirjoittamalla" Margin="0,10"/>
+             BackgroundColor="#0A092D">
+    <ContentPage.Resources>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="FontFamily"
+                    Value="Poppins" />
+            <Setter Property="TextColor"
+                    Value="#D9DDE8" />
+        </Style>
+        <Style TargetType="{x:Type Entry}">
+            <Setter Property="FontFamily"
+                    Value="Poppins" />
+            <Setter Property="BackgroundColor"
+                    Value="#0A092D" />
+            <Setter Property="PlaceholderColor"
+                    Value="#D9DDE8" />
+            <Setter Property="TextColor"
+                    Value="#D9DDE8" />
+            <Setter Property="FontAttributes"
+                    Value="Bold" />
+        </Style>
+    </ContentPage.Resources>
+    <ScrollView>
+        <Grid SizeChanged="Grid_SizeChanged">
+            <Grid Grid.Column="0"
+                  SizeChanged="ChildGrid_SizeChanged"
+                  Grid.Row="0"
+                  Margin="0,20"
+                  HorizontalOptions="Start"
+                  BackgroundColor="Red"
+                  WidthRequest="300">
+                <VerticalStackLayout>
+                    <Label Text="{Binding Info.Name}"
+                           HorizontalTextAlignment="Center"
+                           FontSize="Title"
+                           FontAttributes="Bold" />
+                    <Label Text="{Binding Info.LanguageHeaders}"
+                           HorizontalTextAlignment="Center" />
+                    <Label Text="{Binding Info.Description}"
+                           HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Grid>
+            <VerticalStackLayout Margin="50,0"
+                                 Grid.Column="1"
+                                 Grid.Row="1"
+                                 MaximumWidthRequest="600">
+                <Label Text="Vastaa kirjoittamalla sana halutulle kielelle"
+                       HorizontalTextAlignment="Start"
+                       FontSize="Medium"
+                       TextColor="#646F90"
+                       FontAttributes="Bold"
+                       Margin="0,50,0,20" />
+                <CollectionView ItemsSource="{Binding Questions}"
+                                ItemSizingStrategy="MeasureAllItems">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid VerticalOptions="Start"
+                                  Margin="0,10"
+                                  x:DataType="{x:Type itemModel:WordPairQuestion}">
+                                <Border HeightRequest="225"
+                                        BackgroundColor="#2E3856"
+                                        StrokeThickness="0"
+                                        Stroke="Transparent">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="10" />
+                                    </Border.StrokeShape>
+                                </Border>
+                                <Label Margin="0,10,20,0"
+                                       VerticalOptions="Start"
+                                       HorizontalOptions="End"
+                                       TextColor="#646F90">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Index}" />
+                                            <Span Text="/" />
+                                            <Span Text="{Binding TotalIndexes}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Grid Margin="30,20"
+                                      VerticalOptions="Center">
+                                    <VerticalStackLayout>
 
-
-        <VerticalStackLayout Margin="40">
-            <Label Text="{Binding VisibleWordPair.NativeLanguageWord}" />
-            <Label Text="Sinun vastauksesi"
-                    Padding="10,0" />
-            <Entry VerticalOptions="Center"
-                   Margin="10" />
-
-        </VerticalStackLayout>
-        
-        <Grid ColumnDefinitions="*, auto, *"
-              Margin="0,25,0,50">
-            <Grid.Resources>
-                <Style TargetType="{x:Type ImageButton}">
-                    <Setter Property="HeightRequest"
-                            Value="40" />
-                    <Setter Property="WidthRequest"
-                            Value="40" />
-                    <Setter Property="CornerRadius"
-                            Value="20" />
-                    <Setter Property="Padding"
-                            Value="2" />
-                </Style>
-            </Grid.Resources>
-            <ImageButton Source="arrow.png"
-                         IsEnabled="{Binding CanGoPrevious}"
-                         BackgroundColor="Transparent"
-                         Rotation="180"
-                         HorizontalOptions="End"
-                         Command="{Binding GoPrevious}"
-                         Margin="20,0" />
-
-            <Label Grid.Column="1"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center">
-                <Label.Text>
-                    <MultiBinding StringFormat="{}{0}/{1}">
-                        <Binding Path="WordIndex" />
-                        <Binding Path="MaxWordIndex" />
-                    </MultiBinding>
-                </Label.Text>
-            </Label>
-            <HorizontalStackLayout Grid.Column="2">
-                <ImageButton Source="arrow.png"
-                             IsEnabled="{Binding CanGoNext}"
-                             BackgroundColor="Transparent"
-                             HorizontalOptions="Start"
-                             Command="{Binding GoNext}"
-                             Margin="20,0" />
-
-                <ImageButton Command="{Binding RestartCommand}"
-                             Source="again_icon.png"
-                             IsVisible="{Binding IsListCompleted}"
-                             BackgroundColor="{StaticResource PageBackground}">
-                    <ImageButton.Triggers>
-                        <DataTrigger TargetType="{x:Type ImageButton}"
-                                     Binding="{Binding IsEmptyCollection}"
-                                     Value="false">
-                            <Setter Property="IsEnabled"
-                                    Value="True" />
-                        </DataTrigger>
-                        <DataTrigger TargetType="{x:Type ImageButton}"
-                                     Binding="{Binding IsEmptyCollection}"
-                                     Value="true">
-                            <Setter Property="IsEnabled"
-                                    Value="false" />
-                        </DataTrigger>
-                    </ImageButton.Triggers>
-                </ImageButton>
-
-                <Image Source="ok_icon.png"
-                       IsVisible="{Binding ProgressSaved}"
-                       Margin="20,0,0,0"
-                       HeightRequest="15" />
-            </HorizontalStackLayout>
-
-
+                                        <Label Text="{Binding WordPair.NativeLanguageWord}"
+                                               Padding="0,10"
+                                               FontSize="Medium"
+                                               FontAttributes="Bold" />
+                                        <Label Text="Vastauksesi"
+                                               Margin="0,4"
+                                               TextColor="#646F90" />
+                                        <Entry Text="{Binding UserAnswer}"
+                                               Placeholder="kirjoita sana"
+                                               FontSize="Small"
+                                               FontAutoScalingEnabled="True" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <Button Command="{Binding ValidateAll}"
+                        Text="Tarkista"
+                        FontSize="Small"
+                        TextColor="#D9DDE8"
+                        Margin="0,20,0,100"
+                        FontAttributes="Bold"
+                        BackgroundColor="#4255FF">
+                </Button>
+            </VerticalStackLayout>
         </Grid>
-    </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

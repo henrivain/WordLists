@@ -1,36 +1,17 @@
-﻿using WordValidationLibrary;
+﻿using WordListsViewModels.Helpers;
 
 namespace WordListsViewModels.Interfaces;
 public interface IWriteWordViewModel
 {
-    string Title { get; set; }
-    string Description { get; set; }
-    string LanguageHeaders { get; set; }
-    string UserInput { get; set; }
+    /// <summary>
+    /// Start new collection with random word pair order. 
+    /// If pair count is provided and it is valid, only that amount of word pairs will be chosen randomly.
+    /// </summary>
+    /// <param name="collection"></param>
+    /// <param name="pairCount"></param>
+    void StartNew(WordCollection collection, int pairCount = -1);
+    List<WordPairQuestion> Questions { get; }
+    IRelayCommand ValidateAll { get; }
 
-    WordCollection WordCollection { get; set; }
-    WordPair? VisibleWordPair { get; set; }
-    WordMatchResult? ValidationResult { get; }
-
-    IRelayCommand ValidateWord { get; }
-    IAsyncRelayCommand SaveProgression { get; }
-    IRelayCommand RestartCommand { get; }
-
-
-    bool CanGoNext { get; }
-    bool CanGoPrevious { get; }
-    bool ProgressSaved { get; }
-    bool IsListCompleted { get; }
-    bool IsEmptyCollection { get; }
-
-    int WordIndex { get; }
-    int MaxWordIndex { get; set; }
-
-
-    IRelayCommand GoNext { get; }
-    IRelayCommand GoPrevious { get; }
-
-    void StartNew(WordCollection collection);
-    void StartNew(WordCollection collection, int fromIndex);
-    Task StartNewAsync(int collectionId);
+    WordCollectionOwner Info { get; }
 }

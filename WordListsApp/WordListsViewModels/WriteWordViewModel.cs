@@ -1,95 +1,94 @@
-﻿using WordDataAccessLibrary.DataBaseActions.Interfaces;
+﻿using System.Linq.Expressions;
+using WordListsMauiHelpers.Extensions;
+using WordListsViewModels.Helpers;
 using WordValidationLibrary;
 
 namespace WordListsViewModels;
 
+
+
 [INotifyPropertyChanged]
-public partial class WriteWordViewModel : WordTrainingViewModel, IWriteWordViewModel
+public partial class WriteWordViewModel : IWriteWordViewModel
 {
-    public WriteWordViewModel(IWordCollectionService collectionService, IUserInputWordValidator inputValidator) : base(collectionService)
+    public WriteWordViewModel(IUserInputWordValidator inputValidator)
     {
         InputValidator = inputValidator;
+        StartNew(new()
+        {
+            Owner = new()
+            {
+                Name = "my collectiuon",
+                LanguageHeaders = "fi-en",
+                Description = "a short description about collection."
+            },
+            WordPairs = new()
+            {
+                new()
+                {
+                    NativeLanguageWord = "natie"
+                },
+                new()
+                {
+                    NativeLanguageWord = "asdasdsa"
+                },
+                new()
+            }
+        });
     }
+
     IUserInputWordValidator InputValidator { get; }
 
     [ObservableProperty]
-    string userInput = string.Empty;
+    WordCollectionOwner info = new();
     
-    [ObservableProperty]
-    string[] userAnswers = Array.Empty<string>();
 
     [ObservableProperty]
-    WordMatchResult? validationResult;
+    List<WordPairQuestion> questions = new();
 
     [ObservableProperty]
-    WordMatchResult?[] validationResults = Array.Empty<WordMatchResult?>();
+    uint questionCount = 0;
 
-
-    public IRelayCommand ValidateWord => new RelayCommand(() =>
+    public IRelayCommand ValidateAll => new RelayCommand(() =>
     {
-        if (VisibleWordPair is null) return;
-
-        WordMatchResult result = InputValidator.CompareWords(UserInput, VisibleWordPair.ForeignLanguageWord);
-
-        switch (result.CharMatchPercentage)
+        foreach (var question in Questions)
         {
-            case >= 100:
-                VisibleWordPair.LearnState = WordLearnState.Learned;
-                ProgressSaved = false;
-                break;
-            case > 70:
-                VisibleWordPair.LearnState = WordLearnState.MightKnow;
-                ProgressSaved = false;
-                break;
-            case < 20:
-                VisibleWordPair.LearnState = WordLearnState.NeverHeard;
-                ProgressSaved = false;
-                break;
+            question.MatchResult = InputValidator.CompareWords(question.UserAnswer, question.WordPair.ForeignLanguageWord);
+            switch (question.MatchResult.CharMatchPercentage)
+            {
+                case >= 100:
+                    question.WordPair.LearnState = WordLearnState.Learned;
+                    break;
+                case >= 70:
+                    question.WordPair.LearnState = WordLearnState.MightKnow;
+                    break;
+                case <= 20:
+                    question.WordPair.LearnState = WordLearnState.NeverHeard;
+                    break;
+            }
         }
-
-        ValidationResults[WordIndex] = result;
     });
 
-    public IRelayCommand GoNext => new RelayCommand(() =>
+    public void StartNew(WordCollection collection, int pairCount = -1)
     {
-        base.Next();
-        UpdateValidationVisibility();
-    });
-    
-    public IRelayCommand GoPrevious => new RelayCommand(() =>
-    {
-        base.Previous();
-        UpdateValidationVisibility();
-    });
+        if (collection is null) throw new ArgumentNullException(nameof(collection));
+        Info = collection.Owner;
 
+        Questions = Enumerable.Empty<WordPairQuestion>().ToList();
 
-    public override void StartNew(WordCollection collection)
-    {
-        base.StartNew(collection);
-        ResetAnswerArrays();
+        QuestionCount = (uint)collection.WordPairs.Count;
 
-    }
-
-    public override void StartNew(WordCollection collection, int startIndex)
-    {
-        base.StartNew(collection, startIndex);
-        ResetAnswerArrays();
-    }
-
-    private void ResetAnswerArrays()
-    {
-        UserAnswers = new string[MaxWordIndex];
-        Array.Fill(UserAnswers, string.Empty);
-        ValidationResults = new WordMatchResult[MaxWordIndex];
-        Array.Fill(ValidationResults, null);
-    }
-    private void UpdateValidationVisibility()
-    {
-        if (IsListCompleted is false)
+        
+        
+        var list = collection.WordPairs.Shuffle();
+        if (pairCount > -1 && pairCount < list.Count)
         {
-            UserInput = UserAnswers[WordIndex];
-            ValidationResult = ValidationResults[WordIndex];
+            list = list.GetRange(0, pairCount);
+        }
+        for (int i = 0; i < list.Count; i++)
+        {
+            Questions.Add(new(list[i], (uint)i, (uint)list.Count));
         }
     }
 
+    
 }

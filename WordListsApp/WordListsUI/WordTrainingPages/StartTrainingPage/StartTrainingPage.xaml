@@ -25,124 +25,120 @@
             <VerticalStackLayout>
                 <VerticalStackLayout.Resources>
                     <Style TargetType="{x:Type Button}">
-                        <Setter Property="HorizontalOptions" Value="Start"/>
-                        <Setter Property="FontSize" Value="Caption"/>
-                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="HorizontalOptions"
+                                Value="Start" />
+                        <Setter Property="FontSize"
+                                Value="Caption" />
+                        <Setter Property="Margin"
+                                Value="5" />
                     </Style>
                 </VerticalStackLayout.Resources>
                 <Entry Text="{Binding DataParameter}"
-                    Placeholder="Avainsana"
-                    MaxLength="36"
-                    WidthRequest="300"
-                    HorizontalOptions="Center"
-                    Margin="0,20"
-                    />
+                       Placeholder="Avainsana"
+                       MaxLength="36"
+                       WidthRequest="300"
+                       HorizontalOptions="Center"
+                       Margin="0,20" />
                 <VerticalStackLayout>
                     <Grid ColumnDefinitions="*, *">
-                        <Button Text="Etsi nimen perusteella" 
-                        Command="{Binding UpdateCollectionsByName}"
-                        HorizontalOptions="End"
-                        />
-                        <Button Text="Etsi kielen perusteella" 
-                        Grid.Column="1"
-                        HorizontalOptions="Start"
-                        Command="{Binding UpdateCollectionsByLanguage}"
-                        />
+                        <Button Text="Etsi nimen perusteella"
+                                Command="{Binding UpdateCollectionsByName}"
+                                HorizontalOptions="End" />
+                        <Button Text="Etsi kielen perusteella"
+                                Grid.Column="1"
+                                HorizontalOptions="Start"
+                                Command="{Binding UpdateCollectionsByLanguage}" />
                     </Grid>
                 </VerticalStackLayout>
 
-                <HorizontalStackLayout HorizontalOptions="Center" 
-                                Padding="10"
-                                >
-                    <VerticalStackLayout Margin="0,0,20,0" >
+                <HorizontalStackLayout HorizontalOptions="Center"
+                                       Padding="10">
+                    <VerticalStackLayout Margin="0,0,20,0">
                         <VerticalStackLayout.Resources>
                             <Style TargetType="{x:Type Label}">
-                                <Setter Property="Margin" Value="0,14"/>
-                                <Setter Property="TextColor" Value="{StaticResource UnImportantText}"/>
+                                <Setter Property="Margin"
+                                        Value="0,14" />
+                                <Setter Property="TextColor"
+                                        Value="{StaticResource UnImportantText}" />
                             </Style>
-                          
+
                         </VerticalStackLayout.Resources>
-                        <Label Text="Näytä opitut sanat"/>
-                        <Label Text="Näytä sanat, jotka saatan muistaa"/>
-                        <Label Text="Näytä sanat, joita en muista"/>
+                        <Label Text="Näytä opitut sanat" />
+                        <Label Text="Näytä sanat, jotka saatan muistaa" />
+                        <Label Text="Näytä sanat, joita en muista" />
                         <Label Text="Sekoita sanojen järjestys" />
                     </VerticalStackLayout>
                     <Grid RowDefinitions="*, *, *, *">
-                        <Switch IsToggled="{Binding ShowLearnedWords}" 
+                        <Switch IsToggled="{Binding ShowLearnedWords}"
                                 VerticalOptions="Center"
-                                Grid.Row="0"
-                                />
-                        <Switch IsToggled="{Binding ShowMightKnowWords}" 
+                                Grid.Row="0" />
+                        <Switch IsToggled="{Binding ShowMightKnowWords}"
                                 VerticalOptions="Center"
-                                Grid.Row="1"
-                                />
-                        <Switch IsToggled="{Binding ShowNeverHeardKnowWords}" 
+                                Grid.Row="1" />
+                        <Switch IsToggled="{Binding ShowNeverHeardKnowWords}"
                                 VerticalOptions="Center"
-                                Grid.Row="2"
-                                />
-                        <Switch IsToggled="{Binding RandomizeWordPairsOrder}" 
+                                Grid.Row="2" />
+                        <Switch IsToggled="{Binding RandomizeWordPairsOrder}"
                                 VerticalOptions="Center"
-                                Grid.Row="3"
-                                />
+                                Grid.Row="3" />
                     </Grid>
                 </HorizontalStackLayout>
 
 
-                <Button Text="Näytä kaikki" 
+                <Button Text="Näytä kaikki"
                         HorizontalOptions="Center"
                         Margin="0,20"
-                        Command="{Binding UpdateCollections}"
-                        />
+                        Command="{Binding UpdateCollections}" />
 
 
 
                 <CollectionView ItemsSource="{Binding AvailableCollections}"
                                 Background="{StaticResource WordListBackground}"
                                 Margin="20,0,20,100"
-                                HorizontalOptions="Center"
-                                >
+                                HorizontalOptions="Center">
                     <!-- SelectionMode="Single" MauiBug #9060-->
                     <CollectionView.EmptyView>
                         <Grid>
-                            <Label Text="Sopivia sanastoja ei löytynyt" HorizontalTextAlignment="Center"
-                                    BackgroundColor="Black" VerticalOptions="Start"
-                               />
+                            <Label Text="Sopivia sanastoja ei löytynyt"
+                                   HorizontalTextAlignment="Center"
+                                   BackgroundColor="Black"
+                                   VerticalOptions="Start" />
                         </Grid>
                     </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
-                        <DataTemplate >
+                        <DataTemplate>
                             <SwipeView VerticalOptions="Start">
                                 <SwipeView.Resources>
                                     <Style TargetType="{x:Type Label}">
-                                        <Setter Property="TextColor" Value="{StaticResource UnImportantText}"/>
+                                        <Setter Property="TextColor"
+                                                Value="{StaticResource UnImportantText}" />
                                     </Style>
                                 </SwipeView.Resources>
                                 <SwipeView.RightItems>
-                                    <SwipeItem BackgroundColor="Green" Text="Aloita"
+                                    <SwipeItem BackgroundColor="Green"
+                                               Text="Aloita"
                                                Clicked="SwipeItem_Clicked"
                                                x:DataType="{x:Type wordData:WordCollectionOwner}"
-                                               CommandParameter="{Binding Id}"
-                                               >
+                                               CommandParameter="{Binding Id}">
                                         <!-- using command parameter as paramer for Clicked action, 
                                         it's stupid but didnt find easy better way quickly -->
                                     </SwipeItem>
                                 </SwipeView.RightItems>
-                                <Grid Padding="20,5,0,5" x:DataType="{x:Type wordData:WordCollectionOwner}"
-                                      ColumnDefinitions="{OnPlatform Default=*, WinUI='3*, *', UWP='3*, *'}"
-                                      >
+                                <Grid Padding="20,5,0,5"
+                                      x:DataType="{x:Type wordData:WordCollectionOwner}"
+                                      ColumnDefinitions="{OnPlatform Default=*, WinUI='3*, *', UWP='3*, *'}">
                                     <VerticalStackLayout>
-                                        <Label Text="{Binding Name}"/>
-                                        <Label Text="{Binding LanguageHeaders}"/>
+                                        <Label Text="{Binding Name}" />
+                                        <Label Text="{Binding LanguageHeaders}" />
                                     </VerticalStackLayout>
                                     <ImageButton IsVisible="{OnPlatform WinUI=true, UWP=true, Default=false}"
-                                                 Grid.Column="{OnPlatform WinUI=1, UWP=1}" 
-                                                 Source="letsgoicon.png" 
-                                                 Padding="2" 
+                                                 Grid.Column="{OnPlatform WinUI=1, UWP=1}"
+                                                 Source="letsgoicon.png"
+                                                 Padding="2"
                                                  HeightRequest="30"
                                                  WidthRequest="30"
                                                  Clicked="SwipeItem_Clicked"
-                                                 CommandParameter="{Binding Id}"
-                                                 >
+                                                 CommandParameter="{Binding Id}">
                                         <!-- using command parameter as paramer for Clicked action, 
                                         it's stupid but didnt find easy better way quickly Must fix later when i have time -->
                                     </ImageButton>
@@ -151,7 +147,8 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                     <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Vertical" Span="{OnPlatform Default=1, UWP=3, WinUI=3}"/>
+                        <GridItemsLayout Orientation="Vertical"
+                                         Span="{OnPlatform Default=1, UWP=3, WinUI=3}" />
                     </CollectionView.ItemsLayout>
                 </CollectionView>
             </VerticalStackLayout>

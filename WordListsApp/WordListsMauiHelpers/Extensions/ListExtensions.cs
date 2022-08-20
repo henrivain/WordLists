@@ -4,7 +4,7 @@ public static class ListExtensions
 {
     private static readonly Random _random = new();
 
-    public static IList<T> Shuffle<T>(this IList<T> list)
+    public static List<T> Shuffle<T>(this List<T> list)
     {
         int i = list.Count;
         while (i > 1)

@@ -206,7 +206,6 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
         CanGoNext = (IsEmptyCollection || IsListCompleted) is false;
 
         UpdateFlipCardColor();
-        if (WordIndex - 1 < 0) return;
         VisibleWordPair = WordCollection.WordPairs[WordIndex - 1];
     }
     protected virtual void ShowListCompleted()
