@@ -4,11 +4,88 @@
              x:Class="WordListsUI.WordTrainingPages.WriteWordTrainingPage.WriteWordTrainingPage"
              xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
              x:DataType="{x:Type viewModel:IWriteWordViewModel}"
-             Title="WriteWordTrainingPage">
+             Title="Kirjoita"
+             BackgroundColor="{StaticResource PageBackground}">
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <Label Text="Treenaa sanoja kirjoittamalla" Margin="0,10"/>
+
+
+        <VerticalStackLayout Margin="40">
+            <Label Text="{Binding VisibleWordPair.NativeLanguageWord}" />
+            <Label Text="Sinun vastauksesi"
+                    Padding="10,0" />
+            <Entry VerticalOptions="Center"
+                   Margin="10" />
+
+        </VerticalStackLayout>
+        
+        <Grid ColumnDefinitions="*, auto, *"
+              Margin="0,25,0,50">
+            <Grid.Resources>
+                <Style TargetType="{x:Type ImageButton}">
+                    <Setter Property="HeightRequest"
+                            Value="40" />
+                    <Setter Property="WidthRequest"
+                            Value="40" />
+                    <Setter Property="CornerRadius"
+                            Value="20" />
+                    <Setter Property="Padding"
+                            Value="2" />
+                </Style>
+            </Grid.Resources>
+            <ImageButton Source="arrow.png"
+                         IsEnabled="{Binding CanGoPrevious}"
+                         BackgroundColor="Transparent"
+                         Rotation="180"
+                         HorizontalOptions="End"
+                         Command="{Binding GoPrevious}"
+                         Margin="20,0" />
+
+            <Label Grid.Column="1"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center">
+                <Label.Text>
+                    <MultiBinding StringFormat="{}{0}/{1}">
+                        <Binding Path="WordIndex" />
+                        <Binding Path="MaxWordIndex" />
+                    </MultiBinding>
+                </Label.Text>
+            </Label>
+            <HorizontalStackLayout Grid.Column="2">
+                <ImageButton Source="arrow.png"
+                             IsEnabled="{Binding CanGoNext}"
+                             BackgroundColor="Transparent"
+                             HorizontalOptions="Start"
+                             Command="{Binding GoNext}"
+                             Margin="20,0" />
+
+                <ImageButton Command="{Binding RestartCommand}"
+                             Source="again_icon.png"
+                             IsVisible="{Binding IsListCompleted}"
+                             BackgroundColor="{StaticResource PageBackground}">
+                    <ImageButton.Triggers>
+                        <DataTrigger TargetType="{x:Type ImageButton}"
+                                     Binding="{Binding IsEmptyCollection}"
+                                     Value="false">
+                            <Setter Property="IsEnabled"
+                                    Value="True" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="{x:Type ImageButton}"
+                                     Binding="{Binding IsEmptyCollection}"
+                                     Value="true">
+                            <Setter Property="IsEnabled"
+                                    Value="false" />
+                        </DataTrigger>
+                    </ImageButton.Triggers>
+                </ImageButton>
+
+                <Image Source="ok_icon.png"
+                       IsVisible="{Binding ProgressSaved}"
+                       Margin="20,0,0,0"
+                       HeightRequest="15" />
+            </HorizontalStackLayout>
+
+
+        </Grid>
     </VerticalStackLayout>
 </ContentPage>

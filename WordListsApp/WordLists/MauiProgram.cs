@@ -15,6 +15,7 @@ using WordListsViewModels;
 using WordListsViewModels.Helpers;
 using WordListsViewModels.Interfaces;
 using WordListsUI.WordTrainingPages.WriteWordTrainingPage;
+using WordValidationLibrary;
 
 namespace WordLists;
 
@@ -58,6 +59,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<ICollectionExportService, WordCollectionExportService>();
 		builder.Services.AddSingleton<ICollectionImportService, JsonWordCollectionImportService>();
 		builder.Services.AddSingleton<IWordCollectionInfoService, WordCollectionInfoService>();
+		builder.Services.AddSingleton<IUserInputWordValidator, UserInputWordValidator>();
 
         return builder.Build();
 	}

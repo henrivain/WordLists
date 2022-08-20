@@ -7,7 +7,7 @@ public interface IWordTrainingViewModel
     string Description { get; set; }
     string LanguageHeaders { get; set; }
     WordCollection WordCollection { get; set; }
-    WordPair VisibleWordPair { get; set; }
+    WordPair? VisibleWordPair { get; set; }
 
     int WordIndex { get; }
     int MaxWordIndex { get; set; }

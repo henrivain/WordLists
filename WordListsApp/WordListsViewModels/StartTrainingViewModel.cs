@@ -62,6 +62,9 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
     bool isRefreshing = false;
 
     [ObservableProperty]
+    bool randomizeWordPairsOrder = false;
+
+    [ObservableProperty]
     WordCollectionOwner selectedItem = new();
     
     public async Task ResetCollections()

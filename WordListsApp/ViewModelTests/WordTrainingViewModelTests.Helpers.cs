@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ViewModelTests;
+﻿namespace ViewModelTests;
 public partial class WordTrainingViewModelTests
 {
-    private static WordPair GetFirstPair(IWordTrainingViewModel viewModel)
+    internal static WordPair GetFirstPair(IWordTrainingViewModel viewModel)
     {
         return viewModel.WordCollection.WordPairs.First();
     }
 
 
-    private static WordPair[] GetWordPairArray(int length)
+    internal static WordPair[] GetWordPairArray(int length)
     {
         WordPair[] array = new WordPair[length];
         for (int i = 0; i < length; i++)

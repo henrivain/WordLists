@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using WordDataAccessLibrary;
-using WordDataAccessLibrary.DataBaseActions;
+using WordListsMauiHelpers.Extensions;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsMauiHelpers.PageRouting;
 
@@ -66,6 +66,10 @@ public partial class StartTrainingPage : ContentPage
 				.Where(x => x.LearnState is not WordLearnState.NeverHeard)
 					.ToList();	
         }
+		if (Model.RandomizeWordPairsOrder)
+		{
+			collection.WordPairs = (List<WordPair>)collection.WordPairs.Shuffle();
+		}
 
 		var parameter = new Dictionary<string, object>()
 		{

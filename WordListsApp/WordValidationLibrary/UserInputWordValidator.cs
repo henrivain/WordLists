@@ -23,8 +23,6 @@ public class UserInputWordValidator : IUserInputWordValidator
 
         List<MatchingString> matchingStrings = CreateFromBoolArray(input, validatedChars);
 
-
-
         return new(false)
         {
             ValidatedStringSpans = matchingStrings,

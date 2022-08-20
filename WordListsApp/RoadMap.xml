@@ -13,6 +13,17 @@
 				</WordCollections>
 				<FixBug>list saved event does not fire twice in list generator</FixBug>
 			</v1.0.0>
+			<v1.1.0>
+				<LearnWords>Add set learnstate NotSet</LearnWords>
+				<ImportExport>Word lists can be exported and imported to other devices</ImportExport>
+				<WelcomePage>
+					<Info>add user stats</Info>
+					<Notice>added to word data pages</Notice>
+				</WelcomePage>
+			</v1.1.0>
+			<v1.2.0>
+				<StartTraining>Add possibility to randomize word pair order in list</StartTraining>
+			</v1.2.0>
 		</InRelease>
 		<UnReleased>
 			<!-- Update not released -->
@@ -20,16 +31,23 @@
 		</UnReleased>
 	</Completed>
 	<Coming>
+		<!-- Under work -->
+		<UnderWork>
+			<LearnWords>Learn by writing words</LearnWords>
+			<LearnWords>Generate test</LearnWords>
+		</UnderWork>
 		<!-- Most certainly coming features-->
 		<TODO>
+			<ListGenerator>Create list by image recognizion</ListGenerator>
 			<Logging>Implement proper logging</Logging>
 			<Tests>
 				<TestViewModels>Add tests to view models</TestViewModels>
 			</Tests>
 			<Enhancement>
-				<StartLearningPage>Fix collection view sizing on windows when less than 3 items (Might be maui bug)</StartLearningPage>
+				<OnWindows>
+					<StartLearningPage>Fix collection view sizing on windows when less than 3 items (Might be maui bug)</StartLearningPage>
+				</OnWindows>
 			</Enhancement>
-			<LearnWords>Add set learnstate NotSet</LearnWords>
 			<Usability>
 				<CollectionEditPage>
 					<Edit>Name</Edit>
@@ -44,11 +62,11 @@
 	<UnCertain>
 		<Description>Make Description Visible</Description>
 		<WordListGenerator>Edit button to edit word collection words</WordListGenerator>
-		<LearnWords>Learn by writing words</LearnWords>
-		<LearnWords>Generate test</LearnWords>
 		<WordCollections>
-			<SearchByTags>Tag to point add specific book</SearchByTags>
+			<SearchByTags>
+				<Info>Tag to point add specific book</Info>
+				<Notice>This can be reached by naming collections well</Notice>
+			</SearchByTags>
 		</WordCollections>
-		<WelcomePage>add user stats</WelcomePage>
 	</UnCertain>
 </Versions>

@@ -65,8 +65,9 @@
                         <Label Text="Näytä opitut sanat"/>
                         <Label Text="Näytä sanat, jotka saatan muistaa"/>
                         <Label Text="Näytä sanat, joita en muista"/>
+                        <Label Text="Sekoita sanojen järjestys" />
                     </VerticalStackLayout>
-                    <Grid RowDefinitions="*, *, *">
+                    <Grid RowDefinitions="*, *, *, *">
                         <Switch IsToggled="{Binding ShowLearnedWords}" 
                                 VerticalOptions="Center"
                                 Grid.Row="0"
@@ -78,6 +79,10 @@
                         <Switch IsToggled="{Binding ShowNeverHeardKnowWords}" 
                                 VerticalOptions="Center"
                                 Grid.Row="2"
+                                />
+                        <Switch IsToggled="{Binding RandomizeWordPairsOrder}" 
+                                VerticalOptions="Center"
+                                Grid.Row="3"
                                 />
                     </Grid>
                 </HorizontalStackLayout>

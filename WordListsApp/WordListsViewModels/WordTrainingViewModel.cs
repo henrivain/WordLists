@@ -63,7 +63,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
 
 
 
-    public void Next()
+    public virtual void Next()
     {
         if (WordIndex == MaxWordIndex)
         {
@@ -76,7 +76,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
             ShowCurrentWord();
         }
     }
-    public void Previous()
+    public virtual void Previous()
     {
         if (IsListCompleted)
         {
@@ -89,12 +89,12 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
             ShowCurrentWord();
         }
     }
-    public void StartNew(WordCollection collection)
+    public virtual void StartNew(WordCollection collection)
     {
         MaxWordIndex = collection.WordPairs.Count;
         StartNewWithIndex(collection, 1);
     }
-    public void StartNew(WordCollection collection, int startIndex)
+    public virtual void StartNew(WordCollection collection, int startIndex)
     {
         MaxWordIndex = collection.WordPairs.Count;
 
@@ -106,7 +106,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
         }
         StartNewWithIndex(collection, startIndex);
     }
-    public async Task StartNewAsync(int collectionId)
+    public virtual async Task StartNewAsync(int collectionId)
     {
         WordCollection collection = await CollectionService.GetWordCollection(collectionId);
         if (collection is null)
@@ -168,6 +168,11 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
         UpdateWordPairUsingWordIndex();
     });
 
+
+
+
+
+
     private void StartNewWithIndex(WordCollection collection, int startIndex)
     {
         ProgressSaved = true;
@@ -176,7 +181,6 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
         WordIndex = startIndex;
         UpdateWordPairUsingWordIndex();
     }
-
     private void UpdateWordPairUsingWordIndex()
     {
         if (MaxWordIndex <= 0)
@@ -193,7 +197,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
         Description = WordCollection.Owner.Description;
         LanguageHeaders = WordCollection.Owner.LanguageHeaders;
     }
-    private void ShowCurrentWord()
+    protected virtual void ShowCurrentWord()
     {
         IsListCompleted = false;
 
@@ -202,16 +206,17 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
         CanGoNext = (IsEmptyCollection || IsListCompleted) is false;
 
         UpdateFlipCardColor();
+        if (WordIndex - 1 < 0) return;
         VisibleWordPair = WordCollection.WordPairs[WordIndex - 1];
     }
-    private void ShowListCompleted()
+    protected virtual void ShowListCompleted()
     {
         IsListCompleted = true;
         if (IsEmptyCollection is false) _ = UpdateCollectionToDataBase();
         CanGoNext = false;
         VisibleWordPair = CompletedView;
     }
-    private void ShowCollectionIsEmpty()
+    protected virtual void ShowCollectionIsEmpty()
     {
         MaxWordIndex = 1;
         CanGoNext = false;
@@ -246,8 +251,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
         await CollectionService.SaveProgression(WordCollection);
         ProgressSaved = true;
     }
-
-    private readonly WordPair CompletedView = new()
+    protected virtual WordPair CompletedView { get; } = new()
     {
         NativeLanguageWord = "Sanasto suoritettu!",
         ForeignLanguageWord = "Sanasto suoritettu!"

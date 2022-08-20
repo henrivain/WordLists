@@ -15,6 +15,7 @@ public interface IStartTrainingViewModel
     bool ShowMightKnowWords { get; set; }
     bool ShowNeverHeardKnowWords { get; set; }
     bool IsRefreshing { get; set; }
+    bool RandomizeWordPairsOrder { get; set; }
 
     Task ResetCollections();
 

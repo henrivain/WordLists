@@ -90,6 +90,7 @@
                         <ImageButton Command="{Binding RestartCommand}"
                                      Source="again_icon.png"
                                      IsVisible="{Binding IsListCompleted}"
+                                     BackgroundColor="{StaticResource PageBackground}"
                                      >
                             <ImageButton.Triggers>
                                 <DataTrigger TargetType="{x:Type ImageButton}" Binding="{Binding IsEmptyCollection}" Value="false">
