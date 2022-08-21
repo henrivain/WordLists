@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using WordListsMauiHelpers.Extensions;
+﻿using WordListsMauiHelpers.Extensions;
 using WordListsViewModels.Helpers;
 using WordValidationLibrary;
 
@@ -86,7 +85,7 @@ public partial class WriteWordViewModel : IWriteWordViewModel
         }
         for (int i = 0; i < list.Count; i++)
         {
-            Questions.Add(new(list[i], (uint)i, (uint)list.Count));
+            Questions.Add(new(list[i], (uint)i+1, (uint)list.Count));
         }
     }
 
