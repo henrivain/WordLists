@@ -1,5 +1,8 @@
+using WordDataAccessLibrary;
+
 namespace WordListsUI.WordTrainingPages.WritingTestPage;
 
+[QueryProperty(nameof(StartCollection), nameof(StartCollection))]
 public partial class WritingTestPage : ContentPage
 {
 	readonly WriteWordPageGridHelper _gridHelper;
@@ -11,7 +14,15 @@ public partial class WritingTestPage : ContentPage
         _gridHelper = DeviceInfo.Current.Platform == DevicePlatform.WinUI ? new(baseGrid, infoVerticalStackLayout) : null;
     }
 
-	public IWriteWordViewModel Model => (IWriteWordViewModel)BindingContext;
+    public WordCollection StartCollection
+    {
+        set
+        {
+            if (value is not null) Model.StartNew(value);
+        }
+    }
+
+    public IWriteWordViewModel Model => (IWriteWordViewModel)BindingContext;
 
 	private void Grid_SizeChanged(object sender, EventArgs e)
 	{

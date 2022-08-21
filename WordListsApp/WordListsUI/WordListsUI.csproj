@@ -77,6 +77,9 @@
 	  <Compile Update="WordTrainingPages\FlipCardTrainingPage\FlipCardTrainingPage.xaml.cs">
 	    <DependentUpon>FlipCardTrainingPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="WordTrainingPages\WritingTestPage\WritingTestPage.xaml.cs">
+	    <DependentUpon>WritingTestPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -122,7 +125,10 @@
 	  <MauiXaml Update="WordTrainingPages\FlipCardTrainingPage\FlipCardTrainingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="WordTrainingPages\WriteWordTrainingPage\WriteWordTrainingPage.xaml">
+	  <MauiXaml Update="WordTrainingPages\WritingTestPage\WritingTestConfigurationPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="WordTrainingPages\WritingTestPage\WritingTestPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

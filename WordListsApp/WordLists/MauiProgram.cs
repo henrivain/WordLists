@@ -14,8 +14,8 @@ using WordListsUI.WordTrainingPages.FlipCardTrainingPage;
 using WordListsViewModels;
 using WordListsViewModels.Helpers;
 using WordListsViewModels.Interfaces;
-using WordListsUI.WordTrainingPages.WriteWordTrainingPage;
 using WordValidationLibrary;
+using WordListsUI.WordTrainingPages.WritingTestPage;
 
 namespace WordLists;
 
@@ -39,7 +39,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<ListGeneratorPage>();
 		builder.Services.AddTransient<WordDataPage>();
 		builder.Services.AddTransient<AppInfoPage>();
-		builder.Services.AddSingleton<WriteWordTrainingPage>();
+		builder.Services.AddSingleton<WritingTestPage>();
+		builder.Services.AddSingleton<WritingTestConfigurationPage>();
 		builder.Services.AddSingleton<IWordTrainingViewModel, WordTrainingViewModel>();
 		builder.Services.AddTransient<IStartTrainingViewModel, StartTrainingViewModel>();
 		builder.Services.AddTransient<IWordCollectionHandlingViewModel, WordCollectionHandlingViewModel>();
@@ -47,6 +48,7 @@ public static class MauiProgram
         builder.Services.AddTransient<IWordDataViewModel, WordDataViewModel>();
         builder.Services.AddTransient<IAppInfoViewModel, AppInfoViewModel>();
 		builder.Services.AddTransient<IWriteWordViewModel, WriteWordViewModel>();
+		builder.Services.AddTransient<IWritingTestConfigurationViewModel, WritingTestConfigurationViewModel>();
 
         builder.Services.AddTransient<JsonExportPage>();
         builder.Services.AddTransient<JsonImportPage>();

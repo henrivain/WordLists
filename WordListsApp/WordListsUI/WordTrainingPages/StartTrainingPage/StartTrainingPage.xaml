@@ -141,7 +141,7 @@
                                                  Padding="2"
                                                  HeightRequest="30"
                                                  WidthRequest="30"
-                                                 Clicked="SwipeItem_Clicked"
+                                                 Clicked="SwipeItem_Cards_Clicked"
                                                  CommandParameter="{Binding Id}">
                                         <!-- using command parameter as paramer for Clicked action, 
                                         it's stupid but didnt find easy better way quickly Must fix later when i have time -->

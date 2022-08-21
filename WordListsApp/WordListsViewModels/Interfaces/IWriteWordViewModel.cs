@@ -9,7 +9,7 @@ public interface IWriteWordViewModel
     /// </summary>
     /// <param name="collection"></param>
     /// <param name="pairCount"></param>
-    void StartNew(WordCollection collection, int pairCount = -1);
+    void StartNew(WordCollection collection);
     List<WordPairQuestion> Questions { get; }
     IRelayCommand ValidateAll { get; }
 

@@ -3,6 +3,7 @@ using WordDataAccessLibrary;
 using WordListsMauiHelpers.Extensions;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsMauiHelpers.PageRouting;
+using WordListsUI.WordTrainingPages.WritingTestPage;
 
 namespace WordListsUI.WordTrainingPages.StartTrainingPage;
 
@@ -68,7 +69,7 @@ public partial class StartTrainingPage : ContentPage
         }
 		if (Model.RandomizeWordPairsOrder)
 		{
-			collection.WordPairs = (List<WordPair>)collection.WordPairs.Shuffle();
+			collection.WordPairs = collection.WordPairs.Shuffle();
 		}
 
 		var parameter = new Dictionary<string, object>()
@@ -102,7 +103,7 @@ public partial class StartTrainingPage : ContentPage
 
         if (id is not -1)
         {
-            await Shell.Current.GoToAsync($"{PageRoutes.GetRoute(Route.Training)}/{nameof(FlipCardTrainingPage.FlipCardTrainingPage)}", await BuildPageChangeParameter(id));
+            await Shell.Current.GoToAsync($"{PageRoutes.GetRoute(Route.Training)}/{nameof(WritingTestConfigurationPage)}", await BuildPageChangeParameter(id));
         }
     }
 }
