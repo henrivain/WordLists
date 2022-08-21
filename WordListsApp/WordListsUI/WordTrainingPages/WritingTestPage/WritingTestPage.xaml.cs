@@ -1,11 +1,10 @@
+namespace WordListsUI.WordTrainingPages.WritingTestPage;
 
-namespace WordListsUI.WordTrainingPages.WriteWordTrainingPage;
-
-public partial class WriteWordTrainingPage : ContentPage
+public partial class WritingTestPage : ContentPage
 {
-	readonly GridHelper _gridHelper;
+	readonly WriteWordPageGridHelper _gridHelper;
 
-    public WriteWordTrainingPage(IWriteWordViewModel model)
+    public WritingTestPage(IWriteWordViewModel model)
 	{
 		BindingContext = model;
         InitializeComponent();
@@ -17,5 +16,12 @@ public partial class WriteWordTrainingPage : ContentPage
 	private void Grid_SizeChanged(object sender, EventArgs e)
 	{
 		_gridHelper?.ReSize();
+    }
+
+
+
+	private async void LeaveButton_Clicked(object sender, EventArgs e)
+	{
+		await Shell.Current.Navigation.PopToRootAsync();
     }
 }

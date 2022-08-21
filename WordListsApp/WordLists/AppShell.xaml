@@ -29,14 +29,15 @@
         <!-- Word training -->
         <Tab Title="Harjoitus"
              Icon="training_icon.png">
-            <ShellContent Title="Aloita uusi"
+            <ShellContent Title="Kortit"
                           ContentTemplate="{DataTemplate startTraining:StartTrainingPage}"
                           />
-            <ShellContent Title="Harjoittele"
+            
+            <!--<ShellContent Title="Harjoittele"
                           ContentTemplate="{DataTemplate training:FlipCardTrainingPage}"
                           />
             <ShellContent Title="Kirjoita"
-                          ContentTemplate="{DataTemplate write:WriteWordTrainingPage}" />
+                          ContentTemplate="{DataTemplate write:WriteWordTrainingPage}" />-->
         </Tab>
 
         <!-- Word list handling -->

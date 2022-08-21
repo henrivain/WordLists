@@ -1,9 +1,4 @@
-﻿
-
-using System.Diagnostics;
-using System.Net.Http.Headers;
-
-namespace WordListsUI.WordTrainingPages.WriteWordTrainingPage;
+﻿namespace WordListsUI.WordTrainingPages.WritingTestPage;
 internal class WriteWordPageGridHelper
 {
     public WriteWordPageGridHelper(Grid baseGrid, VerticalStackLayout infoGrid)
@@ -73,19 +68,21 @@ internal class WriteWordPageGridHelper
     internal void ReSize()
     {
         if (ChooseState()) return;
+        InfoGrid.MaximumWidthRequest = 600;
+
         switch (State)
         {
             case GridState.ExtraBig:
                 BaseGrid.ColumnDefinitions = new(StarColumn(1), StarColumn(2), StarColumn(1));
                 BaseGrid.RowDefinitions = new(StarRow(1));
-                InfoGrid.Margin = new Thickness(30, 40, 0, 0);
+                InfoGrid.Margin = new Thickness(30, 30, 0, 0);
                 Grid.SetColumn(InfoGrid, 0);
                 break;
 
             case GridState.Big:
                 BaseGrid.ColumnDefinitions = new(StarColumn(1), StarColumn(3), StarColumn(1));
                 BaseGrid.RowDefinitions = new(StarRow(1));
-                InfoGrid.Margin = new Thickness(30, 40, 0, 0);
+                InfoGrid.Margin = new Thickness(30, 30, 0, 0);
                 Grid.SetColumn(InfoGrid, 0);
                 break;
 

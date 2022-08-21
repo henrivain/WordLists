@@ -24,7 +24,7 @@ public partial class StartTrainingPage : ContentPage
 		await Model.ResetCollections();
 	}
 
-	private async void SwipeItem_Clicked(object sender, EventArgs e)
+	private async void SwipeItem_Cards_Clicked(object sender, EventArgs e)
 	{
 		int id = -1;
 
@@ -85,4 +85,24 @@ public partial class StartTrainingPage : ContentPage
 			Debug.WriteLine(layout.Width);
 		}
 	}
+
+	private async void SwipeItem_Write_Clicked(object sender, EventArgs e)
+	{
+        int id = -1;
+
+        if (sender is MenuItem item)
+        {
+            id = (int)item.CommandParameter;
+        }
+
+        if (sender is ImageButton imgButton)
+        {
+            id = (int)imgButton.CommandParameter;
+        }
+
+        if (id is not -1)
+        {
+            await Shell.Current.GoToAsync($"{PageRoutes.GetRoute(Route.Training)}/{nameof(FlipCardTrainingPage.FlipCardTrainingPage)}", await BuildPageChangeParameter(id));
+        }
+    }
 }

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WordListsUI.WordTrainingPages.WritingTestPage.WritingTestPage"
+             xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
+             xmlns:itemModel="clr-namespace:WordListsViewModels.Helpers;assembly=WordListsViewModels"
+             x:DataType="{x:Type viewModel:IWriteWordViewModel}"
+             Title="Kirjoita"
+             Shell.TabBarIsVisible="False"
+             BackgroundColor="#0A092D">
+    <ContentPage.Resources>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="FontFamily"
+                    Value="Poppins" />
+            <Setter Property="TextColor"
+                    Value="#D9DDE8" />
+        </Style>
+        <Style TargetType="{x:Type Entry}">
+            <Setter Property="FontFamily"
+                    Value="Poppins" />
+            <Setter Property="BackgroundColor"
+                    Value="#0A092D" />
+            <Setter Property="PlaceholderColor"
+                    Value="#D9DDE8" />
+            <Setter Property="TextColor"
+                    Value="#D9DDE8" />
+            <Setter Property="FontAttributes"
+                    Value="Bold" />
+        </Style>
+    </ContentPage.Resources>
+    <ScrollView>
+        <Grid x:Name="baseGrid"
+              ColumnDefinitions="*,8*,*"
+              SizeChanged="Grid_SizeChanged"
+              RowDefinitions="*, auto">
+            <VerticalStackLayout x:Name="infoVerticalStackLayout"
+                                 Margin="{OnIdiom Phone='0,20,0,0', Default='0,20'}"
+                                 Grid.Column="1">
+
+                <ImageButton Clicked="LeaveButton_Clicked"
+                             Source="leave_icon.png"
+                             HorizontalOptions="Start"
+                             Padding="0"
+                             BackgroundColor="#0A092D"
+                             HeightRequest="35"
+                             Margin="0,0,0,20"
+                             WidthRequest="{Binding HeightRequest, Source={RelativeSource Self}}" />
+                <Label Text="{Binding Info.Name}"
+                       Margin="0,0,0,5"
+                       FontSize="Title"
+                       FontAttributes="Bold" />
+                <Label Text="{Binding Info.LanguageHeaders}"
+                       Margin="0,5" />
+                <Label Text="{Binding Info.Description}"
+                       Margin="0,5"
+                       LineBreakMode="WordWrap" />
+            </VerticalStackLayout>
+            <VerticalStackLayout Grid.Column="1"
+                                 Grid.Row="1">
+                <Label Text="Vastaa kirjoittamalla sana halutulla kielellä"
+                       HorizontalTextAlignment="Start"
+                       FontSize="Medium"
+                       TextColor="#646F90"
+                       FontAttributes="Bold"
+                       LineBreakMode="WordWrap"
+                       MaximumWidthRequest="{OnPlatform WinUI=600}"
+                       Margin="{OnIdiom Phone='0,10', Default='0,50,0,20'}" />
+                <VerticalStackLayout MaximumWidthRequest="600">
+                    <CollectionView ItemsSource="{Binding Questions}"
+                                    ItemSizingStrategy="MeasureAllItems">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid VerticalOptions="Start"
+                                      Margin="0,10"
+                                      x:DataType="{x:Type itemModel:WordPairQuestion}">
+                                    <Border HeightRequest="{OnIdiom Phone=180, Default=225}"
+                                            BackgroundColor="#2E3856"
+                                            StrokeThickness="0"
+                                            Stroke="Transparent">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10" />
+                                        </Border.StrokeShape>
+                                    </Border>
+                                    <Label Margin="0,10,20,0"
+                                           VerticalOptions="Start"
+                                           HorizontalOptions="End"
+                                           TextColor="#646F90">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Index}" />
+                                                <Span Text="/" />
+                                                <Span Text="{Binding TotalIndexes}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Grid Margin="{OnIdiom Default='15,10', Desktop='30,20'}"
+                                          VerticalOptions="Center">
+                                        <VerticalStackLayout>
+
+                                            <Label Text="{Binding WordPair.NativeLanguageWord}"
+                                                   Padding="0,10"
+                                                   FontSize="Medium"
+                                                   FontAttributes="Bold" />
+                                            <Label Text="Vastauksesi"
+                                                   Margin="0,4"
+                                                   TextColor="#646F90" />
+                                            <Entry Text="{Binding UserAnswer}"
+                                                   Placeholder="kirjoita vastauksesi"
+                                                   FontSize="Small"
+                                                   FontAutoScalingEnabled="True"
+                                                   IsVisible="{OnPlatform Default=true, Android=false}" />
+                                            <Border BackgroundColor="#0A092D"
+                                                    Stroke="Transparent"
+                                                    IsVisible="{OnPlatform Default=false, Android=true}">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="8" />
+                                                </Border.StrokeShape>
+                                                <Entry Text="{Binding UserAnswer}"
+                                                       Margin="5,0"
+                                                       Placeholder="kirjoita sana"
+                                                       FontSize="Small"
+                                                       FontAutoScalingEnabled="True" />
+                                            </Border>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <VerticalStackLayout Margin="0,10,0,100">
+
+                        <Button Command="{Binding ValidateAll}"
+                                Text="Tarkista"
+                                FontSize="Small"
+                                TextColor="#D9DDE8"
+                                FontAttributes="Bold"
+                                BackgroundColor="#4255FF" />
+                        <Label Text="Painettuasi 'tarkista', et voi enää muokata vastauksiasi"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,20"
+                               TextColor="#646F90" />
+
+                        <Label Text="Kysymykset päättyvät tähän"
+                               HorizontalTextAlignment="Center"
+                               TextColor="#646F90"
+                               Margin="0,20,20,0" />
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

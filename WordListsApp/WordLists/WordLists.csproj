@@ -21,7 +21,7 @@
 		<!-- Versions -->
 		<ApplicationVersion>1</ApplicationVersion>
 		<ApplicationDisplayVersion>1.1</ApplicationDisplayVersion>
-		<Version>1.1.0.0</Version>
+		<Version>1.2.0.0</Version>
 		
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
@@ -110,6 +110,7 @@
 	  <None Remove="Resources\Images\hamburger_icon.svg" />
 	  <None Remove="Resources\Images\home_icon.svg" />
 	  <None Remove="Resources\Images\info_icon.svg" />
+	  <None Remove="Resources\Images\leave_icon.svg" />
 	  <None Remove="Resources\Images\LetsGoIcon.svg" />
 	  <None Remove="Resources\Images\new_icon.svg" />
 	  <None Remove="Resources\Images\ok_icon.svg" />

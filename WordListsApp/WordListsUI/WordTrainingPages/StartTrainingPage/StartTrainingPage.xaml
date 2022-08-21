@@ -116,13 +116,17 @@
                                 </SwipeView.Resources>
                                 <SwipeView.RightItems>
                                     <SwipeItem BackgroundColor="Green"
-                                               Text="Aloita"
-                                               Clicked="SwipeItem_Clicked"
+                                               Text="Kortit"
+                                               Clicked="SwipeItem_Cards_Clicked"
                                                x:DataType="{x:Type wordData:WordCollectionOwner}"
-                                               CommandParameter="{Binding Id}">
-                                        <!-- using command parameter as paramer for Clicked action, 
+                                               CommandParameter="{Binding Id}" />
+                                    <!-- using command parameter as paramer for Clicked action, 
                                         it's stupid but didnt find easy better way quickly -->
-                                    </SwipeItem>
+                                    <SwipeItem BackgroundColor="#0A092D"
+                                               Text="Kirjoita"
+                                               Clicked="SwipeItem_Write_Clicked"
+                                               x:DataType="{x:Type wordData:WordCollectionOwner}"
+                                               CommandParameter="{Binding Id}" />
                                 </SwipeView.RightItems>
                                 <Grid Padding="20,5,0,5"
                                       x:DataType="{x:Type wordData:WordCollectionOwner}"
