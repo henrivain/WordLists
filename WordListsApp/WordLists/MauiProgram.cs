@@ -4,18 +4,18 @@ using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsMauiHelpers.Factories;
 using WordListsUI.AppInfoPage;
-using WordListsUI.WordTrainingPages.StartTrainingPage;
 using WordListsUI.WordDataPages;
 using WordListsUI.WordDataPages.JsonExportPage;
 using WordListsUI.WordDataPages.JsonImportPage;
 using WordListsUI.WordDataPages.ListGeneratorPage;
 using WordListsUI.WordDataPages.WordCollectionEditPage;
 using WordListsUI.WordTrainingPages.FlipCardTrainingPage;
+using WordListsUI.WordTrainingPages.StartTrainingPage;
+using WordListsUI.WordTrainingPages.WritingTestPage;
 using WordListsViewModels;
 using WordListsViewModels.Helpers;
 using WordListsViewModels.Interfaces;
 using WordValidationLibrary;
-using WordListsUI.WordTrainingPages.WritingTestPage;
 
 namespace WordLists;
 
@@ -48,7 +48,7 @@ public static class MauiProgram
         builder.Services.AddTransient<IWordDataViewModel, WordDataViewModel>();
         builder.Services.AddTransient<IAppInfoViewModel, AppInfoViewModel>();
 		builder.Services.AddTransient<IWriteWordViewModel, WriteWordViewModel>();
-		builder.Services.AddTransient<IWritingTestConfigurationViewModel, WritingTestConfigurationViewModel>();
+		builder.Services.AddAbstractFactory<IWritingTestConfigurationViewModel, WritingTestConfigurationViewModel>();
 
         builder.Services.AddTransient<JsonExportPage>();
         builder.Services.AddTransient<JsonImportPage>();

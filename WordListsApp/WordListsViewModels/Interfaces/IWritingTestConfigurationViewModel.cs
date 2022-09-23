@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WordListsViewModels.Events;
 
 namespace WordListsViewModels.Interfaces;
 public interface IWritingTestConfigurationViewModel
 {
+
+    WordCollection Collection { get; set; }
+
+    string SelectedPairCount { get; set; }
+
+    IRelayCommand StartTestCommand { get; }
+
+    event StartWordCollectionEventHandler StartWordCollection;
 }

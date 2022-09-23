@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="WordListsUI.WordTrainingPages.WritingTestPage.Resources.WriteWordConfigurationPageResources">
+
+    <Style TargetType="{x:Type Entry}"
+           x:Key="numericEntry">
+        <Setter Property="WidthRequest"
+                Value="80" />
+        <Setter Property="Placeholder"
+                Value="numero" />
+        <Setter Property="Keyboard"
+                Value="Numeric" />
+    </Style>
+
+
+    <Style TargetType="{x:Type Entry}"
+           BasedOn="{StaticResource numericEntry}"
+           x:Key="samsungEntryStyle">
+        
+    </Style>
+</ResourceDictionary>

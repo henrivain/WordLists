@@ -7,15 +7,17 @@
              xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
              x:DataType="{x:Type viewModel:IStartTrainingViewModel}"
              BackgroundColor="{StaticResource PageBackground}"
-             Loaded="ContentPage_Loaded"
-             >
+             Loaded="ContentPage_Loaded">
     <ContentPage.Resources>
         <Style TargetType="{x:Type Entry}">
-            <Setter Property="BackgroundColor" Value="{StaticResource KindaWhite}"/>
-            <Setter Property="PlaceholderColor" Value="{StaticResource UnImportantText}"/>
-            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="BackgroundColor"
+                    Value="{StaticResource KindaWhite}" />
+            <Setter Property="PlaceholderColor"
+                    Value="{StaticResource UnImportantText}" />
+            <Setter Property="TextColor"
+                    Value="Black" />
         </Style>
-        
+
     </ContentPage.Resources>
 
     <Grid>
@@ -126,7 +128,8 @@
                                                Text="Kirjoita"
                                                Clicked="SwipeItem_Write_Clicked"
                                                x:DataType="{x:Type wordData:WordCollectionOwner}"
-                                               CommandParameter="{Binding Id}" />
+                                               CommandParameter="{Binding Id}" 
+                                               />
                                 </SwipeView.RightItems>
                                 <Grid Padding="20,5,0,5"
                                       x:DataType="{x:Type wordData:WordCollectionOwner}"
@@ -135,17 +138,30 @@
                                         <Label Text="{Binding Name}" />
                                         <Label Text="{Binding LanguageHeaders}" />
                                     </VerticalStackLayout>
-                                    <ImageButton IsVisible="{OnPlatform WinUI=true, UWP=true, Default=false}"
-                                                 Grid.Column="{OnPlatform WinUI=1, UWP=1}"
-                                                 Source="letsgoicon.png"
-                                                 Padding="2"
-                                                 HeightRequest="30"
-                                                 WidthRequest="30"
-                                                 Clicked="SwipeItem_Cards_Clicked"
-                                                 CommandParameter="{Binding Id}">
-                                        <!-- using command parameter as paramer for Clicked action, 
+                                    <HorizontalStackLayout Grid.Column="{OnPlatform WinUI=1, UWP=1}"
+                                                           IsVisible="{OnPlatform WinUI=true, UWP=true, Default=false}">
+                                        <ImageButton IsVisible="{OnPlatform WinUI=true, UWP=true, Default=false}"
+                                                     Source="letsgoicon.png"
+                                                     Padding="2"
+                                                     HeightRequest="30"
+                                                     WidthRequest="30"
+                                                     Clicked="SwipeItem_Cards_Clicked"
+                                                     CommandParameter="{Binding Id}">
+                                            <!-- using command parameter as paramer for Clicked action, 
                                         it's stupid but didnt find easy better way quickly Must fix later when i have time -->
-                                    </ImageButton>
+                                        </ImageButton>
+                                        <ImageButton IsVisible="{OnPlatform WinUI=true, UWP=true, Default=false}"
+                                                     Source="pencil_icon.png"
+                                                     Margin="10,0"
+                                                     Padding="2"
+                                                     CornerRadius="15"
+                                                     HeightRequest="30"
+                                                     WidthRequest="30"
+                                                     BackgroundColor="#65000000"
+                                                     Clicked="SwipeItem_Write_Clicked"
+                                                     x:DataType="{x:Type wordData:WordCollectionOwner}"
+                                                     CommandParameter="{Binding Id}" />
+                                    </HorizontalStackLayout>
                                 </Grid>
                             </SwipeView>
                         </DataTemplate>

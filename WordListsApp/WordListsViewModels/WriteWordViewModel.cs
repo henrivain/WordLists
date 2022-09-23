@@ -1,5 +1,4 @@
-﻿using WordListsMauiHelpers.Extensions;
-using WordListsViewModels.Helpers;
+﻿using WordListsViewModels.Helpers;
 using WordValidationLibrary;
 
 namespace WordListsViewModels;
@@ -50,22 +49,14 @@ public partial class WriteWordViewModel : IWriteWordViewModel
     public void StartNew(WordCollection collection)
     {
         if (collection is null) throw new ArgumentNullException(nameof(collection));
-
-
-
-        
-        
-      
-
-
         Info = collection.Owner;
         Questions = Enumerable.Empty<WordPairQuestion>().ToList();
+        // convert word pairs to word pair questions
         for (int i = 0; i < collection.WordPairs.Count; i++)
         {
             Questions.Add(new(collection.WordPairs[i], (uint)i+1, (uint)collection.WordPairs.Count));
         }
         QuestionCount = (uint)collection.WordPairs.Count;
-
     }
 
 

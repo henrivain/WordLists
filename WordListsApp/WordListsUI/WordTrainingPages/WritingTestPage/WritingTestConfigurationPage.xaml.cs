@@ -1,18 +1,50 @@
+using Microsoft.Extensions.Logging;
+using System.Diagnostics;
+using System.Runtime;
 using WordDataAccessLibrary;
+using WordListsMauiHelpers.Factories;
+using WordListsMauiHelpers.PageRouting;
 
 namespace WordListsUI.WordTrainingPages.WritingTestPage;
 
 [QueryProperty(nameof(StartCollection), nameof(StartCollection))]
 public partial class WritingTestConfigurationPage : ContentPage
 {
-    public WritingTestConfigurationPage(IWritingTestConfigurationViewModel model)
+    public WritingTestConfigurationPage(IAbstractFactory<IWritingTestConfigurationViewModel> modelFactory)
     {
         InitializeComponent();
-        Model = model;
+        ModelFactory = modelFactory;
+        NewBindingContext();
     }
 
-    public WordCollection StartCollection { get; set; }
-    public IWritingTestConfigurationViewModel Model { get; }
+    private async void Model_StartWordCollection(object sender, WordCollection collection)
+    {
+        var parameter = new Dictionary<string, object>()
+        {
+            [nameof(WritingTestPage.StartCollection)] = collection
+        };
 
-    
+        //NewBindingContext();
+
+        var path = $"{PageRoutes.GetRoute(Route.Training)}/{nameof(WritingTestPage)}";
+       
+        await Shell.Current.GoToAsync(path, new Dictionary<string, object>()
+        {
+            ["StartCollection"] = collection
+        });
+       
+        
+    }
+
+
+    public WordCollection StartCollection { set => Model.Collection = value; }
+    public IWritingTestConfigurationViewModel Model => (IWritingTestConfigurationViewModel)BindingContext;
+    IAbstractFactory<IWritingTestConfigurationViewModel> ModelFactory { get; }
+
+
+    private void NewBindingContext()
+    {
+        BindingContext = ModelFactory.Create();
+        Model.StartWordCollection += Model_StartWordCollection;
+    }
 }

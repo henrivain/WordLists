@@ -1,27 +1,49 @@
 ﻿using WordListsMauiHelpers.Extensions;
+using WordListsViewModels.Events;
 
 namespace WordListsViewModels;
-public class WritingTestConfigurationViewModel : IWritingTestConfigurationViewModel
+
+[INotifyPropertyChanged]
+public partial class WritingTestConfigurationViewModel : IWritingTestConfigurationViewModel
 {
 
-
-    public WordCollection Collection { get; set; } = new();
-
     [ObservableProperty]
-    int wordPairCount = -1;
+    WordCollection collection = new();
 
+    //[ObservableProperty]
+    //string selectedPairCount = "10";
+
+    string _selectedPairCount = "10";
+
+    public string SelectedPairCount
+    {
+        get => _selectedPairCount;
+        set
+        {
+            _selectedPairCount = new(value.Where(x => char.IsNumber(x)).ToArray());
+            OnPropertyChanged(nameof(SelectedPairCount));
+        }
+    }
+
+
+    public event StartWordCollectionEventHandler? StartWordCollection;
+
+    public IRelayCommand StartTestCommand => new RelayCommand(() =>
+    {
+        StartWordCollection?.Invoke(this, BuildCollection());
+    });
 
     public WordCollection BuildCollection()
     {
-        if (WordPairCount < 1)
-        {
-            WordPairCount = Collection.WordPairs.Count;
-        }
-
         var list = Collection.WordPairs.Shuffle();
-        if (WordPairCount > -1 && WordPairCount < list.Count)
+
+        if (int.TryParse(SelectedPairCount, out var pairCount) is false)
         {
-            list = list.GetRange(0, WordPairCount);
+            pairCount = 10;
+        }
+        if (pairCount > -1 && pairCount <= list.Count)
+        {
+            list = list.GetRange(0, pairCount);
         }
         return new()
         {
@@ -29,4 +51,6 @@ public class WritingTestConfigurationViewModel : IWritingTestConfigurationViewMo
             WordPairs = list
         };
     }
+
+
 }
