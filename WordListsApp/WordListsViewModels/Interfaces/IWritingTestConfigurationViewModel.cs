@@ -3,7 +3,6 @@
 namespace WordListsViewModels.Interfaces;
 public interface IWritingTestConfigurationViewModel
 {
-
     WordCollection Collection { get; set; }
 
     string SelectedPairCount { get; set; }

@@ -10,9 +10,6 @@ public partial class WritingTestConfigurationViewModel : IWritingTestConfigurati
     [ObservableProperty]
     WordCollection collection = new();
 
-    //[ObservableProperty]
-    //string selectedPairCount = "10";
-
     string _selectedPairCount = "10";
 
     public string SelectedPairCount

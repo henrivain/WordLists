@@ -16,28 +16,20 @@ public partial class WritingTestConfigurationPage : ContentPage
 
     private async void Model_StartWordCollection(object sender, WordCollection collection)
     {
-        var parameter = new Dictionary<string, object>()
+        var path = $"../{PageRoutes.GetRoute(Route.Training)}/{nameof(WritingTestPage)}";
+        await Shell.Current.GoToAsync(path, new Dictionary<string, object>()
         {
             [nameof(WritingTestPage.StartCollection)] = collection
-        };
-
-
-        //NewBindingContext();
-
-        var path = $"../{PageRoutes.GetRoute(Route.Training)}/{nameof(WritingTestPage)}";
-        await Shell.Current.GoToAsync(path, parameter);
+        });
     }
-
-
     public WordCollection StartCollection { set => Model.Collection = value; }
     public IWritingTestConfigurationViewModel Model => (IWritingTestConfigurationViewModel)BindingContext;
     IAbstractFactory<IWritingTestConfigurationViewModel> ModelFactory { get; }
 
-
     private void NewBindingContext()
     {
         BindingContext = ModelFactory.Create();
-        Model.StartWordCollection += Model_StartWordCollection; ;
+        Model.StartWordCollection += Model_StartWordCollection;
     }
 
 }

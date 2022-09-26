@@ -125,9 +125,6 @@
 	  <MauiXaml Update="WordTrainingPages\FlipCardTrainingPage\FlipCardTrainingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="WordTrainingPages\WritingTestPage\Resources\WriteWordConfigurationPageResources.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="WordTrainingPages\WritingTestPage\WritingTestConfigurationPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

@@ -18,19 +18,13 @@ public partial class WritingTestPage : ContentPage
 
     public WordCollection StartCollection { set { if (value is not null) Model.StartNew(value); } }
 
-
     IWriteWordViewModel Model => (IWriteWordViewModel)BindingContext;
 
     IAbstractFactory<IWriteWordViewModel> Factory { get; }
 
-    private void Grid_SizeChanged(object sender, EventArgs e)
-	{
-        _gridHelper?.ReSize();
-    }
+    private void Grid_SizeChanged(object sender, EventArgs e) => _gridHelper?.ReSize();
 
-
-
-	private async void LeaveButton_Clicked(object sender, EventArgs e)
+    private async void LeaveButton_Clicked(object sender, EventArgs e)
 	{
         await Shell.Current.Navigation.PopAsync();
         BindingContext = Factory.Create();

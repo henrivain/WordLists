@@ -4,21 +4,40 @@
              x:Class="WordListsUI.WordTrainingPages.WritingTestPage.WritingTestConfigurationPage"
              Title="Muokkaa testin asetuksia"
              xmlns:model="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
-             xmlns:resources="clr-namespace:WordListsUI.WordTrainingPages.WritingTestPage.Resources"
              x:DataType="{x:Type model:IWritingTestConfigurationViewModel}"
-             BackgroundColor="{StaticResource PageBackground}"
-             >
+             BackgroundColor="{StaticResource PageBackground}">
     <ContentPage.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <resources:WriteWordConfigurationPageResources />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <Style TargetType="{x:Type Span}">
+            <Setter Property="TextColor"
+                    Value="{StaticResource UnImportantText}" />
+        </Style>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="TextColor"
+                    Value="{StaticResource UnImportantText}" />
+        </Style>
+        <Style TargetType="{x:Type Entry}"
+               x:Key="numericEntry">
+            <Setter Property="WidthRequest"
+                    Value="80" />
+            <Setter Property="Placeholder"
+                    Value="numero" />
+            <Setter Property="Keyboard"
+                    Value="Numeric" />
+        </Style>
+
+        <Style TargetType="{x:Type Entry}"
+               BasedOn="{StaticResource numericEntry}"
+               x:Key="samsungEntryStyle">
+            <Setter Property="BackgroundColor"
+                    Value="{StaticResource DarkerThanPage}" />
+            <Setter Property="TextColor"
+                    Value="{StaticResource UnImportantText}" />
+        </Style>
     </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout>
             <Label Text="Muokkaa testiä"
-                   FontSize="Header"
+                   FontSize="{OnPlatform Default=Header, Android=30}"
                    VerticalOptions="Center"
                    HorizontalOptions="Center" />
             <Label HorizontalOptions="Center"
@@ -41,9 +60,25 @@
                        VerticalOptions="Center"
                        HorizontalOptions="Center"
                        Margin="5,0" />
-                <Entry Text="{Binding SelectedPairCount}"
-                       Style="{OnPlatform Default={StaticResource numericEntry}, Android={StaticResource samsungEntryStyle}}" />
-                <Label VerticalTextAlignment="Center" FontSize="Small">
+                <Border Stroke="Transparent"
+                        StrokeThickness="0"
+                        BackgroundColor="{StaticResource DarkerThanPage}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="{OnPlatform Android=8, Default=0}" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout>
+                        <Entry Text="{Binding SelectedPairCount}"
+                               Margin="{OnPlatform Android='5,0', Default=0}"
+                               Style="{OnPlatform Android={StaticResource samsungEntryStyle}, Default={StaticResource numericEntry}}" />
+                        <Line BackgroundColor="{StaticResource BinIconBackground}"
+                              Margin="0,-1.5,0,0"
+                              IsVisible="{OnPlatform Android=true, Default=false}" />
+
+
+                    </VerticalStackLayout>
+                </Border>
+                <Label VerticalTextAlignment="Center"
+                       FontSize="Small">
                     <Label.FormattedText>
                         <FormattedString>
                             <FormattedString.Spans>
@@ -57,9 +92,8 @@
             </HorizontalStackLayout>
             <Button Text="Aloita testi"
                     Margin="0,20"
-                    HorizontalOptions="Center" 
-                    Command="{Binding StartTestCommand}"
-                    />
+                    HorizontalOptions="Center"
+                    Command="{Binding StartTestCommand}" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
