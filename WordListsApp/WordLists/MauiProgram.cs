@@ -47,7 +47,7 @@ public static class MauiProgram
 		builder.Services.AddAbstractFactory<IListGeneratorViewModel, ListGeneratorViewModel>();
         builder.Services.AddTransient<IWordDataViewModel, WordDataViewModel>();
         builder.Services.AddTransient<IAppInfoViewModel, AppInfoViewModel>();
-		builder.Services.AddTransient<IWriteWordViewModel, WriteWordViewModel>();
+		builder.Services.AddAbstractFactory<IWriteWordViewModel, WriteWordViewModel>();
 		builder.Services.AddAbstractFactory<IWritingTestConfigurationViewModel, WritingTestConfigurationViewModel>();
 
         builder.Services.AddTransient<JsonExportPage>();

@@ -21,7 +21,7 @@ public partial class WriteWordViewModel : IWriteWordViewModel
     
 
     [ObservableProperty]
-    List<WordPairQuestion> questions = new();
+    List<WordPairQuestion> questions = Enumerable.Empty<WordPairQuestion>().ToList();
 
     [ObservableProperty]
     uint questionCount = 0;
@@ -50,13 +50,16 @@ public partial class WriteWordViewModel : IWriteWordViewModel
     {
         if (collection is null) throw new ArgumentNullException(nameof(collection));
         Info = collection.Owner;
-        Questions = Enumerable.Empty<WordPairQuestion>().ToList();
+        uint count = (uint)collection.WordPairs.Count;
+        QuestionCount = count;
+
         // convert word pairs to word pair questions
-        for (int i = 0; i < collection.WordPairs.Count; i++)
+        List<WordPairQuestion> questions = Enumerable.Empty<WordPairQuestion>().ToList();
+        for (int i = 0; i < count; i++)
         {
-            Questions.Add(new(collection.WordPairs[i], (uint)i+1, (uint)collection.WordPairs.Count));
+            questions.Add(new(collection.WordPairs[i], (uint)i+1, count));
         }
-        QuestionCount = (uint)collection.WordPairs.Count;
+        Questions = questions;
     }
 
 

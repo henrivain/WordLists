@@ -7,6 +7,7 @@
              x:DataType="{x:Type viewModel:IWriteWordViewModel}"
              Title="Kirjoita"
              Shell.TabBarIsVisible="False"
+             Shell.TabBarBackgroundColor="Red"
              BackgroundColor="#0A092D">
     <ContentPage.Resources>
         <Style TargetType="{x:Type Label}">
@@ -58,7 +59,7 @@
             <VerticalStackLayout Grid.Column="1"
                                  Grid.Row="1">
                 <Label Text="Vastaa kirjoittamalla sana halutulla kielellä"
-                       HorizontalTextAlignment="Start"
+                       HorizontalTextAlignment="Center"
                        FontSize="Medium"
                        TextColor="#646F90"
                        FontAttributes="Bold"

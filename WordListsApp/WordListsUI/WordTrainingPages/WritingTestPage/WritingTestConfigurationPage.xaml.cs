@@ -1,6 +1,3 @@
-using Microsoft.Extensions.Logging;
-using System.Diagnostics;
-using System.Runtime;
 using WordDataAccessLibrary;
 using WordListsMauiHelpers.Factories;
 using WordListsMauiHelpers.PageRouting;
@@ -24,16 +21,11 @@ public partial class WritingTestConfigurationPage : ContentPage
             [nameof(WritingTestPage.StartCollection)] = collection
         };
 
+
         //NewBindingContext();
 
-        var path = $"{PageRoutes.GetRoute(Route.Training)}/{nameof(WritingTestPage)}";
-       
-        await Shell.Current.GoToAsync(path, new Dictionary<string, object>()
-        {
-            ["StartCollection"] = collection
-        });
-       
-        
+        var path = $"../{PageRoutes.GetRoute(Route.Training)}/{nameof(WritingTestPage)}";
+        await Shell.Current.GoToAsync(path, parameter);
     }
 
 
@@ -45,6 +37,7 @@ public partial class WritingTestConfigurationPage : ContentPage
     private void NewBindingContext()
     {
         BindingContext = ModelFactory.Create();
-        Model.StartWordCollection += Model_StartWordCollection;
+        Model.StartWordCollection += Model_StartWordCollection; ;
     }
+
 }
