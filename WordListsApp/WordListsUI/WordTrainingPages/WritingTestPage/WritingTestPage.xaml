@@ -33,11 +33,11 @@
         <Grid x:Name="baseGrid"
               ColumnDefinitions="*,8*,*"
               SizeChanged="Grid_SizeChanged"
+              MaximumWidthRequest="{OnIdiom Desktop=1400, Default=99999999}"
               RowDefinitions="*, auto">
             <VerticalStackLayout x:Name="infoVerticalStackLayout"
                                  Margin="{OnIdiom Phone='0,20,0,0', Default='0,20'}"
                                  Grid.Column="1">
-
                 <ImageButton Clicked="LeaveButton_Clicked"
                              Source="leave_icon.png"
                              HorizontalOptions="Start"
@@ -55,6 +55,14 @@
                 <Label Text="{Binding Info.Description}"
                        Margin="0,5"
                        LineBreakMode="WordWrap" />
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Istuntotunnus: " />
+                            <Span Text="{Binding SessionId}" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
             </VerticalStackLayout>
             <VerticalStackLayout Grid.Column="1"
                                  Grid.Row="1">
@@ -129,7 +137,6 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                     <VerticalStackLayout Margin="0,10,0,100">
-
                         <Button Command="{Binding ValidateAll}"
                                 Text="Tarkista"
                                 FontSize="Small"
@@ -140,7 +147,6 @@
                                HorizontalTextAlignment="Center"
                                Margin="0,20"
                                TextColor="#646F90" />
-
                         <Label Text="Kysymykset päättyvät tähän"
                                HorizontalTextAlignment="Center"
                                TextColor="#646F90"

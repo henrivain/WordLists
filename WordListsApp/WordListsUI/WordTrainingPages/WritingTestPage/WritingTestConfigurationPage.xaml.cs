@@ -21,11 +21,11 @@ public partial class WritingTestConfigurationPage : ContentPage
         {
             [nameof(WritingTestPage.StartCollection)] = collection
         });
+        NewBindingContext();
     }
     public WordCollection StartCollection { set => Model.Collection = value; }
     public IWritingTestConfigurationViewModel Model => (IWritingTestConfigurationViewModel)BindingContext;
     IAbstractFactory<IWritingTestConfigurationViewModel> ModelFactory { get; }
-
     private void NewBindingContext()
     {
         BindingContext = ModelFactory.Create();

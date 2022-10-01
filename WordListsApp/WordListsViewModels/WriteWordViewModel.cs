@@ -1,4 +1,6 @@
-﻿using WordListsViewModels.Helpers;
+﻿using System.Reflection;
+using WordListsViewModels.Events;
+using WordListsViewModels.Helpers;
 using WordValidationLibrary;
 
 namespace WordListsViewModels;
@@ -26,6 +28,11 @@ public partial class WriteWordViewModel : IWriteWordViewModel
     [ObservableProperty]
     uint questionCount = 0;
 
+    [ObservableProperty]
+    string sessionId = GenerateSessionId();
+
+
+
     public IRelayCommand ValidateAll => new RelayCommand(() =>
     {
         foreach (var question in Questions)
@@ -44,7 +51,14 @@ public partial class WriteWordViewModel : IWriteWordViewModel
                     break;
             }
         }
+        TestValidated?.Invoke(this, new()
+        {
+            Questions = questions,
+            SessionId = SessionId
+        });
     });
+
+    public event TestValidatedEventHandler? TestValidated;
 
     public void StartNew(WordCollection collection)
     {
@@ -62,5 +76,20 @@ public partial class WriteWordViewModel : IWriteWordViewModel
         Questions = questions;
     }
 
-
+    /// <summary>
+    /// Generate session id from current time hash code
+    /// </summary>
+    /// <returns>id starting with '#' followed by 0-7 numbers</returns>
+    private static string GenerateSessionId()
+    {
+        string sessionId = DateTime.Now.GetHashCode().ToString().Replace('-', '1');
+        try
+        {
+            return $"#{sessionId[0..7]}";
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            return $"#{sessionId}";
+        }
+    }
 }

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
+             xmlns:question="clr-namespace:WordListsViewModels.Helpers;assembly=WordListsViewModels"
+             xmlns:validator="clr-namespace:WordValidationLibrary;assembly=WordValidationLibrary"
+             x:Class="WordListsUI.WordTrainingPages.WritingTestPage.WriteTestResultPage"
+             x:DataType="{x:Type model:ITestResultViewModel}"
+             BackgroundColor="{StaticResource PageBackground}"
+             Title="WriteTestResultPage">
+    <ScrollView>
+        <VerticalStackLayout>
+            <Label Text="Testin tulokset"
+                   FontSize="Title"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center" 
+                   Margin="0,20"
+                   />
+            <Grid x:Name="baseGrid"
+                  SizeChanged="BaseGrid_SizeChanged"
+                  RowDefinitions="*, auto"
+                  MaximumWidthRequest="{OnIdiom Desktop=1600, Default=99999999}">
+                <VerticalStackLayout Grid.Column="1"
+                                     x:Name="infoVerticalStackLayout"
+                                     HorizontalOptions="Center">
+                    <Border Padding="30"
+                            BackgroundColor="{StaticResource DarkerThanPage}"
+                            Stroke="Transparent" 
+                            StrokeThickness="0"
+                            HorizontalOptions="Start">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <VerticalStackLayout>
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Sanoista oikein meni: " />
+                                        <Span Text="{Binding Score}" />
+                                        <Span Text="%" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding CharMatchPercentage}" />
+                                        <Span Text="% kirjoitetuista kirjaimista oli oikein" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span TextColor="Red"
+                                              Text="Your session id is: " />
+                                        <Span TextColor="Blue"
+                                              Text="{Binding SessionId}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
+                <CollectionView ItemsSource="{Binding AnsweredQuestions}"
+                                Grid.Column="1"
+                                Grid.Row="1"
+                                ItemSizingStrategy="MeasureAllItems"
+                                HorizontalOptions="Center"
+                                MaximumWidthRequest="600">
+                    <CollectionView.EmptyView>
+                        <Label Text="Näyttää siltä, että sanasto oli tyhjä..."
+                               HorizontalTextAlignment="Center"
+                               Margin="20" />
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid HeightRequest="{OnIdiom Phone=150, Default=150}">
+                                <Border Margin="20,10">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <VerticalStackLayout Margin="20"
+                                                         x:DataType="{x:Type question:WordPairQuestion}">
+                                        <Label>
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding WordPair.NativeLanguageWord}" />
+                                                    <Span Text="&#009;(" />
+                                                    <Span Text="{Binding WordPair.ForeignLanguageWord}" />
+                                                    <Span Text=")" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <HorizontalStackLayout BindableLayout.ItemsSource="{Binding MatchResult.ValidatedStringSpans}">
+                                            <BindableLayout.ItemTemplate>
+                                                <DataTemplate>
+                                                    <HorizontalStackLayout>
+                                                        <Label x:DataType="{x:Type validator:MatchingString}"
+                                                               Text="{Binding String}">
+                                                            <Label.Resources>
+                                                                <Style TargetType="{x:Type Label}">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsMatch}"
+                                                                                     TargetType="{x:Type Label}"
+                                                                                     Value="true">
+                                                                            <Setter Property="TextColor"
+                                                                                    Value="Green" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding IsMatch}"
+                                                                                     TargetType="{x:Type Label}"
+                                                                                     Value="false">
+                                                                            <Setter Property="TextColor"
+                                                                                    Value="Red" />
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Label.Resources>
+                                                        </Label>
+                                                    </HorizontalStackLayout>
+                                                </DataTemplate>
+                                            </BindableLayout.ItemTemplate>
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,4 +1,5 @@
-﻿using WordListsViewModels.Helpers;
+﻿using WordListsViewModels.Events;
+using WordListsViewModels.Helpers;
 
 namespace WordListsViewModels.Interfaces;
 public interface IWriteWordViewModel
@@ -12,6 +13,8 @@ public interface IWriteWordViewModel
     void StartNew(WordCollection collection);
     List<WordPairQuestion> Questions { get; }
     IRelayCommand ValidateAll { get; }
-
     WordCollectionOwner Info { get; }
+    string SessionId { get; }
+
+    event TestValidatedEventHandler TestValidated;
 }

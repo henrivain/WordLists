@@ -41,6 +41,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<AppInfoPage>();
 		builder.Services.AddSingleton<WritingTestPage>();
 		builder.Services.AddSingleton<WritingTestConfigurationPage>();
+		builder.Services.AddTransient<WriteTestResultPage>();
 		builder.Services.AddSingleton<IWordTrainingViewModel, WordTrainingViewModel>();
 		builder.Services.AddTransient<IStartTrainingViewModel, StartTrainingViewModel>();
 		builder.Services.AddTransient<IWordCollectionHandlingViewModel, WordCollectionHandlingViewModel>();
@@ -49,6 +50,7 @@ public static class MauiProgram
         builder.Services.AddTransient<IAppInfoViewModel, AppInfoViewModel>();
 		builder.Services.AddAbstractFactory<IWriteWordViewModel, WriteWordViewModel>();
 		builder.Services.AddAbstractFactory<IWritingTestConfigurationViewModel, WritingTestConfigurationViewModel>();
+		builder.Services.AddTransient<ITestResultViewModel, TestResultViewModel>();
 
         builder.Services.AddTransient<JsonExportPage>();
         builder.Services.AddTransient<JsonImportPage>();

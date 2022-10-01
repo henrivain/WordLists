@@ -60,6 +60,7 @@
 	</Coming>
 	
 	<UnCertain>
+		<SaveTests>Save test results in some format like json, as a file in user's machine</SaveTests>
 		<Description>Make Description Visible</Description>
 		<WordListGenerator>Edit button to edit word collection words</WordListGenerator>
 		<WordCollections>
