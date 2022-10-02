@@ -1,6 +1,7 @@
 using WordDataAccessLibrary;
 using WordListsMauiHelpers.Factories;
 using WordListsMauiHelpers.PageRouting;
+using WordListsViewModels.Events;
 
 namespace WordListsUI.WordTrainingPages.WritingTestPage;
 
@@ -14,12 +15,13 @@ public partial class WritingTestConfigurationPage : ContentPage
         NewBindingContext();
     }
 
-    private async void Model_StartWordCollection(object sender, WordCollection collection)
+    private async void Model_StartWordCollection(object sender, TestStartEventArgs e)
     {
         var path = $"../{PageRoutes.GetRoute(Route.Training)}/{nameof(WritingTestPage)}";
         await Shell.Current.GoToAsync(path, new Dictionary<string, object>()
         {
-            [nameof(WritingTestPage.StartCollection)] = collection
+            [nameof(WritingTestPage.StartCollection)] = e.WordCollection,
+            [nameof(WritingTestPage.SaveProgression)] = e.SaveProgression
         });
         NewBindingContext();
     }

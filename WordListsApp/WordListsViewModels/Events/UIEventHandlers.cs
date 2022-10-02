@@ -1,6 +1,6 @@
 ﻿namespace WordListsViewModels.Events;
 
-public delegate void StartWordCollectionEventHandler(object sender, WordCollection collection);
+public delegate void StartWordCollectionEventHandler(object sender, TestStartEventArgs e);
 
 public delegate void TestValidatedEventHandler(object sender, TestValidatedEventArgs e);
 

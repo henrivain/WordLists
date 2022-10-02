@@ -7,6 +7,7 @@ using WordListsViewModels.Events;
 namespace WordListsUI.WordTrainingPages.WritingTestPage;
 
 [QueryProperty(nameof(StartCollection), nameof(StartCollection))]
+[QueryProperty(nameof(SaveProgression), nameof(SaveProgression))]
 public partial class WritingTestPage : ContentPage
 {
 	readonly WordTrainingPageGridHelper _gridHelper;
@@ -20,6 +21,8 @@ public partial class WritingTestPage : ContentPage
     }
 
     public WordCollection StartCollection { set { if (value is not null) Model.StartNew(value); } }
+
+    public bool SaveProgression { set => Model.SaveProgression = value; }
 
     IWriteWordViewModel Model => (IWriteWordViewModel)BindingContext;
 
@@ -42,16 +45,12 @@ public partial class WritingTestPage : ContentPage
 
     private async void Model_TestValidated(object sender, TestValidatedEventArgs e)
     {
+        
         await Shell.Current.GoToAsync($"../{PageRoutes.GetRoute(Route.Training)}/{nameof(WriteTestResultPage)}", new Dictionary<string, object>()
         {
             [nameof(WriteTestResultPage.AnsweredQuestions)] = e.Questions,
-            [nameof(WriteTestResultPage.SessionId)] = e.SessionId
+            [nameof(WriteTestResultPage.SessionId)] = e.SessionId,
+            [nameof(WriteTestResultPage.ProgressionSaved)] = e.ProgressionSaved,
         });
-    }
-
-    private void Button_Clicked(object sender, EventArgs e)
-    {
-        myEntry.Focus();
-        myEntry.CursorPosition = 1;
     }
 }

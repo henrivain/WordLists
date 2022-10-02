@@ -8,24 +8,24 @@
              x:DataType="{x:Type viewModel:IWriteWordViewModel}"
              Title="Kirjoita"
              Shell.TabBarIsVisible="False"
-             BackgroundColor="#0A092D">
-    
+             BackgroundColor="{StaticResource PageBackground}">
+
     <ContentPage.Resources>
         <Style TargetType="{x:Type Label}">
             <Setter Property="FontFamily"
                     Value="Poppins" />
             <Setter Property="TextColor"
-                    Value="#D9DDE8" />
+                    Value="{StaticResource NormalText}" />
         </Style>
         <Style TargetType="{x:Type Entry}">
             <Setter Property="FontFamily"
                     Value="Poppins" />
             <Setter Property="BackgroundColor"
-                    Value="#0A092D" />
+                    Value="{StaticResource PageBackground}" />
             <Setter Property="PlaceholderColor"
-                    Value="#B5B5B5" />
+                    Value="{StaticResource SecondaryText}" />
             <Setter Property="TextColor"
-                    Value="#D9DDE8" />
+                    Value="{StaticResource NormalText}" />
             <Setter Property="FontAttributes"
                     Value="Bold" />
         </Style>
@@ -43,7 +43,7 @@
                              Source="leave_icon.png"
                              HorizontalOptions="Start"
                              Padding="0"
-                             BackgroundColor="#0A092D"
+                             BackgroundColor="{StaticResource PageBackground}"
                              HeightRequest="35"
                              Margin="0,0,0,20"
                              WidthRequest="{Binding HeightRequest, Source={RelativeSource Self}}" />
@@ -64,17 +64,13 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <HorizontalStackLayout>
-                    <Entry WidthRequest="100"
-                           x:Name="myEntry" />
-                </HorizontalStackLayout>
             </VerticalStackLayout>
             <VerticalStackLayout Grid.Column="1"
                                  Grid.Row="1">
                 <Label Text="Vastaa kirjoittamalla sana halutulla kielellä"
                        HorizontalTextAlignment="Center"
                        FontSize="Medium"
-                       TextColor="#646F90"
+                       TextColor="{StaticResource SecondaryText}"
                        FontAttributes="Bold"
                        LineBreakMode="WordWrap"
                        MaximumWidthRequest="{OnPlatform WinUI=600}"
@@ -82,6 +78,17 @@
                 <VerticalStackLayout MaximumWidthRequest="600">
                     <CollectionView ItemsSource="{Binding Questions}"
                                     ItemSizingStrategy="MeasureAllItems">
+                        <CollectionView.EmptyView>
+                            <VerticalStackLayout Padding="0,50">
+                                <Image Source="dotnet_bot_waving.png"
+                                       HeightRequest="50"
+                                       WidthRequest="50" />
+                                <Label Text="Sanasto on tyhjä tai valitsit sanojen määräksi nolla..."
+                                       HorizontalTextAlignment="Center"
+                                       Margin="0,10"
+                                        />
+                            </VerticalStackLayout>
+                        </CollectionView.EmptyView>
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <uiElems:TextAnswerField x:DataType="{x:Type itemModel:WordPairQuestion}"
@@ -93,16 +100,19 @@
                         <Button Command="{Binding ValidateAll}"
                                 Text="Tarkista"
                                 FontSize="Small"
-                                TextColor="#D9DDE8"
+                                TextColor="{StaticResource NormalText}"
+                                FontFamily="Poppins"
                                 FontAttributes="Bold"
-                                BackgroundColor="#4255FF" />
+                                BackgroundColor="{StaticResource Blue800Accent}"
+                                BorderColor="Transparent"
+                                BorderWidth="0" />
                         <Label Text="Painettuasi 'tarkista', et voi enää muokata vastauksiasi"
                                HorizontalTextAlignment="Center"
-                               Margin="0,20"
-                               TextColor="#646F90" />
+                               TextColor="{StaticResource SecondaryText}"
+                               Margin="0,20" />
                         <Label Text="Kysymykset päättyvät tähän"
                                HorizontalTextAlignment="Center"
-                               TextColor="#646F90"
+                               TextColor="{StaticResource SecondaryText}"
                                Margin="0,20,20,0" />
                     </VerticalStackLayout>
                 </VerticalStackLayout>

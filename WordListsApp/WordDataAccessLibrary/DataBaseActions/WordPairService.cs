@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 
 namespace WordDataAccessLibrary.DataBaseActions;
 
-
 public class WordPairService : IWordPairService
 {
     SQLiteAsyncConnection db;
@@ -58,6 +57,32 @@ public class WordPairService : IWordPairService
             await db.UpdateAsync(pair);
         }
     }
+    public async Task UpdatePairAsync(WordPair pair)
+    {
+        await Init();
+        Debug.WriteLine($"{nameof(WordPairService)}: Insert or update single {nameof(WordPair)}");
+        await db.UpdateAsync(pair);
+    }
+
+    /// <summary>
+    ///  Get word pair by its primary key
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns>word pair if has match, else NULL</returns>
+    public async Task<WordPair> GetByPrimaryKey(int key)
+    {
+        await Init();
+        try
+        {
+            return await db.GetAsync<WordPair>(key);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"{nameof(WordPairService)}: Failed to get database item by its primary key '{key}' because of exception '{ex.GetType()}': '{ex.Message}'");
+            return null;
+        }
+    }
+
     public async Task InsertPairsAsync(WordCollection collection)
     {
         await Init();

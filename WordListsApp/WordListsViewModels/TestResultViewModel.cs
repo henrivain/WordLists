@@ -1,6 +1,5 @@
 ﻿using WordListsViewModels.Events;
 using WordListsViewModels.Helpers;
-using WordValidationLibrary;
 
 namespace WordListsViewModels;
 
@@ -33,7 +32,7 @@ public partial class TestResultViewModel : ITestResultViewModel
         // average percentage calculated from char match percentages
         int charMatchPercentageSum = AnsweredQuestions.Sum(x => x.MatchResult?.CharMatchPercentage ?? 0);
         double precise = charMatchPercentageSum / questionCount;
-        CharMatchPercentage = Math.Round(precise, 4);
+        CharMatchPercentage = Math.Round(precise, 5);
     }
 
     [ObservableProperty]
@@ -44,6 +43,9 @@ public partial class TestResultViewModel : ITestResultViewModel
 
     [ObservableProperty]
     string sessionId = "#0000000";
+
+    [ObservableProperty]
+    bool progressionSaved = false;
 
     public IRelayCommand ExitResultsCommand => new RelayCommand(() =>
     {

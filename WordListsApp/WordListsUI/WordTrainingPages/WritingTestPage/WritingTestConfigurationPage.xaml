@@ -9,11 +9,11 @@
     <ContentPage.Resources>
         <Style TargetType="{x:Type Span}">
             <Setter Property="TextColor"
-                    Value="{StaticResource UnImportantText}" />
+                    Value="{StaticResource NormalText}" />
         </Style>
         <Style TargetType="{x:Type Label}">
             <Setter Property="TextColor"
-                    Value="{StaticResource UnImportantText}" />
+                    Value="{StaticResource NormalText}" />
         </Style>
         <Style TargetType="{x:Type Entry}"
                x:Key="numericEntry">
@@ -24,7 +24,6 @@
             <Setter Property="Keyboard"
                     Value="Numeric" />
         </Style>
-
         <Style TargetType="{x:Type Entry}"
                BasedOn="{StaticResource numericEntry}"
                x:Key="samsungEntryStyle">
@@ -40,21 +39,9 @@
                    FontSize="{OnPlatform Default=Header, Android=30}"
                    VerticalOptions="Center"
                    HorizontalOptions="Center" />
-            <Label HorizontalOptions="Center"
-                   Margin="0,30"
-                   HorizontalTextAlignment="Center">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <FormattedString.Spans>
-                            <Span Text="Sanapareja saatavilla: " />
-                            <Span Text="{Binding Collection.WordPairs.Count}" />
-                            <Span Text=" kpl" />
-                        </FormattedString.Spans>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
+
             <HorizontalStackLayout HorizontalOptions="Center"
-                                   Margin="0,20">
+                                   Margin="0,50">
                 <Label Text="Kysyttävien sanojen määrä: "
                        VerticalTextAlignment="Center"
                        VerticalOptions="Center"
@@ -90,8 +77,38 @@
                 </Label>
 
             </HorizontalStackLayout>
+            <Grid ColumnDefinitions="*, 0.7*"
+                  RowDefinitions="*,*"
+                  HorizontalOptions="Center">
+                <Grid.Resources>
+                    <Style TargetType="{x:Type Switch}">
+                        <Setter Property="Margin"
+                                Value="20,0,-70,0" />
+                        <Setter Property="OnColor"
+                                Value="{StaticResource Pink600Accent}" />
+                    </Style>
+
+                </Grid.Resources>
+                <Label Text="Kirjoita vieraan kielen sanat"
+                       VerticalOptions="Center" />
+                <Switch IsToggled="{Binding QuestionsFromNativeToForeign}"
+                        Grid.Column="2" />
+                <Label Text="Tallenna sanojen osaaminen"
+                       VerticalOptions="Center"
+                       Grid.Row="1" />
+                <Switch IsToggled="{Binding SaveProgression}"
+                        Grid.Row="1"
+                        Grid.Column="2" />
+            </Grid>
+            <HorizontalStackLayout HorizontalOptions="Center">
+
+            </HorizontalStackLayout>
             <Button Text="Aloita testi"
                     Margin="0,20"
+                    TextColor="{StaticResource NormalText}"
+                    BackgroundColor="{StaticResource Blue800Accent}"
+                    BorderWidth="0"
+                    BorderColor="Transparent"
                     HorizontalOptions="Center"
                     Command="{Binding StartTestCommand}" />
         </VerticalStackLayout>

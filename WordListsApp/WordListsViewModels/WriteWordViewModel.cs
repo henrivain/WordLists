@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsViewModels.Events;
 using WordListsViewModels.Helpers;
 using WordValidationLibrary;
@@ -10,17 +11,19 @@ namespace WordListsViewModels;
 [INotifyPropertyChanged]
 public partial class WriteWordViewModel : IWriteWordViewModel
 {
-    public WriteWordViewModel(IUserInputWordValidator inputValidator)
+    public WriteWordViewModel(IUserInputWordValidator inputValidator, IWordPairService wordPairService)
     {
         InputValidator = inputValidator;
+        WordPairService = wordPairService;
         StartNew(new());
     }
 
     IUserInputWordValidator InputValidator { get; }
+    IWordPairService WordPairService { get; }
 
     [ObservableProperty]
     WordCollectionOwner info = new();
-    
+
 
     [ObservableProperty]
     List<WordPairQuestion> questions = Enumerable.Empty<WordPairQuestion>().ToList();
@@ -31,7 +34,10 @@ public partial class WriteWordViewModel : IWriteWordViewModel
     [ObservableProperty]
     string sessionId = GenerateSessionId();
 
-    public IRelayCommand ValidateAll => new RelayCommand(() =>
+    [ObservableProperty]
+    bool saveProgression = false;
+
+    public IAsyncRelayCommand ValidateAll => new AsyncRelayCommand(async () =>
     {
         foreach (var question in Questions)
         {
@@ -49,12 +55,28 @@ public partial class WriteWordViewModel : IWriteWordViewModel
                     break;
             }
         }
+        if (SaveProgression)
+        {
+            await SaveLearnStates(questions);
+        }
         TestValidated?.Invoke(this, new()
         {
             Questions = questions,
-            SessionId = SessionId
+            SessionId = SessionId,
+            ProgressionSaved = SaveProgression
         });
     });
+
+    private async Task SaveLearnStates(List<WordPairQuestion> questions)
+    {
+        foreach (var question in questions)
+        {
+            WordPair? pairInDb = await WordPairService.GetByPrimaryKey(question.WordPair.Id);
+            if (pairInDb is null) continue;
+            pairInDb.LearnState = question.WordPair.LearnState;
+            await WordPairService.UpdatePairAsync(pairInDb);
+        }
+    }
 
     public event TestValidatedEventHandler? TestValidated;
 
@@ -70,7 +92,7 @@ public partial class WriteWordViewModel : IWriteWordViewModel
         List<WordPairQuestion> questions = Enumerable.Empty<WordPairQuestion>().ToList();
         for (int i = 0; i < count; i++)
         {
-            questions.Add(new(collection.WordPairs[i], (uint)i+1, count));
+            questions.Add(new(collection.WordPairs[i], (uint)i + 1, count));
         }
         Questions = questions;
     }

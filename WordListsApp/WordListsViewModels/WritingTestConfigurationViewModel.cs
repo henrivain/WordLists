@@ -10,6 +10,12 @@ public partial class WritingTestConfigurationViewModel : IWritingTestConfigurati
     [ObservableProperty]
     WordCollection collection = new();
 
+    [ObservableProperty]
+    bool questionsFromNativeToForeign = true;
+
+    [ObservableProperty]
+    bool saveProgression = false;
+
     string _selectedPairCount = "10";
 
     public string SelectedPairCount
@@ -27,7 +33,11 @@ public partial class WritingTestConfigurationViewModel : IWritingTestConfigurati
 
     public IRelayCommand StartTestCommand => new RelayCommand(() =>
     {
-        StartWordCollection?.Invoke(this, BuildCollection());
+        StartWordCollection?.Invoke(this, new()
+        {
+            SaveProgression = SaveProgression,
+            WordCollection = BuildCollection()
+        });
     });
 
     public WordCollection BuildCollection()
@@ -42,12 +52,15 @@ public partial class WritingTestConfigurationViewModel : IWritingTestConfigurati
         {
             list = list.GetRange(0, pairCount);
         }
+        if (QuestionsFromNativeToForeign is false)
+        {
+            // Swap native language word and foreign word
+            list = list.Select(x => { (x.NativeLanguageWord, x.ForeignLanguageWord) = (x.ForeignLanguageWord, x.NativeLanguageWord); return x; }).ToList();
+        }
         return new()
         {
             Owner = Collection.Owner,
             WordPairs = list
         };
     }
-
-
 }

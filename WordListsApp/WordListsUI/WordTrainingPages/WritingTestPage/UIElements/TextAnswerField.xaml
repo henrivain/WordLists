@@ -7,18 +7,18 @@
       Margin="0,10"
       x:DataType="{x:Type itemModel:WordPairQuestion}">
 
-    <Border HeightRequest="{OnIdiom Phone=180, Default=225}"
-            BackgroundColor="#2E3856"
-            StrokeThickness="0"
-            Stroke="Transparent">
+    <Border HeightRequest="{OnIdiom Phone=180, Default=200}"
+            BackgroundColor="{StaticResource DarkerThanPage}"
+            StrokeThickness="0.6"
+            Stroke="{StaticResource Blue300Accent}">
         <Border.StrokeShape>
             <RoundRectangle CornerRadius="10" />
         </Border.StrokeShape>
     </Border>
-    <Label Margin="0,10,20,0"
+    <Label Margin="0,20,30,0"
            VerticalOptions="Start"
            HorizontalOptions="End"
-           TextColor="#646F90">
+           TextColor="{StaticResource SecondaryText}">
         <Label.FormattedText>
             <FormattedString>
                 <Span Text="{Binding Index}" />
@@ -27,7 +27,7 @@
             </FormattedString>
         </Label.FormattedText>
     </Label>
-    <Grid Margin="{OnIdiom Default='15,10', Desktop='30,20'}"
+    <Grid Margin="{OnIdiom Default='15,0', Desktop='30,0'}"
           VerticalOptions="Center">
         <VerticalStackLayout>
 
@@ -37,12 +37,13 @@
                    FontAttributes="Bold" />
             <Label Text="Vastauksesi"
                    Margin="0,4"
-                   TextColor="#646F90" />
+                   TextColor="{StaticResource SecondaryText}" />
             <Entry Text="{Binding UserAnswer}"
                    IsTextPredictionEnabled="False"
                    IsSpellCheckEnabled="False"
                    Placeholder="kirjoita vastauksesi"
                    FontSize="Small"
+                   PlaceholderColor="{StaticResource SecondaryText}"
                    IsVisible="{OnPlatform Default=true, Android=false}" />
             <Border BackgroundColor="#0A092D"
                     Stroke="Transparent"
@@ -53,6 +54,7 @@
                 <Entry Text="{Binding UserAnswer}"
                        Margin="5,0"
                        Placeholder="kirjoita sana"
+                       PlaceholderColor="{StaticResource SecondaryText}"
                        FontSize="Small"
                        FontAutoScalingEnabled="True" />
             </Border>

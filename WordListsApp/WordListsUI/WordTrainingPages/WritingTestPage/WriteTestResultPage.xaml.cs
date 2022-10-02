@@ -3,6 +3,7 @@ using WordListsViewModels.Helpers;
 
 namespace WordListsUI.WordTrainingPages.WritingTestPage;
 
+[QueryProperty(nameof(ProgressionSaved), nameof(ProgressionSaved))]
 [QueryProperty(nameof(AnsweredQuestions), nameof(AnsweredQuestions))]
 [QueryProperty(nameof(SessionId), nameof(SessionId))]
 public partial class WriteTestResultPage : ContentPage
@@ -17,11 +18,13 @@ public partial class WriteTestResultPage : ContentPage
 
     }
 
+
     private async void Model_ExitResults(object sender, EventArgs e)
 	{
 		await Shell.Current.Navigation.PopToRootAsync();
 	}
 
+	public bool ProgressionSaved { set => Model.ProgressionSaved = value; }
 	public List<WordPairQuestion> AnsweredQuestions { set { Model.AnsweredQuestions = value; } }
 
 	public string SessionId { set { Model.SessionId = value; } }

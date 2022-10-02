@@ -12,9 +12,10 @@ public interface IWriteWordViewModel
     /// <param name="pairCount"></param>
     void StartNew(WordCollection collection);
     List<WordPairQuestion> Questions { get; }
-    IRelayCommand ValidateAll { get; }
+    IAsyncRelayCommand ValidateAll { get; }
     WordCollectionOwner Info { get; }
     string SessionId { get; }
+    bool SaveProgression { get; set; }
 
     event TestValidatedEventHandler TestValidated;
 }
