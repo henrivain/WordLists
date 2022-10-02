@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      x:Class="WordListsUI.WordTrainingPages.WritingTestPage.UIElements.TextAnswerField"
+      xmlns:itemModel="clr-namespace:WordListsViewModels.Helpers;assembly=WordListsViewModels"
+      VerticalOptions="Start"
+      Margin="0,10"
+      x:DataType="{x:Type itemModel:WordPairQuestion}">
+
+    <Border HeightRequest="{OnIdiom Phone=180, Default=225}"
+            BackgroundColor="#2E3856"
+            StrokeThickness="0"
+            Stroke="Transparent">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="10" />
+        </Border.StrokeShape>
+    </Border>
+    <Label Margin="0,10,20,0"
+           VerticalOptions="Start"
+           HorizontalOptions="End"
+           TextColor="#646F90">
+        <Label.FormattedText>
+            <FormattedString>
+                <Span Text="{Binding Index}" />
+                <Span Text="/" />
+                <Span Text="{Binding TotalIndexes}" />
+            </FormattedString>
+        </Label.FormattedText>
+    </Label>
+    <Grid Margin="{OnIdiom Default='15,10', Desktop='30,20'}"
+          VerticalOptions="Center">
+        <VerticalStackLayout>
+
+            <Label Text="{Binding WordPair.NativeLanguageWord}"
+                   Padding="0,10"
+                   FontSize="Medium"
+                   FontAttributes="Bold" />
+            <Label Text="Vastauksesi"
+                   Margin="0,4"
+                   TextColor="#646F90" />
+            <Entry Text="{Binding UserAnswer}"
+                   IsTextPredictionEnabled="False"
+                   IsSpellCheckEnabled="False"
+                   Placeholder="kirjoita vastauksesi"
+                   FontSize="Small"
+                   IsVisible="{OnPlatform Default=true, Android=false}" />
+            <Border BackgroundColor="#0A092D"
+                    Stroke="Transparent"
+                    IsVisible="{OnPlatform Default=false, Android=true}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Entry Text="{Binding UserAnswer}"
+                       Margin="5,0"
+                       Placeholder="kirjoita sana"
+                       FontSize="Small"
+                       FontAutoScalingEnabled="True" />
+            </Border>
+        </VerticalStackLayout>
+    </Grid>
+</Grid>

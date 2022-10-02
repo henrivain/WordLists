@@ -4,10 +4,10 @@
       xmlns:validator="clr-namespace:WordValidationLibrary;assembly=WordValidationLibrary"
       xmlns:question="clr-namespace:WordListsViewModels.Helpers;assembly=WordListsViewModels"
       x:Class="WordListsUI.WordTrainingPages.WritingTestPage.UIElements.WordResultViewer"
-      MinimumHeightRequest="{OnIdiom Phone=150, Default=150}"
+      MinimumHeightRequest="{OnIdiom Phone=150, Default=140}"
       x:DataType="{x:Type question:WordPairQuestion}">
-    <Border Margin="0,10"
-            BackgroundColor="#79899C"
+    <Border Margin="0,5"
+            BackgroundColor="{StaticResource DarkerThanPage}"
             StrokeThickness="0"
             Stroke="Transparent">
         <Border.StrokeShape>
@@ -15,21 +15,47 @@
         </Border.StrokeShape>
     </Border>
 
-    <VerticalStackLayout Margin="20">
-        <Label>
-            <Label.FormattedText>
-                <FormattedString>
-                    <Span Text="{Binding WordPair.NativeLanguageWord}" />
-                    <Span Text="&#032;&#032;&#032;&#032;(" />
-                    <Span Text="{Binding WordPair.ForeignLanguageWord}" />
-                    <Span Text=")" />
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>
+    <VerticalStackLayout Padding="25,30" >
+        <Grid ColumnDefinitions="*,auto">
+            <Label Margin="0,-5,0,0">
+                <Label.Resources>
+                    <Style TargetType="{x:Type Span}">
+                        <Setter Property="FontSize"
+                                Value="Small" />
+                        <Setter Property="FontAttributes"
+                                Value="Bold" />
+                    </Style>
+                </Label.Resources>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding WordPair.NativeLanguageWord}" />
+                        <Span Text="&#032;&#032;&#032;&#032;(" />
+                        <Span Text="{Binding WordPair.ForeignLanguageWord}" />
+                        <Span Text=")" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label Text="{Binding Index}"
+                   Grid.Column="1"
+                   HorizontalOptions="End">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding Index}" />
+                        <Span Text=" / " />
+                        <Span Text="{Binding TotalIndexes}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </Grid>
         <Border Padding="5"
-                BackgroundColor="#E5F4F5"
+                Margin="0,20,0,0"
+                BackgroundColor="{StaticResource DarkerThanPage}"
                 StrokeThickness="1.5"
-                MinimumHeightRequest="30">
+                MinimumHeightRequest="35"
+                >
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="12" />
+            </Border.StrokeShape>
             <Border.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Style.Triggers>
@@ -37,28 +63,30 @@
                                      Binding="{Binding MatchResult.IsFullMatch}"
                                      Value="True">
                             <Setter Property="Stroke"
-                                    Value="#82EDA0" />
+                                    Value="{StaticResource Green800Accent}" />
                         </DataTrigger>
                         <DataTrigger TargetType="{x:Type Border}"
                                      Binding="{Binding MatchResult.IsFullMatch}"
                                      Value="False">
                             <Setter Property="Stroke"
-                                    Value="#F06A66" />
+                                    Value="{StaticResource Red900Accent}" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Border.Resources>
-            <Border.StrokeShape>
-                <RoundRectangle CornerRadius="8" />
-            </Border.StrokeShape>
+      
             <HorizontalStackLayout BindableLayout.ItemsSource="{Binding MatchResult.ValidatedStringSpans}"
-                                   VerticalOptions="Center">
+                                   VerticalOptions="Center"
+                                   Padding="5,0"
+                                   >
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
                         <HorizontalStackLayout>
                             <Label x:DataType="{x:Type validator:MatchingString}"
                                    Text="{Binding String}"
-                                   Padding="5,0">
+                                   FontSize="Small"
+                                   Padding="0.8,0"
+                                   >
                                 <Label.Resources>
                                     <Style TargetType="{x:Type Label}">
                                         <Style.Triggers>
@@ -66,13 +94,13 @@
                                                          TargetType="{x:Type Label}"
                                                          Value="true">
                                                 <Setter Property="TextColor"
-                                                        Value="#70CC8A" />
+                                                        Value="{StaticResource Green800Accent}" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding IsMatch}"
                                                          TargetType="{x:Type Label}"
                                                          Value="false">
                                                 <Setter Property="TextColor"
-                                                        Value="#F06A66" />
+                                                        Value="{StaticResource Red900Accent}" />
                                             </DataTrigger>
 
                                         </Style.Triggers>

@@ -61,6 +61,7 @@ public partial class WriteWordViewModel : IWriteWordViewModel
     public void StartNew(WordCollection collection)
     {
         if (collection is null) throw new ArgumentNullException(nameof(collection));
+        SessionId = GenerateSessionId();
         Info = collection.Owner;
         uint count = (uint)collection.WordPairs.Count;
         QuestionCount = count;

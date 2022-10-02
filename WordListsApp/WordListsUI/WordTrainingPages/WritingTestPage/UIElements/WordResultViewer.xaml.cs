@@ -15,11 +15,7 @@ public partial class WordResultViewer : Grid
 	public WordPairQuestion WordPairQuestion
 	{
 		get => (WordPairQuestion)GetValue(WordPairQuestionProperty);
-		set
-		{
-			SetValue(WordPairQuestionProperty, value);
-			//OnPropertyChanged(nameof(WordPairQuestion));
-		}
+		set => SetValue(WordPairQuestionProperty, value);
 	}
 
 	public static readonly BindableProperty WordPairQuestionProperty =

@@ -49,5 +49,9 @@ public partial class WritingTestPage : ContentPage
         });
     }
 
-    
+    private void Button_Clicked(object sender, EventArgs e)
+    {
+        myEntry.Focus();
+        myEntry.CursorPosition = 1;
+    }
 }
