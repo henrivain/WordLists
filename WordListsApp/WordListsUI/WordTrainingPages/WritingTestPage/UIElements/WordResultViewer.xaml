@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:validator="clr-namespace:WordValidationLibrary;assembly=WordValidationLibrary"
+      xmlns:question="clr-namespace:WordListsViewModels.Helpers;assembly=WordListsViewModels"
+      x:Class="WordListsUI.WordTrainingPages.WritingTestPage.UIElements.WordResultViewer"
+      MinimumHeightRequest="{OnIdiom Phone=150, Default=150}"
+      x:DataType="{x:Type question:WordPairQuestion}">
+    <Border Margin="0,10"
+            BackgroundColor="#79899C"
+            StrokeThickness="0"
+            Stroke="Transparent">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="8" />
+        </Border.StrokeShape>
+    </Border>
+
+    <VerticalStackLayout Margin="20">
+        <Label>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="{Binding WordPair.NativeLanguageWord}" />
+                    <Span Text="&#032;&#032;&#032;&#032;(" />
+                    <Span Text="{Binding WordPair.ForeignLanguageWord}" />
+                    <Span Text=")" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+        <Border Padding="5"
+                BackgroundColor="#E5F4F5"
+                StrokeThickness="1.5"
+                MinimumHeightRequest="30">
+            <Border.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Style.Triggers>
+                        <DataTrigger TargetType="{x:Type Border}"
+                                     Binding="{Binding MatchResult.IsFullMatch}"
+                                     Value="True">
+                            <Setter Property="Stroke"
+                                    Value="#82EDA0" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="{x:Type Border}"
+                                     Binding="{Binding MatchResult.IsFullMatch}"
+                                     Value="False">
+                            <Setter Property="Stroke"
+                                    Value="#F06A66" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Resources>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="8" />
+            </Border.StrokeShape>
+            <HorizontalStackLayout BindableLayout.ItemsSource="{Binding MatchResult.ValidatedStringSpans}"
+                                   VerticalOptions="Center">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <HorizontalStackLayout>
+                            <Label x:DataType="{x:Type validator:MatchingString}"
+                                   Text="{Binding String}"
+                                   Padding="5,0">
+                                <Label.Resources>
+                                    <Style TargetType="{x:Type Label}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsMatch}"
+                                                         TargetType="{x:Type Label}"
+                                                         Value="true">
+                                                <Setter Property="TextColor"
+                                                        Value="#70CC8A" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsMatch}"
+                                                         TargetType="{x:Type Label}"
+                                                         Value="false">
+                                                <Setter Property="TextColor"
+                                                        Value="#F06A66" />
+                                            </DataTrigger>
+
+                                        </Style.Triggers>
+                                        <Setter Property="FontFamily"
+                                                Value="Poppins" />
+                                        <Setter Property="FontAttributes"
+                                                Value="Bold" />
+                                        <Setter Property="CharacterSpacing"
+                                                Value="1.2" />
+                                    </Style>
+                                </Label.Resources>
+                            </Label>
+                        </HorizontalStackLayout>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </HorizontalStackLayout>
+        </Border>
+    </VerticalStackLayout>
+</Grid>

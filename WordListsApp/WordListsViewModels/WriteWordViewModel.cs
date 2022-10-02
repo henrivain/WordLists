@@ -31,8 +31,6 @@ public partial class WriteWordViewModel : IWriteWordViewModel
     [ObservableProperty]
     string sessionId = GenerateSessionId();
 
-
-
     public IRelayCommand ValidateAll => new RelayCommand(() =>
     {
         foreach (var question in Questions)

@@ -13,7 +13,7 @@ public partial class WriteTestResultPage : ContentPage
 		BindingContext = model;
 		InitializeComponent();
 		Model.ExitResults += Model_ExitResults;
-        _gridHelper = DeviceInfo.Current.Platform == DevicePlatform.WinUI ? new(baseGrid, infoVerticalStackLayout) : null;
+        _gridHelper = DeviceInfo.Current.Platform == DevicePlatform.WinUI ? new(baseGrid, infoView) : null;
 
     }
 

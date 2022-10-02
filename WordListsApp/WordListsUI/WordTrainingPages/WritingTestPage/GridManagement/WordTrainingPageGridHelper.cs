@@ -1,10 +1,10 @@
 ﻿namespace WordListsUI.WordTrainingPages.WritingTestPage.GridManagement;
 internal class WordTrainingPageGridHelper
 {
-    public WordTrainingPageGridHelper(Grid baseGrid, VerticalStackLayout infoGrid)
+    public WordTrainingPageGridHelper(Grid baseGrid, View movingView)
     {
         BaseGrid = baseGrid;
-        InfoGrid = infoGrid;
+        MovingView = movingView;
     }
 
     internal enum GridState
@@ -14,24 +14,43 @@ internal class WordTrainingPageGridHelper
 
     internal GridState State { get; private set; } = GridState.Normal;
     protected Grid BaseGrid { get; }
-    protected VerticalStackLayout InfoGrid { get; }
+    protected View MovingView { get; }
 
     internal static readonly double DisplayHeight = DeviceDisplay.Current.MainDisplayInfo.Height;
     internal static readonly double DisplayWidth = DeviceDisplay.Current.MainDisplayInfo.Width;
 
-    protected static ColumnDefinition StarColumn(int starLenght)
+    protected readonly Dictionary<GridState, Thickness> StateMargins = new()
     {
-        return new()
-        {
-            Width = new GridLength(starLenght, GridUnitType.Star)
-        };
+        [GridState.ExtraBig] = new Thickness(30, 30, 0, 0),
+        [GridState.Big] = new Thickness(30, 30, 0, 0),
+        [GridState.Normal] = new Thickness(0, 20, 0, 0),
+        [GridState.Small] = new Thickness(0, 20, 0, 0)
+    };
+
+    protected readonly Dictionary<GridState, ColumnDefinitionCollection> StateColumnDefinitions = new()
+    {
+        [GridState.ExtraBig] = new(StarColumn(1), StarColumn(2), StarColumn(1)),
+        [GridState.Big] = new(StarColumn(1), StarColumn(3), StarColumn(1)),
+        [GridState.Normal] = new(StarColumn(1), StarColumn(5), StarColumn(1)),
+        [GridState.Small] = new(StarColumn(1), StarColumn(10), StarColumn(1)),
+    };
+
+    protected readonly Dictionary<GridState, RowDefinitionCollection> StateRowDefinitions = new()
+    {
+        [GridState.ExtraBig] = new(StarRow(1)),
+        [GridState.Big] = new(StarRow(1)),
+        [GridState.Normal] = new(StarRow(1), AutoRow()),
+        [GridState.Small] = new(StarRow(1), AutoRow()),
+    };
+
+
+    protected static ColumnDefinition StarColumn(double starLenght)
+    {
+        return new() { Width = new GridLength(starLenght, GridUnitType.Star) };
     }
-    protected static RowDefinition StarRow(int starLenght)
+    protected static RowDefinition StarRow(double starLenght)
     {
-        return new()
-        {
-            Height = new GridLength(starLenght, GridUnitType.Star)
-        };
+        return new() { Height = new GridLength(starLenght, GridUnitType.Star) };
     }
     protected static RowDefinition AutoRow()
     {
@@ -65,6 +84,23 @@ internal class WordTrainingPageGridHelper
         return oldState == State;
     }
 
+    protected virtual void SetColumnsAndRows()
+    {
+        BaseGrid.ColumnDefinitions = StateColumnDefinitions[State];
+        BaseGrid.RowDefinitions = StateRowDefinitions[State];
+        Grid.SetColumn(MovingView, State switch
+        {
+            GridState.ExtraBig => 0,
+            GridState.Big => 0,
+            GridState.Normal => 1,
+            GridState.Small => 1,
+            _ => throw new NotImplementedException()
+        });
+    }
+
+
+
+
     /// <summary>
     /// Resize grid to fit current window size
     /// </summary>
@@ -72,38 +108,9 @@ internal class WordTrainingPageGridHelper
     internal virtual bool ReSize()
     {
         if (ChooseState()) return true;
-        InfoGrid.MaximumWidthRequest = 600;
-
-        switch (State)
-        {
-            case GridState.ExtraBig:
-                BaseGrid.ColumnDefinitions = new(StarColumn(1), StarColumn(2), StarColumn(1));
-                BaseGrid.RowDefinitions = new(StarRow(1));
-                InfoGrid.Margin = new Thickness(30, 30, 0, 0);
-                Grid.SetColumn(InfoGrid, 0);
-                break;
-
-            case GridState.Big:
-                BaseGrid.ColumnDefinitions = new(StarColumn(1), StarColumn(3), StarColumn(1));
-                BaseGrid.RowDefinitions = new(StarRow(1));
-                InfoGrid.Margin = new Thickness(30, 30, 0, 0);
-                Grid.SetColumn(InfoGrid, 0);
-                break;
-
-            case GridState.Normal:
-                BaseGrid.ColumnDefinitions = new(StarColumn(1), StarColumn(5), StarColumn(1));
-                BaseGrid.RowDefinitions = new(StarRow(1), AutoRow());
-                InfoGrid.Margin = new Thickness(0, 20, 0, 0);
-                Grid.SetColumn(InfoGrid, 1);
-                break;
-
-            case GridState.Small:
-                BaseGrid.ColumnDefinitions = new(StarColumn(1), StarColumn(10), StarColumn(1));
-                BaseGrid.RowDefinitions = new(StarRow(1), AutoRow());
-                InfoGrid.Margin = new Thickness(0, 20, 0, 0);
-                Grid.SetColumn(InfoGrid, 1);
-                break;
-        }
+        MovingView.MaximumWidthRequest = 600;
+        SetColumnsAndRows();
+        MovingView.Margin = StateMargins[State];
         return false;
     }
 }

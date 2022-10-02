@@ -7,8 +7,8 @@
              x:DataType="{x:Type viewModel:IWriteWordViewModel}"
              Title="Kirjoita"
              Shell.TabBarIsVisible="False"
-             Shell.TabBarBackgroundColor="Red"
              BackgroundColor="#0A092D">
+    
     <ContentPage.Resources>
         <Style TargetType="{x:Type Label}">
             <Setter Property="FontFamily"
@@ -22,7 +22,7 @@
             <Setter Property="BackgroundColor"
                     Value="#0A092D" />
             <Setter Property="PlaceholderColor"
-                    Value="#D9DDE8" />
+                    Value="#B5B5B5" />
             <Setter Property="TextColor"
                     Value="#D9DDE8" />
             <Setter Property="FontAttributes"

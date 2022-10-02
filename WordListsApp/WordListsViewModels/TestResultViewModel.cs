@@ -1,5 +1,6 @@
 ﻿using WordListsViewModels.Events;
 using WordListsViewModels.Helpers;
+using WordValidationLibrary;
 
 namespace WordListsViewModels;
 
@@ -17,7 +18,6 @@ public partial class TestResultViewModel : ITestResultViewModel
             CalculateAndSetScore();
             OnPropertyChanged(nameof(AnsweredQuestions));
         }
-        
     }
 
     private void CalculateAndSetScore()
