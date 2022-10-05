@@ -27,7 +27,6 @@
     <Color x:Key="KindaWhite">#B3B3B3</Color>
     <Color x:Key="WordListBackground">#F0F8FF</Color>
 
-    <!-- Demo app colors -->
     <Color x:Key="Green800Accent">#6FCC89</Color>
     <Color x:Key="Red900Accent">#E66562</Color>
     <Color x:Key="Pink600Accent">#E090FF</Color>
@@ -39,6 +38,7 @@
     <Color x:Key="Blue100Accent">#E9E9FF</Color>
 
 
+    <!-- Demo app colors -->
     <Color x:Key="Primary">#512BD4</Color>
     <Color x:Key="Secondary">#DFD8F7</Color>
     <Color x:Key="Tertiary">#2B0B98</Color>

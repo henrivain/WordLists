@@ -4,7 +4,7 @@
       xmlns:validator="clr-namespace:WordValidationLibrary;assembly=WordValidationLibrary"
       xmlns:question="clr-namespace:WordListsViewModels.Helpers;assembly=WordListsViewModels"
       x:Class="WordListsUI.WordTrainingPages.WritingTestPage.UIElements.WordResultViewer"
-      MinimumHeightRequest="{OnIdiom Phone=150, Default=140}"
+      MinimumHeightRequest="{OnIdiom Phone=140, Default=140}"
       x:DataType="{x:Type question:WordPairQuestion}">
     <Border Margin="0,5"
             BackgroundColor="{StaticResource DarkerThanPage}"
@@ -15,26 +15,32 @@
         </Border.StrokeShape>
     </Border>
 
-    <VerticalStackLayout Padding="25,30" >
+    <VerticalStackLayout Padding="25,30">
         <Grid ColumnDefinitions="*,auto">
-            <Label Margin="0,-5,0,0">
-                <Label.Resources>
-                    <Style TargetType="{x:Type Span}">
-                        <Setter Property="FontSize"
-                                Value="Small" />
-                        <Setter Property="FontAttributes"
-                                Value="Bold" />
-                    </Style>
-                </Label.Resources>
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="{Binding WordPair.NativeLanguageWord}" />
-                        <Span Text="&#032;&#032;&#032;&#032;(" />
-                        <Span Text="{Binding WordPair.ForeignLanguageWord}" />
-                        <Span Text=")" />
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
+            <!-- This VerticalStackLayout helps android to scale text to fit -->
+            <VerticalStackLayout>
+                <Label Margin="0,-5,0,0"
+                       VerticalTextAlignment="Center">
+                    <Label.Resources>
+                        <Style TargetType="{x:Type Span}">
+                            <Setter Property="FontSize"
+                                    Value="Small" />
+                            <Setter Property="FontAttributes"
+                                    Value="Bold" />
+                            <Setter Property="TextColor"
+                                    Value="{StaticResource NormalText}" />
+                        </Style>
+                    </Label.Resources>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding WordPair.NativeLanguageWord}" />
+                            <Span Text="&#032;&#032;&#032;&#032;(" />
+                            <Span Text="{Binding WordPair.ForeignLanguageWord}" />
+                            <Span Text=")" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </VerticalStackLayout>
             <Label Text="{Binding Index}"
                    Grid.Column="1"
                    HorizontalOptions="End">
@@ -51,8 +57,7 @@
                 Margin="0,20,0,0"
                 BackgroundColor="{StaticResource DarkerThanPage}"
                 StrokeThickness="1.5"
-                MinimumHeightRequest="35"
-                >
+                MinimumHeightRequest="35">
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="12" />
             </Border.StrokeShape>
@@ -74,19 +79,17 @@
                     </Style.Triggers>
                 </Style>
             </Border.Resources>
-      
+
             <HorizontalStackLayout BindableLayout.ItemsSource="{Binding MatchResult.ValidatedStringSpans}"
                                    VerticalOptions="Center"
-                                   Padding="5,0"
-                                   >
+                                   Padding="5,0">
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
                         <HorizontalStackLayout>
                             <Label x:DataType="{x:Type validator:MatchingString}"
                                    Text="{Binding String}"
                                    FontSize="Small"
-                                   Padding="0.8,0"
-                                   >
+                                   Padding="0.8,0">
                                 <Label.Resources>
                                     <Style TargetType="{x:Type Label}">
                                         <Style.Triggers>

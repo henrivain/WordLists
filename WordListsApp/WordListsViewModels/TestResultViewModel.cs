@@ -1,4 +1,6 @@
-﻿using WordListsViewModels.Events;
+﻿using WordDataAccessLibrary.DataBaseActions.Interfaces;
+using WordListsViewModels.Events;
+using WordListsViewModels.Extensions;
 using WordListsViewModels.Helpers;
 
 namespace WordListsViewModels;
@@ -6,6 +8,11 @@ namespace WordListsViewModels;
 [INotifyPropertyChanged]
 public partial class TestResultViewModel : ITestResultViewModel
 {
+    public TestResultViewModel(IWordPairService wordPairService)
+    {
+        WordPairService = wordPairService;
+    }
+
     List<WordPairQuestion> _answeredQuestions = Enumerable.Empty<WordPairQuestion>().ToList();
 
     public List<WordPairQuestion> AnsweredQuestions 
@@ -45,12 +52,23 @@ public partial class TestResultViewModel : ITestResultViewModel
     string sessionId = "#0000000";
 
     [ObservableProperty]
+    [AlsoNotifyChangeFor(nameof(ProgressionNotSaved))]
     bool progressionSaved = false;
+    
+    public bool ProgressionNotSaved => !ProgressionSaved;
+
+    public IAsyncRelayCommand SaveProgression => new AsyncRelayCommand(async () =>
+    {
+        await AnsweredQuestions.SaveLearnStates(WordPairService);
+        ProgressionSaved = true;
+    });
 
     public IRelayCommand ExitResultsCommand => new RelayCommand(() =>
     {
         ExitResults?.Invoke(this, EventArgs.Empty);
     });
+
+    IWordPairService WordPairService { get; }
 
     public event ExitResultsEventHandler? ExitResults;
 }

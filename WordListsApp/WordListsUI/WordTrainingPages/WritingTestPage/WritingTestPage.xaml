@@ -17,106 +17,99 @@
             <Setter Property="TextColor"
                     Value="{StaticResource NormalText}" />
         </Style>
-        <Style TargetType="{x:Type Entry}">
-            <Setter Property="FontFamily"
-                    Value="Poppins" />
-            <Setter Property="BackgroundColor"
-                    Value="{StaticResource PageBackground}" />
-            <Setter Property="PlaceholderColor"
-                    Value="{StaticResource SecondaryText}" />
-            <Setter Property="TextColor"
-                    Value="{StaticResource NormalText}" />
-            <Setter Property="FontAttributes"
-                    Value="Bold" />
-        </Style>
     </ContentPage.Resources>
     <ScrollView>
-        <Grid x:Name="baseGrid"
-              ColumnDefinitions="*,8*,*"
-              SizeChanged="Grid_SizeChanged"
-              MaximumWidthRequest="{OnIdiom Desktop=1400, Default=99999999}"
-              RowDefinitions="*, auto">
-            <VerticalStackLayout x:Name="infoVerticalStackLayout"
-                                 Margin="{OnIdiom Phone='0,20,0,0', Default='0,20'}"
-                                 Grid.Column="1">
-                <ImageButton Clicked="LeaveButton_Clicked"
-                             Source="leave_icon.png"
-                             HorizontalOptions="Start"
-                             Padding="0"
-                             BackgroundColor="{StaticResource PageBackground}"
-                             HeightRequest="35"
-                             Margin="0,0,0,20"
-                             WidthRequest="{Binding HeightRequest, Source={RelativeSource Self}}" />
-                <Label Text="{Binding Info.Name}"
-                       Margin="0,0,0,5"
-                       FontSize="Title"
-                       FontAttributes="Bold" />
-                <Label Text="{Binding Info.LanguageHeaders}"
-                       Margin="0,5" />
-                <Label Text="{Binding Info.Description}"
-                       Margin="0,5"
-                       LineBreakMode="WordWrap" />
-                <Label>
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="Istuntotunnus: " />
-                            <Span Text="{Binding SessionId}" />
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-            </VerticalStackLayout>
-            <VerticalStackLayout Grid.Column="1"
-                                 Grid.Row="1">
-                <Label Text="Vastaa kirjoittamalla sana halutulla kielellä"
-                       HorizontalTextAlignment="Center"
-                       FontSize="Medium"
-                       TextColor="{StaticResource SecondaryText}"
-                       FontAttributes="Bold"
-                       LineBreakMode="WordWrap"
-                       MaximumWidthRequest="{OnPlatform WinUI=600}"
-                       Margin="{OnIdiom Phone='0,10', Default='0,50,0,20'}" />
-                <VerticalStackLayout MaximumWidthRequest="600">
-                    <CollectionView ItemsSource="{Binding Questions}"
-                                    ItemSizingStrategy="MeasureAllItems">
-                        <CollectionView.EmptyView>
-                            <VerticalStackLayout Padding="0,50">
-                                <Image Source="dotnet_bot_waving.png"
-                                       HeightRequest="50"
-                                       WidthRequest="50" />
-                                <Label Text="Sanasto on tyhjä tai valitsit sanojen määräksi nolla..."
-                                       HorizontalTextAlignment="Center"
-                                       Margin="0,10"
-                                        />
-                            </VerticalStackLayout>
-                        </CollectionView.EmptyView>
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <uiElems:TextAnswerField x:DataType="{x:Type itemModel:WordPairQuestion}"
-                                                         WordPairQuestion="{Binding}" />
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                    <VerticalStackLayout Margin="0,10,0,100">
-                        <Button Command="{Binding ValidateAll}"
-                                Text="Tarkista"
-                                FontSize="Small"
-                                TextColor="{StaticResource NormalText}"
-                                FontFamily="Poppins"
-                                FontAttributes="Bold"
-                                BackgroundColor="{StaticResource Blue800Accent}"
-                                BorderColor="Transparent"
-                                BorderWidth="0" />
-                        <Label Text="Painettuasi 'tarkista', et voi enää muokata vastauksiasi"
-                               HorizontalTextAlignment="Center"
-                               TextColor="{StaticResource SecondaryText}"
-                               Margin="0,20" />
-                        <Label Text="Kysymykset päättyvät tähän"
-                               HorizontalTextAlignment="Center"
-                               TextColor="{StaticResource SecondaryText}"
-                               Margin="0,20,20,0" />
+        <VerticalStackLayout>
+            <Grid x:Name="baseGrid"
+                  ColumnDefinitions="{OnPlatform WinUI='*,8*,*', Default='0.1*, *, 0.1*'}"
+                  SizeChanged="Grid_SizeChanged"
+                  MinimumHeightRequest="600"
+                  VerticalOptions="Start"
+                  RowDefinitions="*, auto">
+                <VerticalStackLayout x:Name="infoVerticalStackLayout"
+                                     Margin="{OnIdiom Phone='0,20', Default='0,20'}"
+                                     Grid.Column="1">
+                    <ImageButton Clicked="LeaveButton_Clicked"
+                                 Source="leave_icon.png"
+                                 HorizontalOptions="Start"
+                                 Padding="0"
+                                 BackgroundColor="{StaticResource PageBackground}"
+                                 HeightRequest="35"
+                                 Margin="0,0,0,20"
+                                 WidthRequest="{Binding HeightRequest, Source={RelativeSource Self}}" />
+                    <Label Text="{Binding Info.Name}"
+                           Margin="0,0,0,5"
+                           FontSize="Title"
+                           HorizontalOptions="{OnPlatform Android=Center, Default=Start}"
+                           FontAttributes="Bold" />
+                    <Label Text="{Binding Info.LanguageHeaders}"
+                           HorizontalOptions="{OnPlatform Android=Center, Default=Start}"
+                           Margin="0,5" />
+                    <Label Text="{Binding Info.Description}"
+                           HorizontalOptions="{OnPlatform Android=Center, Default=Start}"
+                           Margin="0,5"
+                           LineBreakMode="WordWrap" />
+                    <Label HorizontalOptions="{OnPlatform Android=Center, Default=Start}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Istuntotunnus: " />
+                                <Span Text="{Binding SessionId}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Column="1"
+                                     Grid.Row="1">
+                    <Label Text="Vastaa kirjoittamalla sana halutulla kielellä"
+                           HorizontalTextAlignment="Center"
+                           FontSize="Medium"
+                           TextColor="{StaticResource SecondaryText}"
+                           FontAttributes="Bold"
+                           LineBreakMode="WordWrap"
+                           MaximumWidthRequest="{OnPlatform WinUI=600}"
+                           Margin="{OnIdiom Phone='0,10', Default='0,50,0,20'}" />
+                    <VerticalStackLayout MaximumWidthRequest="600">
+                        <CollectionView ItemsSource="{Binding Questions}"
+                                        ItemSizingStrategy="MeasureAllItems">
+                            <CollectionView.EmptyView>
+                                <VerticalStackLayout Padding="0,50">
+                                    <Image Source="dotnet_bot_waving.png"
+                                           HeightRequest="50"
+                                           WidthRequest="50" />
+                                    <Label Text="Sanasto on tyhjä tai valitsit sanojen määräksi nolla..."
+                                           HorizontalTextAlignment="Center"
+                                           Margin="0,10" />
+                                </VerticalStackLayout>
+                            </CollectionView.EmptyView>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <uiElems:TextAnswerField x:DataType="{x:Type itemModel:WordPairQuestion}"
+                                                             WordPairQuestion="{Binding}" />
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                        <VerticalStackLayout Margin="0,10,0,100">
+                            <Button Command="{Binding ValidateAll}"
+                                    Text="Tarkista"
+                                    FontSize="Small"
+                                    TextColor="{StaticResource NormalText}"
+                                    FontFamily="Poppins"
+                                    FontAttributes="Bold"
+                                    BackgroundColor="{StaticResource Blue800Accent}"
+                                    BorderColor="Transparent"
+                                    BorderWidth="0" />
+                            <Label Text="Painettuasi 'tarkista', et voi enää muokata vastauksiasi"
+                                   HorizontalTextAlignment="Center"
+                                   TextColor="{StaticResource SecondaryText}"
+                                   Margin="0,20" />
+                            <Label Text="Kysymykset päättyvät tähän"
+                                   HorizontalTextAlignment="Center"
+                                   TextColor="{StaticResource SecondaryText}"
+                                   Margin="0,20,20,0" />
+                        </VerticalStackLayout>
                     </VerticalStackLayout>
                 </VerticalStackLayout>
-            </VerticalStackLayout>
-        </Grid>
+            </Grid>
+        </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

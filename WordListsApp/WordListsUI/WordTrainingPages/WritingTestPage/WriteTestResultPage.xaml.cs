@@ -14,7 +14,13 @@ public partial class WriteTestResultPage : ContentPage
 		BindingContext = model;
 		InitializeComponent();
 		Model.ExitResults += Model_ExitResults;
-        _gridHelper = DeviceInfo.Current.Platform == DevicePlatform.WinUI ? new(baseGrid, infoView) : null;
+		if (DeviceInfo.Current.Platform == DevicePlatform.WinUI)
+		{
+			_gridHelper = new(baseGrid, infoView);
+			baseGrid.MaximumWidthRequest = 1600;
+			infoView.MaximumWidthRequest = 600;
+			mainCollectionView.MaximumWidthRequest = 600;
+        }
 
     }
 

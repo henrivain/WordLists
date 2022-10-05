@@ -1,6 +1,6 @@
-﻿using System.Reflection;
-using WordDataAccessLibrary.DataBaseActions.Interfaces;
+﻿using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsViewModels.Events;
+using WordListsViewModels.Extensions;
 using WordListsViewModels.Helpers;
 using WordValidationLibrary;
 
@@ -57,7 +57,7 @@ public partial class WriteWordViewModel : IWriteWordViewModel
         }
         if (SaveProgression)
         {
-            await SaveLearnStates(questions);
+            await questions.SaveLearnStates(WordPairService);
         }
         TestValidated?.Invoke(this, new()
         {
@@ -66,17 +66,6 @@ public partial class WriteWordViewModel : IWriteWordViewModel
             ProgressionSaved = SaveProgression
         });
     });
-
-    private async Task SaveLearnStates(List<WordPairQuestion> questions)
-    {
-        foreach (var question in questions)
-        {
-            WordPair? pairInDb = await WordPairService.GetByPrimaryKey(question.WordPair.Id);
-            if (pairInDb is null) continue;
-            pairInDb.LearnState = question.WordPair.LearnState;
-            await WordPairService.UpdatePairAsync(pairInDb);
-        }
-    }
 
     public event TestValidatedEventHandler? TestValidated;
 

@@ -6,6 +6,26 @@
       VerticalOptions="Start"
       Margin="0,10"
       x:DataType="{x:Type itemModel:WordPairQuestion}">
+    <Grid.Resources>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="FontFamily"
+                    Value="Poppins" />
+            <Setter Property="TextColor"
+                    Value="{StaticResource NormalText}" />
+        </Style>
+        <Style TargetType="{x:Type Entry}">
+            <Setter Property="FontFamily"
+                    Value="Poppins" />
+            <Setter Property="BackgroundColor"
+                    Value="{StaticResource PageBackground}" />
+            <Setter Property="PlaceholderColor"
+                    Value="{StaticResource SecondaryText}" />
+            <Setter Property="TextColor"
+                    Value="{StaticResource NormalText}" />
+            <Setter Property="FontAttributes"
+                    Value="Bold" />
+        </Style>
+    </Grid.Resources>
 
     <Border HeightRequest="{OnIdiom Phone=180, Default=200}"
             BackgroundColor="{StaticResource DarkerThanPage}"
@@ -43,9 +63,10 @@
                    IsSpellCheckEnabled="False"
                    Placeholder="kirjoita vastauksesi"
                    FontSize="Small"
+                   BackgroundColor="{StaticResource PageBackground}"
                    PlaceholderColor="{StaticResource SecondaryText}"
                    IsVisible="{OnPlatform Default=true, Android=false}" />
-            <Border BackgroundColor="#0A092D"
+            <Border BackgroundColor="{StaticResource PageBackground}"
                     Stroke="Transparent"
                     IsVisible="{OnPlatform Default=false, Android=true}">
                 <Border.StrokeShape>

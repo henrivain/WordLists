@@ -1,4 +1,5 @@
-﻿using WordListsMauiHelpers.Extensions;
+﻿using System.Reflection.PortableExecutable;
+using WordListsMauiHelpers.Extensions;
 using WordListsViewModels.Events;
 
 namespace WordListsViewModels;
@@ -28,19 +29,24 @@ public partial class WritingTestConfigurationViewModel : IWritingTestConfigurati
         }
     }
 
+    [ObservableProperty]
+    bool isBusy = false;
+
 
     public event StartWordCollectionEventHandler? StartWordCollection;
 
-    public IRelayCommand StartTestCommand => new RelayCommand(() =>
+    public IAsyncRelayCommand StartTestCommand => new AsyncRelayCommand(async () =>
     {
+        IsBusy = true;
         StartWordCollection?.Invoke(this, new()
         {
             SaveProgression = SaveProgression,
-            WordCollection = BuildCollection()
+            WordCollection = await BuildCollection()
         });
+        IsBusy = false;
     });
 
-    public WordCollection BuildCollection()
+    public async Task<WordCollection> BuildCollection()
     {
         var list = Collection.WordPairs.Shuffle();
 
@@ -50,17 +56,28 @@ public partial class WritingTestConfigurationViewModel : IWritingTestConfigurati
         }
         if (pairCount > -1 && pairCount <= list.Count)
         {
-            list = list.GetRange(0, pairCount);
-        }
-        if (QuestionsFromNativeToForeign is false)
-        {
-            // Swap native language word and foreign word
-            list = list.Select(x => { (x.NativeLanguageWord, x.ForeignLanguageWord) = (x.ForeignLanguageWord, x.NativeLanguageWord); return x; }).ToList();
+            list = await Task.Run(() =>
+            {
+                list = list.GetRange(0, pairCount);
+                if (QuestionsFromNativeToForeign) return list;
+                return SwapLanguages(list);
+            });
         }
         return new()
         {
             Owner = Collection.Owner,
             WordPairs = list
         };
+
+    }
+
+    private List<WordPair> SwapLanguages(List<WordPair> list)
+    {
+        // Swap native language word with foreign word and swap language headers if has - as separator
+        list = list.Select(x => { (x.NativeLanguageWord, x.ForeignLanguageWord) = (x.ForeignLanguageWord, x.NativeLanguageWord); return x; }).ToList();
+        var headers = Collection.Owner.LanguageHeaders.Split('-');
+        Array.Reverse(headers);
+        Collection.Owner.LanguageHeaders = string.Join("-", headers);
+        return list;
     }
 }

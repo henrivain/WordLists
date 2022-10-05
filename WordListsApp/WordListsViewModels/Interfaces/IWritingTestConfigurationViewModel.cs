@@ -9,9 +9,11 @@ public interface IWritingTestConfigurationViewModel
     
     bool QuestionsFromNativeToForeign { get; set; }
 
+    bool IsBusy { get; }
+
     bool SaveProgression { get; set; }
 
-    IRelayCommand StartTestCommand { get; }
+    IAsyncRelayCommand StartTestCommand { get; }
 
     event StartWordCollectionEventHandler StartWordCollection;
 }

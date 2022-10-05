@@ -30,15 +30,15 @@
             <Setter Property="BackgroundColor"
                     Value="{StaticResource DarkerThanPage}" />
             <Setter Property="TextColor"
-                    Value="{StaticResource UnImportantText}" />
+                    Value="{StaticResource NormalText}" />
         </Style>
     </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout>
             <Label Text="Muokkaa testiä"
                    FontSize="{OnPlatform Default=Header, Android=30}"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center" />
+                   HorizontalOptions="Center"
+                   Margin="{OnPlatform Android='0,20,0,0', Default='0'}" />
 
             <HorizontalStackLayout HorizontalOptions="Center"
                                    Margin="0,50">
@@ -83,7 +83,7 @@
                 <Grid.Resources>
                     <Style TargetType="{x:Type Switch}">
                         <Setter Property="Margin"
-                                Value="20,0,-70,0" />
+                                Value="{OnPlatform WinUI='20,0,-70,0', Default='20,0,0,0'}" />
                         <Setter Property="OnColor"
                                 Value="{StaticResource Pink600Accent}" />
                     </Style>
@@ -113,4 +113,5 @@
                     Command="{Binding StartTestCommand}" />
         </VerticalStackLayout>
     </ScrollView>
+
 </ContentPage>

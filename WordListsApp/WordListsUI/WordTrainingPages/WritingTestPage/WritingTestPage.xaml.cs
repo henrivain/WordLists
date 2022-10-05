@@ -17,7 +17,11 @@ public partial class WritingTestPage : ContentPage
         Factory = factory;
         SetNewBindingContext();
         InitializeComponent();
-        _gridHelper = DeviceInfo.Current.Platform == DevicePlatform.WinUI ? new(baseGrid, infoVerticalStackLayout) : null;
+        if (DeviceInfo.Current.Platform == DevicePlatform.WinUI)
+        {
+            _gridHelper = new(baseGrid, infoVerticalStackLayout);
+            baseGrid.MaximumWidthRequest = 1400;
+        }
     }
 
     public WordCollection StartCollection { set { if (value is not null) Model.StartNew(value); } }
