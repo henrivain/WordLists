@@ -5,7 +5,7 @@ public interface IListGeneratorViewModel
 {
     event PropertyChangedEventHandler? PropertyChanged;
 
-    List<WordPair> WordPairs { get; set; }
+    List<string> Words { get; set; }
 
     string CollectionName { get; set; }
 
@@ -20,6 +20,8 @@ public interface IListGeneratorViewModel
     IAsyncRelayCommand SaveCollection { get; }
 
     IRelayCommand FlipSides { get; }
+
+    IRelayCommand<string> Remove { get; }
 
     WordCollection GetData();
 

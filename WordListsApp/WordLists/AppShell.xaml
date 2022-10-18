@@ -3,7 +3,6 @@
        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:home="clr-namespace:WordListsUI.HomePage;assembly=WordListsUI"
-       xmlns:UIComponents="clr-namespace:WordListsUI;assembly=WordListsUI"
        xmlns:generator="clr-namespace:WordListsUI.WordDataPages.ListGeneratorPage;assembly=WordListsUI"
        xmlns:welcome="clr-namespace:WordListsUI.WelcomePage;assembly=WordListsUI"
        xmlns:startTraining="clr-namespace:WordListsUI.WordTrainingPages.StartTrainingPage;assembly=WordListsUI"

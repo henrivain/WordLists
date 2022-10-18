@@ -6,12 +6,13 @@
              xmlns:menu="clr-namespace:WordListsUI.Components.SideMenu"
              xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
              xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
+             xmlns:local="clr-namespace:WordListsUI.WordDataPages.ListGeneratorPage"
+             xmlns:entry="clr-namespace:WordListsUI.Components.Entry"
              x:DataType="{x:Type viewModel:IListGeneratorViewModel}"
-             x:Name="listGeneratorView"
+             x:Name="listGeneratorPage"
              BackgroundColor="{StaticResource PageBackground}"
              Title="Luo otavasta"
-             BindingContextChanged="ContentPage_BindingContextChanged"
-             >
+             BindingContextChanged="ContentPage_BindingContextChanged">
     <Grid>
         <ScrollView Margin="40,0,0,0">
             <ScrollView.GestureRecognizers>
@@ -23,51 +24,85 @@
                         <Setter Property="TextColor"
                                 Value="{StaticResource UnImportantText}" />
                     </Style>
-                    <Style TargetType="{x:Type Entry}">
-                        <Setter Property="Margin"
-                                Value="0,5,0,10" />
-                        <Setter Property="TextColor"
-                                Value="Black" />
-                        <Setter Property="BackgroundColor"
-                                Value="{StaticResource KindaWhite}" />
-                        <Setter Property="PlaceholderColor"
-                                Value="{StaticResource UnImportantText}" />
-                    </Style>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Margin"
                                 Value="0,20" />
                     </Style>
                 </VerticalStackLayout.Resources>
-                <VerticalStackLayout Padding="30">
-                    <VerticalStackLayout HorizontalOptions="Center">
+                <VerticalStackLayout Padding="30"
+                                     HorizontalOptions="Center">
 
 
-                        <Label Text="Otsikko" />
-                        <Entry Placeholder="Minun sanastoni 1"
-                               Text="{Binding CollectionName}"
-                               Focused="ITextInput_Focused"
-                               SemanticProperties.Hint="Collection name"
-                               MaxLength="40"
-                               WidthRequest="300"
-                               HorizontalOptions="Start" />
-
-
-                        <Label Text="Kielet" />
-                        <Entry Placeholder="fi-en"
-                               Grid.Row="1"
-                               Text="{Binding LanguageHeaders}"
-                               Focused="ITextInput_Focused"
-                               SemanticProperties.Hint="Collection languages: example fi-en or ge-sw"
-                               SemanticProperties.Description="Collection "
-                               MaxLength="16"
-                               WidthRequest="120"
-                               HorizontalOptions="Start" />
-                    </VerticalStackLayout>
+                    <Label Text="Otsikko"
+                           Margin="0,0,0,5"
+                           FontSize="Medium" />
+                    <entry:PlatformIndependantEntry Text="{Binding CollectionName}"
+                                                    PlaceHolder="Minun sanastoni 1"
+                                                    HorizontalOptions="Start"
+                                                    MaxLength="40" />
+                    <Label Text="Kielet"
+                           Margin="0,10,0,5"
+                           FontSize="Medium" />
+                    <entry:PlatformIndependantEntry PlaceHolder="fi-en"
+                                                    Grid.Row="1"
+                                                    Text="{Binding LanguageHeaders}"
+                                                    MaxLength="16"
+                                                    WidthRequest="120"
+                                                    HorizontalOptions="Start" />
                 </VerticalStackLayout>
                 <Button Text="Uusi leikepöydältä"
                         HorizontalOptions="Center"
                         Command="{Binding GeneratePairsCommand}" />
-                <CollectionView ItemsLayout="VerticalList"
+
+                <CollectionView ItemSizingStrategy="MeasureAllItems"
+                                ItemsLayout="VerticalGrid,2"
+                                Margin="20"
+                                ItemsSource="{Binding Words}"
+                                CanReorderItems="True">
+                    <CollectionView.EmptyView>
+                        <Label HorizontalOptions="Center" />
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView x:DataType="{x:Type x:String}">
+                                <SwipeView.RightItems>
+                                    <!-- command is not called -->
+                                    <SwipeItem IconImageSource="bin_icon.png"
+                                               BackgroundColor="Red"
+                                               x:DataType="{x:Type viewModel:IListGeneratorViewModel}"
+                                               Command="{Binding Remove, Source={RelativeSource AncestorType={x:Type local:ListGeneratorPage}}}"
+                                               />
+                                </SwipeView.RightItems>
+                                <SwipeView.LeftItems>
+                                    <SwipeItem IconImageSource="pencil_icon.png"
+                                               BackgroundColor="#20ffffff" />
+                                </SwipeView.LeftItems>
+                                <Border BackgroundColor="{StaticResource DarkerThanPage}"
+                                        Stroke="Transparent">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Grid MinimumHeightRequest="40">
+                                        <Label Text="{Binding .}"
+                                               Padding="10"
+                                               TextColor="{StaticResource SecondaryText}"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
+                                    </Grid>
+                                </Border>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+
+
+
+
+
+                <!--<CollectionView ItemsLayout="VerticalList"
                                 Margin="20"
                                 ItemsSource="{Binding WordPairs}"
                                 ItemSizingStrategy="MeasureAllItems"
@@ -102,7 +137,7 @@
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
-                </CollectionView>
+                </CollectionView>-->
                 <Button Text="Vaihda kielet"
                         IsEnabled="{Binding CanSave}"
                         HorizontalOptions="Center"

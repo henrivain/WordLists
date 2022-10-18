@@ -3,6 +3,8 @@ using WordDataAccessLibrary.Generators;
 using WordDataAccessLibrary.Helpers;
 using WordListsMauiHelpers.DeviceAccess;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
+using Microsoft.Maui.Animations;
+using WordListsViewModels.Extensions;
 
 namespace WordListsViewModels;
 
@@ -15,10 +17,9 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         CollectionService = collectionService;
     }
 
-
     [AlsoNotifyChangeFor(nameof(CanSave))]
     [ObservableProperty]
-    List<WordPair> wordPairs = new();
+    List<string> words = new();
 
     [ObservableProperty]
     string collectionName = "My word collection";
@@ -29,24 +30,22 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     [ObservableProperty]
     string languageHeaders = "fi-en";
 
-    public bool CanSave => WordPairs.Count > 0;
+    public bool CanSave => Words.Count / 2 > 0;
 
     public IAsyncRelayCommand GeneratePairsCommand => new AsyncRelayCommand(
         async () =>
         {
             string text = await ClipboardAccess.GetStringAsync();
-            ParseAndSetWordPairsFromString(text);
+            Words = StringParserActions[UseParser](text);
         });
 
     public IAsyncRelayCommand SaveCollection => new AsyncRelayCommand(
         async () =>
         {
-            // implement save on top of old instance if that saved
-            if (WordPairs.Count is 0)
+            if (Words.Count < 2)
             {
                 Debug.WriteLine($"{nameof(SaveCollection)}: Can't add empty word collection");
                 throw new InvalidOperationException();
-                //return;
             }
             int id = await CollectionService.AddWordCollection(GetData());
 
@@ -56,16 +55,13 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
 
     public event CollectionAddedEventHandler? CollectionAddedEvent;
 
-    public IRelayCommand FlipSides => new RelayCommand(() =>
-    {
-        WordPairs = WordListFlipper.FlipWordPair(WordPairs);
-    });
+    public IRelayCommand FlipSides => new RelayCommand(() => Words = Words.FlipPairs());
 
     public WordCollection GetData()
     {
         return new()
         {
-            WordPairs = WordPairs,
+            WordPairs = WordParser.PairWords(Words.ToArray()),
             Owner = new()
             {
                 Name = CollectionName ?? string.Empty,
@@ -79,24 +75,25 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
 
     public Parser UseParser { get; set; } = Parser.Otava;
 
-
-    
     public IWordCollectionService CollectionService { get; }
+
+    public IRelayCommand<string> Remove => new RelayCommand<string>(value => RemoveINstance(value));
+
+    private void RemoveINstance(string? value)
+    {
+        if (value is null) throw new NotImplementedException();
+        Words.Remove(value);
+        OnPropertyChanged(nameof(Words));
+    }
 
     public enum Parser
     {
         Otava
     }
-
-    private void ParseAndSetWordPairsFromString(string pairs)
+    
+    readonly Dictionary<Parser, Func<string, List<string>>> StringParserActions = new()
     {
-        WordPairs = UseParser switch
-        {
-            Parser.Otava => new OtavaWordPairParser(pairs).GetList(),
-            _ => throw new NotImplementedException($"Parser {UseParser} is not implemented")
-        };
-    }
-
-
+        [Parser.Otava] = (pairs) => { return new OtavaWordPairParser(pairs).ToStringList(); }
+    };
 }
 

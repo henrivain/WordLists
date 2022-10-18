@@ -5,21 +5,10 @@
              Title="Aloita uusi"
              xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
              xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
+             xmlns:entry="clr-namespace:WordListsUI.Components.Entry"
              x:DataType="{x:Type viewModel:IStartTrainingViewModel}"
              BackgroundColor="{StaticResource PageBackground}"
              Loaded="ContentPage_Loaded">
-    <ContentPage.Resources>
-        <Style TargetType="{x:Type Entry}">
-            <Setter Property="BackgroundColor"
-                    Value="{StaticResource KindaWhite}" />
-            <Setter Property="PlaceholderColor"
-                    Value="{StaticResource UnImportantText}" />
-            <Setter Property="TextColor"
-                    Value="Black" />
-        </Style>
-
-    </ContentPage.Resources>
-
     <Grid>
         <!--<RefreshView Command="{Binding UpdateCollections}" IsRefreshing="{Binding IsRefreshing}">-->
         <!-- Add refresh view when bug #5772 is fixed -->
@@ -35,28 +24,12 @@
                                 Value="5" />
                     </Style>
                 </VerticalStackLayout.Resources>
-
-                <Border Stroke="Transparent"
-                        StrokeThickness="0"
-                        WidthRequest="300"
-                        Margin="0,20"
-                        HorizontalOptions="Center"
-                        BackgroundColor="{OnPlatform Android={StaticResource DarkerThanPage}, Default=Transparent}">
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="{OnPlatform Android=8, Default=0}" />
-                    </Border.StrokeShape>
-                    <VerticalStackLayout>
-                        <Entry Text="{Binding DataParameter}"
-                               Placeholder="Avainsana"
-                               BackgroundColor="{StaticResource DarkerThanPage}"
-                               TextColor="{StaticResource NormalText}"
-                               MaxLength="36"
-                               Margin="{OnPlatform Android='5,0', Default=0}" />
-                        <Line BackgroundColor="{StaticResource BinIconBackground}"
-                              StrokeThickness="2"
-                              IsVisible="{OnPlatform Android=true, Default=false}" />
-                    </VerticalStackLayout>
-                </Border>
+                <entry:PlatformIndependantEntry WidthRequest="300"
+                                                Margin="0,20"
+                                                HorizontalOptions="Center"
+                                                Text="{Binding DataParameter}"
+                                                PlaceHolder="Avainsana"
+                                                MaxLength="36" />
 
                 <VerticalStackLayout>
                     <Grid ColumnDefinitions="*, *">
@@ -122,8 +95,7 @@
                                    FontSize="Medium"
                                    HorizontalTextAlignment="Center"
                                    BackgroundColor="{StaticResource DarkerThanPage}"
-                                   TextColor="{StaticResource NormalText}"
-                                   />
+                                   TextColor="{StaticResource NormalText}" />
                         </Grid>
                     </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
@@ -147,8 +119,7 @@
                                                Text="Kirjoita"
                                                Clicked="SwipeItem_Write_Clicked"
                                                x:DataType="{x:Type wordData:WordCollectionOwner}"
-                                               CommandParameter="{Binding Id}" 
-                                               />
+                                               CommandParameter="{Binding Id}" />
                                 </SwipeView.RightItems>
                                 <Grid Padding="20,5,0,5"
                                       x:DataType="{x:Type wordData:WordCollectionOwner}"
