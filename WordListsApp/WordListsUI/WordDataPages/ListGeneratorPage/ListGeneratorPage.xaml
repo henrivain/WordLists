@@ -67,7 +67,7 @@
                         <DataTemplate>
                             <SwipeView x:DataType="{x:Type x:String}">
                                 <SwipeView.RightItems>
-                                    <!-- command is not called -->
+                                    <!-- command is not called yet, so it doesn't work correctly  -->
                                     <SwipeItem IconImageSource="bin_icon.png"
                                                BackgroundColor="Red"
                                                x:DataType="{x:Type viewModel:IListGeneratorViewModel}"
