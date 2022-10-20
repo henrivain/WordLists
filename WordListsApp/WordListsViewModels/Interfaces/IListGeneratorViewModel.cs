@@ -31,6 +31,20 @@ public interface IListGeneratorViewModel
 
     WordCollection GetData();
 
+    /// <summary>
+    /// Try set string value of specific index in Words ObservableCollection
+    /// </summary>
+    /// <param name="indexInList"></param>
+    /// <param name="value"></param>
+    /// <returns>boolean value reprcenting if action was success</returns>
+    bool SetWordValueWithIndex(int indexInList, string value);
+
+    /// <summary>
+    /// Adds new word to Words ObservableCollection
+    /// </summary>
+    /// <param name="result"></param>
+    void AddWord(string result);
+
     event CollectionAddedEventHandler? CollectionAddedEvent;
 
     event EditWantedEventHandler? EditWantedEvent;

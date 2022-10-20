@@ -52,9 +52,6 @@
                 <Button Text="Uusi leikepöydältä"
                         HorizontalOptions="Center"
                         Command="{Binding GeneratePairsCommand}" />
-                <Button Text="Click"
-                        Command="{Binding Remove}"
-                        CommandParameter="Year 7" />
                 <Button ImageSource="new_icon_dark.png"
                         Text="uusi sana"
                         IsVisible="{Binding CanSave}"

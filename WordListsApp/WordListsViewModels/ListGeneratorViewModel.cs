@@ -68,6 +68,8 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         };
     }
 
+
+
     public WordCollectionOwner Owner { get; set; } = new();
 
     public Parser UseParser { get; set; } = Parser.Otava;
@@ -101,7 +103,33 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         [Parser.Otava] = (pairs) => { return new OtavaWordPairParser(pairs).ToStringList(); }
     };
 
+    /// <summary>
+    /// Try set string value of specific index in Words ObservableCollection
+    /// </summary>
+    /// <param name="indexInList"></param>
+    /// <param name="value"></param>
+    /// <returns>boolean value reprcenting if action was success</returns>
+    public bool SetWordValueWithIndex(int indexInList, string value)
+    {
+        if (string.IsNullOrEmpty(value)) return false;
+        try
+        {
+            Words[indexInList] = value;
+            return true;
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            Debug.WriteLine($"Attempt in {nameof(ListGeneratorViewModel)} to set word value to '{value}' in index '{indexInList}' " +
+                $"failed because of {nameof(ArgumentOutOfRangeException)}, only '{Words.Count}' indexes exist");
+            return false;
+        }
+    }
 
+    public void AddWord(string result)
+    {
+        if (string.IsNullOrEmpty(result)) return;
+        Words.Add(result);
+    }
 
     public event CollectionAddedEventHandler? CollectionAddedEvent;
 
