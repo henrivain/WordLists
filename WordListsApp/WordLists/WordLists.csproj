@@ -104,7 +104,7 @@
 	<ItemGroup>
 		<None Remove="Resources\Fonts\Poppins\Poppins-ThinItalic.ttf" />
 		<None Remove="Resources\Images\again_icon.svg" />
-		<None Remove="Resources\Images\bin_icon.svg" />
+		<None Remove="Resources\Images\bin_icon_old.svg" />
 		<None Remove="Resources\Images\bin_icon_with_border.svg" />
 		<None Remove="Resources\Images\copy_icon.svg" />
 		<None Remove="Resources\Images\hamburger_icon.svg" />
@@ -113,6 +113,7 @@
 		<None Remove="Resources\Images\leave_icon.svg" />
 		<None Remove="Resources\Images\LetsGoIcon.svg" />
 		<None Remove="Resources\Images\new_icon.svg" />
+		<None Remove="Resources\Images\new_icon_dark.svg" />
 		<None Remove="Resources\Images\ok_icon.svg" />
 		<None Remove="Resources\Images\pencil_icon.svg" />
 		<None Remove="Resources\Images\training_icon.svg" />

@@ -1,9 +1,9 @@
-﻿using System.Diagnostics;
-using WordDataAccessLibrary.Generators;
-using WordDataAccessLibrary.Helpers;
-using WordListsMauiHelpers.DeviceAccess;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
-using Microsoft.Maui.Animations;
+using WordDataAccessLibrary.Generators;
+using WordListsMauiHelpers.DeviceAccess;
+using WordListsViewModels.Events;
 using WordListsViewModels.Extensions;
 
 namespace WordListsViewModels;
@@ -19,7 +19,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
 
     [AlsoNotifyChangeFor(nameof(CanSave))]
     [ObservableProperty]
-    List<string> words = new();
+    ObservableCollection<string> words = new();
 
     [ObservableProperty]
     string collectionName = "My word collection";
@@ -36,7 +36,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         async () =>
         {
             string text = await ClipboardAccess.GetStringAsync();
-            Words = StringParserActions[UseParser](text);
+            Words = new(StringParserActions[UseParser](text));
         });
 
     public IAsyncRelayCommand SaveCollection => new AsyncRelayCommand(
@@ -52,10 +52,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
             CollectionAddedEvent?.Invoke(this, new("Added wordCollection successfully", id));
         });
 
-
-    public event CollectionAddedEventHandler? CollectionAddedEvent;
-
-    public IRelayCommand FlipSides => new RelayCommand(() => Words = Words.FlipPairs());
+    public IRelayCommand FlipSides => new RelayCommand(() => Words = new(Words.ToList().FlipPairs()));
 
     public WordCollection GetData()
     {
@@ -77,14 +74,22 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
 
     public IWordCollectionService CollectionService { get; }
 
-    public IRelayCommand<string> Remove => new RelayCommand<string>(value => RemoveINstance(value));
-
-    private void RemoveINstance(string? value)
+    public IRelayCommand<string> Remove => new RelayCommand<string>(value =>
     {
-        if (value is null) throw new NotImplementedException();
+        if (value is null) throw new NotImplementedException($"{nameof(value)} should not be null");
+
         Words.Remove(value);
         OnPropertyChanged(nameof(Words));
-    }
+    });
+
+    public IRelayCommand<string> Edit => new RelayCommand<string>(value =>
+    {
+        if (value is null) throw new NotImplementedException($"{nameof(value)} should not be null");
+        int index = Words.IndexOf(value);
+        EditWantedEvent?.Invoke(this, new(value, index));
+    });
+
+    public IRelayCommand New => new RelayCommand(() => AddWantedEvent?.Invoke(this, EventArgs.Empty));
 
     public enum Parser
     {
@@ -95,5 +100,13 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     {
         [Parser.Otava] = (pairs) => { return new OtavaWordPairParser(pairs).ToStringList(); }
     };
+
+
+
+    public event CollectionAddedEventHandler? CollectionAddedEvent;
+
+    public event EditWantedEventHandler? EditWantedEvent;
+
+    public event AddWantedEventHandler? AddWantedEvent;
 }
 

@@ -46,4 +46,6 @@ public partial class ListGeneratorPage : ContentPage
 	{
         Model.CollectionAddedEvent += Model_CollectionAddedEvent;
     }
+
+	
 }

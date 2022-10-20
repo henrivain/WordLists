@@ -1,11 +1,13 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using WordListsViewModels.Events;
 
 namespace WordListsViewModels.Interfaces;
 public interface IListGeneratorViewModel
 {
     event PropertyChangedEventHandler? PropertyChanged;
 
-    List<string> Words { get; set; }
+    ObservableCollection<string> Words { get; set; }
 
     string CollectionName { get; set; }
 
@@ -23,7 +25,15 @@ public interface IListGeneratorViewModel
 
     IRelayCommand<string> Remove { get; }
 
+    IRelayCommand<string> Edit { get; }
+
+    IRelayCommand New { get; }
+
     WordCollection GetData();
 
     event CollectionAddedEventHandler? CollectionAddedEvent;
+
+    event EditWantedEventHandler? EditWantedEvent;
+
+    event AddWantedEventHandler? AddWantedEvent;
 }
