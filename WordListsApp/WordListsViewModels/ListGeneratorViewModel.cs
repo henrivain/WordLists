@@ -76,7 +76,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
 
     public IWordCollectionService CollectionService { get; }
 
-    public IRelayCommand<string> Remove => new RelayCommand<string>(value =>
+    public IRelayCommand<string> Delete => new RelayCommand<string>(value =>
     {
         if (value is null) throw new NotImplementedException($"{nameof(value)} should not be null");
 

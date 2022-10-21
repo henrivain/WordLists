@@ -102,7 +102,7 @@
                                                  Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:IListGeneratorViewModel}}, Path=Edit}" />
                                     <ImageButton Source="bin_simpler_icon.png"
                                                  CommandParameter="{Binding .}"
-                                                 Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:IListGeneratorViewModel}}, Path=Remove}"
+                                                 Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:IListGeneratorViewModel}}, Path=Delete}"
                                                  HorizontalOptions="End" />
                                 </Grid>
                             </Border>

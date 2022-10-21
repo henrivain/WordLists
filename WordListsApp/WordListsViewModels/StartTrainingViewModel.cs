@@ -24,12 +24,12 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
 
     public IAsyncRelayCommand UpdateCollectionsByName => new AsyncRelayCommand(async () =>
     {
-        AvailableCollections = (await OwnerService.GetByName(DataParameter)).SortByName();
+        AvailableCollections = (await OwnerService.GetByName(DataParameter)).SortByName().ToList();
     });    
     
     public IAsyncRelayCommand UpdateCollectionsByLanguage => new AsyncRelayCommand(async () =>
     {
-        AvailableCollections = (await OwnerService.GetByLanguage(DataParameter)).SortByName();
+        AvailableCollections = (await OwnerService.GetByLanguage(DataParameter)).SortByName().ToList();
     });
 
     public IAsyncRelayCommand UpdateCollections => new AsyncRelayCommand(async () =>
@@ -70,7 +70,7 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
     public async Task ResetCollections()
     {
         IsRefreshing = true;   
-        AvailableCollections = (await OwnerService.GetAll()).SortByName();
+        AvailableCollections = (await OwnerService.GetAll()).SortByName().ToList();
         IsRefreshing = false;
     }
 }

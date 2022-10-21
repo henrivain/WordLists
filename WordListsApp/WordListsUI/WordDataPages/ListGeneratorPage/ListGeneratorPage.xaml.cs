@@ -1,7 +1,6 @@
+using WordDataAccessLibrary.DataBaseActions;
 using WordListsMauiHelpers.Factories;
 using WordListsUI.Helpers;
-using WordDataAccessLibrary.DataBaseActions;
-using WordListsViewModels.Interfaces;
 using WordListsViewModels.Events;
 
 namespace WordListsUI.WordDataPages.ListGeneratorPage;

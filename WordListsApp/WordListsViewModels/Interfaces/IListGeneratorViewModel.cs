@@ -23,7 +23,7 @@ public interface IListGeneratorViewModel
 
     IRelayCommand FlipSides { get; }
 
-    IRelayCommand<string> Remove { get; }
+    IRelayCommand<string> Delete { get; }
 
     IRelayCommand<string> Edit { get; }
 

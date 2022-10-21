@@ -3,9 +3,9 @@
 namespace WordListsViewModels.Extensions;
 internal static class ListExtensions
 {
-    internal static List<WordCollectionOwner> SortByName(this List<WordCollectionOwner> owners)
+    internal static IEnumerable<WordCollectionOwner> SortByName(this IEnumerable<WordCollectionOwner> owners)
     {
-        return owners.OrderBy(x => x.Name).ToList();
+        return owners.OrderBy(x => x.Name);
     }
 
     internal static List<WordCollectionInfo> SortByName(this List<WordCollectionInfo> owners)

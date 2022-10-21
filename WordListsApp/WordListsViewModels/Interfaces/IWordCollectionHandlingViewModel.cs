@@ -1,16 +1,27 @@
-﻿using WordListsViewModels.Helpers;
+﻿using System.Collections.ObjectModel;
+using WordListsViewModels.Events;
+using WordListsViewModels.Helpers;
 
 namespace WordListsViewModels.Interfaces;
 public interface IWordCollectionHandlingViewModel
 {
 
-    List<WordCollectionInfo> AvailableCollections { get; set; }
+    ObservableCollection<WordCollectionInfo> AvailableCollections { get; set; }
 
     IAsyncRelayCommand UpdateCollectionInfos { get; }
 
     Task ResetCollections();
 
-    Task DeleteCollection(int id);
+    IRelayCommand<int> RequestDelete { get; }
+
+    IRelayCommand<int> Edit { get; }
+
+    Task DeleteCollection(WordCollectionOwner owner);
+
+    event DeleteWantedEventHandler? DeleteRequested;
 
     event CollectionDeletedEventHandler? CollectionDeleted;
+
+    event EditWantedEventHandler? EditWanted;
+
 }
