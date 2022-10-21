@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 namespace WordListsUI.WordDataPages.WordCollectionEditPage;
 
 public partial class WordCollectionEditPage : ContentPage
@@ -20,7 +18,7 @@ public partial class WordCollectionEditPage : ContentPage
                 cancel: "peruuta",
                 accept: "jatka"
                 );
-		if(proceed)
+		if (proceed)
 		{
             await Model.DeleteCollection(e.WordCollectionOwner);
         }

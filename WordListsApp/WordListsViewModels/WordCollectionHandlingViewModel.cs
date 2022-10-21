@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsViewModels.Events;
-using WordListsViewModels.Extensions;
 using WordListsViewModels.Helpers;
 
 namespace WordListsViewModels;

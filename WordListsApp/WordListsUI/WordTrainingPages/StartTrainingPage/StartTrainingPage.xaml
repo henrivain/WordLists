@@ -85,10 +85,9 @@
 
 
                 <CollectionView ItemsSource="{Binding AvailableCollections}"
-                                Background="{StaticResource WordListBackground}"
                                 Margin="20,0,20,100"
                                 HorizontalOptions="Center">
-                    <!-- SelectionMode="Single" MauiBug #9060-->
+                    <!-- SelectionMode="Single" crashes if selection null (MauiBug #9060) -->
                     <CollectionView.EmptyView>
                         <Grid>
                             <Label Text="Sopivia sanastoja ei löytynyt"
@@ -100,59 +99,69 @@
                     </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
+
                             <SwipeView VerticalOptions="Start">
                                 <SwipeView.Resources>
                                     <Style TargetType="{x:Type Label}">
                                         <Setter Property="TextColor"
-                                                Value="{StaticResource UnImportantText}" />
+                                                Value="{StaticResource SecondaryText}" />
                                     </Style>
                                 </SwipeView.Resources>
                                 <SwipeView.RightItems>
                                     <SwipeItem BackgroundColor="Green"
-                                               Text="Kortit"
+                                               IconImageSource="cards_icon.png"
                                                Clicked="SwipeItem_Cards_Clicked"
                                                x:DataType="{x:Type wordData:WordCollectionOwner}"
                                                CommandParameter="{Binding Id}" />
                                     <!-- using command parameter as paramer for Clicked action, 
                                         it's stupid but didnt find easy better way quickly -->
                                     <SwipeItem BackgroundColor="#0A092D"
-                                               Text="Kirjoita"
+                                               IconImageSource="pencil_icon.png"
                                                Clicked="SwipeItem_Write_Clicked"
                                                x:DataType="{x:Type wordData:WordCollectionOwner}"
                                                CommandParameter="{Binding Id}" />
                                 </SwipeView.RightItems>
-                                <Grid Padding="20,5,0,5"
-                                      x:DataType="{x:Type wordData:WordCollectionOwner}"
-                                      ColumnDefinitions="{OnPlatform Default=*, WinUI='3*, *'}">
-                                    <VerticalStackLayout>
-                                        <Label Text="{Binding Name}" />
-                                        <Label Text="{Binding LanguageHeaders}" />
-                                    </VerticalStackLayout>
-                                    <HorizontalStackLayout Grid.Column="{OnPlatform WinUI=1}"
-                                                           IsVisible="{OnPlatform WinUI=true, Default=false}">
-                                        <ImageButton IsVisible="{OnPlatform WinUI=true, Default=false}"
-                                                     Source="letsgoicon.png"
-                                                     Padding="2"
-                                                     HeightRequest="30"
-                                                     WidthRequest="30"
-                                                     Clicked="SwipeItem_Cards_Clicked"
-                                                     CommandParameter="{Binding Id}">
-                                            <!-- using command parameter as paramer for Clicked action, 
+                                <Border BackgroundColor="{StaticResource DarkerThanPage}"
+                                        Stroke="Transparent"
+                                        StrokeThickness="0"
+                                        Margin="0,2"
+                                        >
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Grid Padding="20,5,0,5"
+                                          x:DataType="{x:Type wordData:WordCollectionOwner}"
+                                          ColumnDefinitions="{OnPlatform Default=*, WinUI='3*, *'}">
+                                        <VerticalStackLayout>
+                                            <Label Text="{Binding Name}" />
+                                            <Label Text="{Binding LanguageHeaders}" />
+                                        </VerticalStackLayout>
+                                        <HorizontalStackLayout Grid.Column="{OnPlatform WinUI=1}"
+                                                               IsVisible="{OnPlatform WinUI=true, Default=false}">
+                                            <ImageButton IsVisible="{OnPlatform WinUI=true, Default=false}"
+                                                         Source="letsgoicon.png"
+                                                         Padding="2"
+                                                         HeightRequest="30"
+                                                         WidthRequest="30"
+                                                         Clicked="SwipeItem_Cards_Clicked"
+                                                         CommandParameter="{Binding Id}">
+                                                <!-- using command parameter as paramer for Clicked action, 
                                         it's stupid but didnt find easy better way quickly Must fix later when i have time -->
-                                        </ImageButton>
-                                        <ImageButton IsVisible="{OnPlatform WinUI=true, Default=false}"
-                                                     Source="pencil_icon.png"
-                                                     Margin="10,0"
-                                                     Padding="2"
-                                                     CornerRadius="15"
-                                                     HeightRequest="30"
-                                                     WidthRequest="30"
-                                                     BackgroundColor="#65000000"
-                                                     Clicked="SwipeItem_Write_Clicked"
-                                                     x:DataType="{x:Type wordData:WordCollectionOwner}"
-                                                     CommandParameter="{Binding Id}" />
-                                    </HorizontalStackLayout>
-                                </Grid>
+                                            </ImageButton>
+                                            <ImageButton IsVisible="{OnPlatform WinUI=true, Default=false}"
+                                                         Source="pencil_icon.png"
+                                                         Margin="10,0"
+                                                         Padding="2"
+                                                         CornerRadius="15"
+                                                         HeightRequest="30"
+                                                         WidthRequest="30"
+                                                         BackgroundColor="#65000000"
+                                                         Clicked="SwipeItem_Write_Clicked"
+                                                         x:DataType="{x:Type wordData:WordCollectionOwner}"
+                                                         CommandParameter="{Binding Id}" />
+                                        </HorizontalStackLayout>
+                                    </Grid>
+                                </Border>
                             </SwipeView>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
