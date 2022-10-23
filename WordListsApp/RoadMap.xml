@@ -22,23 +22,30 @@
 				</WelcomePage>
 			</v1.1.0>
 			<v1.2.0>
-				<StartTraining>Add possibility to randomize word pair order in list</StartTraining>
+				
 			</v1.2.0>
 		</InRelease>
 		<UnReleased>
 			<!-- Update not released -->
-			
+			<StartTraining>Add possibility to randomize word pair order in list</StartTraining>
+			<LearnWords>Learn by writing words</LearnWords>
+			<LearnWords>Generate test</LearnWords>
+			<ListGeneratorPage>
+				<EditWordOrder>Drag and drop words to new orders in generated lists</EditWordOrder>
+				<DeleteWords>Delete words from generated lists</DeleteWords>
+				<AddWords>Add new words to automatically generated lists</AddWords>
+				<EditWords>Add and remove characters from words</EditWords>
+			</ListGeneratorPage>
+			<MatchUIThemes>Change colors to matchin in every page</MatchUIThemes>
 		</UnReleased>
 	</Completed>
 	<Coming>
 		<!-- Under work -->
 		<UnderWork>
-			<LearnWords>Learn by writing words</LearnWords>
-			<LearnWords>Generate test</LearnWords>
 		</UnderWork>
 		<!-- Most certainly coming features-->
 		<TODO>
-			<ListGenerator>Create list by image recognizion</ListGenerator>
+			<ListGenerator>Create list by image recognizion using tesserac</ListGenerator>
 			<Logging>Implement proper logging</Logging>
 			<Tests>
 				<TestViewModels>Add tests to view models</TestViewModels>
@@ -48,26 +55,33 @@
 					<StartLearningPage>Fix collection view sizing on windows when less than 3 items (Might be maui bug)</StartLearningPage>
 				</OnWindows>
 			</Enhancement>
-			<Usability>
-				<CollectionEditPage>
-					<Edit>Name</Edit>
-					<Edit>LanguageTags</Edit>
-					<Edit>EditLanguageTags</Edit>
-					<Edit>Switch languages with one and another</Edit>
-				</CollectionEditPage>
-			</Usability>
 		</TODO>
 	</Coming>
 	
 	<UnCertain>
+		<AddMekUpdater>Add MekUpdater (https://github.com/matikkaeditorinkaantaja/MekUpdater) in at least windows project</AddMekUpdater>
 		<SaveTests>Save test results in some format like json, as a file in user's machine</SaveTests>
 		<Description>Make Description Visible</Description>
-		<WordListGenerator>Edit button to edit word collection words</WordListGenerator>
+		<AddAppLanguage>Make user able to select english instead of finnish as a app language</AddAppLanguage>
+		<WordListGenerator>
+			<Info>Edit button to edit word collection words</Info>
+			<Notice>This is included in list generator in 1.2.0 update</Notice>
+		</WordListGenerator>
 		<WordCollections>
 			<SearchByTags>
 				<Info>Tag to point add specific book</Info>
 				<Notice>This can be reached by naming collections well</Notice>
 			</SearchByTags>
 		</WordCollections>
+		<JsonExportPage>add delay between user input and ui collections update in JsonExportPage</JsonExportPage>
+		<Usability>
+			<CollectionEditPage>
+				<Notice>All available in ListGeneratorPage</Notice>
+				<Edit>Name</Edit>
+				<Edit>LanguageTags</Edit>
+				<Edit>EditLanguageTags</Edit>
+				<Edit>Switch languages with one and another</Edit>
+			</CollectionEditPage>
+		</Usability>
 	</UnCertain>
 </Versions>

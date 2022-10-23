@@ -11,3 +11,6 @@ public delegate void EditWantedEventHandler(object sender, EditWantedEventArgs e
 public delegate void AddWantedEventHandler(object sender, EventArgs e);
 
 public delegate void DeleteWantedEventHandler(object sender, DeleteWantedEventArgs e);
+
+public delegate void TrainingRequestedEventHandler(object sender, StartTrainingEventArgs e);
+

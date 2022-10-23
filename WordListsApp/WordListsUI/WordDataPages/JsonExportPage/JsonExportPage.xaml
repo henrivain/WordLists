@@ -108,13 +108,13 @@
                                                     <VisualState x:Name="Normal">
                                                         <VisualState.Setters>
                                                             <Setter Property="BackgroundColor"
-                                                                    Value="{StaticResource DarkerThanPage}" />
+                                                                    Value="{OnPlatform Default={StaticResource DarkerThanPage}, WinUI=Transparent}" />
                                                         </VisualState.Setters>
                                                     </VisualState>
                                                     <VisualState x:Name="Selected">
                                                         <VisualState.Setters>
                                                             <Setter Property="BackgroundColor"
-                                                                    Value="#111111" />
+                                                                    Value="{OnPlatform Default=#111111, WinUI=Transparent}" />
                                                         </VisualState.Setters>
                                                     </VisualState>
                                                 </VisualStateGroup>

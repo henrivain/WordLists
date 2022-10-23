@@ -1,4 +1,8 @@
-﻿using WordDataAccessLibrary.DataBaseActions.Interfaces;
+﻿using Newtonsoft.Json.Linq;
+using System.Diagnostics;
+using WordDataAccessLibrary.DataBaseActions.Interfaces;
+using WordListsMauiHelpers.Extensions;
+using WordListsViewModels.Events;
 using WordListsViewModels.Extensions;
 
 namespace WordListsViewModels;
@@ -6,12 +10,14 @@ namespace WordListsViewModels;
 [INotifyPropertyChanged]
 public partial class StartTrainingViewModel : IStartTrainingViewModel
 {
-    public StartTrainingViewModel(IWordCollectionOwnerService ownerService)
+    public StartTrainingViewModel(IWordCollectionOwnerService ownerService, IWordCollectionService wordCollectionService)
     {
         OwnerService = ownerService;
+        WordCollectionService = wordCollectionService;
     }
 
     IWordCollectionOwnerService OwnerService { get; }
+    IWordCollectionService WordCollectionService { get; }
 
     [ObservableProperty]
     List<WordCollectionOwner> availableCollections = new();
@@ -36,6 +42,8 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
     {
         await ResetCollections();
     });
+
+    
 
     [ObservableProperty]
     bool showLearnedWords = true;
@@ -66,7 +74,58 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
 
     [ObservableProperty]
     WordCollectionOwner selectedItem = new();
-    
+
+
+  
+
+    public IAsyncRelayCommand<int> RequestCardsTraining => new AsyncRelayCommand<int>(async selectionId =>
+    {
+        CardsTrainingRequestedEvent?.Invoke(this, new()
+        {
+            WordCollection = await BuildSelectedWordCollection(selectionId)
+        });
+    });
+
+    public IAsyncRelayCommand<int> RequestWriteTraining => new AsyncRelayCommand<int>(async selectionId =>
+    {
+        WriteTrainingRequestedEvent?.Invoke(this, new()
+        {
+            WordCollection = await BuildSelectedWordCollection(selectionId)
+        });
+    });
+
+    public event TrainingRequestedEventHandler? CardsTrainingRequestedEvent;
+    public event TrainingRequestedEventHandler? WriteTrainingRequestedEvent;
+
+    public async Task<WordCollection> BuildSelectedWordCollection(int selectionId)
+    {
+        WordCollection collection = await WordCollectionService.GetWordCollection(selectionId);
+
+        if (ShowLearnedWords is false)
+        {
+            collection.WordPairs = collection.WordPairs
+                .Where(x => x.LearnState is not WordLearnState.Learned)
+                    .ToList();
+        }
+        if (ShowMightKnowWords is false)
+        {
+            collection.WordPairs = collection.WordPairs
+                .Where(x => x.LearnState is not WordLearnState.MightKnow)
+                    .ToList();
+        }
+        if (ShowNeverHeardKnowWords is false)
+        {
+            collection.WordPairs = collection.WordPairs
+                .Where(x => x.LearnState is not WordLearnState.NeverHeard)
+                    .ToList();
+        }
+        if (RandomizeWordPairsOrder)
+        {
+            collection.WordPairs = collection.WordPairs.Shuffle();
+        }
+        return collection;
+    }
+
     public async Task ResetCollections()
     {
         IsRefreshing = true;   

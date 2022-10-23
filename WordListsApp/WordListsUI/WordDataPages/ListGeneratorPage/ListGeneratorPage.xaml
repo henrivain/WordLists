@@ -52,44 +52,38 @@
                 <Button Text="Uusi leikepöydältä"
                         HorizontalOptions="Center"
                         Command="{Binding GeneratePairsCommand}" />
-                <VerticalStackLayout IsVisible="{OnIdiom Phone=false, Default=true}">
-                    <Button ImageSource="new_icon_dark.png"
-                            Text="uusi sana"
-                            IsVisible="{Binding CanSave}"
-                            HorizontalOptions="End"
-                            Margin="0,20,20,0"
-                            Command="{Binding New}"
-                            HeightRequest="45" />
-                </VerticalStackLayout>
+                <Button ImageSource="new_icon_dark.png"
+                        Text="uusi sana"
+                        IsVisible="{OnIdiom Phone=false, Default=true}"
+                        HorizontalOptions="End"
+                        Margin="0,20,20,0"
+                        Command="{Binding New}"
+                        HeightRequest="45" />
 
+                <Border HorizontalOptions="End"
+                        IsVisible="{OnIdiom Phone=true, Default=false}"
+                        BackgroundColor="{StaticResource DarkerThanPage}"
+                        Stroke="Transparent"
+                        Padding="7"
+                        Margin="0,20,25,0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding New}" />
+                    </Border.GestureRecognizers>
+                    <HorizontalStackLayout>
+                        <Image Source="new_icon_dark.png"
+                               HeightRequest="30"
+                               HorizontalOptions="End"
+                               Margin="10,0,0,0" />
+                        <Label Text="uusi sana"
+                               VerticalTextAlignment="Center"
+                               TextColor="{StaticResource SecondaryText}"
+                               Padding="10,5" />
 
-                <VerticalStackLayout HorizontalOptions="End"
-                                     IsVisible="{OnIdiom Phone=true, Default=false}">
-                    <Border BackgroundColor="{StaticResource DarkerThanPage}"
-                            Stroke="Transparent"
-                            Padding="7"
-                            IsVisible="{Binding CanSave}"
-                            Margin="0,20,25,0">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="8" />
-                        </Border.StrokeShape>
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding New}" />
-                        </Border.GestureRecognizers>
-                        <HorizontalStackLayout>
-                            <Image Source="new_icon_dark.png"
-                                   HeightRequest="30"
-                                   HorizontalOptions="End" 
-                                   Margin="10,0,0,0"
-                                   />
-                            <Label Text="uusi sana"
-                                   VerticalTextAlignment="Center"
-                                   TextColor="{StaticResource SecondaryText}"
-                                   Padding="10,5" />
-
-                        </HorizontalStackLayout>
-                    </Border>
-                </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                </Border>
 
                 <CollectionView ItemSizingStrategy="MeasureAllItems"
                                 ItemsLayout="VerticalGrid,2"
