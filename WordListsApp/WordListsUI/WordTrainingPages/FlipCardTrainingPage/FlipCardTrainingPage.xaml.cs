@@ -2,13 +2,13 @@ using WordDataAccessLibrary;
 using WordDataAccessLibrary.DataBaseActions;
 using WordListsUI.Components.TextFlipCard;
 
-namespace WordListsUI.WordTrainingPage;
+namespace WordListsUI.WordTrainingPages.FlipCardTrainingPage;
 
 [QueryProperty(nameof(StartCollection), nameof(StartCollection))]
 [QueryProperty(nameof(StartWordCollection), nameof(StartWordCollection))]
-public partial class WordTrainingPage : ContentPage
+public partial class FlipCardTrainingPage : ContentPage
 {
-    public WordTrainingPage(IWordTrainingViewModel model)
+    public FlipCardTrainingPage(IWordTrainingViewModel model)
 	{
         BindingContext = model;
 		InitializeComponent();
@@ -18,12 +18,9 @@ public partial class WordTrainingPage : ContentPage
 
     public WordCollection StartCollection 
     { 
-        set 
-        { 
-            if (value is not null)
-            {
-                Model.StartNew(value);
-            }
+        set
+        {
+            if (value is not null) Model.StartNew(value);
         } 
     }
 
@@ -72,7 +69,7 @@ public partial class WordTrainingPage : ContentPage
         #if WINDOWS
         if (sender is Grid grid)
         {
-            Helpers.FlipperResizer.Resize(grid, Width);
+            WordTrainingPages.FlipCardTrainingPage.Helpers.FlipperResizer.Resize(grid, Width);
         }
         #endif
     }

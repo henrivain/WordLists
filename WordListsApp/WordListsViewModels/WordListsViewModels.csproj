@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\WordDataAccessLibrary\WordDataAccessLibrary.csproj" />
     <ProjectReference Include="..\WordListsMauiHelpers\WordListsMauiHelpers.csproj" />
+    <ProjectReference Include="..\WordValidationLibrary\WordValidationLibrary.csproj" />
   </ItemGroup>
 
 </Project>

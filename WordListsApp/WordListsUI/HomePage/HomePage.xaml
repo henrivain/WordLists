@@ -1,18 +1,65 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:WordListsUI.HomePage"
              x:Class="WordListsUI.HomePage.HomePage"
-             Title="koti">
+             Title="koti"
+             xmlns:linkField="clr-namespace:WordListsUI.Components.LinkField"
+             BindingContext="{Binding Source={RelativeSource Self}, Path=DefaultViewModel}"
+             x:DataType="{x:Type local:HomePage}"
+             BackgroundColor="{StaticResource PageBackground}">
+    <ContentPage.Resources>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="FontFamily"
+                    Value="Poppins" />
+            <Setter Property="TextColor"
+                    Value="{StaticResource SecondaryText}" />
+        </Style>
+    </ContentPage.Resources>
+    <ScrollView Margin="20,0">
+        <VerticalStackLayout Grid.Column="1">
+            <Label Text="Sanastot"
+                   FontSize="{OnPlatform WinUI=Large,  Android=35, Default=Title}"
+                   Margin="0,5,0,5"
+                   HorizontalTextAlignment="Center" />
 
-    <!-- Add number of word collections -> already at word data page -->
-    <!-- and maybe more stats (number of word learned) -->
-    <!-- Link to latest word sets? should implement settings -->
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Image Source="dotnet_bot.png"
-               HeightRequest="400" />
-    </VerticalStackLayout>
+            <Grid MaximumWidthRequest="{OnPlatform WinUI=600}"
+                  Margin="0,5"
+                  ColumnDefinitions="100,*">
+                <Image Source="dotnet_bot.png"
+                       VerticalOptions="Start" />
+                <VerticalStackLayout  Margin="20,20,20,0"
+                                      VerticalOptions="Center"
+                                      Grid.Column="1">
+                    <Label Text="Tervetuloa sanastosovellukseen!"
+                           FontSize="{OnPlatform WinUI=Small, Default=Large}"
+                           HorizontalTextAlignment="{OnPlatform WinUI=Start, Default=Center}" />
+                    <Label Text="Sovellus auttaa eri kielten sanastojen opettelussa ja hahmottamisessa."
+                           FontSize="{OnPlatform WinUI=Default, Android=16,Default=Medium}"
+                           Margin="0,10,0,0"
+                           LineBreakMode="WordWrap" />
+                </VerticalStackLayout>
+            </Grid>
+            <VerticalStackLayout MaximumWidthRequest="{OnPlatform WinUI=600}"
+                                 Margin="0,30">
+                <Label Text="Mitä haluat tehdä seuraavaksi?"
+                       FontSize="{OnPlatform WinUI=Micro, Default=Medium}"
+                       Margin="0,0,0,30" />
+                <VerticalStackLayout>
+                    <VerticalStackLayout.Resources>
+                        <Style TargetType="{x:Type linkField:LinkField}">
+                            <Setter Property="Margin"
+                                    Value="0,1" />
+                        </Style>
+                    </VerticalStackLayout.Resources>
+                    <linkField:LinkField Text="Aloita harjoitteleminen"
+                                         Tapped="StartTrainingField_Tapped" />
+                    <linkField:LinkField Text="Luo uusi sanasto"
+                                         Tapped="CreateNewField_Tapped" />
+                    <linkField:LinkField Text="Tuo uusi sanasto ulkoisesta .wordlist-tiedostosta"
+                                         Tapped="ImportField_Tapped" />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

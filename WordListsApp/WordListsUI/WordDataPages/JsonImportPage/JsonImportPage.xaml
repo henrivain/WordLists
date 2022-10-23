@@ -27,7 +27,7 @@
                 <Label Text="Tuo sanastoja ulkoisesta .wordlist tiedostosta"
                        HorizontalTextAlignment="Center"
                        FontSize="Large"
-                       Margin="0,20,0,50" />
+                       Margin="10,20,10,50" />
 
                 <StackLayout Orientation="{OnIdiom Default=Vertical, Desktop=Horizontal}"
                              HorizontalOptions="Center"
@@ -56,7 +56,12 @@
 
                     <Border BackgroundColor="#45000000"
                             HorizontalOptions="Center"
-                            MinimumWidthRequest="350">
+                            MinimumWidthRequest="{OnIdiom Phone=300, Default=350}"
+                            Margin="20,0"
+                            >
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
                         <Grid>
                             <Label Text="{Binding ImportPath}"
                                    Padding="{OnIdiom Default='20,10', Phone='10'}" />

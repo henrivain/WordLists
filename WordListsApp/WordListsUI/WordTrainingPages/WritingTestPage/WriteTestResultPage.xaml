@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
+             xmlns:question="clr-namespace:WordListsViewModels.Helpers;assembly=WordListsViewModels"
+             xmlns:validator="clr-namespace:WordValidationLibrary;assembly=WordValidationLibrary"
+             xmlns:uiElems="clr-namespace:WordListsUI.WordTrainingPages.WritingTestPage.UIElements"
+             xmlns:resources="clr-namespace:WordListsUI.WordTrainingPages.WritingTestPage.ResourceDictionaries"
+             x:Class="WordListsUI.WordTrainingPages.WritingTestPage.WriteTestResultPage"
+             x:DataType="{x:Type model:ITestResultViewModel}"
+             BackgroundColor="{StaticResource PageBackground}"
+             Loaded="BaseGrid_SizeChanged"
+             Title="WriteTestResultPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <resources:ResultPageResources />
+                <ResourceDictionary>
+                    <Style TargetType="{x:Type Span}">
+                        <Setter Property="FontFamily"
+                                Value="Poppins" />
+                        <Setter Property="TextColor"
+                                Value="{StaticResource NormalText}" />
+                        <Setter Property="FontAttributes"
+                                Value="Bold" />
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ScrollView>
+        <VerticalStackLayout Margin="0,0,0,50">
+            <Label Text="Testin tulokset"
+                   Style="{StaticResource DefaultLabelStyle}"
+                   FontSize="Title"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   Margin="0,20" />
+            <Grid x:Name="baseGrid"
+                  SizeChanged="BaseGrid_SizeChanged"
+                  RowDefinitions="*, auto"
+                  >
+                <!-- Keep this VerticalStackLayout, because borders don't scale right and some text can be left out -->
+                <VerticalStackLayout x:Name="infoView"
+                                     Grid.Column="1"
+                                     Margin="{OnPlatform Android=20, Default=0}"
+                                     VerticalOptions="Start">
+                    <Border Padding="30"
+                            BackgroundColor="{StaticResource DarkerThanPage}"
+                            Stroke="Transparent"
+                            StrokeThickness="0">
+                        <Border.Resources>
+                            <Style TargetType="{x:Type Label}">
+                                <Setter Property="Margin"
+                                        Value="0,5" />
+                            </Style>
+                        </Border.Resources>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <VerticalStackLayout>
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding Score}" />
+                                        <Span Text="% sanoista oli oikein" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding CharMatchPercentage}" />
+                                        <Span Text="% kirjoitetuista kirjaimista oli oikein" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Istuntotunnus: " />
+                                        <Span Text="{Binding SessionId}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+                <CollectionView ItemsSource="{Binding AnsweredQuestions}"
+                                x:Name="mainCollectionView"
+                                Grid.Column="1"
+                                Grid.Row="1"
+                                ItemSizingStrategy="MeasureAllItems"
+                                HorizontalOptions="Center"
+                                Margin="{OnPlatform Android=20, Default=0}"
+                                >
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout Padding="0,50">
+                            <HorizontalStackLayout HorizontalOptions="Center">
+                                <Image Source="dotnet_bot.png"
+                                       HeightRequest="50"
+                                       WidthRequest="50" />
+                                <Image Source="dotnet_bot.png"
+                                       HeightRequest="50"
+                                       WidthRequest="50"
+                                       RotationY="180" />
+                            </HorizontalStackLayout>
+                            <Label Text="Näyttää siltä, että sanasto oli tyhjä..."
+                                   HorizontalTextAlignment="Center"
+                                   Margin="0,5" />
+                        </VerticalStackLayout>
+
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <!-- Bind to entire word pair question coming from collection view -->
+                            <uiElems:WordResultViewer x:DataType="{x:Type question:WordPairQuestion}"
+                                                      WordPairQuestion="{Binding}" />
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                
+            </Grid>
+            <Button Text="Poistu"
+                    Style="{StaticResource DefaultButtonStyle}"
+                    Command="{Binding ExitResultsCommand}"
+                    MaximumWidthRequest="600"
+                    Margin="{OnPlatform Default='40,30,40,10', Android='20,30,20,10'}" />
+            <Button Text="Tallenna eteneminen"
+                    MaximumWidthRequest="600"
+                    Margin="{OnPlatform Default='40,10', Android='20,10'}"
+                    IsVisible="{Binding ProgressionNotSaved}"
+                    Style="{StaticResource SecondaryButtonStyle}"
+                    Command="{Binding SaveProgression}"
+                    />
+
+
+            <Label Text="Eteneminen on tallennettu!"
+                   Margin="0,20"
+                   HorizontalOptions="Center"
+                   TextColor="{StaticResource SecondaryText}"
+                   IsVisible="{Binding ProgressionSaved}" />
+            <Label Text="Painettuasi 'poistu', et voi enää tarkastella tuloksia"
+                   TextColor="{StaticResource SecondaryText}"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,0,0,100" />
+           
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

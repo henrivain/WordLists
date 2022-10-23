@@ -74,13 +74,22 @@
 	  <Compile Update="WordDataPages\WordDataMenuItems.xaml.cs">
 	    <DependentUpon>WordDataMenuItems.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="WordTrainingPage\FlipElement\FlipCardPage.xaml.cs">
-	    <DependentUpon>FlipCardPage.xaml</DependentUpon>
+	  <Compile Update="WordTrainingPages\FlipCardTrainingPage\FlipCardTrainingPage.xaml.cs">
+	    <DependentUpon>FlipCardTrainingPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="WordTrainingPages\WritingTestPage\WritingTestPage.xaml.cs">
+	    <DependentUpon>WritingTestPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Update="AppInfoPage\AppInfoPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\Entry\PlatformIndependantEntry.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\LinkField\LinkField.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Components\SideMenu\MenuField\SideMenuField.xaml">
@@ -98,7 +107,7 @@
 	  <MauiXaml Update="WordDataPages\JsonImportPage\JsonImportPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="StartTrainingPage\StartTrainingPage.xaml">
+	  <MauiXaml Update="WordTrainingPages\StartTrainingPage\StartTrainingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="WordDataPages\WordCollectionEditPage\WordCollectionHandlingPage.xaml">
@@ -113,22 +122,31 @@
 	  <MauiXaml Update="WordDataPages\WordDataMenuItems.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="WordTrainingPage\FlipElement\FlipElementBackSide.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="WordTrainingPage\FlipElement\FlipElementTopSide.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="WordTrainingPage\FlipElement\FlipCardPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="WordDataPages\ListGeneratorPage\ListGeneratorPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="WelcomePage\WelcomePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="WordTrainingPage\WordTrainingPage.xaml">
+	  <MauiXaml Update="WordTrainingPages\FlipCardTrainingPage\FlipCardTrainingPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="WordTrainingPages\WritingTestPage\ResourceDictionaries\ResultPageResources.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="WordTrainingPages\WritingTestPage\UIElements\TextAnswerField.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="WordTrainingPages\WritingTestPage\UIElements\WordResultViewer.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="WordTrainingPages\WritingTestPage\WriteTestResultPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="WordTrainingPages\WritingTestPage\WritingTestConfigurationPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="WordTrainingPages\WritingTestPage\WritingTestPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

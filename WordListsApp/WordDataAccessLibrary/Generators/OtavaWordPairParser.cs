@@ -1,16 +1,26 @@
 ﻿// Copyright 2022 Henri Vainio 
 
-using System.Runtime.CompilerServices;
-
 namespace WordDataAccessLibrary.Generators;
 
-public class OtavaWordPairParser : IWordPairParser
+public class OtavaWordPairParser : WordParser, IWordPairParser
 {
     public OtavaWordPairParser(string vocabularyList)
     {
         VocabularyList = vocabularyList;
     }
     private string VocabularyList { get; set; }
+    public List<string> ToStringList()
+    {
+        var pairs = GetList();
+        List<string> result = Enumerable.Empty<string>().ToList();
+
+        foreach(var pair in pairs)
+        {
+            result.Add(pair.NativeLanguageWord);
+            result.Add(pair.ForeignLanguageWord);
+        }
+        return result;
+    }
     public List<WordPair> GetList()
     {
         if (string.IsNullOrWhiteSpace(VocabularyList)) return new();
@@ -35,21 +45,5 @@ public class OtavaWordPairParser : IWordPairParser
         if (end < 1) return line;
 
         return string.Concat(line[..start], line[(end + 1)..]).Trim();
-    }
-    private static List<WordPair> PairWords(string[] lines)
-    {
-        List<WordPair> result = new();
-        for (uint i = 0; i + 2 <= lines.Length; i += 2)
-        {
-            result.Add(
-                new()
-                {
-                    // in otava books foreign language is first and native second
-                    ForeignLanguageWord = lines[i + 1].Trim(),
-                    NativeLanguageWord = lines[i].Trim(),
-                    IndexInVocalbulary = (int)Math.Round((double)i / 2)
-                });
-        }
-        return result;
     }
 }

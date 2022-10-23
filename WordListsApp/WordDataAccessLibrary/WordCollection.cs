@@ -1,6 +1,6 @@
 ﻿namespace WordDataAccessLibrary;
 
-public class WordCollection
+public class WordCollection : IWordCollection
 {
     /// <summary>
     /// Initialize new WordCollection "Vocabulary"
@@ -12,14 +12,14 @@ public class WordCollection
     /// <param name="owner"></param>
     /// <param name="pairs"></param>
     /// <exception cref="ArgumentNullException">thrown when one of parameters is null</exception>
-    public WordCollection(WordCollectionOwner owner, List<WordPair> pairs) 
-    { 
+    public WordCollection(WordCollectionOwner owner, List<WordPair> pairs)
+    {
         Owner = owner;
         WordPairs = pairs;
     }
 
 
-    public WordCollectionOwner Owner 
+    public WordCollectionOwner Owner
     {
         get => _owner;
         set
@@ -34,14 +34,14 @@ public class WordCollection
     List<WordPair> _wordPairs = new();
     WordCollectionOwner _owner = new();
 
-    public List<WordPair> WordPairs 
-    { 
-        get => _wordPairs; 
-        set 
+    public List<WordPair> WordPairs
+    {
+        get => _wordPairs;
+        set
         {
             if (value is null)
                 throw new ArgumentNullException($"{nameof(WordPairs)} can't be null");
             _wordPairs = value;
-        } 
+        }
     }
 }

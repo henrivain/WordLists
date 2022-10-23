@@ -20,9 +20,9 @@
 
 		<!-- Versions -->
 		<ApplicationVersion>1</ApplicationVersion>
-		<ApplicationDisplayVersion>1.1</ApplicationDisplayVersion>
-		<Version>1.1.0.0</Version>
-		
+		<ApplicationDisplayVersion>1.2</ApplicationDisplayVersion>
+		<Version>1.2.0.0</Version>
+
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
@@ -39,46 +39,46 @@
 		<AndroidSigningKeyPass></AndroidSigningKeyPass>
 		<AndroidSigningStorePass></AndroidSigningStorePass>
 	</PropertyGroup>
-	
+
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
-	  <DebugType>portable</DebugType>
-	  <NoWarn>1701;1702</NoWarn>
+		<DebugType>portable</DebugType>
+		<NoWarn>1701;1702</NoWarn>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">
-	  <DebugType>portable</DebugType>
-	  <NoWarn>1701;1702</NoWarn>
+		<DebugType>portable</DebugType>
+		<NoWarn>1701;1702</NoWarn>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-ios|AnyCPU'">
-	  <DebugType>portable</DebugType>
-	  <NoWarn>1701;1702</NoWarn>
+		<DebugType>portable</DebugType>
+		<NoWarn>1701;1702</NoWarn>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-ios|AnyCPU'">
-	  <DebugType>portable</DebugType>
-	  <NoWarn>1701;1702</NoWarn>
+		<DebugType>portable</DebugType>
+		<NoWarn>1701;1702</NoWarn>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-maccatalyst|AnyCPU'">
-	  <DebugType>portable</DebugType>
-	  <NoWarn>1701;1702</NoWarn>
+		<DebugType>portable</DebugType>
+		<NoWarn>1701;1702</NoWarn>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-maccatalyst|AnyCPU'">
-	  <DebugType>portable</DebugType>
-	  <NoWarn>1701;1702</NoWarn>
+		<DebugType>portable</DebugType>
+		<NoWarn>1701;1702</NoWarn>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|AnyCPU'">
-	  <DebugType>portable</DebugType>
-	  <NoWarn>1701;1702</NoWarn>
+		<DebugType>portable</DebugType>
+		<NoWarn>1701;1702</NoWarn>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041.0|AnyCPU'">
-	  <DebugType>portable</DebugType>
-	  <NoWarn>1701;1702</NoWarn>
+		<DebugType>portable</DebugType>
+		<NoWarn>1701;1702</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -95,37 +95,48 @@
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
+		<MauiFont Include="Resources\Fonts\**\*" />
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\Images\again_icon.svg" />
-	  <None Remove="Resources\Images\bin_icon.svg" />
-	  <None Remove="Resources\Images\bin_icon_with_border.svg" />
-	  <None Remove="Resources\Images\copy_icon.svg" />
-	  <None Remove="Resources\Images\hamburger_icon.svg" />
-	  <None Remove="Resources\Images\home_icon.svg" />
-	  <None Remove="Resources\Images\info_icon.svg" />
-	  <None Remove="Resources\Images\LetsGoIcon.svg" />
-	  <None Remove="Resources\Images\new_icon.svg" />
-	  <None Remove="Resources\Images\ok_icon.svg" />
-	  <None Remove="Resources\Images\pencil_icon.svg" />
-	  <None Remove="Resources\Images\training_icon.svg" />
+		<None Remove="Resources\Fonts\Poppins\Poppins-ThinItalic.ttf" />
+		<None Remove="Resources\Images\again_icon.svg" />
+		<None Remove="Resources\Images\bin_icon_old.svg" />
+		<None Remove="Resources\Images\bin_icon_with_border.svg" />
+		<None Remove="Resources\Images\copy_icon.svg" />
+		<None Remove="Resources\Images\hamburger_icon.svg" />
+		<None Remove="Resources\Images\home_icon.svg" />
+		<None Remove="Resources\Images\info_icon.svg" />
+		<None Remove="Resources\Images\leave_icon.svg" />
+		<None Remove="Resources\Images\LetsGoIcon.svg" />
+		<None Remove="Resources\Images\new_icon.svg" />
+		<None Remove="Resources\Images\new_icon_dark.svg" />
+		<None Remove="Resources\Images\ok_icon.svg" />
+		<None Remove="Resources\Images\pencil_icon.svg" />
+		<None Remove="Resources\Images\training_icon.svg" />
 	</ItemGroup>
+
+
 
 	<ItemGroup>
-	  <None Include="..\.editorconfig" Link=".editorconfig" />
+		<None Include="..\.editorconfig" Link=".editorconfig" />
 	</ItemGroup>
 
 
 	<ItemGroup>
-	  <ProjectReference Include="..\WordListsMauiHelpers\WordListsMauiHelpers.csproj" />
-	  <ProjectReference Include="..\WordListsUI\WordListsUI.csproj" />
+		<ProjectReference Include="..\WordDataAccessLibrary\WordDataAccessLibrary.csproj" />
+		<ProjectReference Include="..\WordListsMauiHelpers\WordListsMauiHelpers.csproj" />
+		<ProjectReference Include="..\WordListsUI\WordListsUI.csproj" />
 	</ItemGroup>
 
 
-	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionWordListsHideInfoBar="True" XamarinHotReloadUnhandledDeviceExceptionWordListsHideInfoBar="True" /></VisualStudio></ProjectExtensions>
+	<ProjectExtensions>
+		<VisualStudio>
+			<UserProperties XamarinHotReloadDebuggerTimeoutExceptionWordListsHideInfoBar="True" XamarinHotReloadUnhandledDeviceExceptionWordListsHideInfoBar="True" />
+		</VisualStudio>
+	</ProjectExtensions>
 
 </Project>
