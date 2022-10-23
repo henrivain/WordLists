@@ -43,8 +43,8 @@
                     <flipper:WordPairFlipCard Grid.Column="1"
                                               x:Name="flipper"
                                               VerticalOptions="FillAndExpand"
-                                              WordPair="{Binding VisibleWordPair}">
-                    </flipper:WordPairFlipCard>
+                                              WordPair="{Binding VisibleWordPair}" />
+
                 </Grid>
 
                 <Grid ColumnDefinitions="*, auto, *"

@@ -4,6 +4,7 @@ using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsMauiHelpers.Factories;
 using WordListsUI.AppInfoPage;
+using WordListsUI.HomePage;
 using WordListsUI.WordDataPages;
 using WordListsUI.WordDataPages.JsonExportPage;
 using WordListsUI.WordDataPages.JsonImportPage;
@@ -33,6 +34,7 @@ public static class MauiProgram
 			});
 		// injecting appshell will make app buggy and starts to change visual element visibility
 
+		builder.Services.AddSingleton<HomePage>();
 		builder.Services.AddTransient<FlipCardTrainingPage>();
 		builder.Services.AddTransient<StartTrainingPage>();
 		builder.Services.AddTransient<WordCollectionEditPage>();

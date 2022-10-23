@@ -51,4 +51,5 @@ public partial class StartTrainingPage : ContentPage
 	{
 		await Model.ResetCollections();
 	}
+
 }

@@ -59,6 +59,7 @@
 	</Coming>
 	
 	<UnCertain>
+		<StartTrainingPage>Only load some amount of entries in collection view at the time using RemainingItemsThresholdReached and RemainingItemsThreshold</StartTrainingPage>
 		<AddMekUpdater>Add MekUpdater (https://github.com/matikkaeditorinkaantaja/MekUpdater) in at least windows project</AddMekUpdater>
 		<SaveTests>Save test results in some format like json, as a file in user's machine</SaveTests>
 		<Description>Make Description Visible</Description>

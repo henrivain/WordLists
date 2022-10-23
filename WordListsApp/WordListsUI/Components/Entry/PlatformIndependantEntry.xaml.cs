@@ -6,7 +6,6 @@ public partial class PlatformIndependantEntry : Border
 {
     public PlatformIndependantEntry()
     {
-        //BindingContext = this;
         InitializeComponent();
     }
 
