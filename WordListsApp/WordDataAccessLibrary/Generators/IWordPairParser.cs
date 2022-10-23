@@ -4,4 +4,6 @@ namespace WordDataAccessLibrary.Generators;
 public interface IWordPairParser
 {
     List<WordPair> GetList();
+
+    List<string> ToStringList();
 }

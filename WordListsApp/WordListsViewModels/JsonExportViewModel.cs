@@ -62,12 +62,9 @@ public partial class JsonExportViewModel : IJsonExportViewModel
     [AlsoNotifyChangeFor(nameof(VisibleCollections))]
     List<WordCollectionInfo> availableCollections = new(){};
 
-
     [ObservableProperty]
     [AlsoNotifyChangeFor(nameof(CanExportSelected))]
     List<object> selectedCollections = new();
-
-
 
     [ObservableProperty]
     string exportPath = PathHelper.GetDefaultBackupFilePath();
@@ -101,14 +98,8 @@ public partial class JsonExportViewModel : IJsonExportViewModel
     }
 
 
-
     public event ExportFailEventHandler? EmptyExportAttempted;
     public event ExportSuccessfullEventHandler? ExportCompleted;
-
-
-
-
-
 
 
     private async Task Export(List<WordCollectionInfo> infos)
@@ -140,6 +131,4 @@ public partial class JsonExportViewModel : IJsonExportViewModel
             MoreInfo = text
         });
     }
-
-
 }

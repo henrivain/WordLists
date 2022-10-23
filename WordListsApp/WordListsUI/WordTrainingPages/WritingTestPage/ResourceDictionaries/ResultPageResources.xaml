@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="WordListsUI.WordTrainingPages.WritingTestPage.ResourceDictionaries.ResultPageResources">
+    <Style TargetType="{x:Type Button}"
+           x:Key="ButtonBase">
+        <Setter Property="FontFamily"
+                Value="Poppins" />
+        <Setter Property="FontAttributes"
+                Value="Bold" />
+        <Setter Property="FontSize"
+                Value="Small" />
+    </Style>
+
+    <Style TargetType="{x:Type Button}"
+           x:Key="DefaultButtonStyle"
+           BasedOn="{StaticResource ButtonBase}">
+        <Setter Property="TextColor"
+                Value="{StaticResource NormalText}" />
+        <Setter Property="BackgroundColor"
+                Value="{StaticResource Blue800Accent}" />
+        <Setter Property="BorderWidth"
+                Value="0" />
+        <Setter Property="BorderColor"
+                Value="Transparent" />
+    </Style>
+
+    <Style TargetType="{x:Type Button}"
+           x:Key="SecondaryButtonStyle"
+           BasedOn="{StaticResource ButtonBase}">
+        <Setter Property="TextColor"
+                Value="{StaticResource Blue800Accent}" />
+        <Setter Property="BackgroundColor"
+                Value="{StaticResource PageBackground}" />
+        <Setter Property="BorderWidth"
+                Value="1.5" />
+        <Setter Property="BorderColor"
+                Value="{StaticResource Blue800Accent}" />
+    </Style>
+
+    <Style TargetType="{x:Type Label}"
+           x:Key="DefaultLabelStyle">
+        <Setter Property="FontFamily"
+                Value="Poppins" />
+        <Setter Property="TextColor"
+                Value="{StaticResource NormalText}" />
+        <Setter Property="FontAttributes"
+                Value="Bold" />
+    </Style>
+
+</ResourceDictionary>

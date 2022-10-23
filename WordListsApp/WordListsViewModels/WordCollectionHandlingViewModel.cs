@@ -1,6 +1,8 @@
-﻿using WordListsViewModels.Extensions;
-using WordListsViewModels.Helpers;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
+using WordListsViewModels.Events;
+using WordListsViewModels.Helpers;
 
 namespace WordListsViewModels;
 
@@ -13,10 +15,15 @@ public partial class WordCollectionHandlingViewModel : IWordCollectionHandlingVi
     }
 
     [ObservableProperty]
-    List<WordCollectionInfo> availableCollections = new();
-
+    ObservableCollection<WordCollectionInfo> availableCollections = new();
 
     public event CollectionDeletedEventHandler? CollectionDeleted;
+
+    public event DeleteWantedEventHandler? DeleteRequested;
+
+#pragma warning disable CS0067
+    public event EditWantedEventHandler? EditWanted;
+#pragma warning restore CS0067
 
     public IAsyncRelayCommand UpdateCollectionInfos => new AsyncRelayCommand(async () =>
     {
@@ -25,30 +32,50 @@ public partial class WordCollectionHandlingViewModel : IWordCollectionHandlingVi
 
     public IWordCollectionService CollectionService { get; }
 
+    public IRelayCommand<int> RequestDelete => new RelayCommand<int>((value) =>
+    {
+        var ownerInfo = AvailableCollections.FirstOrDefault(x => x.Owner.Id == value);
+        DeleteRequested?.Invoke(this, new(ownerInfo.Owner));
+    });
+
+    public IRelayCommand<int> Edit => new RelayCommand<int>((value) =>
+    {
+        throw new NotImplementedException();
+    });
+
+
     public async Task ResetCollections()
     {
         List<WordCollection> collections = await CollectionService.GetWordCollections();
 
-        List<WordCollectionInfo> collectionInfos = new();
+        ObservableCollection<WordCollectionInfo> collectionInfos = new();
         foreach (var collection in collections)
         {
             collectionInfos.Add(new(collection.Owner, collection.WordPairs.Count));
         }
-        AvailableCollections = collectionInfos.SortByName();
+        AvailableCollections = new(collectionInfos.OrderBy(x => x.Owner.Name));
     }
-    
-    public async Task DeleteCollection(int id)
+
+    public async Task DeleteCollection(WordCollectionOwner owner)
     {
-        WordCollectionInfo info = AvailableCollections.FirstOrDefault(x => x.Owner.Id == id);
-        int deletedobjects = await CollectionService.DeleteWordCollection(id);
-
-        await ResetCollections();
-
-        CollectionDeleted?.Invoke(this, new(
-            id,
-            text: $"Deleted {nameof(WordCollection)} from database with given id",
-            collectionName: info.Owner?.Name ?? "NULL"
-            ));
-        
+        try
+        {
+            var selected = AvailableCollections.First(x => x.Owner.Id == owner.Id);
+            bool success = AvailableCollections.Remove(selected);
+            await CollectionService.DeleteWordCollection(owner.Id);
+            if (success)
+            {
+                OnPropertyChanged(nameof(AvailableCollections));
+                CollectionDeleted?.Invoke(this, new(
+                   owner.Id,
+                   text: $"Deleted {nameof(WordCollection)} '{owner.Name}' from database with id '{owner.Id}'",
+                   collectionName: owner?.Name ?? "NULL"
+                   ));
+            }
+        }
+        catch (ArgumentNullException)
+        {
+            Debug.WriteLine($"Attempt in {nameof(WordCollectionHandlingViewModel)} to remove collection with owner id failed because given value was null");
+        }
     }
 }

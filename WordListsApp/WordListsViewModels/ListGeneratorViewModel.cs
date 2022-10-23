@@ -1,8 +1,10 @@
-﻿using System.Diagnostics;
-using WordDataAccessLibrary.Generators;
-using WordDataAccessLibrary.Helpers;
-using WordListsMauiHelpers.DeviceAccess;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
+using WordDataAccessLibrary.Generators;
+using WordListsMauiHelpers.DeviceAccess;
+using WordListsViewModels.Events;
+using WordListsViewModels.Extensions;
 
 namespace WordListsViewModels;
 
@@ -15,10 +17,9 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         CollectionService = collectionService;
     }
 
-
     [AlsoNotifyChangeFor(nameof(CanSave))]
     [ObservableProperty]
-    List<WordPair> wordPairs = new();
+    ObservableCollection<string> words = new();
 
     [ObservableProperty]
     string collectionName = "My word collection";
@@ -29,43 +30,35 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     [ObservableProperty]
     string languageHeaders = "fi-en";
 
-    public bool CanSave => WordPairs.Count > 0;
+    public bool CanSave => Words.Count / 2 > 0;
 
     public IAsyncRelayCommand GeneratePairsCommand => new AsyncRelayCommand(
         async () =>
         {
             string text = await ClipboardAccess.GetStringAsync();
-            ParseAndSetWordPairsFromString(text);
+            Words = new(StringParserActions[UseParser](text));
         });
 
     public IAsyncRelayCommand SaveCollection => new AsyncRelayCommand(
         async () =>
         {
-            // implement save on top of old instance if that saved
-            if (WordPairs.Count is 0)
+            if (Words.Count < 2)
             {
                 Debug.WriteLine($"{nameof(SaveCollection)}: Can't add empty word collection");
                 throw new InvalidOperationException();
-                //return;
             }
             int id = await CollectionService.AddWordCollection(GetData());
 
             CollectionAddedEvent?.Invoke(this, new("Added wordCollection successfully", id));
         });
 
-
-    public event CollectionAddedEventHandler? CollectionAddedEvent;
-
-    public IRelayCommand FlipSides => new RelayCommand(() =>
-    {
-        WordPairs = WordListFlipper.FlipWordPair(WordPairs);
-    });
+    public IRelayCommand FlipSides => new RelayCommand(() => Words = new(Words.ToList().FlipPairs()));
 
     public WordCollection GetData()
     {
         return new()
         {
-            WordPairs = WordPairs,
+            WordPairs = WordParser.PairWords(Words.ToArray()),
             Owner = new()
             {
                 Name = CollectionName ?? string.Empty,
@@ -75,28 +68,73 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         };
     }
 
+
+
     public WordCollectionOwner Owner { get; set; } = new();
 
     public Parser UseParser { get; set; } = Parser.Otava;
 
-
-    
     public IWordCollectionService CollectionService { get; }
+
+    public IRelayCommand<string> Delete => new RelayCommand<string>(value =>
+    {
+        if (value is null) throw new NotImplementedException($"{nameof(value)} should not be null");
+
+        Words.Remove(value);
+        OnPropertyChanged(nameof(Words));
+    });
+
+    public IRelayCommand<string> Edit => new RelayCommand<string>(value =>
+    {
+        if (value is null) throw new NotImplementedException($"{nameof(value)} should not be null");
+        int index = Words.IndexOf(value);
+        EditWantedEvent?.Invoke(this, new(value, index));
+    });
+
+    public IRelayCommand New => new RelayCommand(() => AddWantedEvent?.Invoke(this, EventArgs.Empty));
 
     public enum Parser
     {
         Otava
     }
-
-    private void ParseAndSetWordPairsFromString(string pairs)
+    
+    readonly Dictionary<Parser, Func<string, List<string>>> StringParserActions = new()
     {
-        WordPairs = UseParser switch
+        [Parser.Otava] = (pairs) => { return new OtavaWordPairParser(pairs).ToStringList(); }
+    };
+
+    /// <summary>
+    /// Try set string value of specific index in Words ObservableCollection
+    /// </summary>
+    /// <param name="indexInList"></param>
+    /// <param name="value"></param>
+    /// <returns>boolean value reprcenting if action was success</returns>
+    public bool SetWordValueWithIndex(int indexInList, string value)
+    {
+        if (string.IsNullOrEmpty(value)) return false;
+        try
         {
-            Parser.Otava => new OtavaWordPairParser(pairs).GetList(),
-            _ => throw new NotImplementedException($"Parser {UseParser} is not implemented")
-        };
+            Words[indexInList] = value;
+            return true;
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            Debug.WriteLine($"Attempt in {nameof(ListGeneratorViewModel)} to set word value to '{value}' in index '{indexInList}' " +
+                $"failed because of {nameof(ArgumentOutOfRangeException)}, only '{Words.Count}' indexes exist");
+            return false;
+        }
     }
 
+    public void AddWord(string result)
+    {
+        if (string.IsNullOrEmpty(result)) return;
+        Words.Add(result);
+    }
 
+    public event CollectionAddedEventHandler? CollectionAddedEvent;
+
+    public event EditWantedEventHandler? EditWantedEvent;
+
+    public event AddWantedEventHandler? AddWantedEvent;
 }
 

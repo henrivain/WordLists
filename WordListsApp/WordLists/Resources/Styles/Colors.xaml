@@ -1,33 +1,46 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <?xaml-comp compile="true" ?>
-<ResourceDictionary 
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <Color x:Key="PageBackground">#262B31</Color>
     <Color x:Key="DarkerThanPage">#1C1F24</Color>
-    
+
+
+    <Color x:Key="NormalText">#D9DDE8</Color>
+    <Color x:Key="SecondaryText">#A2A5AD</Color>
+
+
+
+    <Color x:Key="SelectedWordListBackground">#d0e4f5</Color>
+    <Color x:Key="BinIconBackground">#8ba2a6</Color>
+
+    <Color x:Key="SideMenuBackground">#1E2226</Color>
+    <Color x:Key="SideMenuFieldBackground">#282E33</Color>
+    <Color x:Key="SideMenuTopSideBackground">#1A1E21</Color>
+
+    <!-- Flip card colors -->
+    <Color x:Key="FlipCardColor">#8394A8</Color>
+    <Color x:Key="LearnedWord">#dbb84d</Color>
+    <Color x:Key="MightKnowWord">#eb658f</Color>
+    <Color x:Key="NeverHeardWord">#66c0d1</Color>
+
+    <!-- Try get rid of these later -->
     <Color x:Key="UnImportantText">#6E6E6E</Color>
     <Color x:Key="KindaWhite">#B3B3B3</Color>
-    <Color x:Key="WordListBackground">#F0F8FF</Color>   <!-- Alice blue -->
-    <Color x:Key="SelectedWordListBackground">#d0e4f5</Color>   <!-- Alice blue -->
-    <Color x:Key="BinIconBackground">#8ba2a6</Color>   <!-- Alice blue -->
-    
-    <Color x:Key="SideMenuBackground">#1E2226</Color>   <!-- Alice blue -->
-    <Color x:Key="SideMenuFieldBackground">#282E33</Color>   <!-- Alice blue -->
-    <Color x:Key="SideMenuTopSideBackground">#1A1E21</Color>   <!-- Alice blue -->
+    <Color x:Key="WordListBackground">#F0F8FF</Color>
 
-    <!--was #1c1b4d</Color>-->
-    <Color x:Key="FlipCardColor">#8394A8</Color>
-    <!-- was #FAE5A5 -->
-    <Color x:Key="LearnedWord">#dbb84d</Color>
-    <!-- was #f0cad6 -->
-    <Color x:Key="MightKnowWord">#eb658f</Color>
-    <!-- was #C9EEF5 -->
-    <Color x:Key="NeverHeardWord">#66c0d1</Color>
-    
-    
+    <Color x:Key="Green800Accent">#6FCC89</Color>
+    <Color x:Key="Red900Accent">#E66562</Color>
+    <Color x:Key="Pink600Accent">#E090FF</Color>
+    <Color x:Key="Blue800Accent">#4E29CC</Color>
+    <Color x:Key="Blue900Accent">#582FE6</Color>
+    <Color x:Key="Blue500Accent">#8685F0</Color>
+    <Color x:Key="Blue300Accent">#A7AAFF</Color>
+    <Color x:Key="Blue200Accent">#C7C9FF</Color>
+    <Color x:Key="Blue100Accent">#E9E9FF</Color>
 
+
+    <!-- Demo app colors -->
     <Color x:Key="Primary">#512BD4</Color>
     <Color x:Key="Secondary">#DFD8F7</Color>
     <Color x:Key="Tertiary">#2B0B98</Color>
@@ -41,19 +54,32 @@
     <Color x:Key="Gray600">#404040</Color>
     <Color x:Key="Gray900">#212121</Color>
     <Color x:Key="Gray950">#141414</Color>
-    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
-    <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
-    <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}"/>
-    <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}"/>
-    <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource Black}"/>
-    <SolidColorBrush x:Key="Gray100Brush" Color="{StaticResource Gray100}"/>
-    <SolidColorBrush x:Key="Gray200Brush" Color="{StaticResource Gray200}"/>
-    <SolidColorBrush x:Key="Gray300Brush" Color="{StaticResource Gray300}"/>
-    <SolidColorBrush x:Key="Gray400Brush" Color="{StaticResource Gray400}"/>
-    <SolidColorBrush x:Key="Gray500Brush" Color="{StaticResource Gray500}"/>
-    <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600}"/>
-    <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}"/>
-    <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}"/>
+    <SolidColorBrush x:Key="PrimaryBrush"
+                     Color="{StaticResource Primary}" />
+    <SolidColorBrush x:Key="SecondaryBrush"
+                     Color="{StaticResource Secondary}" />
+    <SolidColorBrush x:Key="TertiaryBrush"
+                     Color="{StaticResource Tertiary}" />
+    <SolidColorBrush x:Key="WhiteBrush"
+                     Color="{StaticResource White}" />
+    <SolidColorBrush x:Key="BlackBrush"
+                     Color="{StaticResource Black}" />
+    <SolidColorBrush x:Key="Gray100Brush"
+                     Color="{StaticResource Gray100}" />
+    <SolidColorBrush x:Key="Gray200Brush"
+                     Color="{StaticResource Gray200}" />
+    <SolidColorBrush x:Key="Gray300Brush"
+                     Color="{StaticResource Gray300}" />
+    <SolidColorBrush x:Key="Gray400Brush"
+                     Color="{StaticResource Gray400}" />
+    <SolidColorBrush x:Key="Gray500Brush"
+                     Color="{StaticResource Gray500}" />
+    <SolidColorBrush x:Key="Gray600Brush"
+                     Color="{StaticResource Gray600}" />
+    <SolidColorBrush x:Key="Gray900Brush"
+                     Color="{StaticResource Gray900}" />
+    <SolidColorBrush x:Key="Gray950Brush"
+                     Color="{StaticResource Gray950}" />
 
     <Color x:Key="Yellow100Accent">#F7B548</Color>
     <Color x:Key="Yellow200Accent">#FFD590</Color>
@@ -61,8 +87,6 @@
     <Color x:Key="Cyan100Accent">#28C2D1</Color>
     <Color x:Key="Cyan200Accent">#7BDDEF</Color>
     <Color x:Key="Cyan300Accent">#C3F2F4</Color>
-    <Color x:Key="Blue100Accent">#3E8EED</Color>
-    <Color x:Key="Blue200Accent">#72ACF1</Color>
-    <Color x:Key="Blue300Accent">#A7CBF6</Color>
+
 
 </ResourceDictionary>

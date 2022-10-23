@@ -6,12 +6,13 @@
              xmlns:menu="clr-namespace:WordListsUI.Components.SideMenu"
              xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
              xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
+             xmlns:local="clr-namespace:WordListsUI.WordDataPages.ListGeneratorPage"
+             xmlns:entry="clr-namespace:WordListsUI.Components.Entry"
              x:DataType="{x:Type viewModel:IListGeneratorViewModel}"
-             x:Name="listGeneratorView"
+             x:Name="listGeneratorPage"
              BackgroundColor="{StaticResource PageBackground}"
              Title="Luo otavasta"
-             BindingContextChanged="ContentPage_BindingContextChanged"
-             >
+             BindingContextChanged="ContentPage_BindingContextChanged">
     <Grid>
         <ScrollView Margin="40,0,0,0">
             <ScrollView.GestureRecognizers>
@@ -23,83 +24,117 @@
                         <Setter Property="TextColor"
                                 Value="{StaticResource UnImportantText}" />
                     </Style>
-                    <Style TargetType="{x:Type Entry}">
-                        <Setter Property="Margin"
-                                Value="0,5,0,10" />
-                        <Setter Property="TextColor"
-                                Value="Black" />
-                        <Setter Property="BackgroundColor"
-                                Value="{StaticResource KindaWhite}" />
-                        <Setter Property="PlaceholderColor"
-                                Value="{StaticResource UnImportantText}" />
-                    </Style>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Margin"
                                 Value="0,20" />
                     </Style>
                 </VerticalStackLayout.Resources>
-                <VerticalStackLayout Padding="30">
-                    <VerticalStackLayout HorizontalOptions="Center">
-
-
-                        <Label Text="Otsikko" />
-                        <Entry Placeholder="Minun sanastoni 1"
-                               Text="{Binding CollectionName}"
-                               Focused="ITextInput_Focused"
-                               SemanticProperties.Hint="Collection name"
-                               MaxLength="40"
-                               WidthRequest="300"
-                               HorizontalOptions="Start" />
-
-
-                        <Label Text="Kielet" />
-                        <Entry Placeholder="fi-en"
-                               Grid.Row="1"
-                               Text="{Binding LanguageHeaders}"
-                               Focused="ITextInput_Focused"
-                               SemanticProperties.Hint="Collection languages: example fi-en or ge-sw"
-                               SemanticProperties.Description="Collection "
-                               MaxLength="16"
-                               WidthRequest="120"
-                               HorizontalOptions="Start" />
-                    </VerticalStackLayout>
+                <VerticalStackLayout Padding="30"
+                                     HorizontalOptions="Center">
+                    <Label Text="Otsikko"
+                           Margin="0,0,0,5"
+                           FontSize="Medium" />
+                    <entry:PlatformIndependantEntry Text="{Binding CollectionName}"
+                                                    PlaceHolder="Minun sanastoni 1"
+                                                    HorizontalOptions="{OnIdiom Phone=Center, Default=Start}"
+                                                    MaximumWidthRequest="{OnIdiom Phone=300, Default=400}"
+                                                    MaxLength="40" />
+                    <Label Text="Kielet"
+                           Margin="0,10,0,5"
+                           FontSize="Medium" />
+                    <entry:PlatformIndependantEntry PlaceHolder="fi-en"
+                                                    Grid.Row="1"
+                                                    Text="{Binding LanguageHeaders}"
+                                                    MaxLength="16"
+                                                    WidthRequest="120"
+                                                    HorizontalOptions="Start" />
                 </VerticalStackLayout>
                 <Button Text="Uusi leikepöydältä"
                         HorizontalOptions="Center"
                         Command="{Binding GeneratePairsCommand}" />
-                <CollectionView ItemsLayout="VerticalList"
+                <Button ImageSource="new_icon_dark.png"
+                        Text="uusi sana"
+                        IsVisible="{OnIdiom Phone=false, Default=true}"
+                        HorizontalOptions="End"
+                        Margin="0,20,20,0"
+                        Command="{Binding New}"
+                        HeightRequest="45" />
+
+                <Border HorizontalOptions="End"
+                        IsVisible="{OnIdiom Phone=true, Default=false}"
+                        BackgroundColor="{StaticResource DarkerThanPage}"
+                        Stroke="Transparent"
+                        Padding="7"
+                        Margin="0,20,25,0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding New}" />
+                    </Border.GestureRecognizers>
+                    <HorizontalStackLayout>
+                        <Image Source="new_icon_dark.png"
+                               HeightRequest="30"
+                               HorizontalOptions="End"
+                               Margin="10,0,0,0" />
+                        <Label Text="uusi sana"
+                               VerticalTextAlignment="Center"
+                               TextColor="{StaticResource SecondaryText}"
+                               Padding="10,5" />
+
+                    </HorizontalStackLayout>
+                </Border>
+
+                <CollectionView ItemSizingStrategy="MeasureAllItems"
+                                ItemsLayout="VerticalGrid,2"
                                 Margin="20"
-                                ItemsSource="{Binding WordPairs}"
-                                ItemSizingStrategy="MeasureAllItems"
-                                BackgroundColor="{StaticResource WordListBackground}">
+                                ItemsSource="{Binding Words}"
+                                x:Name="wordListView"
+                                CanReorderItems="True">
                     <CollectionView.EmptyView>
-                        <Label Padding="40"
-                               TextColor="{StaticResource UnImportantText}"
-                               HorizontalTextAlignment="Center"
-                               Text="Tuo sanasto leikepöydältä painamalla nappia!"
-                               HorizontalOptions="Center"
-                               LineBreakMode="WordWrap" />
+                        <Label HorizontalOptions="Center" />
                     </CollectionView.EmptyView>
 
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Grid ColumnDefinitions="5*, *, 5*"
-                                  VerticalOptions="Fill">
-                                <Label LineBreakMode="WordWrap"
-                                       Grid.Column="0"
-                                       HorizontalTextAlignment="Start"
-                                       HorizontalOptions="End"
-                                       VerticalOptions="Start"
-                                       x:DataType="{x:Type wordData:WordPair}"
-                                       Text="{Binding NativeLanguageWord}" />
-                                <Label LineBreakMode="WordWrap"
-                                       Grid.Column="2"
-                                       HorizontalTextAlignment="Start"
-                                       HorizontalOptions="Start"
-                                       VerticalOptions="Start"
-                                       x:DataType="{x:Type wordData:WordPair}"
-                                       Text="{Binding ForeignLanguageWord}" />
-                            </Grid>
+                            <Border BackgroundColor="{StaticResource DarkerThanPage}"
+                                    Stroke="Transparent">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Grid MinimumHeightRequest="{OnIdiom Phone=75, Default=40}"
+                                      ColumnDefinitions="{OnIdiom Phone='*,25,10', Default='*,60,10'}"
+                                      RowDefinitions="{OnIdiom Phone='40,*', Default='*'}">
+                                    <Grid.Resources>
+                                        <Style TargetType="{x:Type ImageButton}">
+                                            <Setter Property="HeightRequest"
+                                                    Value="25" />
+                                            <Setter Property="WidthRequest"
+                                                    Value="25" />
+                                            <Setter Property="BackgroundColor"
+                                                    Value="Transparent" />
+                                            <Setter Property="Grid.Column"
+                                                    Value="1" />
+                                        </Style>
+                                    </Grid.Resources>
+                                    <Label Text="{Binding .}"
+                                           Grid.RowSpan="{OnIdiom Phone=2, Default=1}"
+                                           Padding="10"
+                                           TextColor="{StaticResource SecondaryText}"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center" />
+                                    <ImageButton Source="pencil_icon.png"
+                                                 HorizontalOptions="Start"
+                                                 CommandParameter="{Binding .}"
+                                                 Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:IListGeneratorViewModel}}, Path=Edit}" />
+                                    <ImageButton Source="bin_simpler_icon.png"
+                                                 CommandParameter="{Binding .}"
+                                                 Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:IListGeneratorViewModel}}, Path=Delete}"
+                                                 VerticalOptions="{OnIdiom Phone=Start, Default=Center}"
+                                                 Grid.Row="{OnIdiom Phone=1, Default=0}"
+                                                 HorizontalOptions="End" />
+                                </Grid>
+                            </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
