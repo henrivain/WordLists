@@ -29,9 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModelTests", "ViewModel
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordListsMauiHelpersTests", "WordListsMauiHelpersTests\WordListsMauiHelpersTests.csproj", "{6077199D-EBD5-4688-97ED-30CA82E7501E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordValidationLibrary", "WordValidationLibrary\WordValidationLibrary.csproj", "{E0526EA6-6E0F-4220-95E3-4761DE7BD4F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordValidationLibrary", "WordValidationLibrary\WordValidationLibrary.csproj", "{E0526EA6-6E0F-4220-95E3-4761DE7BD4F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordValidationLibraryTests", "WordValidationLibraryTests\WordValidationLibraryTests.csproj", "{2472422C-5E86-457B-B3BB-7CBA407410B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordValidationLibraryTests", "WordValidationLibraryTests\WordValidationLibraryTests.csproj", "{2472422C-5E86-457B-B3BB-7CBA407410B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -10,8 +10,7 @@
              x:DataType="{x:Type viewModel:IStartTrainingViewModel}"
              BackgroundColor="{StaticResource PageBackground}"
              Loaded="ContentPage_Loaded"
-             x:Name="startTrainingPage"
-             >
+             x:Name="startTrainingPage">
     <Grid>
         <!--<RefreshView Command="{Binding UpdateCollections}" IsRefreshing="{Binding IsRefreshing}">-->
         <!-- Add refresh view when bug #5772 is fixed -->
@@ -83,13 +82,15 @@
                 <Button Text="Näytä kaikki"
                         HorizontalOptions="Center"
                         Margin="0,20"
-                        Command="{Binding UpdateCollections}" />
+                        Command="{Binding UpdateCollections}" 
+                        />
 
 
 
                 <CollectionView ItemsSource="{Binding AvailableCollections}"
                                 Margin="20,0,20,100"
-                                HorizontalOptions="Center">
+                                HorizontalOptions="Center"
+                                >
                     <!-- SelectionMode="Single" crashes if selection null (MauiBug #9060) -->
                     <CollectionView.EmptyView>
                         <Grid>
@@ -102,7 +103,6 @@
                     </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-
                             <SwipeView VerticalOptions="Start"
                                        x:DataType="{x:Type wordData:WordCollectionOwner}">
                                 <SwipeView.Resources>
@@ -120,13 +120,12 @@
                                                IconImageSource="pencil_icon.png"
                                                CommandParameter="{Binding Id}"
                                                Command="{Binding Source={x:Reference startTrainingPage}, Path=BindingContext.RequestWriteTraining}">
-                                      
+
                                     </SwipeItem>
                                 </SwipeView.RightItems>
                                 <Border BackgroundColor="{StaticResource DarkerThanPage}"
                                         Stroke="Transparent"
-                                        StrokeThickness="0"
-                                        >
+                                        StrokeThickness="0">
                                     <Border.StrokeShape>
                                         <RoundRectangle CornerRadius="8" />
                                     </Border.StrokeShape>
@@ -170,6 +169,7 @@
                             </SwipeView>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
+                    <!-- ItemsLayout cant be changed after init even in code behind -->
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical"
                                          HorizontalItemSpacing="{OnIdiom Phone=0, Default=2}"

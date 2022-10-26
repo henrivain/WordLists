@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Diagnostics;
-using WordDataAccessLibrary.DataBaseActions.Interfaces;
+﻿using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsMauiHelpers.Extensions;
 using WordListsViewModels.Events;
 using WordListsViewModels.Extensions;

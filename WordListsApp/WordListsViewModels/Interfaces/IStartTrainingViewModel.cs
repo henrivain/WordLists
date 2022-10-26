@@ -1,4 +1,5 @@
-﻿using WordListsViewModels.Events;
+﻿using System.ComponentModel;
+using WordListsViewModels.Events;
 
 namespace WordListsViewModels.Interfaces;
 public interface IStartTrainingViewModel
@@ -17,7 +18,6 @@ public interface IStartTrainingViewModel
     IAsyncRelayCommand<int> RequestWriteTraining { get; }
 
     string DataParameter { get; set; }
-
     bool ShowLearnedWords { get; set; }
     bool ShowMightKnowWords { get; set; }
     bool ShowNeverHeardKnowWords { get; set; }
@@ -31,6 +31,8 @@ public interface IStartTrainingViewModel
     event TrainingRequestedEventHandler CardsTrainingRequestedEvent;
     
     event TrainingRequestedEventHandler WriteTrainingRequestedEvent;
+
+    event PropertyChangedEventHandler PropertyChanged;
 }
 
 

@@ -1,3 +1,4 @@
+using Microsoft.Maui.Controls;
 using System.Diagnostics;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsMauiHelpers.PageRouting;
@@ -51,5 +52,4 @@ public partial class StartTrainingPage : ContentPage
 	{
 		await Model.ResetCollections();
 	}
-
 }
