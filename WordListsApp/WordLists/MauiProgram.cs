@@ -1,4 +1,5 @@
-﻿using WordDataAccessLibrary.CollectionBackupServices;
+﻿using ImageRecognisionLibrary;
+using WordDataAccessLibrary.CollectionBackupServices;
 using WordDataAccessLibrary.CollectionBackupServices.JsonServices;
 using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
@@ -6,6 +7,7 @@ using WordListsMauiHelpers.Factories;
 using WordListsUI.AppInfoPage;
 using WordListsUI.HomePage;
 using WordListsUI.WordDataPages;
+using WordListsUI.WordDataPages.ImageRecognisionPage;
 using WordListsUI.WordDataPages.JsonExportPage;
 using WordListsUI.WordDataPages.JsonImportPage;
 using WordListsUI.WordDataPages.ListGeneratorPage;
@@ -44,6 +46,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<WritingTestPage>();
 		builder.Services.AddSingleton<WritingTestConfigurationPage>();
 		builder.Services.AddTransient<WriteTestResultPage>();
+		builder.Services.AddTransient<ImageRecognisionPage>();
 		builder.Services.AddSingleton<IWordTrainingViewModel, WordTrainingViewModel>();
 		builder.Services.AddTransient<IStartTrainingViewModel, StartTrainingViewModel>();
 		builder.Services.AddTransient<IWordCollectionHandlingViewModel, WordCollectionHandlingViewModel>();
@@ -53,6 +56,7 @@ public static class MauiProgram
 		builder.Services.AddAbstractFactory<IWriteWordViewModel, WriteWordViewModel>();
 		builder.Services.AddAbstractFactory<IWritingTestConfigurationViewModel, WritingTestConfigurationViewModel>();
 		builder.Services.AddTransient<ITestResultViewModel, TestResultViewModel>();
+		builder.Services.AddTransient<IImageRecognisionViewModel, ImageRecognisionViewModel>();
 
         builder.Services.AddTransient<JsonExportPage>();
         builder.Services.AddTransient<JsonImportPage>();
@@ -66,6 +70,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<ICollectionImportService, JsonWordCollectionImportService>();
 		builder.Services.AddSingleton<IWordCollectionInfoService, WordCollectionInfoService>();
 		builder.Services.AddSingleton<IUserInputWordValidator, UserInputWordValidator>();
+		builder.Services.AddTransient<IImageRecognisionEngine, ImageRecognisionEngine>();
 
         return builder.Build();
 	}

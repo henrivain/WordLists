@@ -44,6 +44,7 @@
 		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
 		<GenerateTestArtifacts>True</GenerateTestArtifacts>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+		<DefaultLanguage>fi-fi</DefaultLanguage>
 	</PropertyGroup>
 	<!-- Android package generation -->
 	<PropertyGroup Condition="$(TargetFramework.Contains('-android')) and '$(Configuration)' == 'Release'">
@@ -138,9 +139,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\ImageRecognisionLibrary\ImageRecognisionLibrary.csproj" />
 		<ProjectReference Include="..\WordDataAccessLibrary\WordDataAccessLibrary.csproj" />
 		<ProjectReference Include="..\WordListsMauiHelpers\WordListsMauiHelpers.csproj" />
 		<ProjectReference Include="..\WordListsUI\WordListsUI.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Resources\Raw\TesseracData\" />
 	</ItemGroup>
 
 	<ProjectExtensions>
