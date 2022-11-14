@@ -1,21 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-     <TargetFramework>net6.0</TargetFramework>
-     <ImplicitUsings>enable</ImplicitUsings>
-     <Nullable>enable</Nullable>
-	  <UseMaui>true</UseMaui>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<UseMaui>true</UseMaui>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="7.1.2" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="7.1.2" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ImageRecognisionLibrary\ImageRecognisionLibrary.csproj" />
-    <ProjectReference Include="..\WordDataAccessLibrary\WordDataAccessLibrary.csproj" />
-    <ProjectReference Include="..\WordListsMauiHelpers\WordListsMauiHelpers.csproj" />
-    <ProjectReference Include="..\WordValidationLibrary\WordValidationLibrary.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ImageRecognisionLibrary\ImageRecognisionLibrary.csproj" />
+		<ProjectReference Include="..\WordDataAccessLibrary\WordDataAccessLibrary.csproj" />
+		<ProjectReference Include="..\WordListsMauiHelpers\WordListsMauiHelpers.csproj" />
+		<ProjectReference Include="..\WordValidationLibrary\WordValidationLibrary.csproj" />
+	</ItemGroup>
 
 </Project>

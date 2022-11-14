@@ -18,7 +18,7 @@ public class ImageRecognisionEngine : IImageRecognisionEngine
 
     public string Result { get; private set; } = "String not read yet!";
 
-    private async Task<(bool success, string Path)> MakeSureThatTrainedDataExist()
+    private static async Task<(bool success, string Path)> MakeSureThatTrainedDataExist()
     {
         string appDataPath = Path.Combine(FileSystem.Current.CacheDirectory, "TesseracData", "fin_4.1.0.traineddata");
         string directoryPath = Path.GetDirectoryName(appDataPath);
@@ -29,6 +29,7 @@ public class ImageRecognisionEngine : IImageRecognisionEngine
        
         using var stream = await FileSystem.Current.OpenAppPackageFileAsync("fin_4.1.0.traineddata");
 
+#pragma warning disable CS0168 // Variable is declared but never used
         try
         {
             File.Delete(appDataPath);
@@ -56,13 +57,15 @@ public class ImageRecognisionEngine : IImageRecognisionEngine
         {
 
         }
+#pragma warning restore CS0168 // Variable is declared but never used
+
         return (true, appDataPath);
     }
 
 
     public async Task Read()
     {
-        var (success, path) = await MakeSureThatTrainedDataExist();
+        var (success, path) = await ImageRecognisionEngine.MakeSureThatTrainedDataExist();
         if (success && File.Exists(path))
         {
             string dirName = Path.GetDirectoryName(path);
@@ -73,7 +76,7 @@ public class ImageRecognisionEngine : IImageRecognisionEngine
                 using var page = engine.Process(image);
                 Result = page.GetText();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
