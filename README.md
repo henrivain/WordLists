@@ -10,13 +10,11 @@ This was also a great opportunity to learn new ui framework .NET MAUI which I am
 - Set words as "learned" so I don't need to always go through every word
 - Maybe write the words and then validate my input?
 - Make app usable in offline mode
-
-## How to use?
 - App is currently only available in finnish, but if you are interested in other languages, you can contact the owner
 
+## How to use?
+
 ### Installation
-
-
 
 #### Android 
 
@@ -33,7 +31,7 @@ This was also a great opportunity to learn new ui framework .NET MAUI which I am
 - You can copy source code and build it yourself
 - Msix package doesn't seem to install currently because of lack of the digital signature
 
-
+<hr>
 
 ### Launching for the first time  
 
@@ -74,17 +72,45 @@ you have three ways to do so:
 
 4) `Vaihda kielet` changes right side words to left side and left side words to right.
 
+6) Finally, save words by pressing `Save to database`.
+
 <br/>
 
-5) Finally, save words by pressing `Save to database`.
 
 
-#### How about trainig?
-Now, that you have your first word list we can start training.
+#### How about training?
+
+
+<img width="252" align="right" alt="image" src="https://user-images.githubusercontent.com/89461562/201992525-ecfd3adb-584d-4d82-ac9a-2784e6ddce3f.png">
+
+Now, that you have your first word list we can start training.  
 Click `Harjoitus` in the bottom tab bar to open "Start training menu".
-<img width="265" alt="Tab bar" src="https://user-images.githubusercontent.com/89461562/201984917-b681f4b0-9155-4ffc-9bfb-57be88acd77f.png">
 
+<img width="265" alt="Tab bar" src="https://user-images.githubusercontent.com/89461562/201991394-a2004117-8887-41de-8719-a5678f48a478.png">
 
+If you just added your word collection, you might need to press `Näytä kaikki` button to show your word list.
+If your list isn't showing, try to add it again and remember to save. Also reopening the app might help.
+The word list should be listed in the bottom of the view like in the image on the right side &rarr;
+
+Start training 
+- Android users will swipe to left on top of the list
+- Windows users can the press in the listing
+
+Pen icon starts training, where you write the words 
+- You will be asked to choose how many questions you want.
+- App reviews your answers automatically.
+Cards icon means you can train the words in the "flipcard" style.
+- You can set status for every word by pressing coloured buttons in the bottom
+- App saves progression automatically when you reach the end, or if you press `Tallenna eteneminen` button
+- If green check mark is visible, progression is saved.
+
+<img width="250" alt="image" src="https://user-images.githubusercontent.com/89461562/201997258-a4759af9-7e88-4478-beee-8af3fd1dafaf.png">
+
+#### Great! You can now add new lists and start training
+- Remember to check out for new updates here in [Worlists Github page](https://github.com/matikkaeditorinkaantaja/WordLists)
+- `Hallitse` menu includes more actions to handle your word lists, like exporting and importing word lists to new device
+
+<hr/>
 
 <br/>
 
