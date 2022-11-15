@@ -30,13 +30,14 @@
                     </Style>
                 </VerticalStackLayout.Resources>
                 <VerticalStackLayout Padding="30"
-                                     HorizontalOptions="Center">
+                                     HorizontalOptions="{OnIdiom Default=Center, Phone=FillAndExpand}">
                     <Label Text="Otsikko"
                            Margin="0,0,0,5"
                            FontSize="Medium" />
+
                     <entry:PlatformIndependantEntry Text="{Binding CollectionName}"
                                                     PlaceHolder="Minun sanastoni 1"
-                                                    HorizontalOptions="{OnIdiom Phone=Center, Default=Start}"
+                                                    HorizontalOptions="{OnIdiom Default=Start, Phone=FillAndExpand}"
                                                     MaximumWidthRequest="{OnIdiom Phone=300, Default=400}"
                                                     MaxLength="40" />
                     <Label Text="Kielet"

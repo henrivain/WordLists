@@ -57,4 +57,6 @@ public partial class PlatformIndependantEntry : Border
             UIInteractionHelper.FocusITextInputText(input, this);
         }
     }
+
+   
 }

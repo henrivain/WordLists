@@ -33,7 +33,6 @@
                                                 PlaceHolder="Avainsana"
                                                 MaxLength="36" />
                 <VerticalStackLayout>
-
                     <Grid ColumnDefinitions="*, *">
                         <Button Text="Etsi nimen perusteella"
                                 Command="{Binding UpdateCollectionsByName}"
@@ -154,8 +153,9 @@
                                                             Value="30" />
                                                 </Style>
                                             </HorizontalStackLayout.Resources>
-                                            <ImageButton Source="letsgoicon.png"
-                                                         BackgroundColor="Transparent"
+                                            <ImageButton Source="cards_icon_coloured.png"
+                                                         BackgroundColor="#35000000"
+                                                         Padding="3"
                                                          Command="{Binding Source={x:Reference startTrainingPage}, Path=BindingContext.RequestCardsTraining}"
                                                          CommandParameter="{Binding Id}" />
                                             <ImageButton Source="pencil_icon.png"

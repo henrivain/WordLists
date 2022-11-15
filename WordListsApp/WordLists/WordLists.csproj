@@ -121,6 +121,7 @@
 		<None Remove="Resources\Images\again_icon.svg" />
 		<None Remove="Resources\Images\bin_icon_old.svg" />
 		<None Remove="Resources\Images\bin_icon_with_border.svg" />
+		<None Remove="Resources\Images\cards_icon_coloured.svg" />
 		<None Remove="Resources\Images\copy_icon.svg" />
 		<None Remove="Resources\Images\hamburger_icon.svg" />
 		<None Remove="Resources\Images\home_icon.svg" />
