@@ -22,16 +22,40 @@ This was also a great opportunity to learn new ui framework .NET MAUI which I am
 2) Assets / Wordlists_Android-Signed_vX.X.X.apk  
 4) You may be prompted to enable loading apps from internet, when you try to run downloaded .apk file
 5) When your device's installer has stopped, you can start the app like any other app
-<img align="right" width="200" alt="Home page" src="https://user-images.githubusercontent.com/89461562/201965381-36cda632-d26c-45fe-9e73-80ec08b697ba.png">
+
  
 
-#### Windows 
 
-- not easy currently, releasing to windows is currently a bit hard in .NET MAUI
-- You can copy source code and build it yourself
-- Msix package doesn't seem to install currently because of lack of the digital signature
 
+
+<img width="250" align="right" alt="image" src="https://user-images.githubusercontent.com/89461562/202189770-b4a60536-8fb5-454d-963a-458c8d254f36.png">  
+
+#### Windows  
+Releasing to windows is currently a bit hard in .NET MAUI. 
+You need to build the app yourself.
+
+<img width="250" align="right" alt="image" src="https://user-images.githubusercontent.com/89461562/202190552-c8b4c425-6334-4cbd-a0b8-cb0b8fee0c6e.png">
+
+1) If you don't already have [visual studio 2022](https://visualstudio.microsoft.com/) you need to download it (vs2022 community might be free for you)
+2) In installer, select ".NET Multi-platform App UI development"
+3) Download source code from [Github](https://github.com/henrivain/WordLists/releases), by clicking "Source code (Zip)"
+4) Extract downloaded folder
+5) Open extracted solution (.sln) file by double "Open a project or solution" in visual studio and select the file
+6) After visual studio has loaded the project, select "Windows Machine" in the middle top selector
+7) Hit <kbd>F5</kbd> and app will build and run. It will be also installed to your machine, so you can run it from windows like normal app 
+
+<img width="500" alt="image" src="https://user-images.githubusercontent.com/89461562/202192943-4f0a73c5-73f2-4580-8dfb-173d89641949.png">
+
+
+
+
+
+#### IOS
+- I have no intention to release for ios, but you can build it if you have suitable devices
+- App is not tested in ios, so you have to fix all bugs yourself
+<img align="right" width="200" alt="Home page" src="https://user-images.githubusercontent.com/89461562/201965381-36cda632-d26c-45fe-9e73-80ec08b697ba.png">
 <hr>
+
 
 ### Launching for the first time  
 
