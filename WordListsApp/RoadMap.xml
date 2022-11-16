@@ -40,7 +40,8 @@
 		</InRelease>
 		<UnReleased>
 			<!-- Update not released -->
-			
+			<FixAndroidEntry>Wide the underline in entry field in android</FixAndroidEntry>
+
 		</UnReleased>
 	</Completed>
 	<Coming>
@@ -49,7 +50,6 @@
 		</UnderWork>
 		<!-- Most certainly coming features-->
 		<TODO>
-			<FixAndroidEntry>Wide the underline in entry field in android</FixAndroidEntry>
 			<WordListGenerator>
 				<Notice>This is included in list generator in 1.2.0 update</Notice>
 				<UseOCR>

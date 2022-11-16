@@ -34,8 +34,8 @@
                       ContentTemplate="{DataTemplate info:AppInfoPage}" />
 
         <!-- Test -->
-        <ShellContent Title="Images"
+        <!--<ShellContent Title="Images"
                       Icon="cards_icon.png"
-                      ContentTemplate="{DataTemplate images:ImageRecognisionPage}" />
+                      ContentTemplate="{DataTemplate images:ImageRecognisionPage}" />-->
     </TabBar>
 </Shell>

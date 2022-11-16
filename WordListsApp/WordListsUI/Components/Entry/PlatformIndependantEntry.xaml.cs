@@ -58,5 +58,4 @@ public partial class PlatformIndependantEntry : Border
         }
     }
 
-   
 }
