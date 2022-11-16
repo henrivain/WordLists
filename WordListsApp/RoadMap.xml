@@ -47,7 +47,6 @@
 	<Coming>
 		<!-- Under work -->
 		<UnderWork>
-			<Logging>Implement proper logging</Logging>
 		</UnderWork>
 		<!-- Most certainly coming features-->
 		<TODO>
@@ -60,6 +59,7 @@
 				</UseOCR>
 			</WordListGenerator>
 			<AddAppLanguage>Make user able to select english instead of finnish as a app language</AddAppLanguage>
+			<Logging>Implement proper logging</Logging>
 		</TODO>
 	</Coming>
 
