@@ -47,6 +47,7 @@
 	<Coming>
 		<!-- Under work -->
 		<UnderWork>
+			<Logging>Implement proper logging</Logging>
 		</UnderWork>
 		<!-- Most certainly coming features-->
 		<TODO>
@@ -58,7 +59,6 @@
 					<Note>Use language tags to choose language data files</Note>
 				</UseOCR>
 			</WordListGenerator>
-			<Logging>Implement proper logging</Logging>
 			<AddAppLanguage>Make user able to select english instead of finnish as a app language</AddAppLanguage>
 		</TODO>
 	</Coming>

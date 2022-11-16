@@ -34,7 +34,7 @@
                Text="{Binding Title}" 
                HorizontalTextAlignment="Start"
                VerticalTextAlignment="Center"
-               Margin="10,0,0,0"
+               Padding="10,0,0,0"
                LineBreakMode="NoWrap"
                />
         <ImageButton Source="{DynamicResource HamburgerImageSource}" 
