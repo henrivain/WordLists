@@ -1,4 +1,5 @@
 ﻿using ImageRecognisionLibrary;
+using System.Diagnostics;
 using WordDataAccessLibrary.CollectionBackupServices;
 using WordDataAccessLibrary.CollectionBackupServices.JsonServices;
 using WordDataAccessLibrary.DataBaseActions;
@@ -26,6 +27,15 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
+		ExceptionHandler exceptionHandler = new(AppDomain.CurrentDomain);
+		exceptionHandler
+			.AddExceptionHandling()
+			.HandleWindowsExceptions()
+			.HandleAndroidException()
+			.LogToFile();
+
+		var path = exceptionHandler.GetLogFilePath();
+
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
