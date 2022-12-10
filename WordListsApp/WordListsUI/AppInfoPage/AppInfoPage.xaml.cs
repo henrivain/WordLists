@@ -8,5 +8,7 @@ public partial class AppInfoPage : ContentPage
 		InitializeComponent();
 	}
 
-	public IAppInfoViewModel Model => (IAppInfoViewModel)BindingContext;
+
+
+    public IAppInfoViewModel Model => (IAppInfoViewModel)BindingContext;
 }

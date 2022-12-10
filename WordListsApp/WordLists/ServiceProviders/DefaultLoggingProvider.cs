@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace WordLists.ServiceProviders;
+﻿namespace WordLists.ServiceProviders;
 internal class DefaultLoggingProvider
 {
+    static HashSet<string> UsedLogPaths { get; set; } = Enumerable.Empty<string>().ToHashSet<string>();
+
     /// <summary>
     /// Get path to log file that exist (created if not)
     /// </summary>
@@ -28,7 +28,7 @@ internal class DefaultLoggingProvider
         {
             throw new InvalidOperationException("Cannot create new log file.", ex);
         }
+        UsedLogPaths.Add(file);
         return file;
     }
-    
 }

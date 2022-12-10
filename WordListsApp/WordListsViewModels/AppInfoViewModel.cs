@@ -13,7 +13,7 @@ public partial class AppInfoViewModel : IAppInfoViewModel
     string _dotNetVersion = GetDotnetVersion();
 
 
-
+    public IAsyncRelayCommand PullLogsToDownloads => throw new NotImplementedException();
 
     private static string GetDotnetVersion()
     {

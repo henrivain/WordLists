@@ -6,4 +6,6 @@ public interface IAppInfoViewModel
     string AppEnvironment { get; }
 
     string DotNetVersion { get; }
+
+    IAsyncRelayCommand PullLogsToDownloads { get; }
 }

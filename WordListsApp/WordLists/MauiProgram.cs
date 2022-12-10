@@ -28,20 +28,15 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
-        //ExceptionHandler exceptionHandler = new(AppDomain.CurrentDomain);
-        //exceptionHandler
-        //	.AddExceptionHandling()
-        //	.HandleWindowsExceptions()
-        //	.HandleAndroidException()
-        //	.LogToFile();
-        //var path = exceptionHandler.GetLogFilePath();
-
 		Log.Logger = new LoggerConfiguration()
 			.Enrich.FromLogContext()
-			.WriteTo.File(DefaultLoggingProvider.GetLogFilePath())
-			.CreateLogger();
+			.WriteTo.File(DefaultLoggingProvider.GetLogFilePath())	//fileSizeLimitBytes: 10_000_000 ??
+            .CreateLogger();
 
 		Log.Logger.Information("App Launched Again.");
+
+		ExceptionHandler handler = new(AppDomain.CurrentDomain, Log.Logger);
+		handler.AddExceptionHandling();
 
         var builder = MauiApp.CreateBuilder();
 		builder
@@ -92,6 +87,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<IWordCollectionInfoService, WordCollectionInfoService>();
 		builder.Services.AddSingleton<IUserInputWordValidator, UserInputWordValidator>();
 		builder.Services.AddTransient<IImageRecognisionEngine, ImageRecognisionEngine>();
+
         return builder.Build();
 	}
 }

@@ -50,20 +50,25 @@
 		</UnderWork>
 		<!-- Most certainly coming features-->
 		<TODO>
+			
+			<Logging>Implement proper logging</Logging>
+			<Logging>Pull log files to downloads folder if user wants to do it.</Logging>
+		</TODO>
+		<Waiting>
 			<WordListGenerator>
-				<Notice>This is included in list generator in 1.2.0 update</Notice>
+				<Notice>Currently has windows infrastructure but halted, because I cant figure out how I would be able to also add to android</Notice>
+				<Notice>Currently only available as x64 and x86 exes</Notice>
 				<UseOCR>
 					<Info>Add optical character recognision to generate from image</Info>
 					<Note>At least in windows use Tesseract</Note>
 					<Note>Use language tags to choose language data files</Note>
 				</UseOCR>
 			</WordListGenerator>
-			<AddAppLanguage>Make user able to select english instead of finnish as a app language</AddAppLanguage>
-			<Logging>Implement proper logging</Logging>
-		</TODO>
+		</Waiting>
 	</Coming>
 
-	<UnCertain>
+	<Ideas>
+		<AddAppLanguage>Make user able to select english instead of finnish as a app language</AddAppLanguage>
 		<Tests>
 			<TestViewModels>Add tests to view models</TestViewModels>
 		</Tests>
@@ -94,5 +99,5 @@
 				</SearchByTags>
 			</WordCollections>
 		</UnImportant>
-	</UnCertain>
+	</Ideas>
 </Versions>
