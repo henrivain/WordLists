@@ -16,7 +16,7 @@ public partial class ImageRecognisionViewModel : IImageRecognisionViewModel
 
 	
 	[ObservableProperty]
-	string text = string.Empty;
+	string _text = string.Empty;
 
 
 	private async void ReadTestText()

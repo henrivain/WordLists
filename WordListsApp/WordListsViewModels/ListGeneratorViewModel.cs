@@ -19,16 +19,16 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
 
     [AlsoNotifyChangeFor(nameof(CanSave))]
     [ObservableProperty]
-    ObservableCollection<string> words = new();
+    ObservableCollection<string> _words = new();
 
     [ObservableProperty]
-    string collectionName = "My word collection";
+    string _collectionName = "My word collection";
 
     [ObservableProperty]
-    string description = "Description";
+    string _description = "Description";
 
     [ObservableProperty]
-    string languageHeaders = "fi-en";
+    string _languageHeaders = "fi-en";
 
     public bool CanSave => Words.Count / 2 > 0;
 
@@ -98,7 +98,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         Otava
     }
     
-    readonly Dictionary<Parser, Func<string, List<string>>> StringParserActions = new()
+    private Dictionary<Parser, Func<string, List<string>>> StringParserActions { get; } = new()
     {
         [Parser.Otava] = (pairs) => { return new OtavaWordPairParser(pairs).ToStringList(); }
     };

@@ -1,18 +1,19 @@
-﻿using System.Reflection;
-
-namespace WordListsViewModels;
+﻿namespace WordListsViewModels;
 
 [INotifyPropertyChanged]
 public partial class AppInfoViewModel : IAppInfoViewModel
 {
     [ObservableProperty]
-    string appVersion = WordDataAccessLibrary.Helpers.AssemblyHelper.EntryAssembly.VersionString ?? "Ei saatavilla";
+    string _appVersion = WordDataAccessLibrary.Helpers.AssemblyHelper.EntryAssembly.VersionString ?? "Ei saatavilla";
 
     [ObservableProperty]
-    string appEnvironment = GetAppEnvironment();
+    string _appEnvironment = GetAppEnvironment();
 
     [ObservableProperty]
-    string dotNetVersion = GetDotnetVersion();
+    string _dotNetVersion = GetDotnetVersion();
+
+
+
 
     private static string GetDotnetVersion()
     {

@@ -25,13 +25,13 @@ public partial class JsonImportViewModel : IJsonImportViewModel
 
 
     [ObservableProperty]
-    string importPath = DefaultPathInfo;
+    string _importPath = DefaultPathInfo;
 
     [ObservableProperty]
-    bool canImport = false;
+    bool _canImport = false;
 
     [ObservableProperty]
-    bool isImporting = false;
+    bool _isImporting = false;
     public string AcceptableFileExtensions { get; } = 
         string.Join(" ", GetAcceptableImportFileExtensions());
 

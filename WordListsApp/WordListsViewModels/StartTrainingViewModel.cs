@@ -18,14 +18,12 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
     IWordCollectionService WordCollectionService { get; }
 
     [ObservableProperty]
-    List<WordCollectionOwner> availableCollections = new();
+    List<WordCollectionOwner> _availableCollections = new();
 
     [ObservableProperty]
-    string dataParameter = string.Empty;
-
-
-
-
+    string _dataParameter = string.Empty;
+    
+    
     public IAsyncRelayCommand UpdateCollectionsByName => new AsyncRelayCommand(async () =>
     {
         AvailableCollections = (await OwnerService.GetByName(DataParameter)).SortByName().ToList();
@@ -44,34 +42,34 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
     
 
     [ObservableProperty]
-    bool showLearnedWords = true;
+    bool _showLearnedWords = true;
 
     [ObservableProperty]
-    bool showMightKnowWords = true;
+    bool _showMightKnowWords = true;
 
     [ObservableProperty]
-    bool showNeverHeardKnowWords = true;
+    bool _showNeverHeardKnowWords = true;
 
     [ObservableProperty]
-    int showWords = 1;
+    int _showWords = 1;
 
     [ObservableProperty]
-    bool removeLearnedWords;
+    bool _removeLearnedWords;
 
     [ObservableProperty]
-    bool removeMightKnowWords;
+    bool _removeMightKnowWords;
 
     [ObservableProperty]
-    bool removeNeverHeardWords;
+    bool _removeNeverHeardWords;
 
     [ObservableProperty]
-    bool isRefreshing = false;
+    bool _isRefreshing = false;
 
     [ObservableProperty]
-    bool randomizeWordPairsOrder = false;
+    bool _randomizeWordPairsOrder = false;
 
     [ObservableProperty]
-    WordCollectionOwner selectedItem = new();
+    WordCollectionOwner _selectedItem = new();
 
 
   

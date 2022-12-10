@@ -89,9 +89,6 @@
 		<MauiXaml Update="Components\Entry\PlatformIndependantEntry.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Components\LinkField\LinkField.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
 		<MauiXaml Update="Components\SideMenu\MenuField\SideMenuField.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

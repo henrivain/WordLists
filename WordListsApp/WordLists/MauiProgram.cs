@@ -1,9 +1,10 @@
 ﻿using ImageRecognisionLibrary;
-using System.Diagnostics;
+using Serilog;
 using WordDataAccessLibrary.CollectionBackupServices;
 using WordDataAccessLibrary.CollectionBackupServices.JsonServices;
 using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
+using WordLists.ServiceProviders;
 using WordListsMauiHelpers.Factories;
 using WordListsUI.AppInfoPage;
 using WordListsUI.HomePage;
@@ -27,16 +28,22 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
-		ExceptionHandler exceptionHandler = new(AppDomain.CurrentDomain);
-		exceptionHandler
-			.AddExceptionHandling()
-			.HandleWindowsExceptions()
-			.HandleAndroidException()
-			.LogToFile();
+        //ExceptionHandler exceptionHandler = new(AppDomain.CurrentDomain);
+        //exceptionHandler
+        //	.AddExceptionHandling()
+        //	.HandleWindowsExceptions()
+        //	.HandleAndroidException()
+        //	.LogToFile();
+        //var path = exceptionHandler.GetLogFilePath();
 
-		var path = exceptionHandler.GetLogFilePath();
+		Log.Logger = new LoggerConfiguration()
+			.Enrich.FromLogContext()
+			.WriteTo.File(DefaultLoggingProvider.GetLogFilePath())
+			.CreateLogger();
 
-		var builder = MauiApp.CreateBuilder();
+		Log.Logger.Information("App Launched Again.");
+
+        var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
             .ConfigureFonts(fonts =>
@@ -46,7 +53,11 @@ public static class MauiProgram
 			});
 		// injecting appshell will make app buggy and starts to change visual element visibility
 
-		builder.Services.AddSingleton<HomePage>();
+		builder.Services.AddLogging(logBuilder =>
+		{
+			logBuilder.AddSerilog(Log.Logger, true);
+		});
+        builder.Services.AddSingleton<HomePage>();
 		builder.Services.AddTransient<FlipCardTrainingPage>();
 		builder.Services.AddTransient<StartTrainingPage>();
 		builder.Services.AddTransient<WordCollectionEditPage>();
@@ -81,7 +92,6 @@ public static class MauiProgram
 		builder.Services.AddSingleton<IWordCollectionInfoService, WordCollectionInfoService>();
 		builder.Services.AddSingleton<IUserInputWordValidator, UserInputWordValidator>();
 		builder.Services.AddTransient<IImageRecognisionEngine, ImageRecognisionEngine>();
-
         return builder.Build();
 	}
 }

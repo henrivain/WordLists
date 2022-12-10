@@ -15,15 +15,15 @@ public partial class WordCollectionHandlingViewModel : IWordCollectionHandlingVi
     }
 
     [ObservableProperty]
-    ObservableCollection<WordCollectionInfo> availableCollections = new();
+    ObservableCollection<WordCollectionInfo> _availableCollections = new();
 
     public event CollectionDeletedEventHandler? CollectionDeleted;
 
     public event DeleteWantedEventHandler? DeleteRequested;
 
-#pragma warning disable CS0067
+//#pragma warning disable CS0067
     public event EditWantedEventHandler? EditWanted;
-#pragma warning restore CS0067
+//#pragma warning restore CS0067
 
     public IAsyncRelayCommand UpdateCollectionInfos => new AsyncRelayCommand(async () =>
     {

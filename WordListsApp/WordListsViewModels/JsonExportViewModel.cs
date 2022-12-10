@@ -28,22 +28,22 @@ public partial class JsonExportViewModel : IJsonExportViewModel
     public IWordCollectionInfoService CollectionInfoService { get; }
 
     [ObservableProperty]
-    bool removeUserDataFromWordPairs = true;
+    bool _removeUserDataFromWordPairs = true;
 
     [ObservableProperty]
-    bool canExportAllVisible = false;
+    bool _canExportAllVisible = false;
 
     [ObservableProperty]
-    bool canExportSelected = false;
+    bool _canExportSelected = false;
+    
+    [ObservableProperty]
+    [AlsoNotifyChangeFor(nameof(VisibleCollections))]
+    string _nameParameter = string.Empty;
 
     [ObservableProperty]
     [AlsoNotifyChangeFor(nameof(VisibleCollections))]
-    string nameParameter = string.Empty;
-
-    [ObservableProperty]
-    [AlsoNotifyChangeFor(nameof(VisibleCollections))]
-    string languageHeadersParameter = string.Empty;
-
+    string _languageHeadersParameter = string.Empty;
+    
     public List<WordCollectionInfo> VisibleCollections 
     {
         get 
@@ -57,17 +57,17 @@ public partial class JsonExportViewModel : IJsonExportViewModel
             return fittingCollections;
         } 
     }
-
+    
     [ObservableProperty]
     [AlsoNotifyChangeFor(nameof(VisibleCollections))]
-    List<WordCollectionInfo> availableCollections = new(){};
+    List<WordCollectionInfo> _availableCollections = new(){};
 
     [ObservableProperty]
     [AlsoNotifyChangeFor(nameof(CanExportSelected))]
-    List<object> selectedCollections = new();
+    List<object> _selectedCollections = new();
 
     [ObservableProperty]
-    string exportPath = PathHelper.GetDefaultBackupFilePath();
+    string _exportPath = PathHelper.GetDefaultBackupFilePath();
 
     public IAsyncRelayCommand ExportAllVisibleCommand => new AsyncRelayCommand(async () =>
     {

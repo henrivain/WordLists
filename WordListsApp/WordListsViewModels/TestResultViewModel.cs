@@ -43,17 +43,17 @@ public partial class TestResultViewModel : ITestResultViewModel
     }
 
     [ObservableProperty]
-    int score = 0;
+    int _score = 0;
 
     [ObservableProperty]
-    double charMatchPercentage = 0d;
+    double _charMatchPercentage = 0d;
 
     [ObservableProperty]
-    string sessionId = "#0000000";
+    string _sessionId = "#0000000";
 
     [ObservableProperty]
     [AlsoNotifyChangeFor(nameof(ProgressionNotSaved))]
-    bool progressionSaved = false;
+    bool _progressionSaved = false;
     
     public bool ProgressionNotSaved => !ProgressionSaved;
 

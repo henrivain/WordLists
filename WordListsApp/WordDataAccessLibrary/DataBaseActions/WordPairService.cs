@@ -7,33 +7,33 @@ namespace WordDataAccessLibrary.DataBaseActions;
 
 public class WordPairService : IWordPairService
 {
-    SQLiteAsyncConnection db;
+    SQLiteAsyncConnection _db;
 
     private async Task Init()
     {
-        if (db is not null) return;
+        if (_db is not null) return;
 
         string databasePath = Path.Combine(FileSystem.AppDataDirectory, DataBaseInfo.GetDataBaseName());
         Debug.WriteLine($"{nameof(WordPairService)}: Initialize new");
 
 
-        db = new SQLiteAsyncConnection(databasePath);
+        _db = new SQLiteAsyncConnection(databasePath);
 
-        await db.CreateTableAsync<WordPair>();
+        await _db.CreateTableAsync<WordPair>();
     }
     public async Task<List<WordPair>> GetAll()
     {
         Debug.WriteLine($"{nameof(WordPairService)}: Get all {nameof(WordPair)}s");
 
         await Init();
-        return await db.Table<WordPair>().ToListAsync();
+        return await _db.Table<WordPair>().ToListAsync();
     }
     public async Task<List<WordPair>> GetByOwnerId(int ownerId)
     {
         Debug.WriteLine($"{nameof(WordPairService)}: Get by owner id: {ownerId}");
 
         await Init();
-        return await db.Table<WordPair>()
+        return await _db.Table<WordPair>()
             .Where(x => x.OwnerId == ownerId)
                 .ToListAsync();
     }
@@ -42,7 +42,7 @@ public class WordPairService : IWordPairService
     {
         await Init();
         Debug.WriteLine($"Get {nameof(WordPair)}s by expression");
-        return await db.Table<WordPair>().Where(expression).ToListAsync();
+        return await _db.Table<WordPair>().Where(expression).ToListAsync();
     }
 
     public async Task UpdatePairsAsync(WordCollection collection)
@@ -54,14 +54,14 @@ public class WordPairService : IWordPairService
         foreach (WordPair pair in collection.WordPairs)
         {
             pair.OwnerId = collection.Owner.Id;
-            await db.UpdateAsync(pair);
+            await _db.UpdateAsync(pair);
         }
     }
     public async Task UpdatePairAsync(WordPair pair)
     {
         await Init();
         Debug.WriteLine($"{nameof(WordPairService)}: Insert or update single {nameof(WordPair)}");
-        await db.UpdateAsync(pair);
+        await _db.UpdateAsync(pair);
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public class WordPairService : IWordPairService
         await Init();
         try
         {
-            return await db.GetAsync<WordPair>(key);
+            return await _db.GetAsync<WordPair>(key);
         }
         catch (Exception ex)
         {
@@ -92,17 +92,17 @@ public class WordPairService : IWordPairService
         foreach (WordPair pair in collection.WordPairs)
         {
             pair.OwnerId = collection.Owner.Id;
-            await db.InsertAsync(pair);
+            await _db.InsertAsync(pair);
         }
     }
     public async Task<int> CountItems()
     {
         await Init();
-        return await db.Table<WordPair>().CountAsync();
+        return await _db.Table<WordPair>().CountAsync();
     }
     public async Task<int> CountItemsMatching(Expression<Func<WordPair, bool>> expression)
     {
         await Init();
-        return await db.Table<WordPair>().Where(expression).CountAsync();
+        return await _db.Table<WordPair>().Where(expression).CountAsync();
     }
 }

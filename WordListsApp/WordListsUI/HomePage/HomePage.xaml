@@ -5,7 +5,6 @@
              x:Class="WordListsUI.HomePage.HomePage"
              Title="koti"
              xmlns:linkField="clr-namespace:WordListsUI.Components.LinkField"
-             BindingContext="{Binding Source={RelativeSource Self}, Path=DefaultViewModel}"
              x:DataType="{x:Type local:HomePage}"
              BackgroundColor="{StaticResource PageBackground}">
     <ContentPage.Resources>

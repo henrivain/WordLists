@@ -19,44 +19,44 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
     public WordCollection WordCollection { get; set; } = new();
 
     [ObservableProperty]
-    string title = "Unter uns 6 kpl 5 nice!";
+    string _title = "Unter uns 6 kpl 5 nice!";
 
     [ObservableProperty]
-    string description = "This short story takes 200 symbols. " +
+    string _description = "This short story takes 200 symbols. " +
         "Once there was a big and massive house. " +
         "Young deer wondered what was happening inside. " +
         "It took a look insede and saw a woman with gun. " +
         "Deer got shot and died sad..";
 
     [ObservableProperty]
-    string languageHeaders = "fi-en-sw-ge-fif";
+    string _languageHeaders = "fi-en-sw-ge-fif";
 
     [ObservableProperty]
-    WordPair? visibleWordPair;
+    WordPair? _visibleWordPair;
 
     [ObservableProperty]
-    int maxWordIndex = 0;
+    int _maxWordIndex = 0;
 
     [ObservableProperty]
-    int wordIndex = 0;
+    int _wordIndex = 0;
 
     [ObservableProperty]
-    bool canGoNext = false;
+    bool _canGoNext = false;
 
     [ObservableProperty]
-    bool canGoPrevious = false;
+    bool _canGoPrevious = false;
 
     [ObservableProperty]
-    int learnStateAsInt = 0;
+    int _learnStateAsInt = 0;
 
     [ObservableProperty]
-    bool progressSaved = false;
+    bool _progressSaved = false;
 
     [ObservableProperty]
-    bool isListCompleted = false;
+    bool _isListCompleted = false;
     
     [ObservableProperty]
-    bool isEmptyCollection = false;
+    bool _isEmptyCollection = false;
 
     public event CollectionUpdatedEventHandler? CollectionUpdated;
 

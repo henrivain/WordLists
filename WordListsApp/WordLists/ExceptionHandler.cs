@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using System.Runtime.ExceptionServices;
+using WordLists.ServiceProviders;
 using Exception = System.Exception;
 
 #nullable enable
@@ -24,16 +25,7 @@ internal class ExceptionHandler
 
     ILogger Logger { get; set; } = Log.Logger;
 
-    string LogFilePath { get; set; } = GetDefaultFilePath();
-
-    private static string GetDefaultFilePath()
-    {
-        string appDataPath = FileSystem.Current.AppDataDirectory;
-#if WINDOWS
-        appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-#endif
-        return Path.Combine(appDataPath, nameof(WordLists), "runtime.log");
-    }
+    string LogFilePath { get; set; } = DefaultLoggingProvider.GetLogFilePath();
 
     internal ExceptionHandler AddExceptionHandling()
     {
