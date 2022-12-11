@@ -1,7 +1,9 @@
-﻿namespace WordLists.ServiceProviders;
-internal class DefaultLoggingProvider
+﻿using Serilog;
+
+namespace WordListsMauiHelpers.Logging;
+public class DefaultLoggingProvider
 {
-    static HashSet<string> UsedLogPaths { get; set; } = Enumerable.Empty<string>().ToHashSet<string>();
+    static HashSet<string> UsedLogPaths { get; set; } = Enumerable.Empty<string>().ToHashSet();
 
     /// <summary>
     /// Get path to log file that exist (created if not)
@@ -9,7 +11,7 @@ internal class DefaultLoggingProvider
     /// <param name="logFileName"></param>
     /// <returns>path to log file that exist in file system.</returns>
     /// <exception cref="InvalidProgramException">If cannot create file.</exception>
-    internal static string GetLogFilePath(string logFileName = "wordlist_runtime.log")
+    public static string GetLogFilePath(string logFileName = "wordlist_runtime.log")
     {
         string directory = Path.Combine(FileSystem.AppDataDirectory, "Logs");
         string file = Path.Combine(directory, logFileName);
@@ -31,4 +33,25 @@ internal class DefaultLoggingProvider
         UsedLogPaths.Add(file);
         return file;
     }
+
+    public static string[] GetUsedLogPaths() => UsedLogPaths.ToArray();
+
+    public static bool LoggerConfigured { get; set; } = false;
+
+    public static ILogger GetFileLogger()
+    {
+        if (LoggerConfigured is false)
+        {
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.File(GetLogFilePath())  //fileSizeLimitBytes: 10_000_000 ??
+                .CreateLogger();
+            Log.Logger.Information("New serilogger created in '{name}'.", nameof(DefaultLoggingProvider));
+            LoggerConfigured = true;
+        }
+        return Log.Logger;
+    }
+
+
+
 }

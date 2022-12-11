@@ -4,7 +4,6 @@ using WordDataAccessLibrary.CollectionBackupServices;
 using WordDataAccessLibrary.CollectionBackupServices.JsonServices;
 using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
-using WordLists.ServiceProviders;
 using WordListsMauiHelpers.Factories;
 using WordListsUI.AppInfoPage;
 using WordListsUI.HomePage;
@@ -21,6 +20,7 @@ using WordListsViewModels;
 using WordListsViewModels.Helpers;
 using WordListsViewModels.Interfaces;
 using WordValidationLibrary;
+using WordListsMauiHelpers.Logging;
 
 namespace WordLists;
 
@@ -28,16 +28,6 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
-		Log.Logger = new LoggerConfiguration()
-			.Enrich.FromLogContext()
-			.WriteTo.File(DefaultLoggingProvider.GetLogFilePath())	//fileSizeLimitBytes: 10_000_000 ??
-            .CreateLogger();
-
-		Log.Logger.Information("App Launched Again.");
-
-		ExceptionHandler handler = new(AppDomain.CurrentDomain, Log.Logger);
-		handler.AddExceptionHandling();
-
         var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
@@ -46,11 +36,15 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
-		// injecting appshell will make app buggy and starts to change visual element visibility
+        // injecting appshell will make app buggy and starts to change visual element visibility
 
-		builder.Services.AddLogging(logBuilder =>
+        var logger = DefaultLoggingProvider.GetFileLogger();
+        new ExceptionHandler(AppDomain.CurrentDomain, logger)
+            .AddExceptionHandling();
+
+        builder.Services.AddLogging(logBuilder =>
 		{
-			logBuilder.AddSerilog(Log.Logger, true);
+			logBuilder.AddSerilog(logger, true);
 		});
         builder.Services.AddSingleton<HomePage>();
 		builder.Services.AddTransient<FlipCardTrainingPage>();

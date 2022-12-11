@@ -2,8 +2,8 @@
 using System.Runtime.ExceptionServices;
 using Exception = System.Exception;
 
-namespace WordLists.ServiceProviders;
-internal class ExceptionHandler
+namespace WordListsMauiHelpers.Logging;
+public class ExceptionHandler
 {
     public ExceptionHandler(AppDomain domain, ILogger logger)
     {
@@ -15,7 +15,7 @@ internal class ExceptionHandler
     ILogger Logger { get; }
     AppDomain Domain { get; }
 
-    internal void AddExceptionHandling()
+    public void AddExceptionHandling()
     {
         Domain.FirstChanceException += FirstChanceException;
         Domain.UnhandledException += UnhandledException;

@@ -12,7 +12,7 @@ public partial class HomePage : ContentPage
 
     public HomePage(ILogger<HomePage> logger)
 	{
-		InitializeComponent();
+        InitializeComponent();
         Logger = logger;
     }
 
