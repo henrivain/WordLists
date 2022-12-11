@@ -15,6 +15,7 @@
 		<ProjectReference Include="..\ImageRecognisionLibrary\ImageRecognisionLibrary.csproj" />
 		<ProjectReference Include="..\WordDataAccessLibrary\WordDataAccessLibrary.csproj" />
 		<ProjectReference Include="..\WordListsMauiHelpers\WordListsMauiHelpers.csproj" />
+		<ProjectReference Include="..\WordListsServices\WordListsServices.csproj" />
 		<ProjectReference Include="..\WordValidationLibrary\WordValidationLibrary.csproj" />
 	</ItemGroup>
 

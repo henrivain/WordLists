@@ -1,4 +1,4 @@
-﻿using Serilog;
+﻿using Microsoft.Extensions.Logging;
 using System.Runtime.ExceptionServices;
 using Exception = System.Exception;
 
@@ -9,7 +9,7 @@ public class ExceptionHandler
     {
         Domain = domain;
         Logger = logger;
-        logger.Information("Added global exception handler");
+        logger.LogInformation("Added global exception handler");
     }
 
     ILogger Logger { get; }
@@ -34,7 +34,7 @@ public class ExceptionHandler
             string exType = ex.GetType().Name;
             string exMessage = ex.Message;
             string trace = ex.StackTrace ?? "NULL";
-            Logger.Error("'{sender}' threw exception '{ex}': '{msg}', caught with '{methodName}', see trace \n{trace}",
+            Logger.LogError("'{sender}' threw exception '{ex}': '{msg}', caught with '{methodName}', see trace \n{trace}",
                 sender?.GetType(), exType, exMessage, nameof(HandleAndroidException), trace);
         };
 #endif
@@ -48,7 +48,7 @@ public class ExceptionHandler
             string exType = ex.GetType().Name;
             string exMessage = ex.Message;
             string trace = ex.StackTrace ?? "NULL";
-            Logger.Error("'{sender}' threw exception '{ex}': '{msg}', caught with '{methodName}', see trace \n{trace}",
+            Logger.LogError("'{sender}' threw exception '{ex}': '{msg}', caught with '{methodName}', see trace \n{trace}",
                 sender?.GetType(), exType, exMessage, nameof(HandleAndroidException), trace);
         };
 #endif
@@ -64,7 +64,7 @@ public class ExceptionHandler
         string trace = ex.StackTrace ?? "NULL";
 
 
-        Logger.Error("'{sender}' threw exception '{ex}': '{msg}', caught with '{methodName}', see trace \n{trace}",
+        Logger.LogError("'{sender}' threw exception '{ex}': '{msg}', caught with '{methodName}', see trace \n{trace}",
             sender?.GetType(), exType, exMessage, nameof(FirstChanceException), trace);
     }
     private void UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -85,7 +85,7 @@ public class ExceptionHandler
             exMessage = "NULL, cant get real exception from ExceptionObject";
             trace = "NULL";
         }
-        Logger.Error("'{sender}' threw exception '{ex}': '{msg}', caught with '{methodName}', see trace \n{trace}",
+        Logger.LogError("'{sender}' threw exception '{ex}': '{msg}', caught with '{methodName}', see trace \n{trace}",
             sender?.GetType(), exType, exMessage, nameof(UnhandledException), trace);
     }
 }

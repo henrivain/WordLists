@@ -1,5 +1,4 @@
 ﻿using Serilog;
-
 namespace WordListsMauiHelpers.Logging;
 public class DefaultLoggingProvider
 {
@@ -51,7 +50,6 @@ public class DefaultLoggingProvider
         }
         return Log.Logger;
     }
-
 
 
 }
