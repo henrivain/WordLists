@@ -4,13 +4,19 @@ public class DefaultLoggingProvider
 {
     static HashSet<string> UsedLogPaths { get; set; } = Enumerable.Empty<string>().ToHashSet();
 
+#if DEBUG
+    const string DefaultLogFileName = "wordlist_runtime_debug.log";
+#else
+    const string DefaultLogFileName = "wordlist_runtime.log";
+#endif
+
     /// <summary>
     /// Get path to log file that exist (created if not)
     /// </summary>
     /// <param name="logFileName"></param>
     /// <returns>path to log file that exist in file system.</returns>
-    /// <exception cref="InvalidProgramException">If cannot create file.</exception>
-    public static string GetLogFilePath(string logFileName = "wordlist_runtime.log")
+    /// <exception cref="InvalidOperationException">If cannot create file.</exception>
+    public static string GetLogFilePath(string logFileName = DefaultLogFileName)
     {
         string directory = Path.Combine(FileSystem.AppDataDirectory, "Logs");
         string file = Path.Combine(directory, logFileName);
