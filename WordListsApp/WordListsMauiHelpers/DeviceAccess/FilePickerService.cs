@@ -10,11 +10,11 @@ public static class FilePickerService
 
     /// <param name="fileExtensions"></param>
     /// <returns>full path to selected file or null if user exits or something fails</returns>
-    public static async Task<string> GetUserSelectedFullPath(List<string> fileExtensions)
+    public static async Task<string?> GetUserSelectedFullPath(List<string> fileExtensions)
     {
         try
         {
-            FileResult result = await FilePicker.Default.PickAsync(new()
+            FileResult? result = await FilePicker.Default.PickAsync(new()
             {
                 PickerTitle = "Valitse sijainti vietävälle tiedostolle",
 #if ANDROID
@@ -23,7 +23,11 @@ public static class FilePickerService
                 FileTypes = GetFileTypesWithExtension(fileExtensions)
 #endif
             });
-            if (string.IsNullOrWhiteSpace(result?.FullPath)) return null;
+            if (string.IsNullOrWhiteSpace(result?.FullPath))
+            {
+                return null;
+            }
+
             return result.FullPath;
         }
         catch (Exception ex)
@@ -38,7 +42,7 @@ public static class FilePickerService
     /// On other platforms user choose .json file and its path will be returned;
     /// </summary>
     /// <returns>path to json file or null, if fails or user exits</returns>
-    public static async Task<string> GetUserSelectedExportPath()
+    public static async Task<string?> GetUserSelectedExportPath()
     {
 #if WINDOWS
         string resultPath = await new FolderPicker().PickAsync();
@@ -58,7 +62,7 @@ public static class FilePickerService
                          .Select(x => x.StartsWith(".") ? x : $".{x}")
                          .ToList();
     }
-    private static FilePickerFileType GetFileTypesWithExtension(List<string> extensions)
+    private static FilePickerFileType GetFileTypesWithExtension(List<string>? extensions)
     {
         extensions ??= new();
 

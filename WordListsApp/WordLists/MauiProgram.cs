@@ -22,7 +22,6 @@ using WordListsViewModels;
 using WordListsViewModels.Helpers;
 using WordListsViewModels.Interfaces;
 using WordValidationLibrary;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace WordLists;
 
@@ -40,15 +39,16 @@ public static class MauiProgram
 			});
 		// injecting appshell will make app buggy and starts to change visual element visibility
 
-		var logger = DefaultLoggingProvider.GetFileLogger();
-        new ExceptionHandler(AppDomain.CurrentDomain, logger.AsMicrosoftLogger())
+		var serilogger = DefaultLoggingProvider.GetFileLogger();
+        new ExceptionHandler(AppDomain.CurrentDomain, serilogger.AsMicrosoftLogger())
             .AddExceptionHandling();
 
         builder.Services.AddLogging(logBuilder =>
 		{
-			logBuilder.AddSerilog(logger, true);
+			logBuilder.AddSerilog(serilogger, true);
 		});
-		builder.Services.AddSingleton<ILogger>(logger.AsMicrosoftLogger());
+		builder.Services.AddSingleton(serilogger.AsMicrosoftLogger());
+		builder.Services.AddSingleton<ILoggingInfoProvider, DefaultLoggingProvider>();
 		builder.Services.AddSingleton<HomePage>();
 		builder.Services.AddTransient<FlipCardTrainingPage>();
 		builder.Services.AddTransient<StartTrainingPage>();

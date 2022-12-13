@@ -1,5 +1,5 @@
-﻿namespace WordListsServices.FileSystemServices.ActionResults;
-public class ActionResult
+﻿namespace WordListsServices;
+public class ActionResult : IActionResult
 {
     public ActionResult(bool success)
     {

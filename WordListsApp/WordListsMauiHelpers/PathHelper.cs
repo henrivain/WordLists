@@ -6,10 +6,16 @@ public class PathHelper
 {
 
     /// <returns>downloads folder on windows and android, else path to myDocuments</returns>
-    public static string GetDefaultBackupFolderPath()
+    public static string GetDownloadsFolderPath()
     {
 #if WINDOWS
-        return Path.Combine(Environment.GetEnvironmentVariable("USERPROFILE"), "Downloads");
+        string? userProfile = Environment.GetEnvironmentVariable("USERPROFILE");
+        if (string.IsNullOrWhiteSpace(userProfile))
+        {
+            return string.Empty;
+        }
+
+        return Path.Combine(userProfile, "Downloads");
 
 #elif ANDROID
         return "/storage/emulated/0/Download/";
@@ -26,7 +32,7 @@ public class PathHelper
     /// <returns>downloads folder on windows, else path to myDocuments</returns>
     public static string GetDefaultBackupFilePath()
     {
-        return Path.Combine(GetDefaultBackupFolderPath(), GetNewBackupFileName());
+        return Path.Combine(GetDownloadsFolderPath(), GetNewBackupFileName());
     }
 
     public static string GetNewBackupFileName()

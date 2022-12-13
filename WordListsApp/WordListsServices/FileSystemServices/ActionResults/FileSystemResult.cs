@@ -1,5 +1,5 @@
 ﻿namespace WordListsServices.FileSystemServices.ActionResults;
-public class FileSystemResult : ActionResult
+public class FileSystemResult : ActionResult, IFileSystemResult
 {
 	public FileSystemResult(bool success) : base(success) { }
 	public FileSystemResult(bool success, string message) : base(success, message) { }

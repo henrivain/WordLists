@@ -1,6 +1,9 @@
 ﻿global using CommunityToolkit.Mvvm.ComponentModel;
 global using CommunityToolkit.Mvvm.Input;
 
+global using Microsoft.Extensions.Logging.Abstractions;
+global using Microsoft.Extensions.Logging;
+
 global using WordDataAccessLibrary;
 global using WordDataAccessLibrary.DataBaseActions;
 

@@ -1,4 +1,6 @@
 ﻿namespace WordListsMauiHelpers.Factories;
+
+#nullable disable
 public static class AbstractFactoryExtension
 {
     public static void AddAbstractFactory<TInterface, TImplementation>(this IServiceCollection services)

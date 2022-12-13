@@ -1,6 +1,6 @@
 ﻿using Serilog;
 namespace WordListsMauiHelpers.Logging;
-public class DefaultLoggingProvider
+public class DefaultLoggingProvider : ILoggingInfoProvider
 {
     static HashSet<string> UsedLogPaths { get; set; } = Enumerable.Empty<string>().ToHashSet();
 
@@ -39,9 +39,11 @@ public class DefaultLoggingProvider
         return file;
     }
 
-    public static string[] GetUsedLogPaths() => UsedLogPaths.ToArray();
+
 
     public static bool LoggerConfigured { get; set; } = false;
+
+    public string[] LoggingFilePaths => UsedLogPaths.ToArray();
 
     public static ILogger GetFileLogger()
     {

@@ -37,7 +37,7 @@ public partial class JsonImportViewModel : IJsonImportViewModel
 
     public IAsyncRelayCommand SelectFile => new AsyncRelayCommand(async () =>
     {
-        string path = await FilePickerService.GetUserSelectedFullPath(new(_acceptableFileExtensions));
+        string? path = await FilePickerService.GetUserSelectedFullPath(new(_acceptableFileExtensions));
         if (string.IsNullOrWhiteSpace(path)) return;
 
         SetPathDataIfValid(path);

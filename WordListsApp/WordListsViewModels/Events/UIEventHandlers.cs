@@ -14,3 +14,5 @@ public delegate void DeleteWantedEventHandler(object sender, DeleteWantedEventAr
 
 public delegate void TrainingRequestedEventHandler(object sender, StartTrainingEventArgs e);
 
+public delegate void LogsCopiedEventHandler(object sender, LogsCopiedEventArgs e);
+

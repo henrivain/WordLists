@@ -5,54 +5,63 @@
              xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
              x:DataType="{x:Type viewModel:IAppInfoViewModel}"
              Title="Tietoa"
-             BackgroundColor="{StaticResource PageBackground}"
-             >
-    <VerticalStackLayout Margin="20" VerticalOptions="Center">
-        <VerticalStackLayout.Resources>
-            <Style TargetType="{x:Type Label}">
-                <Setter Property="HorizontalTextAlignment"
-                        Value="Center" />
-                <Setter Property="TextColor"
-                        Value="{StaticResource UnImportantText}" />
-                <Setter Property="Margin"
-                        Value="0,5" />
-            </Style>
-            <Style TargetType="{x:Type Span}">
-                <Setter Property="TextColor"
-                        Value="{StaticResource UnImportantText}" />
-            </Style>
-        </VerticalStackLayout.Resources>
-        <VerticalStackLayout Margin="0,0,0,20">
-            <Label>
+             BackgroundColor="{StaticResource PageBackground}">
+    <ScrollView>
+        <VerticalStackLayout Margin="20"
+                             VerticalOptions="Center">
+            <VerticalStackLayout.Resources>
+                <Style TargetType="{x:Type Label}">
+                    <Setter Property="HorizontalTextAlignment"
+                            Value="Center" />
+                    <Setter Property="TextColor"
+                            Value="{StaticResource UnImportantText}" />
+                    <Setter Property="Margin"
+                            Value="0,5" />
+                </Style>
+                <Style TargetType="{x:Type Span}">
+                    <Setter Property="TextColor"
+                            Value="{StaticResource UnImportantText}" />
+                </Style>
+            </VerticalStackLayout.Resources>
+            <VerticalStackLayout Margin="0,0,0,20">
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Sanastot "
+                                  FontSize="{OnPlatform WinUI=Header, Default=Title}" />
+                            <Span Text="for "
+                                  FontSize="Micro" />
+                            <Span Text="{Binding AppEnvironment}"
+                                  FontSize="Micro" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Text="by Henri Vainio"
+                       FontSize="{OnPlatform WinUI=Title, Default=Small}" />
+            </VerticalStackLayout>
+            <Label FontSize="Small">
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span Text="Sanastot "
-                              FontSize="{OnPlatform WinUI=Header, Default=Title}" />
-                        <Span Text="for "
-                              FontSize="Micro" />
-                        <Span Text="{Binding AppEnvironment}"
-                              FontSize="Micro" />
+                        <Span Text="versio: " />
+                        <Span Text="{Binding AppVersion}" />
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <Label Text="by Henri Vainio"
-                   FontSize="{OnPlatform WinUI=Title, Default=Small}" />
+            <Label FontSize="Small">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text=".NET" />
+                        <Span Text="{Binding DotNetVersion}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <VerticalStackLayout Margin="0,100,0,0">
+                <Button Text="Kopioi lokitiedostot latauksiin"
+                        Padding="50,10"
+                        HorizontalOptions="Center"
+                        Command="{Binding PullLogsToDownloads}" />
+            </VerticalStackLayout>
         </VerticalStackLayout>
-        <Label FontSize="Small">
-            <Label.FormattedText>
-                <FormattedString>
-                    <Span Text="versio: " />
-                    <Span Text="{Binding AppVersion}" />
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>
-        <Label FontSize="Small">
-            <Label.FormattedText>
-                <FormattedString>
-                    <Span Text=".NET" />
-                    <Span Text="{Binding DotNetVersion}" />
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>
-    </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

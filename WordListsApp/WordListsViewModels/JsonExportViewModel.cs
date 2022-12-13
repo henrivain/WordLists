@@ -79,7 +79,7 @@ public partial class JsonExportViewModel : IJsonExportViewModel
     });
     public IAsyncRelayCommand ChooseExportLocationCommand => new AsyncRelayCommand(async () =>
     {
-        string exportPath = await FilePickerService.GetUserSelectedExportPath();
+        string? exportPath = await FilePickerService.GetUserSelectedExportPath();
         if (string.IsNullOrWhiteSpace(exportPath)) return;
         ExportPath = exportPath;
     });

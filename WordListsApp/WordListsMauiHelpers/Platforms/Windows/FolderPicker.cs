@@ -2,6 +2,7 @@
 using WindowsFolderPicker = Windows.Storage.Pickers.FolderPicker;
 using Windows.Storage;
 
+#nullable disable
 
 namespace WordListsMauiHelpers.DeviceAccess;
 public class FolderPicker : IFolderPicker

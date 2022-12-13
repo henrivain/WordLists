@@ -25,10 +25,7 @@ public partial class WordCollectionHandlingViewModel : IWordCollectionHandlingVi
     public event EditWantedEventHandler? EditWanted;
 //#pragma warning restore CS0067
 
-    public IAsyncRelayCommand UpdateCollectionInfos => new AsyncRelayCommand(async () =>
-    {
-        await ResetCollections();
-    });
+    public IAsyncRelayCommand UpdateCollectionInfos => new AsyncRelayCommand(ResetCollections);
 
     public IWordCollectionService CollectionService { get; }
 

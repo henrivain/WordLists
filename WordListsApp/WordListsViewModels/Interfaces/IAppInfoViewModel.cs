@@ -1,4 +1,6 @@
-﻿namespace WordListsViewModels.Interfaces;
+﻿using WordListsViewModels.Events;
+
+namespace WordListsViewModels.Interfaces;
 public interface IAppInfoViewModel
 {
     string AppVersion { get; }
@@ -8,4 +10,6 @@ public interface IAppInfoViewModel
     string DotNetVersion { get; }
 
     IAsyncRelayCommand PullLogsToDownloads { get; }
+
+    event LogsCopiedEventHandler? LogsCopied;
 }
