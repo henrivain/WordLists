@@ -7,6 +7,7 @@ using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsMauiHelpers.Factories;
 using WordListsMauiHelpers.Logging;
 using WordListsServices.FileSystemServices;
+using WordListsServices.ProcessServices;
 using WordListsUI.AppInfoPage;
 using WordListsUI.HomePage;
 using WordListsUI.WordDataPages;
@@ -86,6 +87,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<IImageRecognisionEngine, ImageRecognisionEngine>();
 		builder.Services.AddTransient<IFolderHandler, FolderHandler>();
 		builder.Services.AddTransient<IFileHandler, FileHandler>();
+		builder.Services.AddTransient<IProcessLauncher, ProcessLauncher>();
         return builder.Build();
 	}
 }

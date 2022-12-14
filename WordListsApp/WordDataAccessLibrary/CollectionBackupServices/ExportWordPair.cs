@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace WordDataAccessLibrary.CollectionBackupServices;
-public struct ExportWordPair
+public readonly struct ExportWordPair
 {
     public ExportWordPair(string nativeLanguageWord, string foreignLanguageWord, int wordLearnStateId, int indexInVocalbulary = -1)
     {

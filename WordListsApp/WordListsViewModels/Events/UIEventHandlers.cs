@@ -16,3 +16,5 @@ public delegate void TrainingRequestedEventHandler(object sender, StartTrainingE
 
 public delegate void LogsCopiedEventHandler(object sender, LogsCopiedEventArgs e);
 
+public delegate void InvalidDataEventHandler<T>(object sender, InvalidDataEventArgs<T> e);
+

@@ -1,3 +1,4 @@
+using WordListsViewModels.Events;
 namespace WordListsUI.AppInfoPage;
 
 public partial class AppInfoPage : ContentPage
@@ -7,9 +8,15 @@ public partial class AppInfoPage : ContentPage
 		BindingContext = model;
 		InitializeComponent();
         model.LogsCopied += Model_LogsCopied;
+        model.ShowLogFileFailed += Model_ShowLogFileFailed;
 	}
 
-    private async void Model_LogsCopied(object sender, WordListsViewModels.Events.LogsCopiedEventArgs e)
+    private async void Model_ShowLogFileFailed(object sender, InvalidDataEventArgs<string[]> e)
+    {
+        await DisplayAlert("Avaaminen epäonnistui!", $"Lokitiedostokansion avaaminen epäonnistui. Syy: '{e.Message}'.", "OK");
+    }
+
+    private async void Model_LogsCopied(object sender, LogsCopiedEventArgs e)
     {
         if (e.Success)
         {
@@ -20,7 +27,7 @@ public partial class AppInfoPage : ContentPage
         }
         int filesTotal = e.FilesValid + e.FilesFailed;
         await DisplayAlert("Tiedostojen kopiointi epäonnistui!",
-            $"{e.FilesFailed}/{filesTotal} lokitiedostoa ei pystytty kopioimaan. \nSyy: {e.Message}", 
+            $"{e.FilesFailed}/{filesTotal} lokitiedostoa ei pystytty kopioimaan. \nSyy:\n {e.Message}", 
             "OK");
     }
 

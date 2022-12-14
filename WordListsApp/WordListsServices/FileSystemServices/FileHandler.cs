@@ -20,11 +20,32 @@ public class FileHandler : SafeFileHandler, IFileHandler
     public async Task<IFileSystemResult> CopyFileAsync(
         string? inputFile, string? destinationFolder, bool overwrite = true)
     {
+        PermissionHandler handler = new(Logger);
+        if (await handler.RequestFileSystemReadAccess() is false)
+        {
+            Logger.LogWarning("Cannot get permission to read file system.");
+            return new FileSystemResult(false)
+            {
+                InputPath = inputFile,
+                OutputPath = destinationFolder,
+                Message = "Cannot get permission to use file system to read files."
+            };
+        }
+        if (await handler.RequestFileSystemWriteAccess() is false)
+        {
+            Logger.LogWarning("Cannot get permission to write to file system.");
+            return new FileSystemResult(false)
+            {
+                InputPath = inputFile,
+                OutputPath = destinationFolder,
+                Message = "Cannot get permission to use file system to write files."
+            };
+        }
         return await Task.Run(() => CopyFile(inputFile, destinationFolder, overwrite));
     }
 
     /// <inheritdoc/>
-    public IFileSystemResult CopyFile(
+    private IFileSystemResult CopyFile(
         string? inputFile, string? destinationFolder, bool overwrite = true)
     {
         Logger.LogInformation("Copy file from '{input}' to '{output}'", inputFile, destinationFolder);
@@ -60,6 +81,9 @@ public class FileHandler : SafeFileHandler, IFileHandler
                 OutputPath = destinationFolder,
             };
         }
+
+        // Have to use some other way in android
+
 
         string destinationPath = Path.Combine(destinationFolder, fileName);
         var folderCreated = FolderHandler.CreateDirectory(destinationFolder);

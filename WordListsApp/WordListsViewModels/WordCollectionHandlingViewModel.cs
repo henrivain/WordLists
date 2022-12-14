@@ -21,9 +21,9 @@ public partial class WordCollectionHandlingViewModel : IWordCollectionHandlingVi
 
     public event DeleteWantedEventHandler? DeleteRequested;
 
-//#pragma warning disable CS0067
+#pragma warning disable CS0067 // EditWanted is never used
     public event EditWantedEventHandler? EditWanted;
-//#pragma warning restore CS0067
+#pragma warning restore CS0067 // EditWanted is never used 
 
     public IAsyncRelayCommand UpdateCollectionInfos => new AsyncRelayCommand(ResetCollections);
 

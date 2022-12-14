@@ -1,7 +1,10 @@
-﻿using WordListsMauiHelpers;
+﻿using WordDataAccessLibrary.Helpers;
+using WordListsMauiHelpers;
 using WordListsMauiHelpers.Logging;
+using WordListsServices;
 using WordListsServices.FileSystemServices;
 using WordListsServices.FileSystemServices.ActionResults;
+using WordListsServices.ProcessServices;
 using WordListsViewModels.Events;
 
 namespace WordListsViewModels;
@@ -10,17 +13,20 @@ namespace WordListsViewModels;
 public partial class AppInfoViewModel : IAppInfoViewModel
 {
     public AppInfoViewModel(
-        ILogger<AppInfoViewModel> logger, 
+        ILogger<AppInfoViewModel> logger,
         ILoggingInfoProvider loggingInfoProvider,
-        IFileHandler fileHandler)
+        IFileHandler fileHandler,
+        IProcessLauncher processLauncher
+        )
     {
         Logger = logger;
         LoggingInfoProvider = loggingInfoProvider;
         FileHandler = fileHandler;
+        ProcessLauncher = processLauncher;
     }
 
     [ObservableProperty]
-    string _appVersion = WordDataAccessLibrary.Helpers.AssemblyHelper.EntryAssembly.VersionString ?? "Ei saatavilla";
+    string _appVersion = AssemblyHelper.EntryAssembly.VersionString ?? "Ei saatavilla";
 
     [ObservableProperty]
     string _appEnvironment = GetAppEnvironment();
@@ -36,24 +42,26 @@ public partial class AppInfoViewModel : IAppInfoViewModel
     public ILogger<AppInfoViewModel> Logger { get; }
     public ILoggingInfoProvider LoggingInfoProvider { get; }
     public IFileHandler FileHandler { get; }
+    public IProcessLauncher ProcessLauncher { get; }
+
+    public IRelayCommand OpenLogsInFileExplorer => new RelayCommand(OpenLogDirectoryInFileExplorer);
 
     private static string GetDotnetVersion()
     {
         return Environment.Version.Major.ToString() + " MAUI";
     }
-
     private static string GetAppEnvironment()
     {
         return DeviceInfo.Current.Platform.ToString();
     }
-
     private async Task CopyLogsToDownloads()
     {
         Logger.LogInformation("User requested to copy log files to downloads folder.");
 
         Working = true;
         string[] logFiles = LoggingInfoProvider.LoggingFilePaths;
-        string outputDir = Path.Combine(PathHelper.GetDownloadsFolderPath(), "WordLists_Logs\\");
+ 
+        string outputDir = Path.Combine(PathHelper.GetDownloadsFolderPath(), "WordLists_Logs" + Path.DirectorySeparatorChar);
 
         int filesValid = 0;
         int filesFailed = 0;
@@ -73,27 +81,21 @@ public partial class AppInfoViewModel : IAppInfoViewModel
         string msg;
         if (filesFailed > 0 && result is not null)
         {
-            msg = $"""
-                Failed to copy '{filesFailed}' files to downloads folder. 
-                '{filesValid}' copies succeeded. 
-                Here is error message from one (1) failed copy: 
-                '{result}'
-                """;
+            msg = $"Failed to copy {filesFailed}/{logFiles.Length} files to downloads folder. " +
+                $"One of the error messages: '{result.Message}'";
             LogsCopied?.Invoke(this, new LogsCopiedEventArgs
             {
                 Success = false,
                 FilesFailed = filesFailed,
                 FilesValid = filesValid,
-                Message =  msg,
+                Message = msg,
                 OutputDirectory = outputDir,
             });
+            return;
         }
         if (filesFailed > 0)
         {
-            msg = """
-                Failed to copy '{filesFailed}' files to downloads folder. 
-                '{filesValid}' copies succeeded.
-                """;
+            msg = $"Failed to copy {filesFailed}/{logFiles.Length} files to downloads folder.";
             LogsCopied?.Invoke(this, new LogsCopiedEventArgs
             {
                 Success = false,
@@ -103,11 +105,11 @@ public partial class AppInfoViewModel : IAppInfoViewModel
 
                 OutputDirectory = outputDir,
             });
-            return; 
+            return;
         }
         msg = $"Successfully copied '{filesValid}' log files to downloads folder.";
         LogsCopied?.Invoke(this, new LogsCopiedEventArgs
-        { 
+        {
             Success = true,
             FilesFailed = 0,
             FilesValid = filesValid,
@@ -116,7 +118,36 @@ public partial class AppInfoViewModel : IAppInfoViewModel
         });
 
     }
+    private void OpenLogDirectoryInFileExplorer()
+    {
+        var paths = LoggingInfoProvider.LoggingFilePaths;
+        if (paths.Length <= 0)
+        {
+            Logger.LogInformation("Cannot open log file directory, because app does not have any.");
+            ShowLogFileFailed?.Invoke(this, new InvalidDataEventArgs<string[]>
+            {
+                Message = "App currently does not have any log files."
+            });
+            return;
+        }
+
+        IActionResult? result = null;
+        foreach (var path in paths)
+        {
+            result = ProcessLauncher.LaunchFileExplorerToDirectory(path);
+            if (result.NotSuccess())
+            {
+                Logger.LogError("Cannot open file explorer window, because of '{reason}'.", result.Message);
+            }
+            else return;
+        }
+        ShowLogFileFailed?.Invoke(this, new(result?.Message, paths));
+    }
+
+
 
 
     public event LogsCopiedEventHandler? LogsCopied;
+
+    public event InvalidDataEventHandler<string[]>? ShowLogFileFailed;
 }

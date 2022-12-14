@@ -7,14 +7,6 @@ namespace WordListsServices.FileSystemServices;
 /// </summary>
 public interface IFileHandler 
 {
-    /// <summary>
-    /// Copy file from given path to destination folder (destination folder is created if doesn't exist)
-    /// </summary>
-    /// <param name="inputFile"></param>
-    /// <param name="destinationFolder"></param>
-    /// <param name="overwrite"></param>
-    /// <returns>FileSystemResult where OutputPath => destinationFile, InputPath => inputFile.</returns>
-    IFileSystemResult CopyFile(string? inputFile, string? destinationFolder, bool overwrite = true);
 
     /// <summary>
     /// Copy file from given path to destination folder (that is created if doesn't exist) async.

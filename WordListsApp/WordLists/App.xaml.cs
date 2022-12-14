@@ -1,4 +1,5 @@
-﻿namespace WordLists;
+﻿
+namespace WordLists;
 
 public partial class App : Application
 {
@@ -13,7 +14,7 @@ public partial class App : Application
     private static void SetUIHandlers()
     {
 #if ANDROID
-        EntryHandler.Mapper.AppendToMapping(nameof(Entry), (handler, view) =>
+        Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(Entry), (handler, view) =>
         {
             if (view is Entry)
             {
