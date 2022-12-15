@@ -11,6 +11,8 @@ public interface IAppInfoViewModel
 
     bool Working { get; }
 
+    bool IsDebug { get; }
+
     IAsyncRelayCommand PullLogsToDownloads { get; }
 
     IRelayCommand OpenLogsInFileExplorer { get; }

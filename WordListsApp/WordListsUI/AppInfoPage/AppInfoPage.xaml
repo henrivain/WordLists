@@ -56,6 +56,8 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
+            <Label Text="DEBUG"
+                   IsVisible="{Binding IsDebug}" />
 
             <VerticalStackLayout Margin="0,100,0,0" HorizontalOptions="Center">
                 <ActivityIndicator IsVisible="{Binding Working}"
@@ -70,6 +72,10 @@
                         Padding="50,10"
                         Command="{Binding OpenLogsInFileExplorer}"
                         />
+                <Button Text="Tyhjennä lokitiedostot"
+                        IsVisible="{Binding IsDebug}"
+                        Padding="50,10"
+                        Clicked="DeleteLogs_Clicked" />
 
             </VerticalStackLayout>
         </VerticalStackLayout>

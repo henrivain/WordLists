@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using static Microsoft.Maui.ApplicationModel.Permissions;
+﻿using static Microsoft.Maui.ApplicationModel.Permissions;
 
 namespace WordListsServices.FileSystemServices;
 internal class PermissionHandler
@@ -19,7 +18,7 @@ internal class PermissionHandler
             Logger.LogInformation("Request permission to use StorageWrite");
             status = await RequestAsync<StorageWrite>();
         }
-        Logger.LogInformation($"Filesystem wrote access is set to: {status}");
+        Logger.LogInformation("Filesystem wrote access is set to: {status}", status);
         return status is PermissionStatus.Granted;
     }
     internal async Task<bool> RequestFileSystemReadAccess()
@@ -30,7 +29,7 @@ internal class PermissionHandler
             Logger.LogInformation("Request permission to use StorageRead");
             status = await RequestAsync<StorageRead>();
         }
-        Logger.LogInformation($"Filesystem read access is set to: {status}");
+        Logger.LogInformation("Filesystem read access is set to: {status}", status);
         return status is PermissionStatus.Granted;
     }
 }

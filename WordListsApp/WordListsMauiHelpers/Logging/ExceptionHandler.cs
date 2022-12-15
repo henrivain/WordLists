@@ -33,7 +33,7 @@ public class ExceptionHandler
             Exception ex = args.Exception;
             string exType = ex.GetType().Name;
             string exMessage = ex.Message;
-            string trace = ex.StackTrace ?? "NULL";
+            string trace = GetLimitedStackTrace(ex.StackTrace) ?? "NULL";
             Logger.LogError("'{sender}' threw exception '{ex}': '{msg}', caught with '{methodName}', see trace \n{trace}",
                 sender?.GetType(), exType, exMessage, nameof(HandleAndroidException), trace);
         };
@@ -47,7 +47,7 @@ public class ExceptionHandler
             Exception ex = args.Exception;
             string exType = ex.GetType().Name;
             string exMessage = ex.Message;
-            string trace = ex.StackTrace ?? "NULL";
+            string trace = GetLimitedStackTrace(ex.StackTrace) ?? "NULL";
             Logger.LogError("'{sender}' threw exception '{ex}': '{msg}', caught with '{methodName}', see trace \n{trace}",
                 sender?.GetType(), exType, exMessage, nameof(HandleAndroidException), trace);
         };
@@ -61,7 +61,7 @@ public class ExceptionHandler
         Exception ex = e.Exception;
         string exType = ex.GetType().Name;
         string exMessage = ex.Message;
-        string trace = ex.StackTrace ?? "NULL";
+        string trace = GetLimitedStackTrace(ex.StackTrace) ?? "NULL";
 
 
         Logger.LogError("'{sender}' threw exception '{ex}': '{msg}', caught with '{methodName}', see trace \n{trace}",
@@ -76,7 +76,7 @@ public class ExceptionHandler
         {
             exType = ex.GetType().Name;
             exMessage = ex.Message;
-            trace = ex.StackTrace ?? "NULL";
+            trace = GetLimitedStackTrace(ex.StackTrace) ?? "NULL";
         }
         else
         {
@@ -87,5 +87,23 @@ public class ExceptionHandler
         }
         Logger.LogError("'{sender}' threw exception '{ex}': '{msg}', caught with '{methodName}', see trace \n{trace}",
             sender?.GetType(), exType, exMessage, nameof(UnhandledException), trace);
+    }
+
+    const int MaxAndroidStackTraceCharLen = 300;
+
+    /// <summary>
+    /// Android exceptions might include long stack traces from unmanaged calls that do not help debuggin process
+    /// </summary>
+    /// <param name="trace"></param>
+    /// <returns>If android returns trace with max length of MaxAndroidStackTraceCharLen, otherwise trace</returns>
+    private static string? GetLimitedStackTrace(string? trace)
+    {
+#if ANDROID
+        if (trace?.Length > MaxAndroidStackTraceCharLen)
+        {
+            return trace[..MaxAndroidStackTraceCharLen];
+        }
+#endif
+        return trace;
     }
 }

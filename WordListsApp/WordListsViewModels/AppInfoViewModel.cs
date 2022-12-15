@@ -6,6 +6,7 @@ using WordListsServices.FileSystemServices;
 using WordListsServices.FileSystemServices.ActionResults;
 using WordListsServices.ProcessServices;
 using WordListsViewModels.Events;
+using static SQLite.SQLite3;
 
 namespace WordListsViewModels;
 
@@ -37,6 +38,10 @@ public partial class AppInfoViewModel : IAppInfoViewModel
     [ObservableProperty]
     bool _working = false;
 
+    [ObservableProperty]
+    bool _isDebug = GetIsDebug();
+
+
     public IAsyncRelayCommand PullLogsToDownloads => new AsyncRelayCommand(CopyLogsToDownloads);
 
     public ILogger<AppInfoViewModel> Logger { get; }
@@ -54,6 +59,17 @@ public partial class AppInfoViewModel : IAppInfoViewModel
     {
         return DeviceInfo.Current.Platform.ToString();
     }
+
+    private static bool GetIsDebug()
+    {
+#if DEBUG
+        return true;
+#else
+        return false;
+#endif
+    }
+
+
     private async Task CopyLogsToDownloads()
     {
         Logger.LogInformation("User requested to copy log files to downloads folder.");
@@ -68,7 +84,8 @@ public partial class AppInfoViewModel : IAppInfoViewModel
         IFileSystemResult? result = null;
         foreach (var file in logFiles)
         {
-            result = await FileHandler.CopyFileAsync(file, outputDir);
+            result = await CopyFile(file, outputDir);
+
             if (result.Success)
             {
                 filesValid++;
@@ -116,8 +133,19 @@ public partial class AppInfoViewModel : IAppInfoViewModel
             Message = msg,
             OutputDirectory = outputDir,
         });
-
     }
+
+    private async Task<IFileSystemResult> CopyFile(string? file, string outputDir)
+    {
+        if (DeviceInfo.Current.Platform == DevicePlatform.Android)
+        {
+            string? fileName = Path.GetFileName(file);
+            return await FileHandler.CopyFileAsync(file, outputDir, $"{fileName}.txt");
+        }
+        return await FileHandler.CopyFileAsync(file, outputDir);
+    }
+
+
     private void OpenLogDirectoryInFileExplorer()
     {
         var paths = LoggingInfoProvider.LoggingFilePaths;

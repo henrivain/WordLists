@@ -16,31 +16,47 @@ public class SafeFileHandler
 		try
 		{
 			result = Path.GetDirectoryName(path).AddDirSeparator();
-			Logger.LogInformation("Get directory returns '{path}'", result);
-			return true;
+            Logger.LogInformation("{name} returns '{name}'.", nameof(TryGetDirectory), result);
+            return true;
 		}
 		catch 
 		{
-			Logger.LogWarning("Get directory cannot read directory from '{path}'", path);
+			Logger.LogWarning("Get directory cannot read directory from '{path}'.", path);
             return false;
 		}
 	}
 
-	protected bool GetFileName(string? path, out string? result)
+	protected bool TryGetFileName(string? path, out string? result)
 	{
 		result = null;
 		try
 		{
 			result = Path.GetFileName(path);
-			Logger.LogInformation("Get file name returns '{name}'", result);
+            Logger.LogInformation("{name} returns '{name}'.", nameof(TryGetFileName), result);
 			return true;
         }
 		catch 
 		{
-			Logger.LogWarning("Cannot get file name from '{path}'", path);
+			Logger.LogWarning("Cannot get file name from '{path}'.", path);
             return false;
 		}
 	}
+
+	protected bool TryGetFileExtension(string? path, out string? result)
+	{
+		try
+		{
+			result = Path.GetExtension(path);
+            Logger.LogInformation("{name} returns '{name}'.", nameof(TryGetFileExtension), result);
+            return true;
+		}
+		catch 
+		{
+            result = null;
+			Logger.LogWarning("Cannot get file extension from '{path}'.", path);
+			return false;
+        }
+    }
 
 	protected bool TryEnumerateFileNames(string? directory, out string[] fileNames)
 	{

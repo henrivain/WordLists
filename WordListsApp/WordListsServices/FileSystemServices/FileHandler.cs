@@ -18,7 +18,7 @@ public class FileHandler : SafeFileHandler, IFileHandler
 
     /// <inheritdoc/>
     public async Task<IFileSystemResult> CopyFileAsync(
-        string? inputFile, string? destinationFolder, bool overwrite = true)
+        string? inputFile, string? destinationFolder, string? outputFileName = null, bool overwrite = true)
     {
         PermissionHandler handler = new(Logger);
         if (await handler.RequestFileSystemReadAccess() is false)
@@ -41,15 +41,14 @@ public class FileHandler : SafeFileHandler, IFileHandler
                 Message = "Cannot get permission to use file system to write files."
             };
         }
-        return await Task.Run(() => CopyFile(inputFile, destinationFolder, overwrite));
+        return await Task.Run(() => CopyFile(inputFile, destinationFolder, outputFileName, overwrite));
     }
 
-    /// <inheritdoc/>
     private IFileSystemResult CopyFile(
-        string? inputFile, string? destinationFolder, bool overwrite = true)
+        string? inputFile, string? destinationFolder, string? outputFileName = null, bool overwrite = true)
     {
         Logger.LogInformation("Copy file from '{input}' to '{output}'", inputFile, destinationFolder);
-        string? fileName = Path.GetFileName(inputFile);
+        string? inputFileName = Path.GetFileName(inputFile);
 
         if (File.Exists(inputFile) is false)
         {
@@ -61,7 +60,7 @@ public class FileHandler : SafeFileHandler, IFileHandler
                 OutputPath = destinationFolder,
             };
         }
-        if (string.IsNullOrWhiteSpace(fileName))
+        if (string.IsNullOrWhiteSpace(inputFileName))
         {
             Logger.LogWarning("Cannot copy file without name.");
             return new FileSystemResult(false)
@@ -81,12 +80,15 @@ public class FileHandler : SafeFileHandler, IFileHandler
                 OutputPath = destinationFolder,
             };
         }
-
-        // Have to use some other way in android
-
-
-        string destinationPath = Path.Combine(destinationFolder, fileName);
+        if (outputFileName is null)
+        {
+            Logger.LogInformation("Use input file name '{name}', because output file name was not given.", inputFileName);
+            outputFileName = inputFileName;
+        }
+        
+        string destinationPath = Path.Combine(destinationFolder, outputFileName);
         var folderCreated = FolderHandler.CreateDirectory(destinationFolder);
+
         if (folderCreated.NotSuccess())
         {
             Logger.LogWarning("Cannot copy file, because destination folder cannot be created.");
@@ -208,8 +210,6 @@ public class FileHandler : SafeFileHandler, IFileHandler
             OutputPath = outputDir
         };
     }
-
-
 
     /// <inheritdoc/>
     public IFileSystemResult Create(string? filePath)
@@ -333,7 +333,7 @@ public class FileHandler : SafeFileHandler, IFileHandler
 
     private bool NameFilter(string path, string[] nameArgs)
     {
-        if (GetFileName(path, out string? name) is false)
+        if (TryGetFileName(path, out string? name) is false)
         {
             return false;
         }

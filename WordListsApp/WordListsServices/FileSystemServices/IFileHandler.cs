@@ -15,7 +15,7 @@ public interface IFileHandler
     /// <param name="destinationFolder"></param>
     /// <param name="overwrite"></param>
     /// <returns>FileSystemResult where OutputPath => destinationFile, InputPath => inputFile.</returns>
-    Task<IFileSystemResult> CopyFileAsync(string? inputFile, string? destinationFolder, bool overwrite = true);
+    Task<IFileSystemResult> CopyFileAsync(string? inputFile, string? destinationFolder, string? outputFileName = null, bool overwrite = true);
 
     /// <summary>
     /// Delete file asynchronously from given path.

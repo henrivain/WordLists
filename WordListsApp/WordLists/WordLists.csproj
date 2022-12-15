@@ -108,8 +108,6 @@
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
-		<MauiImage Include="Resources\Images\arrow.svg" BaseSize="60, 60" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -120,7 +118,26 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Remove="Resources\Fonts\Poppins\Poppins-ThinItalic.ttf" />
+		<None Remove="Resources\Fonts\OFL.txt" />
+		<None Remove="Resources\Fonts\Poppins-Black.ttf" />
+		<None Remove="Resources\Fonts\Poppins-BlackItalic.ttf" />
+		<None Remove="Resources\Fonts\Poppins-Bold.ttf" />
+		<None Remove="Resources\Fonts\Poppins-BoldItalic.ttf" />
+		<None Remove="Resources\Fonts\Poppins-ExtraBold.ttf" />
+		<None Remove="Resources\Fonts\Poppins-ExtraBoldItalic.ttf" />
+		<None Remove="Resources\Fonts\Poppins-ExtraLight.ttf" />
+		<None Remove="Resources\Fonts\Poppins-ExtraLightItalic.ttf" />
+		<None Remove="Resources\Fonts\Poppins-Italic.ttf" />
+		<None Remove="Resources\Fonts\Poppins-Light.ttf" />
+		<None Remove="Resources\Fonts\Poppins-LightItalic.ttf" />
+		<None Remove="Resources\Fonts\Poppins-Medium.ttf" />
+		<None Remove="Resources\Fonts\Poppins-MediumItalic.ttf" />
+		<None Remove="Resources\Fonts\Poppins-Regular.ttf" />
+		<None Remove="Resources\Fonts\Poppins-SemiBold.ttf" />
+		<None Remove="Resources\Fonts\Poppins-SemiBoldItalic.ttf" />
+		<None Remove="Resources\Fonts\Poppins-Thin.ttf" />
+		<None Remove="Resources\Fonts\Poppins-ThinItalic.ttf" />
+		<None Remove="Resources\Fonts\Poppins.ttf" />
 		<None Remove="Resources\Images\again_icon.svg" />
 		<None Remove="Resources\Images\bin_icon_old.svg" />
 		<None Remove="Resources\Images\bin_icon_with_border.svg" />
@@ -151,6 +168,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Resources\Fonts\Poppins\" />
 	  <Folder Include="Resources\Raw\TesseracData\" />
 	</ItemGroup>
 
