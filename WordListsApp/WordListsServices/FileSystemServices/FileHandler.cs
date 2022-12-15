@@ -94,6 +94,13 @@ public class FileHandler : SafeFileHandler, IFileHandler
             Logger.LogWarning("Cannot copy file, because destination folder cannot be created.");
             return folderCreated;
         }
+#if ANDROID
+        var oldDeleted = Delete(destinationPath);
+        if (oldDeleted.NotSuccess())
+        {
+            Logger.LogWarning("Old log export might still exist in file system.");
+        }
+#endif
         try
         {
             File.Copy(inputFile, destinationPath, overwrite);
@@ -235,7 +242,7 @@ public class FileHandler : SafeFileHandler, IFileHandler
             Logger.LogWarning("Cannot create file, no directory in path.", filePath);
             return new FileSystemResult(false)
             {
-                Message = $"Cannot get direcotry name from path '{filePath}'",
+                Message = $"Cannot get directory name from path '{filePath}'",
                 OutputPath = filePath
             };
         }
