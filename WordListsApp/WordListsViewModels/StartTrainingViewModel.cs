@@ -1,7 +1,8 @@
-﻿using WordDataAccessLibrary.DataBaseActions.Interfaces;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
+using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsMauiHelpers.Extensions;
 using WordListsViewModels.Events;
-using WordListsViewModels.Extensions;
 
 namespace WordListsViewModels;
 
@@ -12,34 +13,81 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
     {
         OwnerService = ownerService;
         WordCollectionService = wordCollectionService;
+        AllCollections = Enumerable.Empty<WordCollectionOwner>().ToList();
     }
 
     IWordCollectionOwnerService OwnerService { get; }
     IWordCollectionService WordCollectionService { get; }
 
+    List<WordCollectionOwner> AllCollections { get; set; }
+
     [ObservableProperty]
     List<WordCollectionOwner> _availableCollections = new();
 
     [ObservableProperty]
-    string _dataParameter = string.Empty;
-    
-    
-    public IAsyncRelayCommand UpdateCollectionsByName => new AsyncRelayCommand(async () =>
+    string _searchTerm = string.Empty;
+
+    int _filtersWaiting = 0;
+
+    public IAsyncRelayCommand FilterCollections => new AsyncRelayCommand(async () =>
     {
-        AvailableCollections = (await OwnerService.GetByName(DataParameter)).SortByName().ToList();
-    });    
-    
-    public IAsyncRelayCommand UpdateCollectionsByLanguage => new AsyncRelayCommand(async () =>
-    {
-        AvailableCollections = (await OwnerService.GetByLanguage(DataParameter)).SortByName().ToList();
+        _filtersWaiting++;
+        await Task.Delay(250);
+        if (_filtersWaiting > 1)
+        {
+            _filtersWaiting--;
+            return;
+        }
+        _filtersWaiting = 0;
+
+        AvailableCollections = await Task.Run(() =>
+        {
+            return AllCollections.Where(Filter).ToList();
+        });
+
+
+        //foreach (var collection in AllCollections)
+        //{
+        //    if (Filter(collection))
+        //    {
+        //        if (AvailableCollections.Contains(collection))
+        //        {
+        //            continue;
+        //        }
+        //        AvailableCollections.Add(collection);
+        //        continue;
+        //    }
+        //    AvailableCollections.Remove(collection);
+        //}
+
+
+
+        //var filtered = AllCollections.Where(Filter);
+        //foreach (var collection in AllCollections)
+        //{
+        //    if (filtered.Contains(collection) is false)
+        //    {
+        //        Debug.WriteLine($"Try remove {collection.Name}");
+        //        AvailableCollections.Remove(collection);
+        //        Debug.WriteLine($"Removed {collection.Name}");
+        //        continue;
+        //    }
+        //    if (AvailableCollections.Contains(collection) is false)
+        //    {
+        //        Debug.WriteLine($"Try add {collection.Name}");
+        //        AvailableCollections.Add(collection);
+        //        Debug.WriteLine($"Added {collection.Name}");
+        //        continue;
+        //    }
+        //}
     });
 
-    public IAsyncRelayCommand UpdateCollections => new AsyncRelayCommand(async () =>
-    {
-        await ResetCollections();
-    });
 
-    
+    public IAsyncRelayCommand UpdateCollections => new AsyncRelayCommand(ResetCollections);
+
+
+
+
 
     [ObservableProperty]
     bool _showLearnedWords = true;
@@ -72,7 +120,7 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
     WordCollectionOwner _selectedItem = new();
 
 
-  
+
 
     public IAsyncRelayCommand<int> RequestCardsTraining => new AsyncRelayCommand<int>(async selectionId =>
     {
@@ -124,8 +172,17 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
 
     public async Task ResetCollections()
     {
-        IsRefreshing = true;   
-        AvailableCollections = (await OwnerService.GetAll()).SortByName().ToList();
+        IsRefreshing = true;
+        AllCollections = (await OwnerService.GetAll()).SortByName().ToList();
+        AvailableCollections = new(AllCollections);
         IsRefreshing = false;
     }
+
+    private bool Filter(WordCollectionOwner? param)
+    {
+        if (param is null) return false;
+        return param.LanguageHeaders.Contains(SearchTerm ?? string.Empty, StringComparison.OrdinalIgnoreCase) ||
+            param.Name.Contains(SearchTerm ?? string.Empty, StringComparison.OrdinalIgnoreCase);
+    }
+
 }

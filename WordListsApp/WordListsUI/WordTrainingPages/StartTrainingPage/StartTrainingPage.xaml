@@ -29,20 +29,12 @@
                 <entry:PlatformIndependantEntry WidthRequest="300"
                                                 Margin="0,20"
                                                 HorizontalOptions="Center"
-                                                Text="{Binding DataParameter}"
+                                                Text="{Binding SearchTerm}"
                                                 PlaceHolder="Avainsana"
-                                                MaxLength="36" />
-                <VerticalStackLayout>
-                    <Grid ColumnDefinitions="*, *">
-                        <Button Text="Etsi nimen perusteella"
-                                Command="{Binding UpdateCollectionsByName}"
-                                HorizontalOptions="End" />
-                        <Button Text="Etsi kielen perusteella"
-                                Grid.Column="1"
-                                HorizontalOptions="Start"
-                                Command="{Binding UpdateCollectionsByLanguage}" />
-                    </Grid>
-                </VerticalStackLayout>
+                                                MaxLength="36" 
+                                                TextChangedCommand="{Binding FilterCollections}"
+                                                />
+          
 
                 <HorizontalStackLayout HorizontalOptions="Center"
                                        Padding="10">
@@ -81,15 +73,13 @@
                 <Button Text="Näytä kaikki"
                         HorizontalOptions="Center"
                         Margin="0,20"
-                        Command="{Binding UpdateCollections}" 
-                        />
+                        Command="{Binding UpdateCollections}" />
 
 
 
                 <CollectionView ItemsSource="{Binding AvailableCollections}"
                                 Margin="20,0,20,100"
-                                HorizontalOptions="Center"
-                                >
+                                HorizontalOptions="Center">
                     <!-- SelectionMode="Single" crashes if selection null (MauiBug #9060) -->
                     <CollectionView.EmptyView>
                         <Grid>

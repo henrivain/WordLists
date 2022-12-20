@@ -49,8 +49,13 @@ public class DefaultLoggingProvider : ILoggingInfoProvider
     {
         if (LoggerConfigured is false)
         {
+            var sink = new DebugEventSink();
+
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
+#if DEBUG
+                .WriteTo.Sink(sink)
+#endif
                 .WriteTo.File(GetLogFilePath())  //fileSizeLimitBytes: 10_000_000 ??
                 .CreateLogger();
             Log.Logger.Information("New serilogger created in '{name}'.", nameof(DefaultLoggingProvider));

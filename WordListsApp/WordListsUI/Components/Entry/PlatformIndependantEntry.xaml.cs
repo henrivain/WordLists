@@ -1,6 +1,9 @@
+using System.Windows.Input;
 using WordListsUI.Helpers;
 
 namespace WordListsUI.Components.Entry;
+
+
 
 public partial class PlatformIndependantEntry : Border
 {
@@ -40,6 +43,15 @@ public partial class PlatformIndependantEntry : Border
         BindableProperty.Create(nameof(MaxLength), typeof(int), typeof(PlatformIndependantEntry), int.MaxValue);
 
 
+    public ICommand? TextChangedCommand
+    {
+        get { return (ICommand?)GetValue(TextChangedCommandProperty); }
+        set { SetValue(TextChangedCommandProperty, value); }
+    }
+    public static readonly BindableProperty TextChangedCommandProperty =
+        BindableProperty.Create(nameof(TextChangedCommand), typeof(ICommand), typeof(PlatformIndependantEntry), default(ICommand?));
+
+
     public Keyboard Keyboard
     {
         get { return (Keyboard)GetValue(KeyboardProperty); }
@@ -58,4 +70,8 @@ public partial class PlatformIndependantEntry : Border
         }
     }
 
+    private void Entry_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        TextChangedCommand?.Execute(null);
+    }
 }

@@ -30,7 +30,9 @@
                HorizontalOptions="FillAndExpand"
                Keyboard="{Binding Keyboard, Source={x:Reference platformIndependantEntry}}"
                Placeholder="{Binding PlaceHolder, Source={x:Reference platformIndependantEntry}}"
-               PlaceholderColor="{StaticResource SecondaryText}" />
+               PlaceholderColor="{StaticResource SecondaryText}" 
+               TextChanged="Entry_TextChanged"
+               />
         <Line BackgroundColor="{StaticResource BinIconBackground}"
               IsVisible="{OnPlatform Android=true, Default=false}"
               StrokeThickness="1.85" />

@@ -23,7 +23,7 @@
                             Value="{StaticResource UnImportantText}" />
                 </Style>
             </VerticalStackLayout.Resources>
-  
+
             <VerticalStackLayout Margin="0,0,0,20">
                 <Label>
                     <Label.FormattedText>
@@ -59,24 +59,28 @@
             <Label Text="DEBUG"
                    IsVisible="{Binding IsDebug}" />
 
-            <VerticalStackLayout Margin="0,100,0,0" HorizontalOptions="Center">
+            <VerticalStackLayout Margin="0,100,0,100"
+                                 HorizontalOptions="Center"
+                                 Spacing="5">
+                <VerticalStackLayout.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Padding"
+                                Value="40,10" />
+                    </Style>
+                </VerticalStackLayout.Resources>
                 <ActivityIndicator IsVisible="{Binding Working}"
                                    IsRunning="{Binding Working}"
-                                   MinimumHeightRequest="20"/>
+                                   MinimumHeightRequest="20" />
+                <Label Text="Diagnostiikka"
+                       FontSize="{OnPlatform WinUI=Title, Default=Small}" />
                 <Button Text="Kopioi lokitiedostot latauksiin"
-                        Padding="50,10"
-                        Margin="0,5"
                         Command="{Binding PullLogsToDownloads}" />
-                <Button Text="Avaa lokitiedostokansio" 
+                <Button Text="Avaa lokitiedostokansio"
                         IsVisible="{OnPlatform WinUI=true, Default=false}"
-                        Padding="50,10"
-                        Command="{Binding OpenLogsInFileExplorer}"
-                        />
+                        Command="{Binding OpenLogsInFileExplorer}" />
                 <Button Text="Tyhjennä lokitiedostot"
-                        IsVisible="{Binding IsDebug}"
-                        Padding="50,10"
+                        IsVisible="{OnPlatform WinUI=False, Default={Binding IsDebug}}"
                         Clicked="DeleteLogs_Clicked" />
-
             </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>

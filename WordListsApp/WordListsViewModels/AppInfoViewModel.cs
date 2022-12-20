@@ -145,7 +145,6 @@ public partial class AppInfoViewModel : IAppInfoViewModel
         return await FileHandler.CopyFileAsync(file, outputDir);
     }
 
-
     private void OpenLogDirectoryInFileExplorer()
     {
         var paths = LoggingInfoProvider.LoggingFilePaths;

@@ -1,4 +1,5 @@
-﻿using WordListsServices.Extensions;
+﻿using Microsoft.Extensions.Logging;
+using WordListsServices.Extensions;
 using WordListsServices.FileSystemServices.ActionResults;
 
 namespace WordListsServices.FileSystemServices;
@@ -324,6 +325,7 @@ public class FileHandler : SafeFileHandler, IFileHandler
                 _ => $"Unknown Exception at {nameof(FileHandler)}.{nameof(Delete)}. " +
                     $"Exception '{ex.GetType()}', '{ex.Message}'"
             };
+            msg += $" {ex.Message}";
             Logger.LogWarning("Failed to delete file because of '{ex}', '{msg}'", ex.GetType().Name, ex.Message);
 
             return new FileSystemResult(false)
