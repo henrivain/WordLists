@@ -68,9 +68,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="WelcomePage\welcomePage.xaml.cs">
-			<DependentUpon>WelcomePage.xaml</DependentUpon>
-		</Compile>
 		<Compile Update="WordDataPages\WordDataMenuItems.xaml.cs">
 			<DependentUpon>WordDataMenuItems.xaml</DependentUpon>
 		</Compile>
@@ -123,9 +120,6 @@
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="WordDataPages\ListGeneratorPage\ListGeneratorPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="WelcomePage\WelcomePage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="WordTrainingPages\FlipCardTrainingPage\FlipCardTrainingPage.xaml">

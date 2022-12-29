@@ -9,8 +9,8 @@
              BackgroundColor="{StaticResource PageBackground}">
     <ContentPage.Resources>
         <Style TargetType="{x:Type Label}">
-            <Setter Property="FontFamily"
-                    Value="Poppins" />
+            <!--<Setter Property="FontFamily"
+                    Value="Poppins" />-->
             <Setter Property="TextColor"
                     Value="{StaticResource SecondaryText}" />
         </Style>
