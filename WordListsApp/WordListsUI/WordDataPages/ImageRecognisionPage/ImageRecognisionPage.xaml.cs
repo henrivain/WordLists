@@ -1,5 +1,3 @@
-using Microsoft.Maui.Controls.PlatformConfiguration;
-using Microsoft.Maui.Media;
 #if WINDOWS
 using WordListsUI.Platforms.Windows;
 #endif

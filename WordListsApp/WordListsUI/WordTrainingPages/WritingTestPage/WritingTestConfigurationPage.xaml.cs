@@ -17,7 +17,8 @@ public partial class WritingTestConfigurationPage : ContentPage
 
     private async void Model_StartWordCollection(object sender, TestStartEventArgs e)
     {
-        var path = $"../{PageRoutes.GetRoute(Route.Training)}/{nameof(WritingTestPage)}";
+        var path = $"{PageRoutes.GetRoute(Route.Training)}/{nameof(WritingTestPage)}";
+        await Shell.Current.Navigation.PopAsync();
         await Shell.Current.GoToAsync(path, new Dictionary<string, object>()
         {
             [nameof(WritingTestPage.StartCollection)] = e.WordCollection,

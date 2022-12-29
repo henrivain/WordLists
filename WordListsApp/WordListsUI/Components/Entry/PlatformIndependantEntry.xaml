@@ -7,7 +7,7 @@
         StrokeThickness="0"
         x:Name="platformIndependantEntry"
         BackgroundColor="{StaticResource DarkerThanPage}"
-        x:DataType="{x:Type local:PlatformIndependantEntry}">
+        >
     <Border.Resources>
         <Style TargetType="{x:Type Entry}"
                x:Key="samsungEntryStyle">

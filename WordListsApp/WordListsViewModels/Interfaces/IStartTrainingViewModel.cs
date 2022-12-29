@@ -1,12 +1,13 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using WordListsViewModels.Events;
 
 namespace WordListsViewModels.Interfaces;
 public interface IStartTrainingViewModel
 {
-    List<WordCollectionOwner> AvailableCollections { get; set; }
+    ObservableCollection<WordCollectionOwner> VisibleCollections { get; set; }
 
-    IAsyncRelayCommand FilterCollections { get; }
+    IRelayCommand FilterCollections { get; }
 
     IAsyncRelayCommand UpdateCollections { get; }
 

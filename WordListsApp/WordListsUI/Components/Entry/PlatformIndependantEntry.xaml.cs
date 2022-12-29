@@ -3,7 +3,7 @@ using WordListsUI.Helpers;
 
 namespace WordListsUI.Components.Entry;
 
-
+#nullable enable
 
 public partial class PlatformIndependantEntry : Border
 {

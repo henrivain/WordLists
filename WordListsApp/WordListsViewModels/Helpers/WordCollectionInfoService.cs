@@ -1,5 +1,4 @@
-﻿using WordListsViewModels.Extensions;
-using WordDataAccessLibrary.DataBaseActions.Interfaces;
+﻿using WordDataAccessLibrary.DataBaseActions.Interfaces;
 
 namespace WordListsViewModels.Helpers;
 public class WordCollectionInfoService : IWordCollectionInfoService
@@ -13,10 +12,9 @@ public class WordCollectionInfoService : IWordCollectionInfoService
 
     public async Task<List<WordCollectionInfo>> GetAll()
     {
-        List<WordCollection> collections = await CollectionService.GetWordCollections();
-
+        var collections = await CollectionService.GetWordCollections();
         return collections.Select(x => new WordCollectionInfo(x.Owner, x.WordPairs.Count))
-                          .ToList()
-                          .SortByName();
+            .SortByName()
+            .ToList();
     }
 }

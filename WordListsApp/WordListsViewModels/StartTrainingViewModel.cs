@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsMauiHelpers.Extensions;
 using WordListsViewModels.Events;
@@ -22,72 +21,25 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
     List<WordCollectionOwner> AllCollections { get; set; }
 
     [ObservableProperty]
-    List<WordCollectionOwner> _availableCollections = new();
+    ObservableCollection<WordCollectionOwner> _visibleCollections = new();
 
     [ObservableProperty]
     string _searchTerm = string.Empty;
 
-    int _filtersWaiting = 0;
-
-    public IAsyncRelayCommand FilterCollections => new AsyncRelayCommand(async () =>
+    public IRelayCommand FilterCollections => new RelayCommand(() =>
     {
-        _filtersWaiting++;
-        await Task.Delay(250);
-        if (_filtersWaiting > 1)
+        VisibleCollections.Clear();
+        foreach (var collection in AllCollections)
         {
-            _filtersWaiting--;
-            return;
+            if (Filter(collection))
+            {
+                VisibleCollections.Add(collection);
+            }
         }
-        _filtersWaiting = 0;
-
-        AvailableCollections = await Task.Run(() =>
-        {
-            return AllCollections.Where(Filter).ToList();
-        });
-
-
-        //foreach (var collection in AllCollections)
-        //{
-        //    if (Filter(collection))
-        //    {
-        //        if (AvailableCollections.Contains(collection))
-        //        {
-        //            continue;
-        //        }
-        //        AvailableCollections.Add(collection);
-        //        continue;
-        //    }
-        //    AvailableCollections.Remove(collection);
-        //}
-
-
-
-        //var filtered = AllCollections.Where(Filter);
-        //foreach (var collection in AllCollections)
-        //{
-        //    if (filtered.Contains(collection) is false)
-        //    {
-        //        Debug.WriteLine($"Try remove {collection.Name}");
-        //        AvailableCollections.Remove(collection);
-        //        Debug.WriteLine($"Removed {collection.Name}");
-        //        continue;
-        //    }
-        //    if (AvailableCollections.Contains(collection) is false)
-        //    {
-        //        Debug.WriteLine($"Try add {collection.Name}");
-        //        AvailableCollections.Add(collection);
-        //        Debug.WriteLine($"Added {collection.Name}");
-        //        continue;
-        //    }
-        //}
     });
 
 
     public IAsyncRelayCommand UpdateCollections => new AsyncRelayCommand(ResetCollections);
-
-
-
-
 
     [ObservableProperty]
     bool _showLearnedWords = true;
@@ -174,7 +126,8 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
     {
         IsRefreshing = true;
         AllCollections = (await OwnerService.GetAll()).SortByName().ToList();
-        AvailableCollections = new(AllCollections);
+        VisibleCollections = new(AllCollections);
+        FilterCollections.Execute(null);
         IsRefreshing = false;
     }
 
