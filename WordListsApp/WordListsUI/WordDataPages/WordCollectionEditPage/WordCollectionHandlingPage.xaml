@@ -40,10 +40,13 @@
                                 ItemsLayout="{OnPlatform WinUI='VerticalGrid,3', Default='VerticalGrid,1'}"
                                 Margin="{OnPlatform Android='20,0', Default='20'}"
                                 MinimumHeightRequest="{OnPlatform Android=400, Default=0}">
-                    <CollectionView.EmptyView>
+                    <!-- Android crashes when adding new items to empty view (MauiBug #12219)
+                        Empty view can be added, when the bug is fixed
+                    -->
+                    <!--<CollectionView.EmptyView>
                         <Label Text="Yhtäkään sanastoa ei ole vielä lisätty"
-                               HorizontalTextAlignment="Center" />
-                    </CollectionView.EmptyView>
+                                HorizontalTextAlignment="Center" />
+                    </CollectionView.EmptyView>-->
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Border BackgroundColor="{StaticResource DarkerThanPage}"
@@ -95,7 +98,7 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
                 <Grid MaximumWidthRequest="800"
-                      Margin="0,5,0,100"
+                      Margin="{OnPlatform WinUI='0,5,0,100',Default='20,5,20,100'}"
                       ColumnDefinitions="*,*"
                       ColumnSpacing="5">
                     <Button Text="Poista kaikki sanastot"

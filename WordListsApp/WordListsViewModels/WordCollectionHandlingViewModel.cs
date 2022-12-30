@@ -79,10 +79,12 @@ public partial class WordCollectionHandlingViewModel : IWordCollectionHandlingVi
         });
 
         AvailableCollections.Clear();
+
         foreach (var info in collectionInfos)
         {
             AvailableCollections.Add(info);
         }
+
         IsBusy = false;
     }
     public async Task DeleteCollections(WordCollectionOwner[] owners)

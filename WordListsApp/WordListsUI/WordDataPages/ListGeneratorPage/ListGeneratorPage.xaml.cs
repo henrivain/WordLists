@@ -16,7 +16,6 @@ public partial class ListGeneratorPage : ContentPage
         BindingContext = modelFactory.Create();
         ContentPage_BindingContextChanged(this, EventArgs.Empty);
         InitializeComponent();
-        Model.EditFinished += Model_EditFinished1;
     }
 
     private async void Model_EditFinished1(object sender, DataBaseActionArgs e)
@@ -62,6 +61,7 @@ public partial class ListGeneratorPage : ContentPage
         Model.CollectionAddedEvent += Model_CollectionAddedEvent;
         Model.EditWantedEvent += OpenEditWantedDialog;
         Model.AddWantedEvent += OpenAddWordDialog;
+        Model.EditFinished += Model_EditFinished1;
     }
 
     private async void OpenEditWantedDialog(object sender, EditEventArgs e)

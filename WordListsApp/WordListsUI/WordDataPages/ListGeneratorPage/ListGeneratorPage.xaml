@@ -28,10 +28,7 @@
                         <Setter Property="TextColor"
                                 Value="{StaticResource SecondaryText}" />
                     </Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Margin"
-                                Value="0,20" />
-                    </Style>
+
                 </VerticalStackLayout.Resources>
                 <VerticalStackLayout Padding="30"
                                      HorizontalOptions="{OnIdiom Default=Center, Phone=FillAndExpand}">
@@ -45,7 +42,7 @@
                                                     WidthRequest="{OnPlatform WinUI=400}"
                                                     MaximumWidthRequest="{OnIdiom Default=400, Phone=300}"
                                                     MaxLength="40"
-                                                    FontSize="Micro" />
+                                                    FontSize="{OnPlatform WinUI=Micro, Default=Small}" />
                     <Label Text="Kielet"
                            Margin="0,10,0,5"
                            FontSize="Medium" />
@@ -54,12 +51,45 @@
                                                     Text="{Binding LanguageHeaders}"
                                                     MaxLength="16"
                                                     WidthRequest="120"
-                                                    FontSize="Micro"
+                                                    FontSize="{OnPlatform WinUI=Micro, Default=Small}"
                                                     HorizontalOptions="Start" />
                 </VerticalStackLayout>
-                <Button Text="Uusi leikepöydältä"
-                        HorizontalOptions="Center"
-                        Command="{Binding GeneratePairsCommand}" />
+
+                <Grid ColumnDefinitions="*,*"
+                      RowDefinitions="*,*"
+                      RowSpacing="5"
+                      Margin="25,0"
+                      ColumnSpacing="5"
+                      MaximumWidthRequest="{OnIdiom Default=999999999, Desktop=600}">
+                    <Button Text="Uusi leikepöydältä"
+                            Command="{Binding GeneratePairsCommand}"
+                            IsEnabled="{Binding Path=IsEditMode, Converter={StaticResource switchBool}}" />
+                    <Button Text="Vaihda kielet"
+                            Grid.Column="1"
+                            IsEnabled="{Binding CanSave}"
+                            Command="{Binding FlipSides}" />
+
+                    <Button Text="Tallenna"
+                            Command="{Binding Save}"
+                            Grid.Row="1"
+                            IsVisible="{Binding Path=IsEditMode, Converter={StaticResource switchBool}}" />
+                    <Button Text="Päivitä"
+                            Grid.Row="1"
+                            IsVisible="{Binding IsEditMode}"
+                            Command="{Binding FinishEdit}" />
+
+                    <Button Text="Peruuta"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            IsVisible="{Binding IsEditMode}"
+                            Clicked="CancelBtn_Clicked" />
+                    <Button Text="Aloita alusta"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            IsVisible="{Binding Path=IsEditMode, Converter={StaticResource switchBool}}"
+                            Clicked="StartAgainBtn_Click" />
+                </Grid>
+
                 <Button ImageSource="new_icon_dark.png"
                         Text="uusi sana"
                         IsVisible="{OnIdiom Phone=false, Default=true}"
@@ -92,10 +122,10 @@
 
                     </HorizontalStackLayout>
                 </Border>
-                
+
                 <CollectionView ItemSizingStrategy="MeasureAllItems"
                                 ItemsLayout="VerticalGrid,2"
-                                Margin="20"
+                                Margin="20,20,20,100"
                                 ItemsSource="{Binding Words}"
                                 x:Name="wordListView"
                                 CanReorderItems="True">
@@ -151,28 +181,7 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <VerticalStackLayout Margin="0,0,0,100">
-                    <Button Text="Vaihda kielet"
-                            IsEnabled="{Binding CanSave}"
-                            HorizontalOptions="Center"
-                            Command="{Binding FlipSides}" />
-                    <Button Text="Päivitä"
-                            IsVisible="{Binding IsEditMode}"
-                            Command="{Binding FinishEdit}"
-                            HorizontalOptions="Center" />
-                    <Button Text="Peruuta"
-                            IsVisible="{Binding IsEditMode}"
-                            HorizontalOptions="Center"
-                            Clicked="CancelBtn_Clicked" />
-                    <Button Text="Tallenna"
-                            Command="{Binding Save}"
-                            IsVisible="{Binding Path=IsEditMode, Converter={StaticResource switchBool}}"
-                            HorizontalOptions="Center" />
-                    <Button Text="Aloita alusta"
-                            IsVisible="{Binding Path=IsEditMode, Converter={StaticResource switchBool}}"
-                            Clicked="StartAgainBtn_Click"
-                            HorizontalOptions="Center" />
-                </VerticalStackLayout>
+
             </VerticalStackLayout>
         </ScrollView>
         <menu:SideMenu x:Name="menu"
