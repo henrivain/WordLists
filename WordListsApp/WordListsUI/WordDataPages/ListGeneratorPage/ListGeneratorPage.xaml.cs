@@ -1,3 +1,4 @@
+using WordDataAccessLibrary;
 using WordDataAccessLibrary.DataBaseActions;
 using WordListsMauiHelpers.Factories;
 using WordListsUI.Helpers;
@@ -6,6 +7,7 @@ using WordListsViewModels.Events;
 namespace WordListsUI.WordDataPages.ListGeneratorPage;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]
+[QueryProperty(nameof(EditParameter), nameof(EditParameter))]
 public partial class ListGeneratorPage : ContentPage
 {
     public ListGeneratorPage(IAbstractFactory<IListGeneratorViewModel> modelFactory)
@@ -14,8 +16,21 @@ public partial class ListGeneratorPage : ContentPage
         BindingContext = modelFactory.Create();
         ContentPage_BindingContextChanged(this, EventArgs.Empty);
         InitializeComponent();
+        Model.EditFinished += Model_EditFinished1;
     }
 
+    private async void Model_EditFinished1(object sender, DataBaseActionArgs e)
+    {
+        await DisplayAlert("P‰ivitetty onnistuneesti!", 
+            "Onnistuneesti poistettiin vanha sanasto ja lis‰ttiin sen uusi muokattu versio. " +
+            "Huomaa, ett‰ n‰kym‰ pit‰‰ ehk‰ p‰ivitt‰‰, jotta muutettu sanasto n‰kyy oikein.", "OK");
+        await Shell.Current.Navigation.PopAsync();
+    }
+
+    public WordCollection EditParameter
+    {
+        set => Model.StartEditProcess(value);
+    }
 
     IAbstractFactory<IListGeneratorViewModel> ModelFactory { get; }
 
@@ -49,7 +64,7 @@ public partial class ListGeneratorPage : ContentPage
         Model.AddWantedEvent += OpenAddWordDialog;
     }
 
-    private async void OpenEditWantedDialog(object sender, EditWantedEventArgs e)
+    private async void OpenEditWantedDialog(object sender, EditEventArgs e)
     {
         var result = await DisplayPromptAsync("Muokkaa sanaa", "kirjoita sanalle haluamasi muoto", "OK", "peruuta", "muokattu sana", initialValue: e.CurrentValue);
         if (string.IsNullOrEmpty(result)) return;
@@ -61,5 +76,11 @@ public partial class ListGeneratorPage : ContentPage
         var result = await DisplayPromptAsync("Lis‰‰ uusi sana", "kirjoita listan loppuun lis‰tt‰v‰ sana", "OK", "peruuta", "lis‰tt‰v‰ sana");
         if (string.IsNullOrEmpty(result)) return;
         Model.AddWord(result);
+    }
+
+    
+    private async void CancelBtn_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.Navigation.PopAsync();
     }
 }

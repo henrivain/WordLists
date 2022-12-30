@@ -1,5 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using Serilog.Filters;
+using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsViewModels.Events;
 using WordListsViewModels.Helpers;
@@ -18,25 +19,31 @@ public partial class WordCollectionHandlingViewModel : IWordCollectionHandlingVi
     [ObservableProperty]
     ObservableCollection<WordCollectionInfo> _availableCollections = new();
 
+    [ObservableProperty]
+    bool _isBusy = false;
+
     public event CollectionDeletedEventHandler? CollectionsDeleted;
 
     public event DeleteWantedEventHandler? DeleteRequested;
 
-#pragma warning disable CS0067 // EditRequested is never used
-    public event EditWantedEventHandler? EditRequested;
-#pragma warning restore CS0067 // EditRequested is never used 
+    public event CollectionEditWantedEventHandler? EditRequested;
 
     public IAsyncRelayCommand UpdateCollectionInfos => new AsyncRelayCommand(ResetCollections);
 
     public IWordCollectionService CollectionService { get; }
     ILogger<IWordCollectionHandlingViewModel> Logger { get; }
 
-    
-
-
-    public IRelayCommand<int> Edit => new RelayCommand<int>((value) =>
+    public IAsyncRelayCommand<int> Edit => new AsyncRelayCommand<int>(async (value) =>
     {
-        throw new NotImplementedException();
+        IsBusy = true;
+        var collection = await CollectionService.GetWordCollection(value);
+
+        // Remove to handle crashes if collection is edited and deleted
+        var matching = AvailableCollections.FirstOrDefault(x => x.Owner.Id == value);
+        AvailableCollections.Remove(matching);
+
+        EditRequested?.Invoke(this, collection);
+        IsBusy = false;
     });
 
     public IRelayCommand<int> VerifyDeleteCommand => new RelayCommand<int>((value) =>
@@ -53,22 +60,30 @@ public partial class WordCollectionHandlingViewModel : IWordCollectionHandlingVi
     {
         DeleteWantedEventArgs args = new()
         {
-             ItemsToDelete = AvailableCollections.Select(x => x.Owner).ToArray(),
-             DeletesAll = true
+            ItemsToDelete = AvailableCollections.Select(x => x.Owner).ToArray(),
+            DeletesAll = true
         };
         DeleteRequested?.Invoke(this, args);
     });
 
     public async Task ResetCollections()
     {
+        IsBusy = true;
         List<WordCollection> collections = await CollectionService.GetWordCollections();
-
-        List<WordCollectionInfo> collectionInfos = new();
-        foreach (var collection in collections)
+        List<WordCollectionInfo> collectionInfos = await Task.Run(() =>
         {
-            collectionInfos.Add(new(collection.Owner, collection.WordPairs.Count));
+            return collections
+                .Select(x => new WordCollectionInfo(x.Owner, x.WordPairs.Count))
+                .OrderBy(x => x.Owner.Name)
+                .ToList();
+        });
+
+        AvailableCollections.Clear();
+        foreach (var info in collectionInfos)
+        {
+            AvailableCollections.Add(info);
         }
-        AvailableCollections = new(collectionInfos.OrderBy(x => x.Owner.Name));
+        IsBusy = false;
     }
     public async Task DeleteCollections(WordCollectionOwner[] owners)
     {

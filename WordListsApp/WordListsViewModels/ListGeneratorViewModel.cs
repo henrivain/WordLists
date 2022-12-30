@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordDataAccessLibrary.Generators;
 using WordListsMauiHelpers.DeviceAccess;
@@ -8,7 +7,6 @@ using WordListsViewModels.Events;
 namespace WordListsViewModels;
 
 [INotifyPropertyChanged]
-[QueryProperty(nameof(Owner), nameof(WordCollectionOwner))]
 public partial class ListGeneratorViewModel : IListGeneratorViewModel
 {
     public ListGeneratorViewModel(IWordCollectionService collectionService, ILogger<IListGeneratorViewModel> logger)
@@ -30,35 +28,64 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     [ObservableProperty]
     string _languageHeaders = "fi-en";
 
+    [ObservableProperty]
+    bool _isEditMode = false;
+
+    [ObservableProperty]
+    bool _isBusy = false;
+
     public bool CanSave => Words.Count / 2 > 0;
+
+    private WordCollection? OldWordCollectionValue { get; set; }
 
     public IAsyncRelayCommand GeneratePairsCommand => new AsyncRelayCommand(
         async () =>
         {
+            IsBusy = true;
             string text = await ClipboardAccess.GetStringAsync();
-            Words = new(StringParserActions[UseParser](text));
+            var parser = StringParserActions[UseParser];
+            string[] words = await Task.Run(() =>
+            {
+                return parser(text).ToArray();
+            });
+            Words.Clear();
+            foreach (var word in words)
+            {
+                Words.Add(word);
+            }
+            IsBusy = false;
         });
-
-    public IAsyncRelayCommand SaveCollection => new AsyncRelayCommand(
+    public IAsyncRelayCommand Save => new AsyncRelayCommand(
         async () =>
         {
+            IsBusy = true;
             if (Words.Count < 2)
             {
-                Debug.WriteLine($"{nameof(SaveCollection)}: Can't add empty word collection");
+                Logger.LogWarning("{class}.{method}: Can't add empty word collection",
+                    nameof(ListGeneratorViewModel), nameof(Save));
                 throw new InvalidOperationException();
             }
-            int id = await CollectionService.AddWordCollection(GetData());
+            int id = await CollectionService.AddWordCollection(ParseData());
 
             CollectionAddedEvent?.Invoke(this, new DataBaseActionArgs
             {
                 Text = "Added wordCollection successfully",
                 RefIds = new[] { id }
             });
+            IsBusy = false;
         });
+    public IAsyncRelayCommand FlipSides => new AsyncRelayCommand(async () =>
+    {
+        IsBusy = true;
+        List<string> words = await Task.Run(() =>
+        {
+            return Words.ToList().FlipPairs();
+        });
+        Words = new(words);
+        IsBusy = false;
+    });
 
-    public IRelayCommand FlipSides => new RelayCommand(() => Words = new(Words.ToList().FlipPairs()));
-
-    public WordCollection GetData()
+    public WordCollection ParseData()
     {
         return new()
         {
@@ -67,14 +94,10 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
             {
                 Name = CollectionName ?? string.Empty,
                 Description = Description ?? string.Empty,
-                LanguageHeaders = LanguageHeaders ?? string.Empty
+                LanguageHeaders = LanguageHeaders ?? string.Empty,
             }
         };
     }
-
-
-
-    public WordCollectionOwner Owner { get; set; } = new();
 
     public Parser UseParser { get; set; } = Parser.Otava;
 
@@ -116,11 +139,11 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     };
 
     /// <summary>
-    /// Try set string value of specific index in Words ObservableCollection
+    /// Try set string collection of specific index in Words ObservableCollection
     /// </summary>
     /// <param name="indexInList"></param>
     /// <param name="value"></param>
-    /// <returns>boolean value reprcenting if action was success</returns>
+    /// <returns>boolean collection reprcenting if action was success</returns>
     public bool SetWordValueWithIndex(int indexInList, string value)
     {
         if (string.IsNullOrEmpty(value)) return false;
@@ -132,7 +155,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         catch (ArgumentOutOfRangeException)
         {
             Logger.LogWarning("Cannot set value '{value}' for word pair in index '{index}'. " +
-                "Max index in this '{vmName}' instance is {maxIndex}.", 
+                "Max index in this '{vmName}' instance is {maxIndex}.",
                 value, indexInList, nameof(ListGeneratorViewModel), Words.Count);
             return false;
         }
@@ -145,9 +168,58 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     }
 
     public event CollectionAddedEventHandler? CollectionAddedEvent;
-
-    public event EditWantedEventHandler? EditWantedEvent;
-
+    public event CollectionEditEventHandler? EditWantedEvent;
     public event AddWantedEventHandler? AddWantedEvent;
+    public event CollectionAddedEventHandler? EditFinished;
+
+    public void StartEditProcess(WordCollection collection)
+    {
+        IsEditMode = true;
+        if (collection is null)
+        {
+            CollectionName = "Jotain meni pieleen...";
+            Logger.LogError("Cannot edit WordCollection that is null in [{type}.{method}]",
+                nameof(ListGeneratorViewModel), nameof(StartEditProcess));
+            return;
+        }
+        Logger.LogInformation("Start editing {type} with name {name}",
+            nameof(WordCollection), collection.Owner.Name);
+
+        OldWordCollectionValue = collection;
+        CollectionName = collection.Owner.Name;
+        LanguageHeaders = collection.Owner.LanguageHeaders;
+        Description = collection.Owner.Description;
+
+        foreach (var wordPair in collection.WordPairs)
+        {
+            Words.Add(wordPair.NativeLanguageWord);
+            Words.Add(wordPair.ForeignLanguageWord);
+        }
+    }
+
+    public IAsyncRelayCommand FinishEdit => new AsyncRelayCommand(async () =>
+    {
+        if (IsEditMode is false)
+        {
+            throw new InvalidOperationException("Cannot update word collection, when edit mode is not true");
+        }
+        IsBusy = true;
+
+        var newData = ParseData();
+        int oldId = OldWordCollectionValue?.Owner.Id ?? -1;
+        if (oldId is not -1)
+        {
+            await CollectionService.DeleteWordCollection(oldId);
+        }
+        int newId = await CollectionService.AddWordCollection(newData);
+
+        EditFinished?.Invoke(this, new()
+        {
+            RefIds = new[] { newId },
+            CollectionNames = new[] { newData.Owner.Name },
+            Text = "Successfully removed old word collection and added new edited one."
+        });
+        IsBusy = false;
+    });
 }
 

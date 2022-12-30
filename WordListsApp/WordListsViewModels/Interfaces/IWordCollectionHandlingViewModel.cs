@@ -5,10 +5,11 @@ using WordListsViewModels.Helpers;
 namespace WordListsViewModels.Interfaces;
 public interface IWordCollectionHandlingViewModel
 {
-
     ObservableCollection<WordCollectionInfo> AvailableCollections { get; set; }
 
     IAsyncRelayCommand UpdateCollectionInfos { get; }
+
+    bool IsBusy { get; }
 
     Task ResetCollections();
 
@@ -16,7 +17,7 @@ public interface IWordCollectionHandlingViewModel
 
     IRelayCommand VerifyDeleteAllCommand { get; }
 
-    IRelayCommand<int> Edit { get; }
+    IAsyncRelayCommand<int> Edit { get; }
 
     Task DeleteCollections(WordCollectionOwner[] owners);
 
@@ -24,6 +25,5 @@ public interface IWordCollectionHandlingViewModel
 
     event CollectionDeletedEventHandler? CollectionsDeleted;
 
-    event EditWantedEventHandler? EditRequested;
-
+    event CollectionEditWantedEventHandler? EditRequested;
 }

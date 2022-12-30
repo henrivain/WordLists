@@ -26,13 +26,12 @@
                 <TapGestureRecognizer Tapped="HideMenu" />
             </ScrollView.GestureRecognizers>
             <VerticalStackLayout>
-
                 <Label Text="Muokkaa tai poista sanastoja"
                        FontSize="Title"
                        FontAttributes="Bold"
-                       TextColor="{StaticResource UnImportantText}"
                        HorizontalTextAlignment="Center"
-                       Margin="0,20,0,30" />
+                       Margin="0,30"
+                       TextColor="{StaticResource UnImportantText}" />
 
                 <!-- Android needs Height request for some reason or collection view will not be shown. -->
                 <!-- resizing collectionview horizontally causes memory leak (Mauibug #9162) -->
@@ -54,9 +53,10 @@
                                     <RoundRectangle CornerRadius="8" />
                                 </Border.StrokeShape>
                                 <Grid Padding="{OnIdiom Phone='20,10,0,10', Default='20,5,0,5'}"
-                                      ColumnDefinitions="{OnIdiom Phone='*,45', Default='*, 40'}">
+                                      ColumnDefinitions="{OnIdiom Phone='*,45,45', Default='*,40,40'}">
                                     <VerticalStackLayout>
-                                        <Label Text="{Binding Owner.Name}" />
+                                        <Label Text="{Binding Owner.Name}"
+                                               LineBreakMode="TailTruncation" />
                                         <Label Margin="0,5,0,0"
                                                LineBreakMode="TailTruncation">
                                             <Label.FormattedText>
@@ -69,8 +69,18 @@
                                             </Label.FormattedText>
                                         </Label>
                                     </VerticalStackLayout>
-                                    <ImageButton Source="bin_simpler_icon.png"
+                                    <ImageButton Source="pencil_icon.png"
+                                                 HeightRequest="{OnIdiom Phone=35, Default=30}"
+                                                 WidthRequest="{Binding Source={RelativeSource Self}, Path=HeightRequest}"
                                                  Grid.Column="1"
+                                                 BackgroundColor="{StaticResource DarkerThanPage}"
+                                                 CommandParameter="{Binding Owner.Id}"
+                                                 Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:IWordCollectionHandlingViewModel}}, Path=Edit}"
+                                                 Padding="3"
+                                                 CornerRadius="15"
+                                                 HorizontalOptions="Start" />
+                                    <ImageButton Source="bin_simpler_icon.png"
+                                                 Grid.Column="2"
                                                  HeightRequest="{OnIdiom Phone=35, Default=30}"
                                                  WidthRequest="{Binding Source={RelativeSource Self}, Path=HeightRequest}"
                                                  BackgroundColor="{StaticResource DarkerThanPage}"
@@ -83,19 +93,16 @@
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
-
                 </CollectionView>
-                <Grid  ColumnDefinitions="*,*"
-                       Margin="25,10,25,50">
-                    <Button Text="Päivitä näkymä"
-                            Command="{Binding UpdateCollectionInfos}"
-                            Grid.Column="0"
-                            Margin="0,0,10,0"
-                             />
+                <Grid MaximumWidthRequest="800"
+                      Margin="0,5,0,100"
+                      ColumnDefinitions="*,*"
+                      ColumnSpacing="5">
                     <Button Text="Poista kaikki sanastot"
-                            Command="{Binding VerifyDeleteAllCommand}"
-                            Margin="10,0,0,0"
-                            Grid.Column="1" />
+                            Command="{Binding VerifyDeleteAllCommand}" />
+                    <Button Text="Päivitä näkymä"
+                            Grid.Column="1"
+                            Command="{Binding UpdateCollectionInfos}" />
                 </Grid>
             </VerticalStackLayout>
         </ScrollView>
@@ -107,5 +114,12 @@
                 <base:WordDataMenuItems SelectedItem="{x:Static base:SelectedMenuItem.Delete}" />
             </menu:SideMenu.MenuItems>
         </menu:SideMenu>
+        <ActivityIndicator HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           HeightRequest="50"
+                           Color="MediumPurple"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           WidthRequest="{Binding Source={RelativeSource Self}, Path=HeightRequest}" />
     </Grid>
 </ContentPage>

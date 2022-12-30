@@ -17,19 +17,25 @@ public interface IListGeneratorViewModel
 
     bool CanSave { get; }
 
+    bool IsEditMode { get; }
+
+    bool IsBusy { get; }
+
     IAsyncRelayCommand GeneratePairsCommand { get; }
 
-    IAsyncRelayCommand SaveCollection { get; }
+    IAsyncRelayCommand Save { get; }
 
-    IRelayCommand FlipSides { get; }
+    IAsyncRelayCommand FlipSides { get; }
 
     IRelayCommand<string> Delete { get; }
 
     IRelayCommand<string> Edit { get; }
 
+    IAsyncRelayCommand FinishEdit { get; }
+
     IRelayCommand New { get; }
 
-    WordCollection GetData();
+    WordCollection ParseData();
 
     /// <summary>
     /// Try set string value of specific index in Words ObservableCollection
@@ -44,10 +50,10 @@ public interface IListGeneratorViewModel
     /// </summary>
     /// <param name="result"></param>
     void AddWord(string result);
+    void StartEditProcess(WordCollection value);
 
     event CollectionAddedEventHandler? CollectionAddedEvent;
-
-    event EditWantedEventHandler? EditWantedEvent;
-
     event AddWantedEventHandler? AddWantedEvent;
+    event CollectionEditEventHandler? EditWantedEvent;
+    event CollectionAddedEventHandler? EditFinished;
 }

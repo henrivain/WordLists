@@ -8,11 +8,15 @@
              xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
              xmlns:local="clr-namespace:WordListsUI.WordDataPages.ListGeneratorPage"
              xmlns:entry="clr-namespace:WordListsUI.Components.Entry"
+             xmlns:converters="clr-namespace:WordListsUI.ValueConverters"
              x:DataType="{x:Type viewModel:IListGeneratorViewModel}"
              x:Name="listGeneratorPage"
              BackgroundColor="{StaticResource PageBackground}"
              Title="Luo otavasta"
              BindingContextChanged="ContentPage_BindingContextChanged">
+    <ContentPage.Resources>
+        <converters:BooleanConverter x:Key="switchBool" />
+    </ContentPage.Resources>
     <Grid>
         <ScrollView Margin="40,0,0,0">
             <ScrollView.GestureRecognizers>
@@ -22,7 +26,7 @@
                 <VerticalStackLayout.Resources>
                     <Style TargetType="{x:Type Label}">
                         <Setter Property="TextColor"
-                                Value="{StaticResource UnImportantText}" />
+                                Value="{StaticResource SecondaryText}" />
                     </Style>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Margin"
@@ -88,7 +92,7 @@
 
                     </HorizontalStackLayout>
                 </Border>
-
+                
                 <CollectionView ItemSizingStrategy="MeasureAllItems"
                                 ItemsLayout="VerticalGrid,2"
                                 Margin="20"
@@ -96,7 +100,12 @@
                                 x:Name="wordListView"
                                 CanReorderItems="True">
                     <CollectionView.EmptyView>
-                        <Label HorizontalOptions="Center" />
+                        <VerticalStackLayout>
+                            <Label HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center"
+                                   Text="Luo sanasto lisäämällä sana yläkulmasta tai painamalla 'uusi leikepöydältä'."
+                                   FontSize="Small" />
+                        </VerticalStackLayout>
                     </CollectionView.EmptyView>
 
                     <CollectionView.ItemTemplate>
@@ -142,16 +151,28 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <Button Text="Vaihda kielet"
-                        IsEnabled="{Binding CanSave}"
-                        HorizontalOptions="Center"
-                        Command="{Binding FlipSides}" />
-                <Button Text="Tallenna"
-                        Command="{Binding SaveCollection}"
-                        HorizontalOptions="Center" />
-                <Button Text="Aloita alusta"
-                        Clicked="StartAgainBtn_Click"
-                        HorizontalOptions="Center" />
+                <VerticalStackLayout Margin="0,0,0,100">
+                    <Button Text="Vaihda kielet"
+                            IsEnabled="{Binding CanSave}"
+                            HorizontalOptions="Center"
+                            Command="{Binding FlipSides}" />
+                    <Button Text="Päivitä"
+                            IsVisible="{Binding IsEditMode}"
+                            Command="{Binding FinishEdit}"
+                            HorizontalOptions="Center" />
+                    <Button Text="Peruuta"
+                            IsVisible="{Binding IsEditMode}"
+                            HorizontalOptions="Center"
+                            Clicked="CancelBtn_Clicked" />
+                    <Button Text="Tallenna"
+                            Command="{Binding Save}"
+                            IsVisible="{Binding Path=IsEditMode, Converter={StaticResource switchBool}}"
+                            HorizontalOptions="Center" />
+                    <Button Text="Aloita alusta"
+                            IsVisible="{Binding Path=IsEditMode, Converter={StaticResource switchBool}}"
+                            Clicked="StartAgainBtn_Click"
+                            HorizontalOptions="Center" />
+                </VerticalStackLayout>
             </VerticalStackLayout>
         </ScrollView>
         <menu:SideMenu x:Name="menu"
@@ -162,5 +183,12 @@
                 <base:WordDataMenuItems SelectedItem="{x:Static base:SelectedMenuItem.Create}" />
             </menu:SideMenu.MenuItems>
         </menu:SideMenu>
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           Color="MediumPurple"
+                           WidthRequest="{Binding Source={RelativeSource Self}, Path=HeightRequest}"
+                           HeightRequest="50" />
     </Grid>
 </ContentPage>

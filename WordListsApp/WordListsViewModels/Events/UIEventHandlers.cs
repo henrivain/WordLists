@@ -6,7 +6,9 @@ public delegate void TestValidatedEventHandler(object sender, TestValidatedEvent
 
 public delegate void ExitResultsEventHandler(object sender, EventArgs e);
 
-public delegate void EditWantedEventHandler(object sender, EditWantedEventArgs e);
+public delegate void CollectionEditEventHandler(object sender, EditEventArgs e);
+
+public delegate void CollectionEditWantedEventHandler(object sender, WordCollection collection);
 
 public delegate void AddWantedEventHandler(object sender, EventArgs e);
 
