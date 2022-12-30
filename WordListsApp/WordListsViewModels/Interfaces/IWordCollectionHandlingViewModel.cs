@@ -12,16 +12,18 @@ public interface IWordCollectionHandlingViewModel
 
     Task ResetCollections();
 
-    IRelayCommand<int> RequestDelete { get; }
+    IRelayCommand<int> VerifyDeleteCommand { get; }
+
+    IRelayCommand VerifyDeleteAllCommand { get; }
 
     IRelayCommand<int> Edit { get; }
 
-    Task DeleteCollection(WordCollectionOwner owner);
+    Task DeleteCollections(WordCollectionOwner[] owners);
 
     event DeleteWantedEventHandler? DeleteRequested;
 
-    event CollectionDeletedEventHandler? CollectionDeleted;
+    event CollectionDeletedEventHandler? CollectionsDeleted;
 
-    event EditWantedEventHandler? EditWanted;
+    event EditWantedEventHandler? EditRequested;
 
 }

@@ -75,7 +75,7 @@
                                                  WidthRequest="{Binding Source={RelativeSource Self}, Path=HeightRequest}"
                                                  BackgroundColor="{StaticResource DarkerThanPage}"
                                                  CommandParameter="{Binding Owner.Id}"
-                                                 Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:IWordCollectionHandlingViewModel}}, Path=RequestDelete}"
+                                                 Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:IWordCollectionHandlingViewModel}}, Path=VerifyDeleteCommand}"
                                                  Padding="3"
                                                  CornerRadius="15"
                                                  HorizontalOptions="Start" />
@@ -85,10 +85,18 @@
                     </CollectionView.ItemTemplate>
 
                 </CollectionView>
-                <Button Text="Päivitä näkymä"
-                        Command="{Binding UpdateCollectionInfos}"
-                        HorizontalOptions="Center"
-                        Margin="0,30" />
+                <Grid  ColumnDefinitions="*,*"
+                       Margin="25,10,25,50">
+                    <Button Text="Päivitä näkymä"
+                            Command="{Binding UpdateCollectionInfos}"
+                            Grid.Column="0"
+                            Margin="0,0,10,0"
+                             />
+                    <Button Text="Poista kaikki sanastot"
+                            Command="{Binding VerifyDeleteAllCommand}"
+                            Margin="10,0,0,0"
+                            Grid.Column="1" />
+                </Grid>
             </VerticalStackLayout>
         </ScrollView>
         <menu:SideMenu x:Name="menu"

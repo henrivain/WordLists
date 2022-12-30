@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Windows.Input;
 using WordListsUI.Helpers;
 
@@ -42,6 +43,15 @@ public partial class PlatformIndependantEntry : Border
     public static readonly BindableProperty MaxLengthProperty =
         BindableProperty.Create(nameof(MaxLength), typeof(int), typeof(PlatformIndependantEntry), int.MaxValue);
 
+    [TypeConverter(typeof(FontSizeConverter))]
+    public double FontSize
+    {
+        get { return (double)GetValue(FontSizeProperty); }
+        set { SetValue(FontSizeProperty, value); }
+    }
+
+    public static readonly BindableProperty FontSizeProperty =
+        BindableProperty.Create(nameof(FontSize), typeof(double), typeof(PlatformIndependantEntry));
 
     public ICommand? TextChangedCommand
     {

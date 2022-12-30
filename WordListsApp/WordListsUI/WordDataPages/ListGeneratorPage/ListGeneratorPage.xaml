@@ -38,8 +38,10 @@
                     <entry:PlatformIndependantEntry Text="{Binding CollectionName}"
                                                     PlaceHolder="Minun sanastoni 1"
                                                     HorizontalOptions="{OnIdiom Default=Start, Phone=FillAndExpand}"
-                                                    MaximumWidthRequest="{OnIdiom Phone=300, Default=400}"
-                                                    MaxLength="40" />
+                                                    WidthRequest="{OnPlatform WinUI=400}"
+                                                    MaximumWidthRequest="{OnIdiom Default=400, Phone=300}"
+                                                    MaxLength="40"
+                                                    FontSize="Micro" />
                     <Label Text="Kielet"
                            Margin="0,10,0,5"
                            FontSize="Medium" />
@@ -48,6 +50,7 @@
                                                     Text="{Binding LanguageHeaders}"
                                                     MaxLength="16"
                                                     WidthRequest="120"
+                                                    FontSize="Micro"
                                                     HorizontalOptions="Start" />
                 </VerticalStackLayout>
                 <Button Text="Uusi leikepöydältä"
@@ -143,7 +146,7 @@
                         IsEnabled="{Binding CanSave}"
                         HorizontalOptions="Center"
                         Command="{Binding FlipSides}" />
-                <Button Text="Save to database"
+                <Button Text="Tallenna"
                         Command="{Binding SaveCollection}"
                         HorizontalOptions="Center" />
                 <Button Text="Aloita alusta"

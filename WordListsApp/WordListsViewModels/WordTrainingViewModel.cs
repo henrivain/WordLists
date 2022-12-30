@@ -155,7 +155,7 @@ public partial class WordTrainingViewModel : IWordTrainingViewModel
         if (IsEmptyCollection is false)
         {
             await UpdateCollectionToDataBase();
-            CollectionUpdated?.Invoke(this, new("Updated collection to match progression", WordCollection.Owner.Id));
+            CollectionUpdated?.Invoke(this, new("Updated collection to match progression", WordCollection.Owner.Id, string.Empty));
         }
     });
 

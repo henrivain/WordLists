@@ -6,7 +6,7 @@
         Stroke="Transparent"
         StrokeThickness="0"
         x:Name="platformIndependantEntry"
-        BackgroundColor="{StaticResource DarkerThanPage}"
+        BackgroundColor="{OnPlatform Android={StaticResource DarkerThanPage}, Default=Transparent}"
         >
     <Border.Resources>
         <Style TargetType="{x:Type Entry}"
@@ -23,7 +23,7 @@
     <VerticalStackLayout>
         <Entry Text="{Binding Text, Source={x:Reference platformIndependantEntry}}"
                Margin="{OnPlatform Android='7,1', Default=0}"
-               BackgroundColor="{OnPlatform Android={StaticResource DarkerThanPage}, Default=Transparent}"
+               BackgroundColor="{StaticResource DarkerThanPage}"
                Style="{OnPlatform Android={StaticResource samsungEntryStyle}}"
                MaxLength="{Binding MaxLength, Source={x:Reference platformIndependantEntry}}"
                Focused="ITextInput_Focused"
@@ -32,6 +32,7 @@
                Placeholder="{Binding PlaceHolder, Source={x:Reference platformIndependantEntry}}"
                PlaceholderColor="{StaticResource SecondaryText}" 
                TextChanged="Entry_TextChanged"
+               FontSize="{Binding FontSize, Source={x:Reference platformIndependantEntry}}"
                />
         <Line BackgroundColor="{StaticResource BinIconBackground}"
               IsVisible="{OnPlatform Android=true, Default=false}"

@@ -39,7 +39,11 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
     });
 
 
-    public IAsyncRelayCommand UpdateCollections => new AsyncRelayCommand(ResetCollections);
+    public IAsyncRelayCommand UpdateCollections => new AsyncRelayCommand(async () =>
+    {
+        SearchTerm = string.Empty;
+        await ResetCollections();
+    });
 
     [ObservableProperty]
     bool _showLearnedWords = true;

@@ -10,13 +10,13 @@ namespace WordDataAccessLibrary.DataBaseActions;
 /// </summary>
 public class WordCollectionOwnerService : IWordCollectionOwnerService
 {
-    public WordCollectionOwnerService(ILogger<WordCollectionOwnerService> logger)
+    public WordCollectionOwnerService(ILogger<IWordCollectionOwnerService> logger)
     {
         Logger = logger;
     }
 
     static SQLiteAsyncConnection _db;
-    private ILogger<WordCollectionOwnerService> Logger { get; }
+    private ILogger<IWordCollectionOwnerService> Logger { get; }
 
     private async Task Init()
     {

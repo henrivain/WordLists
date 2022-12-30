@@ -4,7 +4,6 @@ using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordDataAccessLibrary.Generators;
 using WordListsMauiHelpers.DeviceAccess;
 using WordListsViewModels.Events;
-using WordListsViewModels.Extensions;
 
 namespace WordListsViewModels;
 
@@ -12,9 +11,10 @@ namespace WordListsViewModels;
 [QueryProperty(nameof(Owner), nameof(WordCollectionOwner))]
 public partial class ListGeneratorViewModel : IListGeneratorViewModel
 {
-    public ListGeneratorViewModel(IWordCollectionService collectionService)
+    public ListGeneratorViewModel(IWordCollectionService collectionService, ILogger<IListGeneratorViewModel> logger)
     {
         CollectionService = collectionService;
+        Logger = logger;
     }
 
     [AlsoNotifyChangeFor(nameof(CanSave))]
@@ -49,7 +49,11 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
             }
             int id = await CollectionService.AddWordCollection(GetData());
 
-            CollectionAddedEvent?.Invoke(this, new("Added wordCollection successfully", id));
+            CollectionAddedEvent?.Invoke(this, new DataBaseActionArgs
+            {
+                Text = "Added wordCollection successfully",
+                RefIds = new[] { id }
+            });
         });
 
     public IRelayCommand FlipSides => new RelayCommand(() => Words = new(Words.ToList().FlipPairs()));
@@ -75,10 +79,14 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     public Parser UseParser { get; set; } = Parser.Otava;
 
     public IWordCollectionService CollectionService { get; }
+    public ILogger<IListGeneratorViewModel> Logger { get; }
 
     public IRelayCommand<string> Delete => new RelayCommand<string>(value =>
     {
-        if (value is null) throw new NotImplementedException($"{nameof(value)} should not be null");
+        if (value is null)
+        {
+            throw new NotImplementedException($"{nameof(value)} should not be null");
+        }
 
         Words.Remove(value);
         OnPropertyChanged(nameof(Words));
@@ -86,7 +94,11 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
 
     public IRelayCommand<string> Edit => new RelayCommand<string>(value =>
     {
-        if (value is null) throw new NotImplementedException($"{nameof(value)} should not be null");
+        if (value is null)
+        {
+            throw new NotImplementedException($"{nameof(value)} should not be null");
+        }
+
         int index = Words.IndexOf(value);
         EditWantedEvent?.Invoke(this, new(value, index));
     });
@@ -97,7 +109,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     {
         Otava
     }
-    
+
     private Dictionary<Parser, Func<string, List<string>>> StringParserActions { get; } = new()
     {
         [Parser.Otava] = (pairs) => { return new OtavaWordPairParser(pairs).ToStringList(); }
@@ -119,8 +131,9 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         }
         catch (ArgumentOutOfRangeException)
         {
-            Debug.WriteLine($"Attempt in {nameof(ListGeneratorViewModel)} to set word value to '{value}' in index '{indexInList}' " +
-                $"failed because of {nameof(ArgumentOutOfRangeException)}, only '{Words.Count}' indexes exist");
+            Logger.LogWarning("Cannot set value '{value}' for word pair in index '{index}'. " +
+                "Max index in this '{vmName}' instance is {maxIndex}.", 
+                value, indexInList, nameof(ListGeneratorViewModel), Words.Count);
             return false;
         }
     }

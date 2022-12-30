@@ -6,26 +6,24 @@ public class DataBaseActionArgs
     {
         Text = text;
     }
-    public DataBaseActionArgs(int refId) 
+  
+    public DataBaseActionArgs(string text, int refId, string collectionName) : this(text)
     {
-        RefId = refId;
-    }
-    public DataBaseActionArgs(string text, int refId) : this(text)
-    {
-        RefId = refId;
-    }
-    public DataBaseActionArgs(string text, int refId, string collectionName) : this(text, refId)
-    {
-        CollectionName = collectionName;
-    }
-    public DataBaseActionArgs(int refId, string text = "", string collectionName = "")
-    {
-        RefId = refId;
-        Text = text;
-        CollectionName = collectionName;
+        RefIds = new[] { refId };
+        CollectionNames = new[] { collectionName };
     }
 
-    public string Text { get; } = string.Empty;
-    public string CollectionName { get; } = string.Empty;
-    public int RefId { get; } = -1;
+    public DataBaseActionArgs(string text, int[] refIds, string[] collectionNames) : this(text)
+    {
+        RefIds = refIds;
+        CollectionNames = collectionNames;
+    }
+
+    public string Text { get; init; } = string.Empty;
+    public string[] CollectionNames { get; init; } = Array.Empty<string>();
+    public int[] RefIds { get; init; } = Array.Empty<int>();
+
+
+    public string NameString => string.Join(", ", CollectionNames);
+    public string RefIdString => string.Join(", ", RefIds);
 }

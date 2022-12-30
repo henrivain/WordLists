@@ -6,27 +6,36 @@ public partial class WordCollectionEditPage : ContentPage
 	{
 		BindingContext = model;
 		InitializeComponent();
-        Model.CollectionDeleted += Model_CollectionDeleted;
+        Model.CollectionsDeleted += Model_CollectionDeleted;
 		Model.DeleteRequested += Model_DeleteRequested;
     }
 
 	private async void Model_DeleteRequested(object sender, WordListsViewModels.Events.DeleteWantedEventArgs e)
 	{
-        bool proceed = await DisplayAlert(
-                title: "Poista sanasto?",
-                message: $"Haluatko varmasti poistaa sanaston: '{e.WordCollectionOwner.Name}', id {e.WordCollectionOwner.Id}",
-                cancel: "peruuta",
-                accept: "jatka"
-                );
+		bool proceed;
+		if (e.DeletesAll)
+		{
+			proceed = await DisplayAlert("Poista kaikki sanastot?", 
+				$"Haluatko varmasti poistaa kaikki {e.ItemsToDelete.Length} sanastoa lopullisesti.", "Jatka", "Peruuta");
+		}
+		else
+		{
+			string message = $"Haluatko varmasti poistaa {e.ItemsToDelete.Length} sanastoa lopullisesti? " +
+				$"Painamalla 'Jatka', sanastot '{string.Join(", ", e.ItemsToDelete.Select(x => x.Name))}' poistetaan.";
+
+			proceed = await DisplayAlert("Poista sanastoja", message, "Jatka", "Peruuta");
+		}
 		if (proceed)
 		{
-            await Model.DeleteCollection(e.WordCollectionOwner);
+            await Model.DeleteCollections(e.ItemsToDelete);
         }
     }
 
     private async void Model_CollectionDeleted(object sender, WordDataAccessLibrary.DataBaseActions.DataBaseActionArgs e)
 	{
-        await DisplayAlert("Poistettu onnistuneest!", $"Sanasto id:llä: {e.RefId} poistettiin onnistuneesti", "OK");
+		int amountDeleted = e.CollectionNames.Length;
+
+        await DisplayAlert("Poistettu onnistuneesti!", $"{amountDeleted} sanastoa poistettiin onnistuneesti.", "OK");
     }
 
     public IWordCollectionHandlingViewModel Model => (IWordCollectionHandlingViewModel)BindingContext;

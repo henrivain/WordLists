@@ -12,7 +12,7 @@ public partial class FlipCardTrainingPage : ContentPage
 	{
         BindingContext = model;
 		InitializeComponent();
-        Animator = new(flipper);
+        _animator = new(flipper);
         Model.CollectionUpdated += Model_CollectionUpdatedEvent;
     }
 
@@ -26,7 +26,7 @@ public partial class FlipCardTrainingPage : ContentPage
 
     private async void Model_CollectionUpdatedEvent(object sender, DataBaseActionArgs e)
     {
-        await DisplayAlert("Päivitetty!", $"Sanasto päivitettiin säilytykseen id:llä {e.RefId}", "OK");
+        await DisplayAlert("Päivitetty!", $"Sanasto päivitettiin säilytykseen id:llä {e.RefIdString}", "OK");
     }
 
     public int StartWordCollection { set => StartNewCollectionById(value); }
@@ -36,7 +36,7 @@ public partial class FlipCardTrainingPage : ContentPage
 	public bool ShowNativeWordByDefault { get; set; } = true;
 
 
-    readonly SlideAnimation Animator;
+    readonly SlideAnimation _animator;
 
     private void ShowDefaultSideWithoutAnimation()
 	{
@@ -50,18 +50,18 @@ public partial class FlipCardTrainingPage : ContentPage
 
 	private async void Button_LastCard(object sender, EventArgs e)
 	{
-        await Animator.ToMaxRight();
+        await _animator.ToMaxRight();
         Model.Previous();
         ShowDefaultSideWithoutAnimation();
-        await Animator.FromMaxLeftToMiddle();
+        await _animator.FromMaxLeftToMiddle();
     }
 
 	private async void Button_NextCard(object sender, EventArgs e)
 	{
-        await Animator.ToMaxLeft();
+        await _animator.ToMaxLeft();
         Model.Next();
         ShowDefaultSideWithoutAnimation();
-        await Animator.FromMaxRightToMiddle();
+        await _animator.FromMaxRightToMiddle();
     }
 
     private void FlipperGrid_SizeChanged(object sender, EventArgs e)

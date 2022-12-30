@@ -32,7 +32,7 @@ public partial class ListGeneratorPage : ContentPage
     private async void Model_CollectionAddedEvent(object sender, DataBaseActionArgs e)
     {
         BindingContext = ModelFactory.Create();
-        await DisplayAlert("Onnistui!", $"Sanasto lisätty onnistuneesti säilytykseen id:llä {e.RefId}", "OK");
+        await DisplayAlert("Onnistui!", $"Sanasto lisätty onnistuneesti säilytykseen id:llä {e.CollectionNames}", "OK");
     }
     private void StartAgainBtn_Click(object sender, EventArgs e)
     {
