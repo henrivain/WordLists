@@ -1,4 +1,6 @@
-﻿using WordDataAccessLibrary.DataBaseActions;
+﻿using Microsoft.Extensions.Logging.Abstractions;
+using WordDataAccessLibrary.DataBaseActions;
+using WordDataAccessLibrary.DataBaseActions.Interfaces;
 
 namespace ViewModelTests;
 
@@ -6,7 +8,7 @@ public partial class WordTrainingViewModelTests
 {
     public WordTrainingViewModelTests()
     {
-        _viewModel = new WordTrainingViewModel(new WordCollectionService(null, null));
+        _viewModel = new WordTrainingViewModel(new WordCollectionService(null, null, NullLogger<IWordCollectionService>.Instance));
     }
 
     readonly IWordTrainingViewModel _viewModel;

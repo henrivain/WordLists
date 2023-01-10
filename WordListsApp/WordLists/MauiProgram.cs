@@ -1,4 +1,4 @@
-﻿using ImageRecognisionLibrary;
+﻿// using ImageRecognisionLibrary;
 using Serilog;
 using WordDataAccessLibrary.CollectionBackupServices;
 using WordDataAccessLibrary.CollectionBackupServices.JsonServices;
@@ -65,7 +65,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<WritingTestPage>();
 		builder.Services.AddSingleton<WritingTestConfigurationPage>();
 		builder.Services.AddTransient<WriteTestResultPage>();
-		builder.Services.AddTransient<ImageRecognisionPage>();
+		// builder.Services.AddTransient<ImageRecognisionPage>();
 		builder.Services.AddSingleton<IWordTrainingViewModel, WordTrainingViewModel>();
 		builder.Services.AddTransient<IStartTrainingViewModel, StartTrainingViewModel>();
 		builder.Services.AddTransient<IWordCollectionHandlingViewModel, WordCollectionHandlingViewModel>();
@@ -75,7 +75,7 @@ public static class MauiProgram
 		builder.Services.AddAbstractFactory<IWriteWordViewModel, WriteWordViewModel>();
 		builder.Services.AddAbstractFactory<IWritingTestConfigurationViewModel, WritingTestConfigurationViewModel>();
 		builder.Services.AddTransient<ITestResultViewModel, TestResultViewModel>();
-		builder.Services.AddTransient<IImageRecognisionViewModel, ImageRecognisionViewModel>();
+		// builder.Services.AddTransient<IImageRecognisionViewModel, ImageRecognisionViewModel>();
 
         builder.Services.AddTransient<JsonExportPage>();
         builder.Services.AddTransient<JsonImportPage>();
@@ -89,7 +89,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<ICollectionImportService, JsonWordCollectionImportService>();
 		builder.Services.AddSingleton<IWordCollectionInfoService, WordCollectionInfoService>();
 		builder.Services.AddSingleton<IUserInputWordValidator, UserInputWordValidator>();
-		builder.Services.AddTransient<IImageRecognisionEngine, ImageRecognisionEngine>();
+		// builder.Services.AddTransient<IImageRecognisionEngine, ImageRecognisionEngine>();
 		builder.Services.AddTransient<IFolderHandler, FolderHandler>();
 		builder.Services.AddTransient<IFileHandler, FileHandler>();
 		builder.Services.AddTransient<IProcessLauncher, ProcessLauncher>();
