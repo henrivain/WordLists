@@ -15,9 +15,11 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         Logger = logger;
     }
 
-    [AlsoNotifyChangeFor(nameof(CanSave))]
+    //[AlsoNotifyChangeFor(nameof(CanSave))]
     [ObservableProperty]
     ObservableCollection<string> _words = new();
+
+
 
     [ObservableProperty]
     string _collectionName = "My word collection";
@@ -53,6 +55,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
             {
                 Words.Add(word);
             }
+            OnPropertyChanged(nameof(CanSave));
             IsBusy = false;
         });
     public IAsyncRelayCommand Save => new AsyncRelayCommand(
@@ -63,7 +66,12 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
             {
                 Logger.LogWarning("{class}.{method}: Can't add empty word collection",
                     nameof(ListGeneratorViewModel), nameof(Save));
-                throw new InvalidOperationException();
+                FailedToSaveEvent?.Invoke(this, new DataBaseActionArgs
+                {
+                    Text = "Collection was empty or had less than 2 words."
+                });
+                IsBusy = false;
+                return;
             }
             int id = await CollectionService.AddWordCollection(ParseData());
 
@@ -81,7 +89,12 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         {
             return Words.ToList().FlipPairs();
         });
-        Words = new(words);
+        Words.Clear();
+        foreach (var word in words)
+        {
+            Words.Add(word);
+        }
+        OnPropertyChanged(nameof(CanSave));
         IsBusy = false;
     });
 
@@ -112,7 +125,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         }
 
         Words.Remove(value);
-        OnPropertyChanged(nameof(Words));
+        OnPropertyChanged(nameof(CanSave));
     });
 
     public IRelayCommand<string> Edit => new RelayCommand<string>(value =>
@@ -165,9 +178,11 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     {
         if (string.IsNullOrEmpty(result)) return;
         Words.Add(result);
+        OnPropertyChanged(nameof(CanSave));
     }
 
     public event CollectionAddedEventHandler? CollectionAddedEvent;
+    public event CollectionAddedEventHandler? FailedToSaveEvent;
     public event CollectionEditEventHandler? EditWantedEvent;
     public event AddWantedEventHandler? AddWantedEvent;
     public event CollectionAddedEventHandler? EditFinished;
@@ -195,6 +210,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
             Words.Add(wordPair.NativeLanguageWord);
             Words.Add(wordPair.ForeignLanguageWord);
         }
+        OnPropertyChanged(nameof(CanSave));
     }
 
     public IAsyncRelayCommand FinishEdit => new AsyncRelayCommand(async () =>

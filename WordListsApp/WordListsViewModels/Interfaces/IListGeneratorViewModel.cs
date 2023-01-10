@@ -56,4 +56,5 @@ public interface IListGeneratorViewModel
     event AddWantedEventHandler? AddWantedEvent;
     event CollectionEditEventHandler? EditWantedEvent;
     event CollectionAddedEventHandler? EditFinished;
+    event CollectionAddedEventHandler? FailedToSaveEvent;
 }

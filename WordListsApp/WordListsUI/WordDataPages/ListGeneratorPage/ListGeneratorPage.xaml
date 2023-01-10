@@ -16,6 +16,10 @@
              BindingContextChanged="ContentPage_BindingContextChanged">
     <ContentPage.Resources>
         <converters:BooleanConverter x:Key="switchBool" />
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="TextColor"
+                    Value="{StaticResource SecondaryText}" />
+        </Style>
     </ContentPage.Resources>
     <Grid>
         <ScrollView Margin="40,0,0,0">
@@ -23,13 +27,6 @@
                 <TapGestureRecognizer Tapped="HideMenu" />
             </ScrollView.GestureRecognizers>
             <VerticalStackLayout>
-                <VerticalStackLayout.Resources>
-                    <Style TargetType="{x:Type Label}">
-                        <Setter Property="TextColor"
-                                Value="{StaticResource SecondaryText}" />
-                    </Style>
-
-                </VerticalStackLayout.Resources>
                 <VerticalStackLayout Padding="30"
                                      HorizontalOptions="{OnIdiom Default=Center, Phone=FillAndExpand}">
                     <Label Text="Otsikko"
@@ -72,6 +69,7 @@
                     <Button Text="Tallenna"
                             Command="{Binding Save}"
                             Grid.Row="1"
+                            IsEnabled="{Binding CanSave}"
                             IsVisible="{Binding Path=IsEditMode, Converter={StaticResource switchBool}}" />
                     <Button Text="Päivitä"
                             Grid.Row="1"
@@ -123,12 +121,13 @@
                     </HorizontalStackLayout>
                 </Border>
 
+                <!-- Collectionview with ItemsLayout with grid span (here '2') does not resize item template items correctly in Windows (MauiBug #10144) -->
                 <CollectionView ItemSizingStrategy="MeasureAllItems"
-                                ItemsLayout="VerticalGrid,2"
-                                Margin="20,20,20,100"
+                                Margin="20,20,20,150"
                                 ItemsSource="{Binding Words}"
-                                x:Name="wordListView"
-                                CanReorderItems="True">
+                                ItemsLayout="VerticalGrid,2"
+                                CanReorderItems="True"
+                                MaximumWidthRequest="1500">
                     <CollectionView.EmptyView>
                         <VerticalStackLayout>
                             <Label HorizontalOptions="Center"
@@ -146,26 +145,30 @@
                                     <RoundRectangle CornerRadius="8" />
                                 </Border.StrokeShape>
                                 <Grid MinimumHeightRequest="{OnIdiom Phone=75, Default=40}"
-                                      ColumnDefinitions="{OnIdiom Phone='*,25,10', Default='*,60,10'}"
+                                      ColumnDefinitions="{OnIdiom Phone='*,20,10', Default='*,60,10'}"
                                       RowDefinitions="{OnIdiom Phone='40,*', Default='*'}">
                                     <Grid.Resources>
                                         <Style TargetType="{x:Type ImageButton}">
                                             <Setter Property="HeightRequest"
-                                                    Value="25" />
+                                                    Value="{OnIdiom Phone=20, Default=25}" />
                                             <Setter Property="WidthRequest"
-                                                    Value="25" />
+                                                    Value="{OnIdiom Phone=20, Default=25}" />
                                             <Setter Property="BackgroundColor"
                                                     Value="Transparent" />
                                             <Setter Property="Grid.Column"
                                                     Value="1" />
                                         </Style>
                                     </Grid.Resources>
+
                                     <Label Text="{Binding .}"
                                            Grid.RowSpan="{OnIdiom Phone=2, Default=1}"
-                                           Padding="10"
                                            TextColor="{StaticResource SecondaryText}"
-                                           HorizontalOptions="Center"
-                                           VerticalOptions="Center" />
+                                           Padding="10"
+                                           FontSize="{OnIdiom Phone=Caption}"
+                                           VerticalOptions="Center"
+                                           MaxLines="{OnPlatform Android=3, WinUI=1, Default=9999999}"
+                                           LineBreakMode="{OnPlatform WinUI=TailTruncation}"
+                                           />
                                     <ImageButton Source="pencil_icon.png"
                                                  HorizontalOptions="Start"
                                                  CommandParameter="{Binding .}"
@@ -181,7 +184,6 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-
             </VerticalStackLayout>
         </ScrollView>
         <menu:SideMenu x:Name="menu"

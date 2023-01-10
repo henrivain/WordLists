@@ -34,13 +34,27 @@
 				<MatchUIThemes>Change colors to matching in every page</MatchUIThemes>
 			</v1.2.0>
 			<v1.3.0>
-				
-				
+				<FixAndroidEntry>Wide the underline in entry field in android</FixAndroidEntry>
+				<Logging>Implement proper logging</Logging>
+				<Logging>Pull log files to downloads folder if user wants to do it.</Logging>
+				<Usability>
+					<CollectionEditPage>
+						<Note>All available in ListGeneratorPage</Note>
+						<Edit>Name</Edit>
+						<Edit>LanguageTags</Edit>
+						<Edit>EditLanguageTags</Edit>
+						<Edit>Switch languages with one and another</Edit>
+						<Note>Implementation uses list generator page</Note>
+					</CollectionEditPage>
+					<JsonExportPage>
+						<Edit>add delay between user input and ui collections update in JsonExportPage</Edit>
+						<Note>Fixed lag by using Observable collection</Note>
+					</JsonExportPage>
+				</Usability>
 			</v1.3.0>
 		</InRelease>
 		<UnReleased>
 			<!-- Update not released -->
-			<FixAndroidEntry>Wide the underline in entry field in android</FixAndroidEntry>
 
 		</UnReleased>
 	</Completed>
@@ -51,8 +65,7 @@
 		<!-- Most certainly coming features-->
 		<TODO>
 			
-			<Logging>Implement proper logging</Logging>
-			<Logging>Pull log files to downloads folder if user wants to do it.</Logging>
+			
 		</TODO>
 		<Waiting>
 			<WordListGenerator>
@@ -68,30 +81,24 @@
 	</Coming>
 
 	<Ideas>
-		<AddAppLanguage>Make user able to select english instead of finnish as a app language</AddAppLanguage>
+		<Settings>
+			<Setting>Default word collection language</Setting>
+			<AddAppLanguage>Make user able to select english instead of finnish as a app language</AddAppLanguage>
+		</Settings>
+
 		<Tests>
 			<TestViewModels>Add tests to view models</TestViewModels>
 		</Tests>
-		<SaveTests>Save test results in some format like json, as a file in user's machine</SaveTests>
+		<SaveWordTests>Save word test results in some format like json, as a file in user's machine</SaveWordTests>
 		<AddMekUpdater>Add MekUpdater (https://github.com/matikkaeditorinkaantaja/MekUpdater) in at least windows project</AddMekUpdater>
 
 
 		<UnImportant>
 			<StartTrainingPage>Only load some amount of entries in collection view at the time using RemainingItemsThresholdReached and RemainingItemsThreshold</StartTrainingPage>
 			<OnWindows>
-				<StartLearningPage>Fix collection view sizing on windows when less than 3 items (Might be maui bug)</StartLearningPage>
+				<StartTrainingPage>Fix collection view sizing on windows when less than 3 items (Might be maui bug)</StartTrainingPage>
 			</OnWindows>
-			<Usability>
-				<CollectionEditPage>
-					<Notice>All available in ListGeneratorPage</Notice>
-					<Edit>Name</Edit>
-					<Edit>LanguageTags</Edit>
-					<Edit>EditLanguageTags</Edit>
-					<Edit>Switch languages with one and another</Edit>
-				</CollectionEditPage>
-			</Usability>
 			<Description>Make Description Visible</Description>
-			<JsonExportPage>add delay between user input and ui collections update in JsonExportPage</JsonExportPage>
 			<WordCollections>
 				<SearchByTags>
 					<Info>Tag to point add specific book</Info>

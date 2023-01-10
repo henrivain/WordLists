@@ -40,6 +40,7 @@
                        LineBreakMode="WordWrap" />
             </VerticalStackLayout>
             <Grid MaximumWidthRequest="{OnPlatform WinUI=600}"
+                  IsVisible="{OnPlatform Default=True, Android=False}"
                   Margin="0,5"
                   ColumnDefinitions="100,*">
                 <Image Source="dotnet_bot.png"
