@@ -1,23 +1,21 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using WordListsViewModels.Events;
 
 namespace WordListsViewModels.Interfaces;
 public interface IStartTrainingViewModel
 {
-    List<WordCollectionOwner> AvailableCollections { get; set; }
+    ObservableCollection<WordCollectionOwner> VisibleCollections { get; set; }
 
-    IAsyncRelayCommand UpdateCollectionsByName { get; }
-
-    IAsyncRelayCommand UpdateCollectionsByLanguage { get; }
+    IRelayCommand FilterCollections { get; }
 
     IAsyncRelayCommand UpdateCollections { get; }
-
 
     IAsyncRelayCommand<int> RequestCardsTraining { get; }
 
     IAsyncRelayCommand<int> RequestWriteTraining { get; }
 
-    string DataParameter { get; set; }
+    string SearchTerm { get; set; }
     bool ShowLearnedWords { get; set; }
     bool ShowMightKnowWords { get; set; }
     bool ShowNeverHeardKnowWords { get; set; }

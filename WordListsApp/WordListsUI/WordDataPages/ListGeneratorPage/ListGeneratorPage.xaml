@@ -8,37 +8,38 @@
              xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
              xmlns:local="clr-namespace:WordListsUI.WordDataPages.ListGeneratorPage"
              xmlns:entry="clr-namespace:WordListsUI.Components.Entry"
+             xmlns:converters="clr-namespace:WordListsUI.ValueConverters"
              x:DataType="{x:Type viewModel:IListGeneratorViewModel}"
              x:Name="listGeneratorPage"
              BackgroundColor="{StaticResource PageBackground}"
              Title="Luo otavasta"
              BindingContextChanged="ContentPage_BindingContextChanged">
+    <ContentPage.Resources>
+        <converters:BooleanConverter x:Key="switchBool" />
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="TextColor"
+                    Value="{StaticResource SecondaryText}" />
+        </Style>
+    </ContentPage.Resources>
     <Grid>
         <ScrollView Margin="40,0,0,0">
             <ScrollView.GestureRecognizers>
                 <TapGestureRecognizer Tapped="HideMenu" />
             </ScrollView.GestureRecognizers>
             <VerticalStackLayout>
-                <VerticalStackLayout.Resources>
-                    <Style TargetType="{x:Type Label}">
-                        <Setter Property="TextColor"
-                                Value="{StaticResource UnImportantText}" />
-                    </Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Margin"
-                                Value="0,20" />
-                    </Style>
-                </VerticalStackLayout.Resources>
                 <VerticalStackLayout Padding="30"
-                                     HorizontalOptions="Center">
+                                     HorizontalOptions="{OnIdiom Default=Center, Phone=FillAndExpand}">
                     <Label Text="Otsikko"
                            Margin="0,0,0,5"
                            FontSize="Medium" />
+
                     <entry:PlatformIndependantEntry Text="{Binding CollectionName}"
                                                     PlaceHolder="Minun sanastoni 1"
-                                                    HorizontalOptions="{OnIdiom Phone=Center, Default=Start}"
-                                                    MaximumWidthRequest="{OnIdiom Phone=300, Default=400}"
-                                                    MaxLength="40" />
+                                                    HorizontalOptions="{OnIdiom Default=Start, Phone=FillAndExpand}"
+                                                    WidthRequest="{OnPlatform WinUI=400}"
+                                                    MaximumWidthRequest="{OnIdiom Default=400, Phone=300}"
+                                                    MaxLength="40"
+                                                    FontSize="{OnPlatform WinUI=Micro, Default=Small}" />
                     <Label Text="Kielet"
                            Margin="0,10,0,5"
                            FontSize="Medium" />
@@ -47,11 +48,46 @@
                                                     Text="{Binding LanguageHeaders}"
                                                     MaxLength="16"
                                                     WidthRequest="120"
+                                                    FontSize="{OnPlatform WinUI=Micro, Default=Small}"
                                                     HorizontalOptions="Start" />
                 </VerticalStackLayout>
-                <Button Text="Uusi leikepöydältä"
-                        HorizontalOptions="Center"
-                        Command="{Binding GeneratePairsCommand}" />
+
+                <Grid ColumnDefinitions="*,*"
+                      RowDefinitions="*,*"
+                      RowSpacing="5"
+                      Margin="25,0"
+                      ColumnSpacing="5"
+                      MaximumWidthRequest="{OnIdiom Default=999999999, Desktop=600}">
+                    <Button Text="Uusi leikepöydältä"
+                            Command="{Binding GeneratePairsCommand}"
+                            IsEnabled="{Binding Path=IsEditMode, Converter={StaticResource switchBool}}" />
+                    <Button Text="Vaihda kielet"
+                            Grid.Column="1"
+                            IsEnabled="{Binding CanSave}"
+                            Command="{Binding FlipSides}" />
+
+                    <Button Text="Tallenna"
+                            Command="{Binding Save}"
+                            Grid.Row="1"
+                            IsEnabled="{Binding CanSave}"
+                            IsVisible="{Binding Path=IsEditMode, Converter={StaticResource switchBool}}" />
+                    <Button Text="Päivitä"
+                            Grid.Row="1"
+                            IsVisible="{Binding IsEditMode}"
+                            Command="{Binding FinishEdit}" />
+
+                    <Button Text="Peruuta"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            IsVisible="{Binding IsEditMode}"
+                            Clicked="CancelBtn_Clicked" />
+                    <Button Text="Aloita alusta"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            IsVisible="{Binding Path=IsEditMode, Converter={StaticResource switchBool}}"
+                            Clicked="StartAgainBtn_Click" />
+                </Grid>
+
                 <Button ImageSource="new_icon_dark.png"
                         Text="uusi sana"
                         IsVisible="{OnIdiom Phone=false, Default=true}"
@@ -85,14 +121,20 @@
                     </HorizontalStackLayout>
                 </Border>
 
+                <!-- Collectionview with ItemsLayout with grid span (here '2') does not resize item template items correctly in Windows (MauiBug #10144) -->
                 <CollectionView ItemSizingStrategy="MeasureAllItems"
-                                ItemsLayout="VerticalGrid,2"
-                                Margin="20"
+                                Margin="20,20,20,150"
                                 ItemsSource="{Binding Words}"
-                                x:Name="wordListView"
-                                CanReorderItems="True">
+                                ItemsLayout="VerticalGrid,2"
+                                CanReorderItems="True"
+                                MaximumWidthRequest="1500">
                     <CollectionView.EmptyView>
-                        <Label HorizontalOptions="Center" />
+                        <VerticalStackLayout>
+                            <Label HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center"
+                                   Text="Luo sanasto lisäämällä sana yläkulmasta tai painamalla 'uusi leikepöydältä'."
+                                   FontSize="Small" />
+                        </VerticalStackLayout>
                     </CollectionView.EmptyView>
 
                     <CollectionView.ItemTemplate>
@@ -103,26 +145,30 @@
                                     <RoundRectangle CornerRadius="8" />
                                 </Border.StrokeShape>
                                 <Grid MinimumHeightRequest="{OnIdiom Phone=75, Default=40}"
-                                      ColumnDefinitions="{OnIdiom Phone='*,25,10', Default='*,60,10'}"
+                                      ColumnDefinitions="{OnIdiom Phone='*,20,10', Default='*,60,10'}"
                                       RowDefinitions="{OnIdiom Phone='40,*', Default='*'}">
                                     <Grid.Resources>
                                         <Style TargetType="{x:Type ImageButton}">
                                             <Setter Property="HeightRequest"
-                                                    Value="25" />
+                                                    Value="{OnIdiom Phone=20, Default=25}" />
                                             <Setter Property="WidthRequest"
-                                                    Value="25" />
+                                                    Value="{OnIdiom Phone=20, Default=25}" />
                                             <Setter Property="BackgroundColor"
                                                     Value="Transparent" />
                                             <Setter Property="Grid.Column"
                                                     Value="1" />
                                         </Style>
                                     </Grid.Resources>
+
                                     <Label Text="{Binding .}"
                                            Grid.RowSpan="{OnIdiom Phone=2, Default=1}"
-                                           Padding="10"
                                            TextColor="{StaticResource SecondaryText}"
-                                           HorizontalOptions="Center"
-                                           VerticalOptions="Center" />
+                                           Padding="10"
+                                           FontSize="{OnIdiom Phone=Caption}"
+                                           VerticalOptions="Center"
+                                           MaxLines="{OnPlatform Android=3, WinUI=1, Default=9999999}"
+                                           LineBreakMode="{OnPlatform WinUI=TailTruncation}"
+                                           />
                                     <ImageButton Source="pencil_icon.png"
                                                  HorizontalOptions="Start"
                                                  CommandParameter="{Binding .}"
@@ -138,16 +184,6 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <Button Text="Vaihda kielet"
-                        IsEnabled="{Binding CanSave}"
-                        HorizontalOptions="Center"
-                        Command="{Binding FlipSides}" />
-                <Button Text="Save to database"
-                        Command="{Binding SaveCollection}"
-                        HorizontalOptions="Center" />
-                <Button Text="Aloita alusta"
-                        Clicked="StartAgainBtn_Click"
-                        HorizontalOptions="Center" />
             </VerticalStackLayout>
         </ScrollView>
         <menu:SideMenu x:Name="menu"
@@ -158,5 +194,12 @@
                 <base:WordDataMenuItems SelectedItem="{x:Static base:SelectedMenuItem.Create}" />
             </menu:SideMenu.MenuItems>
         </menu:SideMenu>
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           Color="MediumPurple"
+                           WidthRequest="{Binding Source={RelativeSource Self}, Path=HeightRequest}"
+                           HeightRequest="50" />
     </Grid>
 </ContentPage>

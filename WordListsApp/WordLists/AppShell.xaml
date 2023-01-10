@@ -3,15 +3,10 @@
        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:home="clr-namespace:WordListsUI.HomePage;assembly=WordListsUI"
-       xmlns:generator="clr-namespace:WordListsUI.WordDataPages.ListGeneratorPage;assembly=WordListsUI"
-       xmlns:welcome="clr-namespace:WordListsUI.WelcomePage;assembly=WordListsUI"
        xmlns:startTraining="clr-namespace:WordListsUI.WordTrainingPages.StartTrainingPage;assembly=WordListsUI"
-       xmlns:training="clr-namespace:WordListsUI.WordTrainingPages.FlipCardTrainingPage;assembly=WordListsUI"
+       xmlns:dataHandle="clr-namespace:WordListsUI.WordDataPages;assembly=WordListsUI"
        xmlns:info="clr-namespace:WordListsUI.AppInfoPage;assembly=WordListsUI"
-       xmlns:handling="clr-namespace:WordListsUI.WordDataPages.WordCollectionEditPage;assembly=WordListsUI"
-       xmlns:export="clr-namespace:WordListsUI.WordDataPages.JsonExportPage;assembly=WordListsUI"
-       xmlns:import="clr-namespace:WordListsUI.WordDataPages.JsonImportPage;assembly=WordListsUI"
-       xmlns:dataHandle="clr-namespace:WordListsUI.WordDataPages;assembly=WordListsUI">
+       xmlns:images="clr-namespace:WordListsUI.WordDataPages.ImageRecognisionPage;assembly=WordListsUI">
 
     <TabBar FlyoutDisplayOptions="AsMultipleItems">
         <!-- Welcome page -->
@@ -37,5 +32,10 @@
         <ShellContent Title="Tietoa"
                       Icon="info_icon.png"
                       ContentTemplate="{DataTemplate info:AppInfoPage}" />
+
+        <!-- Test -->
+        <!--<ShellContent Title="Images"
+                      Icon="cards_icon.png"
+                      ContentTemplate="{DataTemplate images:ImageRecognisionPage}" />-->
     </TabBar>
 </Shell>

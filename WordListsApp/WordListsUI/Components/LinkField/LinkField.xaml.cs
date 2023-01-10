@@ -7,7 +7,6 @@ public partial class LinkField : Border
 	public LinkField()
 	{
 		InitializeComponent();
-		BindingContext = this;
 	}
 
 	private void TapGestureRecognizer_Tapped(object sender, EventArgs e) => Tapped?.Invoke(this, EventArgs.Empty);

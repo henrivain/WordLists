@@ -1,7 +1,7 @@
-﻿using WordDataAccessLibrary.DataBaseActions.Interfaces;
+﻿using System.Collections.ObjectModel;
+using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsMauiHelpers.Extensions;
 using WordListsViewModels.Events;
-using WordListsViewModels.Extensions;
 
 namespace WordListsViewModels;
 
@@ -12,69 +12,71 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
     {
         OwnerService = ownerService;
         WordCollectionService = wordCollectionService;
+        AllCollections = Enumerable.Empty<WordCollectionOwner>().ToList();
     }
 
     IWordCollectionOwnerService OwnerService { get; }
     IWordCollectionService WordCollectionService { get; }
 
-    [ObservableProperty]
-    List<WordCollectionOwner> availableCollections = new();
+    List<WordCollectionOwner> AllCollections { get; set; }
 
     [ObservableProperty]
-    string dataParameter = string.Empty;
+    ObservableCollection<WordCollectionOwner> _visibleCollections = new();
 
+    [ObservableProperty]
+    string _searchTerm = string.Empty;
 
-
-
-    public IAsyncRelayCommand UpdateCollectionsByName => new AsyncRelayCommand(async () =>
+    public IRelayCommand FilterCollections => new RelayCommand(() =>
     {
-        AvailableCollections = (await OwnerService.GetByName(DataParameter)).SortByName().ToList();
-    });    
-    
-    public IAsyncRelayCommand UpdateCollectionsByLanguage => new AsyncRelayCommand(async () =>
-    {
-        AvailableCollections = (await OwnerService.GetByLanguage(DataParameter)).SortByName().ToList();
+        VisibleCollections.Clear();
+        foreach (var collection in AllCollections)
+        {
+            if (Filter(collection))
+            {
+                VisibleCollections.Add(collection);
+            }
+        }
     });
+
 
     public IAsyncRelayCommand UpdateCollections => new AsyncRelayCommand(async () =>
     {
+        SearchTerm = string.Empty;
         await ResetCollections();
     });
 
-    
+    [ObservableProperty]
+    bool _showLearnedWords = true;
 
     [ObservableProperty]
-    bool showLearnedWords = true;
+    bool _showMightKnowWords = true;
 
     [ObservableProperty]
-    bool showMightKnowWords = true;
+    bool _showNeverHeardKnowWords = true;
 
     [ObservableProperty]
-    bool showNeverHeardKnowWords = true;
+    int _showWords = 1;
 
     [ObservableProperty]
-    int showWords = 1;
+    bool _removeLearnedWords;
 
     [ObservableProperty]
-    bool removeLearnedWords;
+    bool _removeMightKnowWords;
 
     [ObservableProperty]
-    bool removeMightKnowWords;
+    bool _removeNeverHeardWords;
 
     [ObservableProperty]
-    bool removeNeverHeardWords;
+    bool _isRefreshing = false;
 
     [ObservableProperty]
-    bool isRefreshing = false;
+    bool _randomizeWordPairsOrder = false;
 
     [ObservableProperty]
-    bool randomizeWordPairsOrder = false;
-
-    [ObservableProperty]
-    WordCollectionOwner selectedItem = new();
+    WordCollectionOwner _selectedItem = new();
 
 
-  
+
 
     public IAsyncRelayCommand<int> RequestCardsTraining => new AsyncRelayCommand<int>(async selectionId =>
     {
@@ -126,8 +128,18 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
 
     public async Task ResetCollections()
     {
-        IsRefreshing = true;   
-        AvailableCollections = (await OwnerService.GetAll()).SortByName().ToList();
+        IsRefreshing = true;
+        AllCollections = (await OwnerService.GetAll()).SortByName().ToList();
+        VisibleCollections = new(AllCollections);
+        FilterCollections.Execute(null);
         IsRefreshing = false;
     }
+
+    private bool Filter(WordCollectionOwner? param)
+    {
+        if (param is null) return false;
+        return param.LanguageHeaders.Contains(SearchTerm ?? string.Empty, StringComparison.OrdinalIgnoreCase) ||
+            param.Name.Contains(SearchTerm ?? string.Empty, StringComparison.OrdinalIgnoreCase);
+    }
+
 }

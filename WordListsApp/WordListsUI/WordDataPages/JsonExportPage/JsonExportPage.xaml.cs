@@ -1,6 +1,6 @@
-using WordListsUI.Helpers;
 using WordDataAccessLibrary.CollectionBackupServices;
 using WordListsMauiHelpers.Factories;
+using WordListsUI.Helpers;
 
 namespace WordListsUI.WordDataPages.JsonExportPage;
 
@@ -17,11 +17,9 @@ public partial class JsonExportPage : ContentPage
     private async void Model_EmptyExportAttempted(object sender, ExportActionResult e)
     {
         await DisplayAlert("Sanastoja ei valittu!", "Et voi vied‰ tyhj‰‰ sanastokokonaisuutta", "OK");
-        // have to add again because these don't fire again (dotnet/maui bug)
     }
     private async void Model_ExportCompleted(object sender, ExportActionResult e)
     {
-        // have to add again because these don't fire again (dotnet/maui bug)
         if (e.Success)
         {
             await DisplayAlert("Sanastot viety!", $"Sanastot on viety onnistuneesti hakemistoon: {e.UsedPath}", "OK");

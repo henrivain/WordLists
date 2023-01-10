@@ -1,11 +1,14 @@
-﻿using WordListsViewModels.Helpers;
+﻿using System.Collections.ObjectModel;
+using WordListsViewModels.Helpers;
 using static WordDataAccessLibrary.CollectionBackupServices.BackupDelegates;
 
 namespace WordListsViewModels.Interfaces;
 public interface IJsonExportViewModel
 {
-    List<WordCollectionInfo> VisibleCollections { get; }
-    List<WordCollectionInfo> AvailableCollections { get; }
+    ObservableCollection<WordCollectionInfo> VisibleCollections { get; }
+    
+    //List<WordCollectionInfo> AvailableCollections { get; }
+    
     List<object> SelectedCollections { get; }
 
 
@@ -21,6 +24,7 @@ public interface IJsonExportViewModel
     IAsyncRelayCommand ExportAllVisibleCommand { get; }
     IAsyncRelayCommand ChooseExportLocationCommand { get; }
     IAsyncRelayCommand CopyPathToClipBoardCommand { get; }
+    IRelayCommand SearchParameterChangedCommand { get; }
     IRelayCommand SelectionChangedCommand { get; }
 
     event ExportFailEventHandler? EmptyExportAttempted;

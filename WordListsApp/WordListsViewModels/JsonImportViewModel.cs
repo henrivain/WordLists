@@ -25,19 +25,19 @@ public partial class JsonImportViewModel : IJsonImportViewModel
 
 
     [ObservableProperty]
-    string importPath = DefaultPathInfo;
+    string _importPath = DefaultPathInfo;
 
     [ObservableProperty]
-    bool canImport = false;
+    bool _canImport = false;
 
     [ObservableProperty]
-    bool isImporting = false;
+    bool _isImporting = false;
     public string AcceptableFileExtensions { get; } = 
         string.Join(" ", GetAcceptableImportFileExtensions());
 
     public IAsyncRelayCommand SelectFile => new AsyncRelayCommand(async () =>
     {
-        string path = await FilePickerService.GetUserSelectedFullPath(new(_acceptableFileExtensions));
+        string? path = await FilePickerService.GetUserSelectedFullPath(new(_acceptableFileExtensions));
         if (string.IsNullOrWhiteSpace(path)) return;
 
         SetPathDataIfValid(path);

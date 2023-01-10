@@ -6,8 +6,7 @@
         Stroke="Transparent"
         StrokeThickness="0"
         x:Name="platformIndependantEntry"
-        BackgroundColor="{StaticResource DarkerThanPage}"
-        x:DataType="{x:Type local:PlatformIndependantEntry}"
+        BackgroundColor="{OnPlatform Android={StaticResource DarkerThanPage}, Default=Transparent}"
         >
     <Border.Resources>
         <Style TargetType="{x:Type Entry}"
@@ -21,21 +20,22 @@
     <Border.StrokeShape>
         <RoundRectangle CornerRadius="{OnPlatform Android=8, Default=0}" />
     </Border.StrokeShape>
-    <Grid>
-        <VerticalStackLayout>
-            <Entry Text="{Binding Text, Source={x:Reference platformIndependantEntry}}"
-                   Margin="{OnPlatform Android='7,0', Default=0}"
-                   Style="{OnPlatform Android={StaticResource samsungEntryStyle}}"
-                   MaxLength="{Binding MaxLength, Source={x:Reference platformIndependantEntry}}"
-                   Focused="ITextInput_Focused"
-                   HorizontalOptions="FillAndExpand"
-                   Keyboard="{Binding Keyboard, Source={x:Reference platformIndependantEntry}}"
-                   Placeholder="{Binding PlaceHolder, Source={x:Reference platformIndependantEntry}}"
-                   PlaceholderColor="{StaticResource SecondaryText}"/>
-            <Line BackgroundColor="{StaticResource BinIconBackground}"
-                  IsVisible="{OnPlatform Android=true, Default=false}"
-                  StrokeThickness="1.85" 
-                  />
-        </VerticalStackLayout>
-    </Grid>
+    <VerticalStackLayout>
+        <Entry Text="{Binding Text, Source={x:Reference platformIndependantEntry}}"
+               Margin="{OnPlatform Android='7,1', Default=0}"
+               BackgroundColor="{StaticResource DarkerThanPage}"
+               Style="{OnPlatform Android={StaticResource samsungEntryStyle}}"
+               MaxLength="{Binding MaxLength, Source={x:Reference platformIndependantEntry}}"
+               Focused="ITextInput_Focused"
+               HorizontalOptions="FillAndExpand"
+               Keyboard="{Binding Keyboard, Source={x:Reference platformIndependantEntry}}"
+               Placeholder="{Binding PlaceHolder, Source={x:Reference platformIndependantEntry}}"
+               PlaceholderColor="{StaticResource SecondaryText}" 
+               TextChanged="Entry_TextChanged"
+               FontSize="{Binding FontSize, Source={x:Reference platformIndependantEntry}}"
+               />
+        <Line BackgroundColor="{StaticResource BinIconBackground}"
+              IsVisible="{OnPlatform Android=true, Default=false}"
+              StrokeThickness="1.85" />
+    </VerticalStackLayout>
 </Border>

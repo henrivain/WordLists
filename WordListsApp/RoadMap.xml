@@ -22,21 +22,40 @@
 				</WelcomePage>
 			</v1.1.0>
 			<v1.2.0>
-				
+				<StartTraining>Add possibility to randomize word pair order in list</StartTraining>
+				<LearnWords>Learn by writing words</LearnWords>
+				<LearnWords>Generate test</LearnWords>
+				<ListGeneratorPage>
+					<EditWordOrder>Drag and drop words to new orders in generated lists</EditWordOrder>
+					<DeleteWords>Delete words from generated lists</DeleteWords>
+					<AddWords>Add new words to automatically generated lists</AddWords>
+					<EditWords>Add and remove characters from words</EditWords>
+				</ListGeneratorPage>
+				<MatchUIThemes>Change colors to matching in every page</MatchUIThemes>
 			</v1.2.0>
+			<v1.3.0>
+				<FixAndroidEntry>Wide the underline in entry field in android</FixAndroidEntry>
+				<Logging>Implement proper logging</Logging>
+				<Logging>Pull log files to downloads folder if user wants to do it.</Logging>
+				<Usability>
+					<CollectionEditPage>
+						<Note>All available in ListGeneratorPage</Note>
+						<Edit>Name</Edit>
+						<Edit>LanguageTags</Edit>
+						<Edit>EditLanguageTags</Edit>
+						<Edit>Switch languages with one and another</Edit>
+						<Note>Implementation uses list generator page</Note>
+					</CollectionEditPage>
+					<JsonExportPage>
+						<Edit>add delay between user input and ui collections update in JsonExportPage</Edit>
+						<Note>Fixed lag by using Observable collection</Note>
+					</JsonExportPage>
+				</Usability>
+			</v1.3.0>
 		</InRelease>
 		<UnReleased>
 			<!-- Update not released -->
-			<StartTraining>Add possibility to randomize word pair order in list</StartTraining>
-			<LearnWords>Learn by writing words</LearnWords>
-			<LearnWords>Generate test</LearnWords>
-			<ListGeneratorPage>
-				<EditWordOrder>Drag and drop words to new orders in generated lists</EditWordOrder>
-				<DeleteWords>Delete words from generated lists</DeleteWords>
-				<AddWords>Add new words to automatically generated lists</AddWords>
-				<EditWords>Add and remove characters from words</EditWords>
-			</ListGeneratorPage>
-			<MatchUIThemes>Change colors to matchin in every page</MatchUIThemes>
+
 		</UnReleased>
 	</Completed>
 	<Coming>
@@ -45,44 +64,48 @@
 		</UnderWork>
 		<!-- Most certainly coming features-->
 		<TODO>
-			<ListGenerator>Create list by image recognizion using tesserac</ListGenerator>
-			<Logging>Implement proper logging</Logging>
-			<Tests>
-				<TestViewModels>Add tests to view models</TestViewModels>
-			</Tests>
-			<Enhancement>
-				<OnWindows>
-					<StartLearningPage>Fix collection view sizing on windows when less than 3 items (Might be maui bug)</StartLearningPage>
-				</OnWindows>
-			</Enhancement>
+			
+			
 		</TODO>
+		<Waiting>
+			<WordListGenerator>
+				<Notice>Currently has windows infrastructure but halted, because I cant figure out how I would be able to also add to android</Notice>
+				<Notice>Currently only available as x64 and x86 exes</Notice>
+				<UseOCR>
+					<Info>Add optical character recognision to generate from image</Info>
+					<Note>At least in windows use Tesseract</Note>
+					<Note>Use language tags to choose language data files</Note>
+				</UseOCR>
+			</WordListGenerator>
+		</Waiting>
 	</Coming>
-	
-	<UnCertain>
-		<StartTrainingPage>Only load some amount of entries in collection view at the time using RemainingItemsThresholdReached and RemainingItemsThreshold</StartTrainingPage>
+
+	<Ideas>
+		<Settings>
+			<MaybeGetToKnow>Preferences API</MaybeGetToKnow>
+			<Setting>Default word collection language</Setting>
+			<AddAppLanguage>Make user able to select english instead of finnish as a app language</AddAppLanguage>
+		</Settings>
+
+		<Tests>
+			<TestViewModels>Add tests to view models</TestViewModels>
+		</Tests>
+		<SaveWordTests>Save word test results in some format like json, as a file in user's machine</SaveWordTests>
 		<AddMekUpdater>Add MekUpdater (https://github.com/matikkaeditorinkaantaja/MekUpdater) in at least windows project</AddMekUpdater>
-		<SaveTests>Save test results in some format like json, as a file in user's machine</SaveTests>
-		<Description>Make Description Visible</Description>
-		<AddAppLanguage>Make user able to select english instead of finnish as a app language</AddAppLanguage>
-		<WordListGenerator>
-			<Info>Edit button to edit word collection words</Info>
-			<Notice>This is included in list generator in 1.2.0 update</Notice>
-		</WordListGenerator>
-		<WordCollections>
-			<SearchByTags>
-				<Info>Tag to point add specific book</Info>
-				<Notice>This can be reached by naming collections well</Notice>
-			</SearchByTags>
-		</WordCollections>
-		<JsonExportPage>add delay between user input and ui collections update in JsonExportPage</JsonExportPage>
-		<Usability>
-			<CollectionEditPage>
-				<Notice>All available in ListGeneratorPage</Notice>
-				<Edit>Name</Edit>
-				<Edit>LanguageTags</Edit>
-				<Edit>EditLanguageTags</Edit>
-				<Edit>Switch languages with one and another</Edit>
-			</CollectionEditPage>
-		</Usability>
-	</UnCertain>
+
+
+		<UnImportant>
+			<StartTrainingPage>Only load some amount of entries in collection view at the time using RemainingItemsThresholdReached and RemainingItemsThreshold</StartTrainingPage>
+			<OnWindows>
+				<StartTrainingPage>Fix collection view sizing on windows when less than 3 items (Might be maui bug)</StartTrainingPage>
+			</OnWindows>
+			<Description>Make Description Visible</Description>
+			<WordCollections>
+				<SearchByTags>
+					<Info>Tag to point add specific book</Info>
+					<Notice>This can be reached by naming collections well</Notice>
+				</SearchByTags>
+			</WordCollections>
+		</UnImportant>
+	</Ideas>
 </Versions>

@@ -1,4 +1,6 @@
-﻿using SQLite;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using SQLite;
 using System.Diagnostics;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 
@@ -7,32 +9,36 @@ namespace WordDataAccessLibrary.DataBaseActions;
 
 public class WordCollectionService : IWordCollectionService
 {
-    public WordCollectionService(IWordCollectionOwnerService ownerService, IWordPairService pairService)
+    public WordCollectionService(
+        IWordCollectionOwnerService ownerService,
+        IWordPairService pairService,
+        ILogger<IWordCollectionService> logger)
     {
         OwnerService = ownerService;
         PairService = pairService;
+        Logger = logger;
     }
 
     IWordCollectionOwnerService OwnerService { get; }
     IWordPairService PairService { get; }
+    ILogger<IWordCollectionService> Logger { get; }
 
-    SQLiteAsyncConnection db;
+    SQLiteAsyncConnection _db;
 
     private async Task Init()
     {
-        if (db is not null) return;
-        Debug.WriteLine($"Initialize {nameof(WordCollectionService)}");
+        if (_db is not null) return;
+        Logger.LogInformation("Initialize new {type}", nameof(WordCollectionService));
 
         string databasePath = Path.Combine(FileSystem.AppDataDirectory, DataBaseInfo.GetDataBaseName());
 
-        Debug.WriteLine($"Database is stored at {databasePath}");
+        Logger.LogInformation("Database is stored at {path}", databasePath);
 
-        db = new SQLiteAsyncConnection(databasePath);
-        await db.CreateTableAsync<WordCollectionOwner>();
-        await db.CreateTableAsync<WordPair>();
+        _db = new SQLiteAsyncConnection(databasePath);
+        await _db.CreateTableAsync<WordCollectionOwner>();
+        await _db.CreateTableAsync<WordPair>();
 
-        Debug.WriteLine($"{nameof(WordCollectionService)}: Tables created");
-
+        Logger.LogInformation("Created tables for {type1} and {type2}", nameof(WordCollectionOwner), nameof(WordPair));
     }
 
     /// <summary>
@@ -43,12 +49,16 @@ public class WordCollectionService : IWordCollectionService
     /// <exception cref="ArgumentNullException"></exception>
     public async Task<int> AddWordCollection(WordCollection collection)
     {
-        if (collection is null) throw new ArgumentNullException(nameof(collection));
+        if (collection is null)
+        {
+            throw new ArgumentNullException(nameof(collection));
+        }
+
         await Init();
-        await db.InsertAsync(collection.Owner);
+        await _db.InsertAsync(collection.Owner);
         await PairService.InsertPairsAsync(collection);
 
-        Debug.WriteLine($"{nameof(WordCollectionService)}: Added new collection with id: {collection.Owner.Id}");
+        Logger.LogInformation("Added new {type} with id '{id}'.", nameof(WordCollection), collection.Owner.Id);
 
         return collection.Owner.Id;
     }
@@ -58,9 +68,9 @@ public class WordCollectionService : IWordCollectionService
     {
         await Init();
 
-        Debug.WriteLine($"{nameof(WordCollectionService)}: Update {nameof(WordCollection)}");
+        Logger.LogInformation("Update {type} in database", nameof(WordCollection));
 
-        await db.UpdateAsync(wordCollection.Owner);
+        await _db.UpdateAsync(wordCollection.Owner);
 
         await PairService.UpdatePairsAsync(wordCollection);
     }
@@ -72,7 +82,7 @@ public class WordCollectionService : IWordCollectionService
     public async Task<List<WordCollection>> GetWordCollections()
     {
         await Init();
-        Debug.WriteLine($"{nameof(WordCollectionService)}: Get all word collections");
+        Logger.LogInformation("Get all word {type}s", nameof(WordCollection));
 
         List<WordCollection> result = new();
 
@@ -98,14 +108,14 @@ public class WordCollectionService : IWordCollectionService
     public async Task<WordCollection> GetWordCollection(int id)
     {
         await Init();
-        Debug.WriteLine($"{nameof(WordCollectionService)}: Get collection with id: {id}");
+        Logger.LogInformation("Get {type} with id '{id}'", nameof(WordCollection), id);
 
 
         WordCollectionOwner owner = await OwnerService.GetById(id);
         
         if (owner is null)
         {
-            Debug.WriteLine($"{nameof(WordCollectionService)}: {nameof(WordCollectionOwner)} with id {id} was not found");
+            Logger.LogWarning("{type} with id '{id}' was not found.", nameof(WordCollection), id);
             return null;
         }
 
@@ -115,6 +125,8 @@ public class WordCollectionService : IWordCollectionService
 
     public async Task<List<WordCollection>> GetWordCollectionsById(int[] ids)
     {
+        Logger.LogInformation("Get {type}s with ids: '{ids}'", 
+            nameof(WordCollection), string.Join(", ", ids));
         List<WordCollection> result = new();
         foreach (int id in ids)
         {
@@ -126,19 +138,20 @@ public class WordCollectionService : IWordCollectionService
     /// <summary>
     /// Remove WordCollection with matching id (remove owner and all child word pairs with same id)
     /// </summary>
-    /// <param name="OwnerId"></param>
+    /// <param name="ownerId"></param>
     /// <returns>number of objects deleted</returns>
-    public async Task<int> DeleteWordCollection(int OwnerId)
+    public async Task<int> DeleteWordCollection(int ownerId)
     {
-        Debug.WriteLine($"{nameof(WordCollectionService)}: Delete collection with id: {OwnerId}");
-
+        Logger.LogInformation("Delete {name} with id: {id}", nameof(WordCollection), ownerId);
 
         await Init();
-        int objectsDeleted = await db.DeleteAsync<WordCollectionOwner>(OwnerId);
-        objectsDeleted += await db.Table<WordPair>()
-                          .Where(x => x.OwnerId == OwnerId)
+        int countDeleted = await _db.DeleteAsync<WordCollectionOwner>(ownerId);
+        countDeleted += await _db.Table<WordPair>()
+                          .Where(x => x.OwnerId == ownerId)
                           .DeleteAsync();
-        return objectsDeleted;
+        Logger.LogInformation("Deleted {count} objects from data base", countDeleted);
+
+        return countDeleted;
     }
 
     /// <summary>
@@ -148,12 +161,16 @@ public class WordCollectionService : IWordCollectionService
     /// <returns>number of object deleted</returns>
     public async Task<int> DeleteAll(string verifyByTrue)
     {
-        if (verifyByTrue.ToLower() != "true") throw new InvalidOperationException("\"true\" must be passed. !WARNING! DELETES ALL OBJECTS FROM DATABASE");
+        if (verifyByTrue.ToLower() != "true")
+        {
+            throw new InvalidOperationException("\"true\" must be passed. !WARNING! DELETES ALL OBJECTS FROM DATABASE");
+        }
+
         await Init();
-        Debug.WriteLine($"{nameof(WordCollectionService)}: Delete all {nameof(WordCollectionOwner)}s and {nameof(WordPair)}s");
-        int removedObjects = await db.DeleteAllAsync<WordCollectionOwner>();
-        removedObjects += await db.DeleteAllAsync<WordPair>();
-        Debug.WriteLine($"{nameof(WordCollectionService)}: Delete completed");
+        Logger.LogInformation("Delete all {owner}s and {wordPair}s", nameof(WordCollectionOwner), nameof(WordPair));
+        int removedObjects = await _db.DeleteAllAsync<WordCollectionOwner>();
+        removedObjects += await _db.DeleteAllAsync<WordPair>();
+        Logger.LogInformation("{service} deleted all {count} word colelctions successfully.", nameof(WordCollectionService), removedObjects);
 
         return removedObjects;
     }

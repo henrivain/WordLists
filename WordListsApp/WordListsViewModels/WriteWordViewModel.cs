@@ -22,20 +22,20 @@ public partial class WriteWordViewModel : IWriteWordViewModel
     IWordPairService WordPairService { get; }
 
     [ObservableProperty]
-    WordCollectionOwner info = new();
+    WordCollectionOwner _info = new();
 
 
     [ObservableProperty]
-    List<WordPairQuestion> questions = Enumerable.Empty<WordPairQuestion>().ToList();
+    List<WordPairQuestion> _questions = Enumerable.Empty<WordPairQuestion>().ToList();
 
     [ObservableProperty]
-    uint questionCount = 0;
+    uint _questionCount = 0;
 
     [ObservableProperty]
-    string sessionId = GenerateSessionId();
+    string _sessionId = GenerateSessionId();
 
     [ObservableProperty]
-    bool saveProgression = false;
+    bool _saveProgression = false;
 
     public IAsyncRelayCommand ValidateAll => new AsyncRelayCommand(async () =>
     {
@@ -57,11 +57,11 @@ public partial class WriteWordViewModel : IWriteWordViewModel
         }
         if (SaveProgression)
         {
-            await questions.SaveLearnStates(WordPairService);
+            await Questions.SaveLearnStates(WordPairService);
         }
         TestValidated?.Invoke(this, new()
         {
-            Questions = questions,
+            Questions = Questions,
             SessionId = SessionId,
             ProgressionSaved = SaveProgression
         });

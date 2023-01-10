@@ -1,13 +1,14 @@
 ﻿using WordListsMauiHelpers.PageRouting;
 using WordListsUI.AppInfoPage;
 using WordListsUI.HomePage;
+using WordListsUI.WordDataPages;
+using WordListsUI.WordDataPages.ImageRecognisionPage;
+using WordListsUI.WordDataPages.JsonExportPage;
 using WordListsUI.WordDataPages.JsonImportPage;
 using WordListsUI.WordDataPages.ListGeneratorPage;
-using WordListsUI.WordTrainingPages.StartTrainingPage;
 using WordListsUI.WordDataPages.WordCollectionEditPage;
 using WordListsUI.WordTrainingPages.FlipCardTrainingPage;
-using WordListsUI.WordDataPages;
-using WordListsUI.WordDataPages.JsonExportPage;
+using WordListsUI.WordTrainingPages.StartTrainingPage;
 using WordListsUI.WordTrainingPages.WritingTestPage;
 
 namespace WordLists;
@@ -34,9 +35,9 @@ public partial class AppShell : Shell
 
         Routing.RegisterRoute($"{handling}/{nameof(WordDataPage)}", typeof(WordDataPage));
 		Routing.RegisterRoute($"{handling}/{lifetime}/{nameof(ListGeneratorPage)}", typeof(ListGeneratorPage));
+		Routing.RegisterRoute($"{handling}/{lifetime}/{nameof(ImageRecognisionPage)}", typeof(ImageRecognisionPage));
         Routing.RegisterRoute($"{handling}/{lifetime}/{nameof(WordCollectionEditPage)}", typeof(WordCollectionEditPage));
         Routing.RegisterRoute($"{handling}/{backup}/{nameof(JsonExportPage)}", typeof(JsonExportPage));
 		Routing.RegisterRoute($"{handling}/{backup}/{nameof(JsonImportPage)}", typeof(JsonImportPage));
-
     }
 }

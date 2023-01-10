@@ -1,5 +1,5 @@
-﻿using SQLite;
-using System.Diagnostics;
+﻿using Microsoft.Extensions.Logging;
+using SQLite;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 
 namespace WordDataAccessLibrary.DataBaseActions;
@@ -10,41 +10,48 @@ namespace WordDataAccessLibrary.DataBaseActions;
 /// </summary>
 public class WordCollectionOwnerService : IWordCollectionOwnerService
 {
-    static SQLiteAsyncConnection db;
+    public WordCollectionOwnerService(ILogger<IWordCollectionOwnerService> logger)
+    {
+        Logger = logger;
+    }
+
+    static SQLiteAsyncConnection _db;
+    private ILogger<IWordCollectionOwnerService> Logger { get; }
 
     private async Task Init()
     {
-        if (db is not null) return;
+        if (_db is not null) return;
 
-        Debug.WriteLine($"{nameof(WordCollectionOwnerService)}: Initialize new");
+        Logger.LogInformation("Initialize new {service}", nameof(WordCollectionOwnerService));
 
         string databasePath = Path.Combine(FileSystem.AppDataDirectory, DataBaseInfo.GetDataBaseName());
 
-        Debug.WriteLine($"{nameof(WordCollectionOwnerService)}: Database at path: {databasePath}");
+        Logger.LogInformation("Database at path: {path}", databasePath);
 
-        db = new SQLiteAsyncConnection(databasePath);
+        _db = new SQLiteAsyncConnection(databasePath);
 
-        await db.CreateTableAsync<WordCollectionOwner>();
+        await _db.CreateTableAsync<WordCollectionOwner>();
 
-        Debug.WriteLine($"{nameof(WordCollectionOwnerService)}: Table created");
+        Logger.LogInformation("Table created in {service}", nameof(WordCollectionOwnerService));
 
     }
     public async Task<List<WordCollectionOwner>> GetAll()
     {
         await Init();
 
-        Debug.WriteLine($"{nameof(WordCollectionOwnerService)}: Get all {nameof(WordCollectionOwner)}s");
+        Logger.LogInformation("Get all {data}s", nameof(WordCollectionOwner));
 
-        return await db.Table<WordCollectionOwner>().ToListAsync();
+        return await _db.Table<WordCollectionOwner>().ToListAsync();
     }
     public async Task<List<WordCollectionOwner>> GetByLanguage(string languageHeaders)
     {
         await Init();
 
         languageHeaders = languageHeaders.Trim().ToLower();
-        Debug.WriteLine($"{nameof(WordCollectionOwnerService)}: Get all containing language headers: {languageHeaders}");
+        Logger.LogInformation("Get {data}s all containing language headers: {hdrs}", 
+            nameof(WordCollectionOwner), languageHeaders);
 
-        return await db.Table<WordCollectionOwner>()
+        return await _db.Table<WordCollectionOwner>()
             .Where(x => x.LanguageHeaders
                 .ToLower()
                     .Contains(languageHeaders))
@@ -55,9 +62,9 @@ public class WordCollectionOwnerService : IWordCollectionOwnerService
         await Init();
 
         name = name.Trim().ToLower();
-        Debug.WriteLine($"{nameof(WordCollectionOwnerService)}: Get all containing name: {name}");
+        Logger.LogInformation("Get all {data}s containing name: {name}", nameof(WordCollectionOwner), name);
 
-        return await db.Table<WordCollectionOwner>()
+        return await _db.Table<WordCollectionOwner>()
             .Where(x => x.Name
                 .ToLower()
                     .Contains(name))
@@ -73,16 +80,16 @@ public class WordCollectionOwnerService : IWordCollectionOwnerService
     {
         await Init();
 
-        Debug.WriteLine($"{nameof(WordCollectionOwnerService)}: Get by id: {id}");
+        Logger.LogInformation("Get {data}s by id: {id}", nameof(WordCollectionOwner), id);
 
 
         try
         {
-            return await db.GetAsync<WordCollectionOwner>(id);
+            return await _db.GetAsync<WordCollectionOwner>(id);
         }
         catch
         {
-            Debug.WriteLine($"{nameof(WordCollectionOwnerService)}: Get by id: Collection Not Found => return null");
+            Logger.LogError("Get {data}s by id: Collection Not Found => return null", nameof(WordCollectionOwner));
             #if DEBUG
             throw;
             #else
@@ -93,6 +100,6 @@ public class WordCollectionOwnerService : IWordCollectionOwnerService
     public async Task<int> CountItems()
     {
         await Init();
-        return await db.Table<WordCollectionOwner>().CountAsync();
+        return await _db.Table<WordCollectionOwner>().CountAsync();
     }
 }

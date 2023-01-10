@@ -1,9 +1,9 @@
 ﻿namespace WordListsViewModels.Events;
 
-public class EditWantedEventArgs : EventArgs
+public class EditEventArgs : EventArgs
 {
-	public EditWantedEventArgs() { }
-	public EditWantedEventArgs(string? currentValue, int indexInList)
+	public EditEventArgs() { }
+	public EditEventArgs(string? currentValue, int indexInList)
 	{
 		CurrentValue = currentValue;
 		IndexInList = indexInList;

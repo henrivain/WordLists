@@ -1,11 +1,17 @@
-﻿using WordDataAccessLibrary.CollectionBackupServices;
+﻿using ImageRecognisionLibrary;
+using Serilog;
+using WordDataAccessLibrary.CollectionBackupServices;
 using WordDataAccessLibrary.CollectionBackupServices.JsonServices;
 using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsMauiHelpers.Factories;
+using WordListsMauiHelpers.Logging;
+using WordListsServices.FileSystemServices;
+using WordListsServices.ProcessServices;
 using WordListsUI.AppInfoPage;
 using WordListsUI.HomePage;
 using WordListsUI.WordDataPages;
+using WordListsUI.WordDataPages.ImageRecognisionPage;
 using WordListsUI.WordDataPages.JsonExportPage;
 using WordListsUI.WordDataPages.JsonImportPage;
 using WordListsUI.WordDataPages.ListGeneratorPage;
@@ -24,16 +30,31 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
-		var builder = MauiApp.CreateBuilder();
+        var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
             .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+			})
+			.ConfigureEssentials(essentials =>
+			{
+				essentials.UseVersionTracking();
 			});
+
 		// injecting appshell will make app buggy and starts to change visual element visibility
 
+		var serilogger = DefaultLoggingProvider.GetFileLogger();
+        new ExceptionHandler(AppDomain.CurrentDomain, serilogger.AsMicrosoftLogger())
+            .AddExceptionHandling();
+
+        builder.Services.AddLogging(logBuilder =>
+		{
+			logBuilder.AddSerilog(serilogger, true);
+		});
+		builder.Services.AddSingleton(serilogger.AsMicrosoftLogger());
+		builder.Services.AddSingleton<ILoggingInfoProvider, DefaultLoggingProvider>();
 		builder.Services.AddSingleton<HomePage>();
 		builder.Services.AddTransient<FlipCardTrainingPage>();
 		builder.Services.AddTransient<StartTrainingPage>();
@@ -44,6 +65,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<WritingTestPage>();
 		builder.Services.AddSingleton<WritingTestConfigurationPage>();
 		builder.Services.AddTransient<WriteTestResultPage>();
+		builder.Services.AddTransient<ImageRecognisionPage>();
 		builder.Services.AddSingleton<IWordTrainingViewModel, WordTrainingViewModel>();
 		builder.Services.AddTransient<IStartTrainingViewModel, StartTrainingViewModel>();
 		builder.Services.AddTransient<IWordCollectionHandlingViewModel, WordCollectionHandlingViewModel>();
@@ -53,6 +75,7 @@ public static class MauiProgram
 		builder.Services.AddAbstractFactory<IWriteWordViewModel, WriteWordViewModel>();
 		builder.Services.AddAbstractFactory<IWritingTestConfigurationViewModel, WritingTestConfigurationViewModel>();
 		builder.Services.AddTransient<ITestResultViewModel, TestResultViewModel>();
+		builder.Services.AddTransient<IImageRecognisionViewModel, ImageRecognisionViewModel>();
 
         builder.Services.AddTransient<JsonExportPage>();
         builder.Services.AddTransient<JsonImportPage>();
@@ -66,7 +89,10 @@ public static class MauiProgram
 		builder.Services.AddSingleton<ICollectionImportService, JsonWordCollectionImportService>();
 		builder.Services.AddSingleton<IWordCollectionInfoService, WordCollectionInfoService>();
 		builder.Services.AddSingleton<IUserInputWordValidator, UserInputWordValidator>();
-
+		builder.Services.AddTransient<IImageRecognisionEngine, ImageRecognisionEngine>();
+		builder.Services.AddTransient<IFolderHandler, FolderHandler>();
+		builder.Services.AddTransient<IFileHandler, FileHandler>();
+		builder.Services.AddTransient<IProcessLauncher, ProcessLauncher>();
         return builder.Build();
 	}
 }

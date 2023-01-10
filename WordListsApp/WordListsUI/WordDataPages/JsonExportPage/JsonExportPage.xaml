@@ -71,9 +71,11 @@
                            Grid.Row="1" />
                     <entry:PlatformIndependantEntry Text="{Binding NameParameter}"
                                                     PlaceHolder="Etsi nimellä"
+                                                    TextChangedCommand="{Binding SearchParameterChangedCommand}"
                                                     Margin="0,10" />
                     <entry:PlatformIndependantEntry Text="{Binding LanguageHeadersParameter}"
                                                     Grid.Row="1"
+                                                    TextChangedCommand="{Binding SearchParameterChangedCommand}"
                                                     PlaceHolder="Etsi kielellä" />
                 </Grid>
 
