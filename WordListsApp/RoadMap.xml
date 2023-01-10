@@ -77,6 +77,7 @@
 					<Note>Use language tags to choose language data files</Note>
 				</UseOCR>
 			</WordListGenerator>
+			<ChangeFonts>Currently bug is causing app to crash when unpackaged (MauiBug #9104)</ChangeFonts>
 		</Waiting>
 	</Coming>
 
