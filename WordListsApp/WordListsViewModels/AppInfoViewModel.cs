@@ -1,12 +1,10 @@
-﻿using WordDataAccessLibrary.Helpers;
-using WordListsMauiHelpers;
+﻿using WordListsMauiHelpers;
 using WordListsMauiHelpers.Logging;
 using WordListsServices;
 using WordListsServices.FileSystemServices;
 using WordListsServices.FileSystemServices.ActionResults;
 using WordListsServices.ProcessServices;
 using WordListsViewModels.Events;
-using static SQLite.SQLite3;
 
 namespace WordListsViewModels;
 
@@ -27,7 +25,7 @@ public partial class AppInfoViewModel : IAppInfoViewModel
     }
 
     [ObservableProperty]
-    string _appVersion = AssemblyHelper.EntryAssembly.VersionString ?? "Ei saatavilla";
+    string _appVersion = VersionTracking.CurrentVersion ?? "Ei saatavilla"; // AssemblyHelper.EntryAssembly.VersionString ?? "Ei saatavilla";
 
     [ObservableProperty]
     string _appEnvironment = GetAppEnvironment();

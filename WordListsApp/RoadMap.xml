@@ -82,6 +82,7 @@
 
 	<Ideas>
 		<Settings>
+			<MaybeGetToKnow>Preferences API</MaybeGetToKnow>
 			<Setting>Default word collection language</Setting>
 			<AddAppLanguage>Make user able to select english instead of finnish as a app language</AddAppLanguage>
 		</Settings>

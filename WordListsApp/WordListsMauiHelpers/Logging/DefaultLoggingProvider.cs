@@ -58,7 +58,9 @@ public class DefaultLoggingProvider : ILoggingInfoProvider
 #endif
                 .WriteTo.File(GetLogFilePath())  //fileSizeLimitBytes: 10_000_000 ??
                 .CreateLogger();
+            Log.Logger.Information("---------------------------------------------");
             Log.Logger.Information("New serilogger created in '{name}'.", nameof(DefaultLoggingProvider));
+            Log.Logger.Information("Application '{name}' running version '{version}'", AppInfo.Name, VersionTracking.CurrentVersion);
             LoggerConfigured = true;
         }
         return Log.Logger;

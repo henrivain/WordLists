@@ -37,7 +37,12 @@ public static class MauiProgram
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+			})
+			.ConfigureEssentials(essentials =>
+			{
+				essentials.UseVersionTracking();
 			});
+
 		// injecting appshell will make app buggy and starts to change visual element visibility
 
 		var serilogger = DefaultLoggingProvider.GetFileLogger();
