@@ -35,6 +35,7 @@ Releasing to windows is currently a bit hard in .NET MAUI.
 Most recent release contains a DEBUG build of the application.
 
 - The debug build is fully functional an its preformance is ok.
+- YOU MIGHT NEED TO INSTALL [WINUI APP SDK](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/downloads) to run the app
 - You might want to consider building the app yourself. (see [microsoft instructions](https://learn.microsoft.com/en-us/dotnet/maui/windows/deployment/publish-visual-studio-folder?view=net-maui-7.0))
 ##### To install for Windows using setup exe
 1) Go to Releases > Latest in the Github page right side
