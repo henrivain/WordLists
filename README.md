@@ -32,23 +32,14 @@ This was also a great opportunity to learn new ui framework .NET MAUI which I am
 
 #### Windows  
 Releasing to windows is currently a bit hard in .NET MAUI. 
-You need to build the app yourself.
+Most recent release contains a DEBUG build of the application.
 
-<img width="250" align="right" alt="image" src="https://user-images.githubusercontent.com/89461562/202190552-c8b4c425-6334-4cbd-a0b8-cb0b8fee0c6e.png">
-
-1) If you don't already have [visual studio 2022](https://visualstudio.microsoft.com/) you need to download it (vs2022 community might be free for you)
-2) In installer, select ".NET Multi-platform App UI development"
-3) Download source code from [Github](https://github.com/henrivain/WordLists/releases), by clicking "Source code (Zip)"
-4) Extract downloaded folder
-5) Open extracted solution (.sln) file by double "Open a project or solution" in visual studio and select the file
-6) After visual studio has loaded the project, select "Windows Machine" in the middle top selector
-7) Hit <kbd>F5</kbd> and app will build and run. It will be also installed to your machine, so you can run it from windows like normal app 
-
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/89461562/202192943-4f0a73c5-73f2-4580-8dfb-173d89641949.png">
-
-
-
-
+- The debug build is fully functional an its preformance is ok.
+- You might want to consider building the app yourself. (see [microsoft instructions](https://learn.microsoft.com/en-us/dotnet/maui/windows/deployment/publish-visual-studio-folder?view=net-maui-7.0))
+##### To install for Windows using setup exe
+1) Go to Releases > Latest in the Github page right side
+2) Download file which name contains "Windows10Setup.exe" from the release assets.
+3) Double click the downloaded file and follow the instructions.
 
 #### IOS
 - I have no intention to release for ios, but you can build it if you have suitable devices
