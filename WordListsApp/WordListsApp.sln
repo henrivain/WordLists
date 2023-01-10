@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordValidationLibraryTests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageRecognisionLibrary", "ImageRecognisionLibrary\ImageRecognisionLibrary.csproj", "{0593A53A-FA56-487F-9C36-3C0B8AC70DFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordListsServices", "WordListsServices\WordListsServices.csproj", "{457C9D2C-B60A-4174-A084-3166B19E7A06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordListsServices", "WordListsServices\WordListsServices.csproj", "{457C9D2C-B60A-4174-A084-3166B19E7A06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

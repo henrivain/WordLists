@@ -1,4 +1,5 @@
-﻿using ImageRecognisionLibrary;
+﻿/* 
+using ImageRecognisionLibrary;
 
 namespace WordListsViewModels;
 
@@ -25,3 +26,4 @@ public partial class ImageRecognisionViewModel : IImageRecognisionViewModel
 		Text = RecognisionEngine.Result;
 	}
 }
+*/

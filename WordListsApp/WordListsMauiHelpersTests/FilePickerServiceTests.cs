@@ -40,7 +40,7 @@ public class FilePickerServiceTests
     public void ValidateFileExtensions_WithNull_ShouldReturn_EmptyList()
     {
         // Arrange & Act
-        List<string> result = FilePickerService.GetValidFileExtensions(null);
+        List<string> result = FilePickerService.GetValidFileExtensions(Enumerable.Empty<string>().ToList());
 
         // Assert
         Assert.Equal(new List<string>(), result);

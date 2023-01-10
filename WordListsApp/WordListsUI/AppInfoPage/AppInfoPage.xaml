@@ -56,8 +56,8 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <Label Text="DEBUG"
-                   IsVisible="{Binding IsDebug}" />
+            <!--<Label Text="DEBUG"
+                   IsVisible="{Binding IsDebug}" />-->
 
             <VerticalStackLayout Margin="0,100,0,100"
                                  HorizontalOptions="Center"
