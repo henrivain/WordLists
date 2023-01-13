@@ -128,6 +128,18 @@
                                 ItemsLayout="VerticalGrid,2"
                                 CanReorderItems="True"
                                 MaximumWidthRequest="1500">
+                    <CollectionView.Resources>
+                        <Style TargetType="{x:Type ImageButton}">
+                            <Setter Property="HeightRequest"
+                                    Value="{OnIdiom Phone=20, Default=25}" />
+                            <Setter Property="WidthRequest"
+                                    Value="{OnIdiom Phone=20, Default=25}" />
+                            <Setter Property="BackgroundColor"
+                                    Value="Transparent" />
+                            <Setter Property="Grid.Column"
+                                    Value="1" />
+                        </Style>
+                    </CollectionView.Resources>
                     <CollectionView.EmptyView>
                         <VerticalStackLayout>
                             <Label HorizontalOptions="Center"
@@ -136,51 +148,42 @@
                                    FontSize="Small" />
                         </VerticalStackLayout>
                     </CollectionView.EmptyView>
-
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Border BackgroundColor="{StaticResource DarkerThanPage}"
-                                    Stroke="Transparent">
-                                <Border.StrokeShape>
-                                    <RoundRectangle CornerRadius="8" />
-                                </Border.StrokeShape>
-                                <Grid MinimumHeightRequest="{OnIdiom Phone=75, Default=40}"
-                                      ColumnDefinitions="{OnIdiom Phone='*,20,10', Default='*,60,10'}"
-                                      RowDefinitions="{OnIdiom Phone='40,*', Default='*'}">
-                                    <Grid.Resources>
-                                        <Style TargetType="{x:Type ImageButton}">
-                                            <Setter Property="HeightRequest"
-                                                    Value="{OnIdiom Phone=20, Default=25}" />
-                                            <Setter Property="WidthRequest"
-                                                    Value="{OnIdiom Phone=20, Default=25}" />
-                                            <Setter Property="BackgroundColor"
-                                                    Value="Transparent" />
-                                            <Setter Property="Grid.Column"
-                                                    Value="1" />
-                                        </Style>
-                                    </Grid.Resources>
-
-                                    <Label Text="{Binding .}"
-                                           Grid.RowSpan="{OnIdiom Phone=2, Default=1}"
-                                           TextColor="{StaticResource SecondaryText}"
-                                           Padding="10"
-                                           FontSize="{OnIdiom Phone=Caption}"
-                                           VerticalOptions="Center"
-                                           MaxLines="{OnPlatform Android=3, WinUI=1, Default=9999999}"
-                                           LineBreakMode="{OnPlatform WinUI=TailTruncation}"
-                                           />
-                                    <ImageButton Source="pencil_icon.png"
-                                                 HorizontalOptions="Start"
-                                                 CommandParameter="{Binding .}"
-                                                 Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:IListGeneratorViewModel}}, Path=Edit}" />
-                                    <ImageButton Source="bin_simpler_icon.png"
-                                                 CommandParameter="{Binding .}"
-                                                 Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:IListGeneratorViewModel}}, Path=Delete}"
-                                                 VerticalOptions="{OnIdiom Phone=Start, Default=Center}"
-                                                 Grid.Row="{OnIdiom Phone=1, Default=0}"
-                                                 HorizontalOptions="End" />
-                                </Grid>
-                            </Border>
+                            <!-- Not setting data type might cause publish builds to lose all the binding content -->
+                            <Grid MinimumHeightRequest="{OnIdiom Phone=75, Default=40}"
+                                  ColumnDefinitions="{OnIdiom Phone='*,20,10', Default='*,60,10'}"
+                                  RowDefinitions="{OnIdiom Phone='40,*', Default='*'}"
+                                  x:DataType="{x:Type x:String}"
+                                  BackgroundColor="Transparent"
+                                  >
+                                <Border BackgroundColor="{StaticResource DarkerThanPage}"
+                                        Grid.RowSpan="2"
+                                        Grid.ColumnSpan="3"
+                                        Stroke="Transparent">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                </Border>
+                                <Label Text="{Binding .}"
+                                       Grid.RowSpan="{OnIdiom Phone=2, Default=1}"
+                                       TextColor="{StaticResource SecondaryText}"
+                                       Padding="10"
+                                       FontSize="{OnIdiom Phone=Caption}"
+                                       VerticalOptions="Center"
+                                       MaxLines="{OnPlatform Android=3, WinUI=1, Default=999}"
+                                       LineBreakMode="{OnPlatform WinUI=TailTruncation}" />
+                                <ImageButton Source="pencil_icon.png"
+                                             HorizontalOptions="Start"
+                                             CommandParameter="{Binding .}"
+                                             Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:IListGeneratorViewModel}}, Path=Edit}" />
+                                <ImageButton Source="bin_simpler_icon.png"
+                                             CommandParameter="{Binding .}"
+                                             Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:IListGeneratorViewModel}}, Path=Delete}"
+                                             VerticalOptions="{OnIdiom Phone=Start, Default=Center}"
+                                             Grid.Row="{OnIdiom Phone=1, Default=0}"
+                                             HorizontalOptions="End" />
+                            </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

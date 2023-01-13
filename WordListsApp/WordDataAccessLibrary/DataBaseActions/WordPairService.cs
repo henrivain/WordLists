@@ -37,8 +37,6 @@ public class WordPairService : IWordPairService
     }
     public async Task<List<WordPair>> GetByOwnerId(int ownerId)
     {
-        Logger.LogInformation("Get {wordPair}s by owner id {id}.", nameof(WordPair), ownerId);
-
         await Init();
         return await _db.Table<WordPair>()
             .Where(x => x.OwnerId == ownerId)

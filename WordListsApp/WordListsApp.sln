@@ -20,6 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordListsViewModels", "Word
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{AC1754A4-454D-43B3-966F-5B323561E1C4}"
 	ProjectSection(SolutionItems) = preProject
+		ListOfCurrentMauiBugsCausingProblems.xml = ListOfCurrentMauiBugsCausingProblems.xml
 		RoadMap.xml = RoadMap.xml
 	EndProjectSection
 EndProject

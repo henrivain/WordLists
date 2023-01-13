@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<KnownMauiBugs>
+	<Fixed>
+
+	</Fixed>
+
+	<LimitingAppFunctionality>
+		<CollectionView>
+			<ItemsLayout>If has itemsLayout with grid span (here 'VerticalGrid,2') collectionview does not resize item template items correctly in Windows (MauiBug #10144) [ListGeneratorPage]</ItemsLayout>
+			<EmptyView>Android crashes when adding new items to empty view (MauiBug #12219) Empty view can be added, when the bug is fixed [WordCollectionHandlingPage]</EmptyView>
+			<SelectionModeSingle>SelectionMode="Single" crashes if selection null (MauiBug #9060) [StartTrainingPage]</SelectionModeSingle>
+			<ItemsLayout>ItemsLayout can't be changed after init even in code behind</ItemsLayout>
+		</CollectionView>
+		<RefreshView>
+			<WithCollectionView>App might crash when collectionview inside RefreshView #5772 [StartTrainingPage]</WithCollectionView>
+		</RefreshView>
+		<SwipeView>
+			<WinUICrash>Swipe view crashes in winui if filtering observable collection (MauiBug #8870) [StartTrainingPage]</WinUICrash>
+		</SwipeView>
+		<Font>
+			<Release>Building for WinUI or Android loses resource fonts and crashes application</Release>
+		</Font>
+	</LimitingAppFunctionality>
+
+	<MightBeProblem>
+		<CollectionView>
+			<Resizing>Resizing collectionview horizontally causes memory leak (Mauibug #9162)</Resizing>
+		</CollectionView>
+	</MightBeProblem>
+	
+</KnownMauiBugs>
+
+

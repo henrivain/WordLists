@@ -57,6 +57,20 @@
                                 </Border.StrokeShape>
                                 <Grid Padding="{OnIdiom Phone='20,10,0,10', Default='20,5,0,5'}"
                                       ColumnDefinitions="{OnIdiom Phone='*,45,45', Default='*,40,40'}">
+                                    <Grid.Resources>
+                                        <Style TargetType="{x:Type ImageButton}">
+                                            <Setter Property="HeightRequest"
+                                                    Value="{OnIdiom Phone=35, Default=30}" />
+                                            <Setter Property="WidthRequest"
+                                                    Value="{Binding Source={RelativeSource Self}, Path=HeightRequest}" />
+                                            <Setter Property="Padding"
+                                                    Value="3" />
+                                            <Setter Property="CornerRadius"
+                                                    Value="15" />
+                                            <Setter Property="HorizontalOptions"
+                                                    Value="Start" />
+                                        </Style>
+                                    </Grid.Resources>
                                     <VerticalStackLayout>
                                         <Label Text="{Binding Owner.Name}"
                                                LineBreakMode="TailTruncation" />
@@ -73,25 +87,15 @@
                                         </Label>
                                     </VerticalStackLayout>
                                     <ImageButton Source="pencil_icon.png"
-                                                 HeightRequest="{OnIdiom Phone=35, Default=30}"
-                                                 WidthRequest="{Binding Source={RelativeSource Self}, Path=HeightRequest}"
                                                  Grid.Column="1"
                                                  BackgroundColor="{StaticResource DarkerThanPage}"
                                                  CommandParameter="{Binding Owner.Id}"
-                                                 Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:IWordCollectionHandlingViewModel}}, Path=Edit}"
-                                                 Padding="3"
-                                                 CornerRadius="15"
-                                                 HorizontalOptions="Start" />
+                                                 Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:IWordCollectionHandlingViewModel}}, Path=Edit}" />
                                     <ImageButton Source="bin_simpler_icon.png"
                                                  Grid.Column="2"
-                                                 HeightRequest="{OnIdiom Phone=35, Default=30}"
-                                                 WidthRequest="{Binding Source={RelativeSource Self}, Path=HeightRequest}"
                                                  BackgroundColor="{StaticResource DarkerThanPage}"
                                                  CommandParameter="{Binding Owner.Id}"
-                                                 Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:IWordCollectionHandlingViewModel}}, Path=VerifyDeleteCommand}"
-                                                 Padding="3"
-                                                 CornerRadius="15"
-                                                 HorizontalOptions="Start" />
+                                                 Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:IWordCollectionHandlingViewModel}}, Path=VerifyDeleteCommand}" />
                                 </Grid>
                             </Border>
                         </DataTemplate>

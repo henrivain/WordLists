@@ -35,7 +35,7 @@ public class ExceptionHandler
             string exMessage = ex.Message;
             string trace = GetLimitedStackTrace(ex.StackTrace) ?? "NULL";
             Logger.LogError("'{sender}' threw exception '{ex}': '{msg}', caught with '{methodName}', see trace \n{trace}",
-                sender?.GetType(), exType, exMessage, nameof(HandleAndroidException), trace);
+                sender?.GetType().Name, exType, exMessage, nameof(HandleAndroidException), trace);
         };
 #endif
     }
@@ -49,7 +49,7 @@ public class ExceptionHandler
             string exMessage = ex.Message;
             string trace = GetLimitedStackTrace(ex.StackTrace) ?? "NULL";
             Logger.LogError("'{sender}' threw exception '{ex}': '{msg}', caught with '{methodName}', see trace \n{trace}",
-                sender?.GetType(), exType, exMessage, nameof(HandleAndroidException), trace);
+                sender?.GetType().Name, exType, exMessage, nameof(HandleAndroidException), trace);
         };
 #endif
     }
@@ -65,7 +65,7 @@ public class ExceptionHandler
 
 
         Logger.LogError("'{sender}' threw exception '{ex}': '{msg}', caught with '{methodName}', see trace \n{trace}",
-            sender?.GetType(), exType, exMessage, nameof(FirstChanceException), trace);
+            sender?.GetType().Name, exType, exMessage, nameof(FirstChanceException), trace);
     }
     private void UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
@@ -86,7 +86,7 @@ public class ExceptionHandler
             trace = "NULL";
         }
         Logger.LogError("'{sender}' threw exception '{ex}': '{msg}', caught with '{methodName}', see trace \n{trace}",
-            sender?.GetType(), exType, exMessage, nameof(UnhandledException), trace);
+            sender?.GetType().Name, exType, exMessage, nameof(UnhandledException), trace);
     }
 
     const int MaxAndroidStackTraceCharLen = 300;

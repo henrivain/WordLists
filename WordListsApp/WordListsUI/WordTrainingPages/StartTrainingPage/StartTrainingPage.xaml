@@ -16,7 +16,6 @@
         <!-- Add refresh view when bug #5772 is fixed -->
         <ScrollView>
             <VerticalStackLayout>
-
                 <VerticalStackLayout.Resources>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="HorizontalOptions"

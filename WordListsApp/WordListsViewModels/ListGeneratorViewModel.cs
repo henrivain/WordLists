@@ -15,11 +15,8 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         Logger = logger;
     }
 
-    //[AlsoNotifyChangeFor(nameof(CanSave))]
     [ObservableProperty]
     ObservableCollection<string> _words = new();
-
-
 
     [ObservableProperty]
     string _collectionName = "My word collection";
@@ -46,10 +43,8 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
             IsBusy = true;
             string text = await ClipboardAccess.GetStringAsync();
             var parser = StringParserActions[UseParser];
-            string[] words = await Task.Run(() =>
-            {
-                return parser(text).ToArray();
-            });
+            string[] words = await Task.Run(parser(text).ToArray);
+
             Words.Clear();
             foreach (var word in words)
             {
@@ -78,7 +73,8 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
             CollectionAddedEvent?.Invoke(this, new DataBaseActionArgs
             {
                 Text = "Added wordCollection successfully",
-                RefIds = new[] { id }
+                RefIds = new[] { id },
+                CollectionNames = new[] { CollectionName }
             });
             IsBusy = false;
         });
@@ -121,7 +117,8 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     {
         if (value is null)
         {
-            throw new NotImplementedException($"{nameof(value)} should not be null");
+            Logger.LogError("{vm}: Cannot delete word, because the word value is not defined.", nameof(ListGeneratorViewModel));
+            throw new NotImplementedException($"{nameof(Delete)}: Parameter {nameof(value)} should not be null");
         }
 
         Words.Remove(value);
@@ -132,7 +129,8 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     {
         if (value is null)
         {
-            throw new NotImplementedException($"{nameof(value)} should not be null");
+            Logger.LogError("{vm}: Cannot edit word, because the word value is not defined.", nameof(ListGeneratorViewModel));
+            throw new NotImplementedException($"{nameof(Edit)}: Parameter {nameof(value)} should not be null");
         }
 
         int index = Words.IndexOf(value);
@@ -140,6 +138,31 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     });
 
     public IRelayCommand New => new RelayCommand(() => AddWantedEvent?.Invoke(this, EventArgs.Empty));
+
+    public IAsyncRelayCommand FinishEdit => new AsyncRelayCommand(async () =>
+    {
+        if (IsEditMode is false)
+        {
+            throw new InvalidOperationException("Cannot update word collection, when edit mode is not true");
+        }
+        IsBusy = true;
+
+        var newData = ParseData();
+        int oldId = OldWordCollectionValue?.Owner.Id ?? -1;
+        if (oldId is not -1)
+        {
+            await CollectionService.DeleteWordCollection(oldId);
+        }
+        int newId = await CollectionService.AddWordCollection(newData);
+
+        EditFinished?.Invoke(this, new()
+        {
+            RefIds = new[] { newId },
+            CollectionNames = new[] { newData.Owner.Name },
+            Text = "Successfully removed old word collection and added new edited one."
+        });
+        IsBusy = false;
+    });
 
     public enum Parser
     {
@@ -213,29 +236,5 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         OnPropertyChanged(nameof(CanSave));
     }
 
-    public IAsyncRelayCommand FinishEdit => new AsyncRelayCommand(async () =>
-    {
-        if (IsEditMode is false)
-        {
-            throw new InvalidOperationException("Cannot update word collection, when edit mode is not true");
-        }
-        IsBusy = true;
-
-        var newData = ParseData();
-        int oldId = OldWordCollectionValue?.Owner.Id ?? -1;
-        if (oldId is not -1)
-        {
-            await CollectionService.DeleteWordCollection(oldId);
-        }
-        int newId = await CollectionService.AddWordCollection(newData);
-
-        EditFinished?.Invoke(this, new()
-        {
-            RefIds = new[] { newId },
-            CollectionNames = new[] { newData.Owner.Name },
-            Text = "Successfully removed old word collection and added new edited one."
-        });
-        IsBusy = false;
-    });
 }
 

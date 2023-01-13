@@ -47,7 +47,7 @@ public partial class ListGeneratorPage : ContentPage
     private async void Model_CollectionAddedEvent(object sender, DataBaseActionArgs e)
     {
         BindingContext = ModelFactory.Create();
-        await DisplayAlert("Onnistui!", $"Sanasto lisätty onnistuneesti säilytykseen nimellä '{string.Join(' ', e.CollectionNames)}'", "OK");
+        await DisplayAlert("Onnistui!", $"Sanasto lisätty onnistuneesti säilytykseen nimellä '{e.NameString}'", "OK");
     }
     private void StartAgainBtn_Click(object sender, EventArgs e)
     {
@@ -87,4 +87,6 @@ public partial class ListGeneratorPage : ContentPage
     {
         await Shell.Current.Navigation.PopAsync();
     }
+
+  
 }
