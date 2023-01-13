@@ -77,7 +77,7 @@ The page will look something like this one below
 you have three ways to do so:
 ```
 - from clipboard
-- by adding on at the time
+- by adding one at the time
 - (generate from image, this will be added later)
 ```
 > Note that generating from image or from clipboard will overwrite all already added words.
