@@ -1,0 +1,85 @@
+﻿using WordDataAccessLibrary.CollectionBackupServices;
+using WordDataAccessLibrary.CollectionBackupServices.JsonServices;
+using WordDataAccessLibrary.DataBaseActions;
+using WordDataAccessLibrary.DataBaseActions.Interfaces;
+using WordListsMauiHelpers.Factories;
+using WordListsMauiHelpers.Logging;
+using WordListsServices.FileSystemServices;
+using WordListsServices.ProcessServices;
+using WordListsUI.AppInfoPage;
+using WordListsUI.HomePage;
+using WordListsUI.WordDataPages;
+using WordListsUI.WordDataPages.JsonExportPage;
+using WordListsUI.WordDataPages.JsonImportPage;
+using WordListsUI.WordDataPages.ListGeneratorPage;
+using WordListsUI.WordDataPages.WordCollectionEditPage;
+using WordListsUI.WordTrainingPages.FlipCardTrainingPage;
+using WordListsUI.WordTrainingPages.StartTrainingPage;
+using WordListsUI.WordTrainingPages.WordListPage;
+using WordListsUI.WordTrainingPages.WritingTestPage;
+using WordListsViewModels;
+using WordListsViewModels.Helpers;
+using WordListsViewModels.Interfaces;
+using WordValidationLibrary;
+
+namespace WordLists.ServiceCollectionExtensions;
+internal static class Injections
+{
+    public static IServiceCollection AddAppServices(this IServiceCollection services)
+    {
+        services.AddSingleton<IWordPairService, WordPairService>();
+        services.AddSingleton<IWordCollectionOwnerService, WordCollectionOwnerService>();
+        services.AddSingleton<IWordCollectionService, WordCollectionService>();
+        services.AddSingleton<ICollectionExportService, WordCollectionExportService>();
+        services.AddSingleton<ICollectionImportService, JsonWordCollectionImportService>();
+        services.AddSingleton<IWordCollectionInfoService, WordCollectionInfoService>();
+        services.AddSingleton<IUserInputWordValidator, UserInputWordValidator>();
+        services.AddTransient<IFolderHandler, FolderHandler>();
+        services.AddTransient<IFileHandler, FileHandler>();
+        services.AddTransient<IProcessLauncher, ProcessLauncher>();
+        services.AddSingleton<ILoggingInfoProvider, DefaultLoggingProvider>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddAppPages(this IServiceCollection services)
+    {
+        services.AddSingleton<HomePage>();
+        services.AddTransient<FlipCardTrainingPage>();
+        services.AddTransient<StartTrainingPage>();
+        services.AddTransient<WordCollectionEditPage>();
+        services.AddTransient<ListGeneratorPage>();
+        services.AddTransient<WordDataPage>();
+        services.AddTransient<AppInfoPage>();
+        services.AddSingleton<WritingTestPage>();
+        services.AddSingleton<WritingTestConfigurationPage>();
+        services.AddTransient<WriteTestResultPage>();
+        services.AddTransient<JsonExportPage>();
+        services.AddTransient<JsonImportPage>();
+        services.AddTransient<WordListPage>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddAppViewModels(this IServiceCollection services)
+    {
+        services.AddSingleton<IWordTrainingViewModel, WordTrainingViewModel>();
+        services.AddTransient<IStartTrainingViewModel, StartTrainingViewModel>();
+        services.AddTransient<IWordCollectionHandlingViewModel, WordCollectionHandlingViewModel>();
+        services.AddTransient<IWordDataViewModel, WordDataViewModel>();
+        services.AddTransient<IAppInfoViewModel, AppInfoViewModel>();
+        services.AddTransient<ITestResultViewModel, TestResultViewModel>();
+        services.AddTransient<IWordListViewModel, WordListViewModel>();
+        services.AddAbstractFactory<IListGeneratorViewModel, ListGeneratorViewModel>();
+        services.AddAbstractFactory<IJsonExportViewModel, JsonExportViewModel>();
+        services.AddAbstractFactory<IJsonImportViewModel, JsonImportViewModel>();
+        services.AddAbstractFactory<IWriteWordViewModel, WriteWordViewModel>();
+        services.AddAbstractFactory<IWritingTestConfigurationViewModel, WritingTestConfigurationViewModel>();
+
+        return services;
+    }
+
+
+
+
+}

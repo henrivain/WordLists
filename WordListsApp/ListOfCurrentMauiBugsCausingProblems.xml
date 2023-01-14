@@ -19,7 +19,10 @@
 			<WinUICrash>Swipe view crashes in winui if filtering observable collection (MauiBug #8870) [StartTrainingPage]</WinUICrash>
 		</SwipeView>
 		<Font>
-			<Release>Building for WinUI or Android loses resource fonts and crashes application</Release>
+			<Release>
+				<Problem>Building for WinUI or Android loses resource fonts and crashes application</Problem>
+				<PossibleFix>Add font in MauiProgram.cs (Not tested, because I didn't notice it before)</PossibleFix>
+			</Release>
 		</Font>
 	</LimitingAppFunctionality>
 
