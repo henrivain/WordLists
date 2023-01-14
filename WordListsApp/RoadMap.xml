@@ -58,6 +58,7 @@
 			<!-- Update not released -->
 			<Bug>Fixed app crashing when trying to edit or delete word in list generator page (bug #10) in release mode Android</Bug>
 			<Bug>Fixed text not showing in list generator view in release mode Android (bug #11)</Bug>
+			<Enchancement>Limit log file size to 512mb</Enchancement>
 		</UnReleased>
 	</Completed>
 	<Coming>
@@ -94,7 +95,7 @@
 			<TestViewModels>Add tests to view models</TestViewModels>
 		</Tests>
 		<SaveWordTests>Save word test results in some format like json, as a file in user's machine</SaveWordTests>
-		<AddMekUpdater>Add MekUpdater (https://github.com/matikkaeditorinkaantaja/MekUpdater) in at least windows project</AddMekUpdater>
+		<AddMekUpdater>Add MekUpdater (https://github.com/henrivain/MekUpdater) in at least windows project</AddMekUpdater>
 
 
 		<UnImportant>
