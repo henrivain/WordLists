@@ -1,6 +1,5 @@
 ﻿// using ImageRecognisionLibrary;
 using Serilog;
-using WordLists.ServiceCollectionExtensions;
 using WordListsMauiHelpers.Logging;
 
 namespace WordLists;

@@ -2,13 +2,91 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
+             xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
              x:Class="WordListsUI.WordTrainingPages.WordListPage.WordListPage"
              x:DataType="{x:Type vm:IWordListViewModel}"
-             Title="{Binding Collection.Owner.Name}">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="{Binding Collection.Owner.Name}"
+             BackgroundColor="{StaticResource PageBackground}">
+    <ContentPage.Resources>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="TextColor"
+                    Value="{StaticResource SecondaryText}" />
+        </Style>
+    </ContentPage.Resources>
+    <ScrollView>
+        <VerticalStackLayout Margin="30,20,30,150"
+                             MaximumWidthRequest="1100">
+            <VerticalStackLayout Margin="10,25">
+                <Label Text="{Binding Collection.Owner.Name}"
+                       FontSize="Large" />
+                <Label Text="{Binding Collection.Owner.LanguageHeaders}"
+                       FontSize="Small" />
+                <Label Margin="0,2,0,0">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding Collection.WordPairs.Count}" />
+                            <Span Text=" sanaa" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </VerticalStackLayout>
+            
+            
+            <CollectionView ItemsSource="{Binding Collection.WordPairs}"
+                            MaximumWidthRequest="1100"
+                            ItemSizingStrategy="MeasureAllItems"
+                            >
+                
+
+                <CollectionView.EmptyView>
+                    <Label Text="Tyhjää täynnä! Sanastossasi ei ole sanoja."
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center" />
+                </CollectionView.EmptyView>
+                
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid x:DataType="{x:Type wordData:WordPair}"
+                              ColumnDefinitions="*,*"
+                              VerticalOptions="Start"
+                              Margin="2">
+                            <Grid.Resources>
+                                <Style TargetType="{x:Type Label}">
+                                    <Setter Property="VerticalTextAlignment"
+                                            Value="Center" />
+                                    <Setter Property="Padding"
+                                            Value="10" />
+                                    <Setter Property="FontSize"
+                                            Value="Body" />
+                                    <Setter Property="TextColor"
+                                            Value="{StaticResource SecondaryText}" />
+                                    <Setter Property="MaxLines"
+                                            Value="{OnIdiom Desktop=3, Default=5}" />
+                                </Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="Stroke"
+                                            Value="Transparent" />
+                                    <Setter Property="StrokeThickness"
+                                            Value="0" />
+                                    <Setter Property="BackgroundColor"
+                                            Value="{StaticResource DarkerThanPage}" />
+                                    <Setter Property="StrokeShape">
+                                        <Setter.Value>
+                                            <RoundRectangle CornerRadius="8" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Grid.Resources>
+                            <Border Margin="0,0,1,0" />
+                            <Border Grid.Column="1"
+                                    Margin="1,0,0,0" />
+                            <Label Text="{Binding NativeLanguageWord}" />
+                            <Label Text="{Binding ForeignLanguageWord}"
+                                   Grid.Column="1" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

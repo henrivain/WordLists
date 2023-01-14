@@ -6,23 +6,12 @@ using WordListsMauiHelpers.Factories;
 using WordListsMauiHelpers.Logging;
 using WordListsServices.FileSystemServices;
 using WordListsServices.ProcessServices;
-using WordListsUI.AppInfoPage;
-using WordListsUI.HomePage;
-using WordListsUI.WordDataPages;
-using WordListsUI.WordDataPages.JsonExportPage;
-using WordListsUI.WordDataPages.JsonImportPage;
-using WordListsUI.WordDataPages.ListGeneratorPage;
-using WordListsUI.WordDataPages.WordCollectionEditPage;
-using WordListsUI.WordTrainingPages.FlipCardTrainingPage;
-using WordListsUI.WordTrainingPages.StartTrainingPage;
-using WordListsUI.WordTrainingPages.WordListPage;
-using WordListsUI.WordTrainingPages.WritingTestPage;
 using WordListsViewModels;
 using WordListsViewModels.Helpers;
 using WordListsViewModels.Interfaces;
 using WordValidationLibrary;
 
-namespace WordLists.ServiceCollectionExtensions;
+namespace WordLists;
 internal static class Injections
 {
     public static IServiceCollection AddAppServices(this IServiceCollection services)

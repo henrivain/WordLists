@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using WordListsMauiHelpers.PageRouting;
 using WordListsUI.WordDataPages.JsonImportPage;
 using WordListsUI.WordDataPages.ListGeneratorPage;
@@ -16,7 +15,7 @@ public partial class HomePage : ContentPage
         Logger = logger;
     }
 
-	private async void ImportField_Tapped(object sender, EventArgs e)
+    private async void ImportField_Tapped(object sender, EventArgs e)
 	{
 		Logger.LogInformation("Goto '{destination}' from '{this}'", nameof(JsonImportPage), nameof(HomePage));
         await Shell.Current.GoToAsync($"{PageRoutes.GetRoute(Route.WordHandling)}/{PageRoutes.GetRoute(Route.Backup)}/{nameof(JsonImportPage)}");

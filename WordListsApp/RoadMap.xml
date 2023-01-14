@@ -56,9 +56,9 @@
 		</InRelease>
 		<UnReleased>
 			<!-- Update not released -->
-			<Bug>Fixed app crashing when trying to edit or delete word in list generator page (bug #10) in release mode Android</Bug>
-			<Bug>Fixed text not showing in list generator view in release mode Android (bug #11)</Bug>
-			<Enchancement>Limit log file size to 512mb</Enchancement>
+			<Bug>Fixed app crashing when trying to edit or delete word in list generator page (issue #10) in release mode Android</Bug>
+			<Bug>Fixed text not showing in list generator view in release mode Android (issue #11)</Bug>
+			<Enchancement>Limit log file size to 512mb (issue #9)</Enchancement>
 		</UnReleased>
 	</Completed>
 	<Coming>

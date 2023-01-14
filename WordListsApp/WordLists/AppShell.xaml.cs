@@ -1,15 +1,5 @@
 ﻿using WordListsMauiHelpers.PageRouting;
-using WordListsUI.AppInfoPage;
-using WordListsUI.HomePage;
-using WordListsUI.WordDataPages;
-using WordListsUI.WordDataPages.ImageRecognisionPage;
-using WordListsUI.WordDataPages.JsonExportPage;
-using WordListsUI.WordDataPages.JsonImportPage;
-using WordListsUI.WordDataPages.ListGeneratorPage;
-using WordListsUI.WordDataPages.WordCollectionEditPage;
-using WordListsUI.WordTrainingPages.FlipCardTrainingPage;
-using WordListsUI.WordTrainingPages.StartTrainingPage;
-using WordListsUI.WordTrainingPages.WritingTestPage;
+
 
 namespace WordLists;
 
@@ -32,6 +22,7 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute($"{training}/{nameof(WritingTestPage)}", typeof(WritingTestPage));
 		Routing.RegisterRoute($"{training}/{nameof(WritingTestConfigurationPage)}", typeof(WritingTestConfigurationPage));
 		Routing.RegisterRoute($"{training}/{nameof(WriteTestResultPage)}", typeof(WriteTestResultPage));
+		Routing.RegisterRoute($"{training}/{nameof(WordListPage)}", typeof(WordListPage));
 
         Routing.RegisterRoute($"{handling}/{nameof(WordDataPage)}", typeof(WordDataPage));
 		Routing.RegisterRoute($"{handling}/{lifetime}/{nameof(ListGeneratorPage)}", typeof(ListGeneratorPage));
