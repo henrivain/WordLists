@@ -46,6 +46,7 @@ internal static class Injections
         services.AddTransient<JsonExportPage>();
         services.AddTransient<JsonImportPage>();
         services.AddTransient<WordListPage>();
+        services.AddTransient<TrainingConfigPage>();
 
         return services;
     }
@@ -59,6 +60,7 @@ internal static class Injections
         services.AddTransient<IAppInfoViewModel, AppInfoViewModel>();
         services.AddTransient<ITestResultViewModel, TestResultViewModel>();
         services.AddTransient<IWordListViewModel, WordListViewModel>();
+        services.AddTransient<ITrainingConfigViewModel, TrainingConfigViewModel>();
         services.AddAbstractFactory<IListGeneratorViewModel, ListGeneratorViewModel>();
         services.AddAbstractFactory<IJsonExportViewModel, JsonExportViewModel>();
         services.AddAbstractFactory<IJsonImportViewModel, JsonImportViewModel>();

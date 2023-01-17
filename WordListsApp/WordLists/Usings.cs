@@ -12,4 +12,4 @@ global using WordListsUI.WordTrainingPages.FlipCardTrainingPage;
 global using WordListsUI.WordTrainingPages.StartTrainingPage;
 global using WordListsUI.WordTrainingPages.WordListPage;
 global using WordListsUI.WordTrainingPages.WritingTestPage;
-global using WordListsMauiHelpers;
+global using WordListsUI.WordTrainingPages.TrainingConfigPage;

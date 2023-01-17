@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WordListsUI.WordTrainingPages.TrainingConfigPage.TrainingConfigPage"
+             Title="Miten Treenaat?"
+             BackgroundColor="{StaticResource PageBackground}">
+    <ContentPage.Resources>
+        <Style TargetType="{x:Type ImageButton}">
+            <Setter Property="HeightRequest"
+                    Value="120" />
+            <Setter Property="Padding"
+                    Value="12" />
+            <Setter Property="WidthRequest"
+                    Value="{Binding Source={RelativeSource Self}, Path=HeightRequest}" />
+            <Setter Property="BackgroundColor"
+                    Value="{StaticResource DarkerThanPage}" />
+            <Setter Property="CornerRadius"
+                    Value="8" />
+        </Style>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="TextColor"
+                    Value="{StaticResource SecondaryText}" />
+        </Style>
+    </ContentPage.Resources>
+    <ScrollView>
+        <VerticalStackLayout Margin="0,30">
+            <Label Text="Miten haluat treenata?"
+                   FontSize="Large"
+                   FontAttributes="Bold"
+                   Margin="30,0,30,30"
+                   HorizontalTextAlignment="Center"
+                   />
+            <Grid ColumnDefinitions="*,*"
+                  RowDefinitions="*,*"
+                  VerticalOptions="Center"
+                  HorizontalOptions="Center"
+                  RowSpacing="4"
+                  ColumnSpacing="{Binding Source={RelativeSource Self}, Path=RowSpacing}">
+
+
+
+
+
+                <ImageButton Source="pencil_icon.png" />
+                <ImageButton Grid.Column="1"
+                             Source="cards_icon.png" />
+                <ImageButton Grid.Row="1"
+                             Source="copy_icon.png" />
+                <ImageButton Grid.Column="1"
+                             Grid.Row="1"
+                             Source="star_icon.png" />
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

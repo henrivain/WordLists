@@ -3,6 +3,7 @@ using WordListsMauiHelpers.PageRouting;
 using WordListsUI.WordDataPages.JsonImportPage;
 using WordListsUI.WordDataPages.ListGeneratorPage;
 using WordListsUI.WordTrainingPages.StartTrainingPage;
+using WordListsUI.WordTrainingPages.TrainingConfigPage;
 
 namespace WordListsUI.HomePage;
 
@@ -15,6 +16,9 @@ public partial class HomePage : ContentPage
         InitializeComponent();
         Logger = logger;
         _ = CheckCommandLineArgs();
+
+        // This line under is for development (automatically moving to the right page) and can be removed safely
+        // _ = Shell.Current.GoToAsync($"{PageRoutes.Get(Route.Training)}/{nameof(TrainingConfigPage)}");
     }
 
     static bool CommandLineArgsChecked { get; set; } = false;

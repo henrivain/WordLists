@@ -153,8 +153,6 @@
 		<None Remove="Resources\Images\ok_icon.svg" />
 		<None Remove="Resources\Images\pencil_icon.svg" />
 		<None Remove="Resources\Images\training_icon.svg" />
-		<None Remove="Resources\Raw\OpenSans-Regular.ttf" />
-		<None Remove="Resources\Raw\OpenSans-Semibold.ttf" />
 	</ItemGroup>
 
 	<ItemGroup>

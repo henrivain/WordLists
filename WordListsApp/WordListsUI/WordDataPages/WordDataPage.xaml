@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.WordDataPages.WordDataPage"
              xmlns:menu="clr-namespace:WordListsUI.Components.SideMenu"
-             Title="Hallitse sanastoja"
+             Title="Statistiikka"
              BackgroundColor="{StaticResource PageBackground}"
              xmlns:base="clr-namespace:WordListsUI.WordDataPages"
              xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"

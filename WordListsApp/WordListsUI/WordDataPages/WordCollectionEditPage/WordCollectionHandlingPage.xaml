@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.WordDataPages.WordCollectionEditPage.WordCollectionEditPage"
-             Title="Poista sanastoja"
+             Title="Muokkaa ja poista sanastoja"
              xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
              xmlns:viewModelHelpers="clr-namespace:WordListsViewModels.Helpers;assembly=WordListsViewModels"
              BackgroundColor="{StaticResource PageBackground}"
@@ -30,8 +30,7 @@
                        FontSize="Title"
                        FontAttributes="Bold"
                        HorizontalTextAlignment="Center"
-                       Margin="0,30"
-                       TextColor="{StaticResource UnImportantText}" />
+                       Margin="0,30" />
 
                 <!-- Android needs Height request for some reason or collection view will not be shown. -->
                 <!-- resizing collectionview horizontally causes memory leak (Mauibug #9162) -->

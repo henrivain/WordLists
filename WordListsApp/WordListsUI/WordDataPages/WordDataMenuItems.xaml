@@ -15,8 +15,8 @@
             <Setter Property="BackgroundColor" Value="{StaticResource SideMenuBackground}"/>
         </Style>
     </VerticalStackLayout.Resources>
-    <field:SideMenuField IconSource="pencil_icon.png"
-                         Text="hallitse"  
+    <field:SideMenuField IconSource="star_icon.png"
+                         Text="statistiikka"  
                          x:Name="manageDataField"
                          Loaded="ManageDataField_Loaded"
                          />
@@ -25,8 +25,8 @@
                          x:Name="createDataField"
                          Loaded="CreateDataField_Loaded"
                          />
-    <field:SideMenuField IconSource="bin_icon.png"
-                         Text="poista sanastoja"
+    <field:SideMenuField IconSource="pencil_icon.png"
+                         Text="muokkaa sanastoja"
                          x:Name="deleteDataField"
                          Loaded="DeleteDataField_Loaded"
                          />
