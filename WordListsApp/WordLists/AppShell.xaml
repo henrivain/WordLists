@@ -13,7 +13,8 @@
 
         <ShellContent Title="Koti"
                       ContentTemplate="{DataTemplate home:HomePage}"
-                      Icon="home_icon.png" />
+                      Icon="home_icon.png"
+                      />
 
 
         <!-- Word training -->

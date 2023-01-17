@@ -1,6 +1,8 @@
-﻿using WordDataAccessLibrary.CollectionBackupServices;
+﻿using System.ComponentModel.DataAnnotations;
+using WordDataAccessLibrary.CollectionBackupServices;
 using WordDataAccessLibrary.CollectionBackupServices.ActionResults;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
+using WordDataAccessLibrary.Extensions;
 using WordDataAccessLibrary.Helpers;
 using WordListsMauiHelpers.DeviceAccess;
 using static WordDataAccessLibrary.CollectionBackupServices.BackupDelegates;
@@ -11,16 +13,19 @@ namespace WordListsViewModels;
 public partial class JsonImportViewModel : IJsonImportViewModel
 {
     // import checks, that path value is not this when starting import
-    private const string DefaultPathInfo = "Valitse tiedosto...";
+    const string DefaultPathInfo = "Valitse tiedosto...";
+    readonly string[] _validExtensions = GetValidExtensions();
 
-    readonly string[] _acceptableFileExtensions = GetAcceptableImportFileExtensions();
+
 
     public JsonImportViewModel(
-        ICollectionImportService importService, 
-        IWordCollectionService dataBaseService)
+        ICollectionImportService importService,
+        IWordCollectionService dataBaseService,
+        ILogger<IJsonImportViewModel> logger)
     {
         ImportService = importService;
         CollectionDataBaseService = dataBaseService;
+        Logger = logger;
     }
 
 
@@ -31,121 +36,123 @@ public partial class JsonImportViewModel : IJsonImportViewModel
     bool _canImport = false;
 
     [ObservableProperty]
-    bool _isImporting = false;
-    public string AcceptableFileExtensions { get; } = 
-        string.Join(" ", GetAcceptableImportFileExtensions());
+    bool _isBusy = false;
+
+    public string AcceptableFileExtensions { get; } =
+        string.Join(", ", GetValidExtensions());
 
     public IAsyncRelayCommand SelectFile => new AsyncRelayCommand(async () =>
     {
-        string? path = await FilePickerService.GetUserSelectedFullPath(new(_acceptableFileExtensions));
+        string? path = await FilePickerService.GetUserSelectedFullPath(new(_validExtensions));
         if (string.IsNullOrWhiteSpace(path)) return;
 
-        SetPathDataIfValid(path);
+        SetPathIfValid(path);
     });
 
-    private void SetPathDataIfValid(string path)
+    public IAsyncRelayCommand Import => new AsyncRelayCommand(
+        async () => await ImportAndSaveCollectionsAsync());
+
+    public void SetDefaultImportPath(string path)
     {
-        FileActionResult result = new(FileAction.ValidateType)
+        if (path is not null && Path.Exists(path))
         {
-            Success = false,
-            UsedPath = path,
-        };
-        if (PathHasValidExtension(path))
-        {
-            result.Success = true;
-            SelectFileAttempted?.Invoke(this, result);
+            Logger.LogInformation("Successfully set import path to '{path}'", path);
             ImportPath = path;
             CanImport = true;
             return;
         }
-        result.MoreInfo = $"Filetype {Path.GetExtension(path)} is not valid file" +
-                   $" type for import, type must be one of {AcceptableFileExtensions}";
-        SelectFileAttempted?.Invoke(this, result);
+        Logger.LogWarning("Cannot set {prop} to have value '{path}', " +
+            "because path is invalid or doens't exist.", nameof(ImportPath), path);
     }
 
 
-    public IAsyncRelayCommand Import => new AsyncRelayCommand(
-        async () => await ImportAndSaveCollectionsAsync());
+
+
+    ICollectionImportService ImportService { get; }
+    IWordCollectionService CollectionDataBaseService { get; }
+    ILogger<IJsonImportViewModel> Logger { get; }
 
 
     public event ImportFailEventHandler? EmptyImportAttempted;
 
     public event ImportFailEventHandler? ImportActionFailed;
-    
+
     public event ImportSuccessfullEventHandler? ImportSuccessfull;
-    
+
     public event FileAccessEventHandler? SelectFileAttempted;
 
-    private ICollectionImportService ImportService { get; }
-    private IWordCollectionService CollectionDataBaseService { get; }
-    
-    
-    private async Task ImportAndSaveCollectionsAsync()
+    private void SetPathIfValid(string path)
     {
-        ImportActionResult pathValidation = ValidatePath(ImportPath);
-        if (pathValidation.Success is false)
+        bool isValid = HasValidExtension(path);
+        if (isValid)
         {
-            EmptyImportAttempted?.Invoke(this, pathValidation);
-            return;
+            ImportPath = path;
+            CanImport = true;
         }
-
-        ImportActionResult result;
-        IEnumerable<IExportWordCollection> exportCollections;
-
-        IsImporting = true;
-
-        (result, exportCollections) = await ImportService.Import(pathValidation.UsedPath);
-        if (result.Success is false)
+        SelectFileAttempted?.Invoke(this, new FileActionResult
         {
-            IsImporting = false;
-            ImportActionFailed?.Invoke(this, result);
-            return;
-        }
-
-        await SaveConvertedCollections(exportCollections);
-
-        IsImporting = false;
-
-        ImportSuccessfull?.Invoke(this, new(BackupAction.ParseData)
-        {
-            MoreInfo = $"Tuotu ja tallennettu {exportCollections.Count()} sanastoa",
-            Success = true
+            FileAction = FileAction.ValidateType,
+            Success = isValid,
+            UsedPath = path,
+            MoreInfo = isValid ? string.Empty : 
+                $"Invalid file extension '{Path.GetExtension(path)}', " +
+                $"only extensions '{AcceptableFileExtensions}' are valid."
         });
     }
-    private async Task SaveConvertedCollections(IEnumerable<IExportWordCollection> exportCollections)
+    private async Task ImportAndSaveCollectionsAsync()
     {
-        List<WordCollection> wordCollections = exportCollections
-            .Select(x => x.GetAsWordCollection())
-            .Where(x => x is not null)
-            .ToList();
+        ImportActionResult validateResult = ValidatePath(ImportPath);
+        if (validateResult.NotSuccess())
+        {
+            EmptyImportAttempted?.Invoke(this, validateResult);
+            return;
+        }
+        IsBusy = true;
 
-        foreach (WordCollection wc in wordCollections)
+        var (importResult, collections) = await ImportService.Import(validateResult.UsedPath);
+        if (importResult.NotSuccess())
+        {
+            IsBusy = false;
+            ImportActionFailed?.Invoke(this, importResult);
+            return;
+        }
+
+        List<WordCollection> converted = collections
+           .Select(x => x.GetAsWordCollection())
+           .Where(x => x is not null)
+           .ToList();
+
+        foreach (var wc in converted)
         {
             await CollectionDataBaseService.AddWordCollection(wc);
         }
+        Logger.LogInformation("Imported '{count}' collections from file.", converted.Count);
+        ImportSuccessfull?.Invoke(this, new ImportActionResult()
+        {
+            ActionType = BackupAction.ParseData,
+            MoreInfo = $"Tuotu ja tallennettu {converted.Count} sanastoa",
+            Success = true
+        });
+        IsBusy = false;
     }
+
     private static ImportActionResult ValidatePath(string path)
     {
-        ImportActionResult result = new(BackupAction.Configure)
+        bool isValid = path is not null && File.Exists(path);
+        return new ImportActionResult
         {
+            ActionType = BackupAction.Configure,
+            Success = isValid, 
             UsedPath = path,
-            Success = true
+            MoreInfo = isValid ? string.Empty : $"Cannot import from invalid path '{path}'."
         };
-
-        if (path is not null && File.Exists(path) || path is DefaultPathInfo) return result;
-
-        result.Success = false;
-        result.MoreInfo = $"Given file path does not exist, see {nameof(ImportActionResult.UsedPath)}";
-        return result;
     }
-    private static string[] GetAcceptableImportFileExtensions()
+    private bool HasValidExtension(string path)
     {
-        string[] extensions = { AppFileExtension.Get(FileExtension.Wordlist) };
-        return extensions;
+        return _validExtensions.Any(x => Path.GetExtension(path) == x);
     }
-    private bool PathHasValidExtension(string path)
+    private static string[] GetValidExtensions()
     {
-        return _acceptableFileExtensions.Any(x => Path.GetExtension(path) == x);
+        return new string[] { AppFileExtension.Get(FileExtension.Wordlist) };
     }
-
 }

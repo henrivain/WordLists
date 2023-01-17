@@ -50,7 +50,7 @@ public partial class WritingTestPage : ContentPage
     private async void Model_TestValidated(object sender, TestValidatedEventArgs e)
     {
         await Shell.Current.Navigation.PopAsync();
-        await Shell.Current.GoToAsync($"{PageRoutes.GetRoute(Route.Training)}/{nameof(WriteTestResultPage)}", new Dictionary<string, object>()
+        await Shell.Current.GoToAsync($"{PageRoutes.Get(Route.Training)}/{nameof(WriteTestResultPage)}", new Dictionary<string, object>()
         {
             [nameof(WriteTestResultPage.AnsweredQuestions)] = e.Questions,
             [nameof(WriteTestResultPage.SessionId)] = e.SessionId,

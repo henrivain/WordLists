@@ -1,5 +1,4 @@
-﻿
-namespace WordLists;
+﻿namespace WordLists;
 
 public partial class App : Application
 {
@@ -8,9 +7,8 @@ public partial class App : Application
 		InitializeComponent();
 		SetUIHandlers();
         MainPage = new AppShell();
-
-		
 	}
+
     private static void SetUIHandlers()
     {
 #if ANDROID

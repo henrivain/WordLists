@@ -1,0 +1,2 @@
+﻿If you want to use this OCR project, you should put one of the traineddata files in Main project Resources/Raw folder 
+with MauiAsset build action

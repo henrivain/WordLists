@@ -46,7 +46,7 @@ public partial class WordCollectionEditPage : ContentPage
 
     private async void Model_EditRequested(object sender, WordCollection collection)
     {
-		string path = $"{PageRoutes.GetRoute(Route.WordHandling)}/{PageRoutes.GetRoute(Route.LifeTime)}/{nameof(ListGeneratorPage.ListGeneratorPage)}";
+		string path = $"{PageRoutes.Get(Route.WordHandling)}/{PageRoutes.Get(Route.LifeTime)}/{nameof(ListGeneratorPage.ListGeneratorPage)}";
 
 		await Shell.Current.GoToAsync(path, new Dictionary<string, object>()
 		{

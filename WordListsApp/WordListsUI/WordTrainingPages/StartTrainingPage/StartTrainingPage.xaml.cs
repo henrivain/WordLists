@@ -23,7 +23,7 @@ public partial class StartTrainingPage : ContentPage
             Debug.WriteLine($"{nameof(StartTrainingPage)} Cannot navigate to training page, because given parameter {nameof(e.WordCollection)} is null");
         }
 
-        await Shell.Current.GoToAsync($"{PageRoutes.GetRoute(Route.Training)}/{nameof(FlipCardTrainingPage.FlipCardTrainingPage)}", new Dictionary<string, object>()
+        await Shell.Current.GoToAsync($"{PageRoutes.Get(Route.Training)}/{nameof(FlipCardTrainingPage.FlipCardTrainingPage)}", new Dictionary<string, object>()
         {
             ["StartCollection"] = e.WordCollection
         });
@@ -37,7 +37,7 @@ public partial class StartTrainingPage : ContentPage
             Debug.WriteLine($"{nameof(StartTrainingPage)} Cannot navigate to training page, because given parameter {nameof(e.WordCollection)} is null");
         }
 
-        await Shell.Current.GoToAsync($"{PageRoutes.GetRoute(Route.Training)}/{nameof(WritingTestConfigurationPage)}", new Dictionary<string, object>()
+        await Shell.Current.GoToAsync($"{PageRoutes.Get(Route.Training)}/{nameof(WritingTestConfigurationPage)}", new Dictionary<string, object>()
         {
             ["StartCollection"] = e.WordCollection
         });

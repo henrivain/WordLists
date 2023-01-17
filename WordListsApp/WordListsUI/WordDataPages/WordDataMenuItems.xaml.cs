@@ -36,9 +36,9 @@ public partial class WordDataMenuItems : VerticalStackLayout
 	}
 
 
-	private string RootRoute { get; } = PageRoutes.GetRoute(Route.WordHandling);
-	private string LifetimeRoute { get; } = PageRoutes.GetRoute(Route.LifeTime);
-	private string BackupRoute { get; } = PageRoutes.GetRoute(Route.Backup);
+	private string RootRoute { get; } = PageRoutes.Get(Route.WordHandling);
+	private string LifetimeRoute { get; } = PageRoutes.Get(Route.LifeTime);
+	private string BackupRoute { get; } = PageRoutes.Get(Route.Backup);
 
 
     private void ManageDataField_Loaded(object sender, EventArgs e)

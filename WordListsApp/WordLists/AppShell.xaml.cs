@@ -5,14 +5,14 @@ namespace WordLists;
 
 public partial class AppShell : Shell
 {
-	public AppShell()
+    public AppShell()
 	{
 		InitializeComponent();
 
-        string training = PageRoutes.GetRoute(Route.Training);
-        string handling = PageRoutes.GetRoute(Route.WordHandling);
-        string lifetime = PageRoutes.GetRoute(Route.LifeTime);
-        string backup = PageRoutes.GetRoute(Route.Backup);
+        string training = PageRoutes.Get(Route.Training);
+        string handling = PageRoutes.Get(Route.WordHandling);
+        string lifetime = PageRoutes.Get(Route.LifeTime);
+        string backup = PageRoutes.Get(Route.Backup);
 
         Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
         Routing.RegisterRoute(nameof(AppInfoPage), typeof(AppInfoPage));

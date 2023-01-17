@@ -6,7 +6,7 @@ public interface IJsonImportViewModel
     string AcceptableFileExtensions { get; }
     string ImportPath { get; }
     bool CanImport { get; }
-    bool IsImporting { get; }
+    bool IsBusy { get; }
     IAsyncRelayCommand SelectFile { get; }
     IAsyncRelayCommand Import { get; }
 
@@ -17,4 +17,5 @@ public interface IJsonImportViewModel
     event FileAccessEventHandler? SelectFileAttempted;
 
     event ImportSuccessfullEventHandler? ImportSuccessfull;
+    void SetDefaultImportPath(string value);
 }

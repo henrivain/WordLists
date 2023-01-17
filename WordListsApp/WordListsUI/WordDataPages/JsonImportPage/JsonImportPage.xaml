@@ -73,7 +73,7 @@
                                    VerticalOptions="Center"
                                    HorizontalOptions="Center"
                                    Color="Orange"
-                                   IsRunning="{Binding IsImporting}" />
+                                   IsRunning="{Binding IsBusy}" />
                 <Button Command="{Binding Import}"
                         IsEnabled="{Binding CanImport}"
                         Text="Tuo"

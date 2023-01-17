@@ -1,12 +1,15 @@
-﻿namespace WordDataAccessLibrary.CollectionBackupServices;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace WordDataAccessLibrary.CollectionBackupServices;
 public struct ImportActionResult
 {
+    [SetsRequiredMembers]
     public ImportActionResult(BackupAction actionType)
     {
         ActionType = actionType;
     }
 
-    public BackupAction ActionType { get; }
+    public required BackupAction ActionType { get; init; }
 
     public string UsedPath { get; set; } = string.Empty;
 
