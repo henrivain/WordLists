@@ -6,7 +6,7 @@
              Title="koti"
              xmlns:linkField="clr-namespace:WordListsUI.Components.LinkField"
              x:DataType="{x:Type local:HomePage}"
-             BackgroundColor="{StaticResource PageBackground}">
+             >
     <ContentPage.Resources>
         <Style TargetType="{x:Type Label}">
             <!--<Setter Property="FontFamily"

@@ -75,6 +75,6 @@ public partial class HomePage : ContentPage
             Logger.LogError("Cannot get command line args in current platform.");
             return;
         }
-        
+
     }
 }

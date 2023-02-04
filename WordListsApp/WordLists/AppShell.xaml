@@ -5,10 +5,9 @@
        xmlns:home="clr-namespace:WordListsUI.HomePage;assembly=WordListsUI"
        xmlns:startTraining="clr-namespace:WordListsUI.WordTrainingPages.StartTrainingPage;assembly=WordListsUI"
        xmlns:dataHandle="clr-namespace:WordListsUI.WordDataPages;assembly=WordListsUI"
-       xmlns:info="clr-namespace:WordListsUI.AppInfoPage;assembly=WordListsUI"
-       >
+       xmlns:info="clr-namespace:WordListsUI.AppInfoPage;assembly=WordListsUI">
 
-    <TabBar FlyoutDisplayOptions="AsMultipleItems">
+    <TabBar FlyoutDisplayOptions="AsMultipleItems" Appearing="TabBar_Appearing">
         <!-- Welcome page -->
 
         <ShellContent Title="Koti"

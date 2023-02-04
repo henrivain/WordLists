@@ -28,8 +28,7 @@
                    FontSize="Large"
                    FontAttributes="Bold"
                    Margin="30,0,30,30"
-                   HorizontalTextAlignment="Center"
-                   />
+                   HorizontalTextAlignment="Center" />
             <Grid ColumnDefinitions="*,*"
                   RowDefinitions="*,*"
                   VerticalOptions="Center"

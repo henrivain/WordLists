@@ -32,4 +32,11 @@ public partial class AppShell : Shell
         Routing.RegisterRoute($"{handling}/{backup}/{nameof(JsonExportPage)}", typeof(JsonExportPage));
 		Routing.RegisterRoute($"{handling}/{backup}/{nameof(JsonImportPage)}", typeof(JsonImportPage));
     }
+
+    private void TabBar_Appearing(object sender, EventArgs e)
+    {
+        if (sender is TabBar bar)
+        {
+        }
+    }
 }

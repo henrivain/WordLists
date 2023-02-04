@@ -63,4 +63,6 @@ public partial class StartTrainingPage : ContentPage
 #endif
         }
     }
+
+
 }
