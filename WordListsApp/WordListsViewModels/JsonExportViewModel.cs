@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using WordDataAccessLibrary.CollectionBackupServices;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsMauiHelpers;
@@ -13,19 +14,38 @@ public partial class JsonExportViewModel : IJsonExportViewModel
 {
     public JsonExportViewModel(
         ICollectionExportService exportService,
-        IWordCollectionService collectionService,
-        IWordCollectionInfoService collectionInfoService
+        IWordCollectionInfoService collectionInfoService,
+        IFilePickerService filePickerService,
+        ILogger logger
         )
     {
+        string folder = PathHelper.GetDownloadsFolderPath();
+        string extension = filePickerService.GetAppFileExtension();
+        _exportFileExtension = extension;
+        _exportFolderPath = folder;
+        _exportFileName = GetNewExportFileName(folder, "wordlist_export_", extension);
+
         ExportService = exportService;
-        CollectionService = collectionService;
         CollectionInfoService = collectionInfoService;
+        FilePickerService = filePickerService;
+        Logger = logger;
         _ = ResetCollections();
     }
 
-    private ICollectionExportService ExportService { get; }
-    public IWordCollectionService CollectionService { get; }
-    public IWordCollectionInfoService CollectionInfoService { get; }
+ 
+
+    ICollectionExportService ExportService { get; }
+    IWordCollectionInfoService CollectionInfoService { get; }
+    IFilePickerService FilePickerService { get; }
+    public ILogger Logger { get; }
+    List<WordCollectionInfo> AvailableCollections { get; set; } = Enumerable.Empty<WordCollectionInfo>().ToList();
+
+    [ObservableProperty]
+    ObservableCollection<WordCollectionInfo> _visibleCollections = new();
+
+    [ObservableProperty]
+    [AlsoNotifyChangeFor(nameof(CanExportSelected))]
+    List<object> _selectedCollections = new();
 
     [ObservableProperty]
     bool _removeUserDataFromWordPairs = true;
@@ -37,13 +57,24 @@ public partial class JsonExportViewModel : IJsonExportViewModel
     bool _canExportSelected = false;
 
     [ObservableProperty]
-    string _nameParameter = string.Empty;
+    string _nameFilter = string.Empty;
 
     [ObservableProperty]
-    string _languageHeadersParameter = string.Empty;
+    string _languageFilter = string.Empty;
+
 
     [ObservableProperty]
-    ObservableCollection<WordCollectionInfo> _visibleCollections = new();
+    string _exportFileName;
+
+    [ObservableProperty]
+    string _exportFolderPath;
+
+    [ObservableProperty]
+    string _exportFileExtension;
+
+    public string ExportPath => Path.Combine(ExportFolderPath, $"{ExportFileName}{ExportFileExtension}");
+
+
 
     public IRelayCommand SearchParameterChangedCommand => new RelayCommand(() =>
     {
@@ -57,28 +88,6 @@ public partial class JsonExportViewModel : IJsonExportViewModel
         }
         CanExportAllVisible = VisibleCollections.Count > 0;
     });
-
-
-
-    private bool Filter(WordCollectionInfo info)
-    {
-        bool isValidName = info.Owner.Name.Contains(NameParameter ?? string.Empty, StringComparison.OrdinalIgnoreCase);
-        bool isValidLang = info.Owner.LanguageHeaders.Contains(LanguageHeadersParameter ?? string.Empty, StringComparison.OrdinalIgnoreCase);
-        return isValidName && isValidLang;
-    }
-
-
-    [ObservableProperty]
-    [AlsoNotifyChangeFor(nameof(VisibleCollections))]
-    List<WordCollectionInfo> _availableCollections = new() { };
-
-    [ObservableProperty]
-    [AlsoNotifyChangeFor(nameof(CanExportSelected))]
-    List<object> _selectedCollections = new();
-
-    [ObservableProperty]
-    string _exportPath = PathHelper.GetDefaultBackupFilePath();
-
     public IAsyncRelayCommand ExportAllVisibleCommand => new AsyncRelayCommand(async () =>
     {
         await Export(VisibleCollections.ToList());
@@ -87,11 +96,17 @@ public partial class JsonExportViewModel : IJsonExportViewModel
     {
         await Export(SelectedCollections.GetOwners());
     });
-    public IAsyncRelayCommand ChooseExportLocationCommand => new AsyncRelayCommand(async () =>
+    public IAsyncRelayCommand ChooseExportFolderCommand => new AsyncRelayCommand(async () =>
     {
-        string? exportPath = await FilePickerService.GetUserSelectedExportPath();
-        if (string.IsNullOrWhiteSpace(exportPath)) return;
-        ExportPath = exportPath;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) is false)
+        {
+            Logger.LogWarning("Cannot choose export folder, because platform is not Windows.");
+            return;
+        }
+        string? exportFolder = await FilePickerService.PickFolder();
+        if (string.IsNullOrWhiteSpace(exportFolder)) return;
+        Logger.LogInformation("User changed export folder to be '{path}'.", exportFolder);
+        ExportFolderPath = exportFolder;
     });
     public IAsyncRelayCommand CopyPathToClipBoardCommand => new AsyncRelayCommand(async () =>
     {
@@ -104,6 +119,7 @@ public partial class JsonExportViewModel : IJsonExportViewModel
 
     public async Task ResetCollections()
     {
+        Logger.LogInformation("Reset {name} Wordcollections.", nameof(JsonExportViewModel));
         AvailableCollections = await CollectionInfoService.GetAll();
         VisibleCollections.Clear();
         SearchParameterChangedCommand.Execute(null);
@@ -115,9 +131,10 @@ public partial class JsonExportViewModel : IJsonExportViewModel
 
     private async Task Export(List<WordCollectionInfo> infos)
     {
-        string path = ExportPath;
+        Logger.LogInformation("Export {count} wordcollections.", infos.Count);
 
         List<WordCollectionOwner> owners = infos.Select(x => x.Owner).ToList();
+        string path = ExportPath;
 
         if (owners is null || owners.Count == 0)
         {
@@ -130,15 +147,53 @@ public partial class JsonExportViewModel : IJsonExportViewModel
             return;
         }
 
+        Logger.LogInformation("Use export path '{path}'.", path);
         ExportActionResult result = await ExportService.ExportByCollectionOwners(owners, path, RemoveUserDataFromWordPairs);
+
+        Logger.LogInformation("Export finished. Success: '{success}', Msg: '{msg}'.", result.Success, result.MoreInfo);
         ExportCompleted?.Invoke(this, result);
     }
     private void InvokeEmptyExportEvent(string text)
     {
+        Logger.LogInformation("User tried to export wordlists, when none was selected: '{text}'", text);
         EmptyExportAttempted?.Invoke(this, new(BackupAction.Configure)
         {
             Success = false,
             MoreInfo = text
         });
     }
+    private bool Filter(WordCollectionInfo info)
+    {
+        bool isValidName = info.Owner.Name.Contains(NameFilter ?? string.Empty, StringComparison.OrdinalIgnoreCase);
+        bool isValidLang = info.Owner.LanguageHeaders.Contains(LanguageFilter ?? string.Empty, StringComparison.OrdinalIgnoreCase);
+        return isValidName && isValidLang;
+    }
+    private static string GetTimeString()
+    {
+        return DateTime.Now.ToString("G")
+                .Replace(" ", string.Empty)
+                .Replace("/", string.Empty)
+                .Replace(":", string.Empty)
+                .Replace("PM", string.Empty)
+                .Replace("AM", string.Empty)
+                .Replace(".", string.Empty);
+    }
+    private static string GetNewExportFileName(string folderPath, string nameStart, string extension)
+    {
+        string newPath;
+        int num = 0;
+        do
+        {
+            num++;
+            string fileName = $"{nameStart}{num}{extension}";
+            newPath = Path.Combine(folderPath, fileName);
+            if (num > 200)
+            {
+                break;
+            }
+        }
+        while (Path.Exists(newPath));
+        return $"{nameStart}{num}";
+    }
+
 }

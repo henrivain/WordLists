@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Handlers;
-using Microsoft.Maui.Controls.Handlers;
-using System.Reflection;
+﻿using Microsoft.Maui.Handlers;
 #if WINDOWS
 using Microsoft.UI;
 using Windows.UI.Text;
@@ -52,4 +49,7 @@ public partial class App : Application
         });
 #endif
     }
+
+
+
 }

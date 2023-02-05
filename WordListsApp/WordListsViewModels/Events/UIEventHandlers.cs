@@ -16,6 +16,8 @@ public delegate void DeleteWantedEventHandler(object sender, DeleteWantedEventAr
 
 public delegate void TrainingRequestedEventHandler(object sender, StartTrainingEventArgs e);
 
+public delegate void DBKeyDoesNotExistEventHandler(object sender, int id, string message);
+
 public delegate void LogsCopiedEventHandler(object sender, LogsCopiedEventArgs e);
 
 public delegate void InvalidDataEventHandler<T>(object sender, InvalidDataEventArgs<T> e);

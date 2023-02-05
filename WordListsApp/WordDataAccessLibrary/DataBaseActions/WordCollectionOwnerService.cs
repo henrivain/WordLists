@@ -82,7 +82,6 @@ public class WordCollectionOwnerService : IWordCollectionOwnerService
 
         Logger.LogInformation("Get {data}s by id: {id}", nameof(WordCollectionOwner), id);
 
-
         try
         {
             return await _db.GetAsync<WordCollectionOwner>(id);

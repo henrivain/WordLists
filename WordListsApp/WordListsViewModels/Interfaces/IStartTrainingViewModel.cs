@@ -5,6 +5,7 @@ using WordListsViewModels.Events;
 namespace WordListsViewModels.Interfaces;
 public interface IStartTrainingViewModel
 {
+    // If the bool is true, the collection should be visible. This is to fix Windows bug with collectionview not showing collections
     ObservableCollection<WordCollectionOwner> VisibleCollections { get; set; }
 
     IRelayCommand FilterCollections { get; }
@@ -31,6 +32,8 @@ public interface IStartTrainingViewModel
     event TrainingRequestedEventHandler WriteTrainingRequestedEvent;
 
     event PropertyChangedEventHandler PropertyChanged;
+
+    event DBKeyDoesNotExistEventHandler CollectionDoesNotExistEvent;
 }
 
 

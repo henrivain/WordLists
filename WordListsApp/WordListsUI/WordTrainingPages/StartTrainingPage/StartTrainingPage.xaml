@@ -6,11 +6,15 @@
              xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
              xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
              xmlns:local="clr-namespace:WordListsUI.WordTrainingPages.StartTrainingPage"
+             xmlns:converters="clr-namespace:WordListsUI.ValueConverters"
              xmlns:entry="clr-namespace:WordListsUI.Components.Entry"
              x:DataType="{x:Type viewModel:IStartTrainingViewModel}"
              BackgroundColor="{StaticResource PageBackground}"
              Loaded="ContentPage_Loaded"
              x:Name="this">
+    <ContentPage.Resources>
+        <converters:StartTrainingWorkaroundVisibilityConverter x:Key="placeholderHider" />
+    </ContentPage.Resources>
     <Grid>
         <!--<RefreshView Command="{Binding UpdateCollections}" IsRefreshing="{Binding IsRefreshing}">-->
         <!-- Add refresh view when bug #5772 is fixed -->
@@ -53,8 +57,7 @@
                     <Grid RowDefinitions="*, *, *, *">
                         <Switch IsToggled="{Binding ShowLearnedWords}"
                                 VerticalOptions="Center"
-                                Grid.Row="0" 
-                                />
+                                Grid.Row="0" />
                         <Switch IsToggled="{Binding ShowMightKnowWords}"
                                 VerticalOptions="Center"
                                 Grid.Row="1" />
@@ -75,8 +78,7 @@
                 <CollectionView ItemsSource="{Binding VisibleCollections}"
                                 Margin="20,0,20,100"
                                 HorizontalOptions="Center"
-                                Loaded="CollectionView_Loaded"
-                                >
+                                Loaded="CollectionView_Loaded">
                     <!--Swipe view crashes in winui if filtering observable collection (MauiBug #8870)
                         Currently data template is chosen in code behind and winui does not have SwipeView -->
                     <CollectionView.Resources>
@@ -139,8 +141,10 @@
                                 </Border>
                             </SwipeView>
                         </DataTemplate>
+                        <!-- placeholderHider hides all collections with name "^^_$Placeholder$_^^" without ""-->
                         <DataTemplate x:Key="windowsTemplate">
-                            <Border x:DataType="{x:Type wordData:WordCollectionOwner}">
+                            <Border x:DataType="{x:Type wordData:WordCollectionOwner}"
+                                    IsVisible="{OnPlatform WinUI={Binding Name, Converter={StaticResource placeholderHider}}, Default=True}">
                                 <Grid ColumnDefinitions="*, 80">
                                     <VerticalStackLayout>
                                         <Label Text="{Binding Name}" />
@@ -168,7 +172,7 @@
                     </CollectionView.Resources>
                     <!--SelectionMode="Single" crashes if selection null (MauiBug #9060)-->
                     <CollectionView.EmptyView>
-                        <Grid >
+                        <Grid>
                             <Label Text="Sopivia sanastoja ei löytynyt"
                                    FontSize="Medium"
                                    TextColor="{StaticResource NormalText}" />

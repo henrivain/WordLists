@@ -14,6 +14,17 @@ public partial class StartTrainingPage : ContentPage
         CollectionService = collectionService;
         Model.WriteTrainingRequestedEvent += Model_WriteTrainingRequestedEvent;
         Model.CardsTrainingRequestedEvent += Model_CardsTrainingRequestedEvent;
+        Model.CollectionDoesNotExistEvent += Model_CollectionDoesNotExistEvent;
+    }
+
+    private async void Model_CollectionDoesNotExistEvent(object sender, int id, string message)
+    {
+        await DisplayAlert("Sanastoa ei löydy :(", 
+            """
+            Valitsemaasi sanastoa ei enää löydy, joten se on todennäköisesti ehditty poistaa.
+            Näkymä on nyt päivitetty, joten kannattaa yrittää uudelleen.
+            """, 
+            "OK");
     }
 
     private async void Model_CardsTrainingRequestedEvent(object sender, WordListsViewModels.Events.StartTrainingEventArgs e)
@@ -63,6 +74,4 @@ public partial class StartTrainingPage : ContentPage
 #endif
         }
     }
-
-
 }

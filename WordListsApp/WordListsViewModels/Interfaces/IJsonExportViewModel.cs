@@ -7,14 +7,16 @@ public interface IJsonExportViewModel
 {
     ObservableCollection<WordCollectionInfo> VisibleCollections { get; }
     
-    //List<WordCollectionInfo> AvailableCollections { get; }
-    
     List<object> SelectedCollections { get; }
 
+    string ExportFileName { get; set; }
+    string ExportFolderPath { get; set; }
+    string ExportFileExtension { get; }
+    string ExportPath { get; }
 
-    string NameParameter { get; set; }
-    string LanguageHeadersParameter { get; set; }
-    string ExportPath { get; set; }
+
+    string NameFilter { get; set; }
+    string LanguageFilter { get; set; }
 
     bool CanExportAllVisible { get; }
     bool CanExportSelected { get; }
@@ -22,10 +24,12 @@ public interface IJsonExportViewModel
 
     IAsyncRelayCommand ExportSelectionsCommand { get; }
     IAsyncRelayCommand ExportAllVisibleCommand { get; }
-    IAsyncRelayCommand ChooseExportLocationCommand { get; }
+    IAsyncRelayCommand ChooseExportFolderCommand { get; }
     IAsyncRelayCommand CopyPathToClipBoardCommand { get; }
     IRelayCommand SearchParameterChangedCommand { get; }
     IRelayCommand SelectionChangedCommand { get; }
+
+    Task ResetCollections();
 
     event ExportFailEventHandler? EmptyExportAttempted;
 

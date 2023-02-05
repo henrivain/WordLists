@@ -1,23 +1,30 @@
-﻿using System.Collections.ObjectModel;
+﻿using Microsoft.VisualBasic;
+using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsMauiHelpers.Extensions;
 using WordListsViewModels.Events;
+using WordListsViewModels.Helpers;
 
 namespace WordListsViewModels;
 
 [INotifyPropertyChanged]
 public partial class StartTrainingViewModel : IStartTrainingViewModel
 {
-    public StartTrainingViewModel(IWordCollectionOwnerService ownerService, IWordCollectionService wordCollectionService)
+    public StartTrainingViewModel(
+        IWordCollectionOwnerService ownerService, 
+        IWordCollectionService wordCollectionService,
+        ILogger logger)
     {
         OwnerService = ownerService;
         WordCollectionService = wordCollectionService;
+        Logger = logger;
         AllCollections = Enumerable.Empty<WordCollectionOwner>().ToList();
     }
 
     IWordCollectionOwnerService OwnerService { get; }
     IWordCollectionService WordCollectionService { get; }
-
+    public ILogger Logger { get; }
     List<WordCollectionOwner> AllCollections { get; set; }
 
     [ObservableProperty]
@@ -34,6 +41,24 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
             if (Filter(collection))
             {
                 VisibleCollections.Add(collection);
+            }
+        }
+
+       
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && 
+            VisibleCollections.Count < 4 && 
+            VisibleCollections.Count > 0)
+        {
+            // These "placeholder" are hided in the ui because of their name
+            // Some winui collectionview bug causes that items are only shown if there are at least 4
+            // (grid items layout with span 3)
+            WordCollectionOwner placeholder = new()
+            {
+                Name = "^^_$Placeholder$_^^"
+            };
+            for (int i = 0; i < 3; i++)
+            {
+                VisibleCollections.Add(placeholder);
             }
         }
     });
@@ -75,32 +100,56 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
     [ObservableProperty]
     WordCollectionOwner _selectedItem = new();
 
-
-
-
     public IAsyncRelayCommand<int> RequestCardsTraining => new AsyncRelayCommand<int>(async selectionId =>
     {
+        Logger.LogInformation("Start training collection {id} with cards.", selectionId);
+        var collection = await BuildSelectedWordCollection(selectionId);
+        if (collection is null)
+        {
+            CollectionDoesNotExistEvent?.Invoke(this, selectionId, "Collection does not exit anymore. Try again.");
+            return;
+        }
         CardsTrainingRequestedEvent?.Invoke(this, new()
         {
-            WordCollection = await BuildSelectedWordCollection(selectionId)
+            WordCollection = collection
         });
     });
 
     public IAsyncRelayCommand<int> RequestWriteTraining => new AsyncRelayCommand<int>(async selectionId =>
     {
+        Logger.LogInformation("Start writing words of collection {id}.", selectionId);
+        var collection = await BuildSelectedWordCollection(selectionId);
+        if (collection is null)
+        {
+            CollectionDoesNotExistEvent?.Invoke(this, selectionId, "Collection does not exit anymore. Try again.");
+            return;
+        }
         WriteTrainingRequestedEvent?.Invoke(this, new()
         {
-            WordCollection = await BuildSelectedWordCollection(selectionId)
+            WordCollection = collection
         });
     });
 
     public event TrainingRequestedEventHandler? CardsTrainingRequestedEvent;
     public event TrainingRequestedEventHandler? WriteTrainingRequestedEvent;
+    public event DBKeyDoesNotExistEventHandler? CollectionDoesNotExistEvent;
 
-    public async Task<WordCollection> BuildSelectedWordCollection(int selectionId)
+    public async Task<WordCollection?> BuildSelectedWordCollection(int selectionId)
     {
-        WordCollection collection = await WordCollectionService.GetWordCollection(selectionId);
+        // returns null if collection id does not exist anymore
 
+        WordCollection? collection = null;
+        try
+        {
+            collection = await WordCollectionService.GetWordCollection(selectionId);
+        }
+        catch (InvalidOperationException)
+        {
+            // if view is not refreshed when collections are deleted from db
+            Logger.LogInformation("{view}: Cannot start null wordcollection. Refreshing the view", nameof(StartTrainingViewModel));
+            await ResetCollections();
+            return null;
+        }
         if (ShowLearnedWords is false)
         {
             collection.WordPairs = collection.WordPairs
@@ -130,7 +179,6 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
     {
         IsRefreshing = true;
         AllCollections = (await OwnerService.GetAll()).SortByName().ToList();
-        VisibleCollections = new(AllCollections);
         FilterCollections.Execute(null);
         IsRefreshing = false;
     }

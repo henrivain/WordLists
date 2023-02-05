@@ -50,4 +50,30 @@ public partial class JsonExportPage : ContentPage
         Model.ExportCompleted += Model_ExportCompleted;
         Model.EmptyExportAttempted += Model_EmptyExportAttempted;
     }
+
+    private async void ChangeFileName_Clicked(object sender, EventArgs e)
+    {
+        string result;
+        bool isFirstAttempt = true;
+        do
+        {
+            string title = isFirstAttempt ? "Vaihda tiedostonimi" 
+                : "Anna kelvollinen tiedostonimi";
+            string msg = isFirstAttempt ? "Anna haluamasi nimi viet‰v‰lle tiedostolle."
+                : "Nime‰ ei voi j‰tt‰‰ tyhj‰ksi. Lis‰‰ nimi tai paina peruuta.";
+
+            result = await DisplayPromptAsync(title,
+               msg, "OK", "Peruuta", "tiedoston nimi", 48, null, Model.ExportFileName);
+
+            if (result is null)
+            {
+                return;
+            }
+            isFirstAttempt = false;
+        }
+        while (string.IsNullOrWhiteSpace(result));
+
+        Model.ExportFileName = string.Join("_", 
+            result.Split(Path.GetInvalidFileNameChars()));
+    }
 }

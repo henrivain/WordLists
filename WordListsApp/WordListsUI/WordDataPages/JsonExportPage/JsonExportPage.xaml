@@ -11,14 +11,19 @@
              xmlns:menu="clr-namespace:WordListsUI.Components.SideMenu"
              xmlns:entry="clr-namespace:WordListsUI.Components.Entry"
              xmlns:base="clr-namespace:WordListsUI.WordDataPages"
+             xmlns:local="clr-namespace:WordListsUI.WordDataPages.JsonExportPage"
              BindingContextChanged="ContentPage_BindingContextChanged">
     <ContentPage.Resources>
-        <Style TargetType="{x:Type Label}">
-            <Setter Property="TextColor"
-                    Value="{OnIdiom Phone={StaticResource UnImportantText}}" />
-        </Style>
+        <local:ExportPageStyles />
     </ContentPage.Resources>
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="{x:Type Label}">
+                <Setter Property="TextColor"
+                        Value="{OnIdiom Phone={StaticResource UnImportantText}, Default={StaticResource NormalText}}" />
+            </Style>
+
+        </Grid.Resources>
         <ScrollView Margin="40,0,0,0">
             <ScrollView.GestureRecognizers>
                 <TapGestureRecognizer Tapped="HideMenu" />
@@ -69,11 +74,11 @@
                     <Label Text="Etsi kielellä"
                            IsVisible="{OnIdiom Default=true, Phone=false}"
                            Grid.Row="1" />
-                    <entry:PlatformIndependantEntry Text="{Binding NameParameter}"
+                    <entry:PlatformIndependantEntry Text="{Binding NameFilter}"
                                                     PlaceHolder="Etsi nimellä"
                                                     TextChangedCommand="{Binding SearchParameterChangedCommand}"
                                                     Margin="0,10" />
-                    <entry:PlatformIndependantEntry Text="{Binding LanguageHeadersParameter}"
+                    <entry:PlatformIndependantEntry Text="{Binding LanguageFilter}"
                                                     Grid.Row="1"
                                                     TextChangedCommand="{Binding SearchParameterChangedCommand}"
                                                     PlaceHolder="Etsi kielellä" />
@@ -130,6 +135,7 @@
                                 <VerticalStackLayout>
                                     <Label TextColor="{StaticResource SecondaryText}"
                                            Padding="5"
+                                           LineBreakMode="TailTruncation"
                                            Margin="{OnIdiom Phone='30,5,0,5', Default='30,0,0,0'}">
                                         <Label.FormattedText>
                                             <FormattedString>
@@ -150,36 +156,46 @@
                     </CollectionView.ItemsLayout>
                 </CollectionView>
 
-                <Grid ColumnDefinitions="{OnIdiom Phone='*', Default='auto, *'}"
-                      HorizontalOptions="Center"
-                      Margin="0,0,0,50">
-                    <Button Command="{Binding ChooseExportLocationCommand}"
-                            IsVisible="{OnPlatform Android=false, Default=true}"
-                            Text="Valitse sijainti"
-                            HorizontalOptions="Start"
-                            Margin="0,0,10,0" />
-
-
-                    <Border HorizontalOptions="Start"
-                            BackgroundColor="#45000000"
+                <Grid ColumnDefinitions="auto,*"
+                      Margin="30,0,30,50"
+                      HorizontalOptions="Center">
+                    <HorizontalStackLayout VerticalOptions="Center">
+                        <Button Command="{Binding ChooseExportFolderCommand}"
+                                IsVisible="{OnPlatform Default=false, WinUI=true}"
+                                Text="Valitse kansio" />
+                        <Button Text="Vaihda nimi"
+                                Clicked="ChangeFileName_Clicked" />
+                    </HorizontalStackLayout>
+                    <Border Style="{DynamicResource PathSelectorBackground}"
+                            Grid.Column="1"
                             Padding="10"
-                            Grid.Column="1">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="8" />
-                        </Border.StrokeShape>
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding CopyPathToClipBoardCommand}" />
-                        </Border.GestureRecognizers>
-                        <Grid ColumnDefinitions="auto,30"
-                              HorizontalOptions="Center">
-                            <Label Text="{OnIdiom Desktop={Binding ExportPath}, Default='kopioi sijainti leikepöydälle'}"
-                                   LineBreakMode="CharacterWrap"
-                                   IsVisible="true" />
-                            <Image Source="copy_icon.png"
-                                   Grid.Column="1"
-                                   WidthRequest="20"
-                                   HeightRequest="20"
-                                   HorizontalOptions="End" />
+                            HorizontalOptions="Start">
+                        <Grid ColumnDefinitions="*,35">
+                            <Label LineBreakMode="CharacterWrap"
+                                   VerticalOptions="Center"
+                                   MaxLines="4">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{OnIdiom Desktop={Binding ExportFolderPath}, Default='Downloads'}" />
+                                        <Span Text="\" />
+                                        <Span Text="{Binding ExportFileName}" />
+                                        <Span Text="{Binding ExportFileExtension}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Border Grid.Column="1"
+                                    Stroke="Transparent"
+                                    VerticalOptions="Center"
+                                    Padding="3"
+                                    HorizontalOptions="End">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding CopyPathToClipBoardCommand}" />
+                                </Border.GestureRecognizers>
+                                <Image Source="copy_icon.png"
+                                       WidthRequest="22"
+                                       HeightRequest="22"
+                                        />
+                            </Border>
                         </Grid>
                     </Border>
                 </Grid>
@@ -194,10 +210,9 @@
                     </VerticalStackLayout.Resources>
                     <Label Text="Vie joko kaikki valitut sanastot tai tällä hetkellä näkyvät sanastot"
                            HorizontalTextAlignment="Center" />
-                    <Label Text="Huomaa, että jos etsit sanastoja, jo valitut sanastot pysyvät valittuina"
+                    <Label Text="Huomaa, että jos etsit sanastoja kirjoittamalla tekstikenttään, jo valitut sanastot eivät pysy valittuina"
                            HorizontalTextAlignment="Center" />
                 </VerticalStackLayout>
-
                 <VerticalStackLayout Margin="0,0,0,40">
                     <HorizontalStackLayout HorizontalOptions="Center">
                         <Label Text="Poista etenemistiedot sanastoista"
@@ -208,8 +223,6 @@
                                 Grid.Row="0" />
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
-
-
                 <Grid ColumnDefinitions="*,*"
                       Margin="0,0,0,100">
                     <Grid.Resources>

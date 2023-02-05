@@ -2,6 +2,7 @@
 using WordDataAccessLibrary.CollectionBackupServices.JsonServices;
 using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
+using WordListsMauiHelpers.DeviceAccess;
 using WordListsMauiHelpers.Factories;
 using WordListsMauiHelpers.Logging;
 using WordListsServices.FileSystemServices;
@@ -27,6 +28,7 @@ internal static class Injections
         services.AddTransient<IFileHandler, FileHandler>();
         services.AddTransient<IProcessLauncher, ProcessLauncher>();
         services.AddSingleton<ILoggingInfoProvider, DefaultLoggingProvider>();
+        services.AddSingleton<IFilePickerService, FilePickerService>();
 
         return services;
     }

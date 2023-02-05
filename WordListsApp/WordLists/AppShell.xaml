@@ -8,25 +8,22 @@
        xmlns:info="clr-namespace:WordListsUI.AppInfoPage;assembly=WordListsUI">
 
     <TabBar FlyoutDisplayOptions="AsMultipleItems" Appearing="TabBar_Appearing">
-        <!-- Welcome page -->
+        <!-- Home page -->
 
         <ShellContent Title="Koti"
                       ContentTemplate="{DataTemplate home:HomePage}"
                       Icon="home_icon.png"
                       />
 
-
-        <!-- Word training -->
+        <!-- start training -->
         <ShellContent Title="Harjoitus"
                       Icon="training_icon.png"
                       ContentTemplate="{DataTemplate startTraining:StartTrainingPage}" />
 
-        <!-- Word list handling -->
+        <!-- handle data -->
         <ShellContent Title="Hallitse"
                       Icon="pencil_icon.png"
                       ContentTemplate="{DataTemplate dataHandle:WordDataPage}" />
-
-
 
         <!-- App information page -->
         <ShellContent Title="Tietoa"

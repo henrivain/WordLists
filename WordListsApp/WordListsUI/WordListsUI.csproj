@@ -98,6 +98,9 @@
 		<MauiXaml Update="WordDataPages\ImageRecognisionPage\ImageRecognisionPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="WordDataPages\JsonExportPage\ExportPageStyles.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="WordDataPages\JsonExportPage\JsonExportPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
