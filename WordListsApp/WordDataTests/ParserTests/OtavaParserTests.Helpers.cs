@@ -19,7 +19,7 @@ public partial class OtavaParserTests
         return x.NativeLanguageWord.Contains(']') || x.ForeignLanguageWord.Contains(']');
     }
 
-    private bool ContainsStartBracket(WordPair x)
+    private static bool ContainsStartBracket(WordPair x)
     {
         return x.NativeLanguageWord.Contains('[') || x.ForeignLanguageWord.Contains('[');
 

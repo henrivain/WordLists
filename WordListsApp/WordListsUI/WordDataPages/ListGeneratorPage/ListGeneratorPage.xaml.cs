@@ -83,8 +83,18 @@ public partial class ListGeneratorPage : ContentPage
     }
     private async void OpenEditWantedDialog(object sender, EditEventArgs e)
     {
-        var result = await DisplayPromptAsync("Muokkaa sanaa", "kirjoita sanalle haluamasi muoto", "OK", "peruuta", "muokattu sana", initialValue: e.CurrentValue);
-        if (string.IsNullOrEmpty(result)) return;
+        var initValue = e.CurrentValue;
+        var result = await DisplayPromptAsync("Muokkaa sanaa", "kirjoita sanalle haluamasi muoto", "OK", "peruuta", "muokattu sana", initialValue: initValue);
+        if (result is null)
+        {
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(result)) 
+        {
+            Model.Delete.Execute(initValue);
+            return;
+        }
+        
         Model.SetWordValueWithIndex(e.IndexInList, result);    //e.IndexInList
     }
     private async void OpenAddWordDialog(object sender, EventArgs e)

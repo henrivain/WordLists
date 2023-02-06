@@ -4,44 +4,43 @@ namespace WordDataAccessLibrary.Generators;
 
 public class OtavaWordPairParser : WordParser, IWordPairParser
 {
-    public List<string> ToStringList(string vocabulary)
-    {
-        var pairs = GetList(vocabulary);
-        List<string> result = new();
-
-        foreach(var pair in pairs)
-        {
-            result.Add(pair.NativeLanguageWord);
-            result.Add(pair.ForeignLanguageWord);
-        }
-        return result;
-    }
-    public List<WordPair> GetList(string vocabulary)
+    public virtual List<string> ToStringList(string vocabulary)
     {
         if (string.IsNullOrWhiteSpace(vocabulary))
         {
             return new();
         }
-        string[] lines = vocabulary.Replace('\r', '\n').Split('\n');
-        lines = CleanLines(lines);
-        return PairWords(lines);
+
+        string[] lines = vocabulary
+            .Replace('\r', '\n')
+            .Split('\n')
+            .ToArray();
+
+        return CleanLines(lines).ToList();
+    }
+    public virtual List<WordPair> GetList(string vocabulary)
+    {
+        return PairWords(ToStringList(vocabulary).ToArray());
     }
 
-    private static string[] CleanLines(string[] lines)
+    private protected static string[] CleanLines(string[] lines)
     {
         return lines.Select(RemovePronunciation)
                     .Where(x => string.IsNullOrWhiteSpace(x) is false)
                     .Select(x => x.Trim())
                     .ToArray();
     }
-    private static string RemovePronunciation(string line)
+    private protected static string RemovePronunciation(string line)
     {
-        int start = line.IndexOf('[');
-        if (start < 1) return line;
+        while (true)
+        {
+            int start = line.IndexOf('[');
+            if (start < 0) return line;
 
-        int end = line.IndexOf("]");
-        if (end < 1) return line;
-
-        return string.Concat(line[..start], line[(end + 1)..]).Trim();
+            int end = line.IndexOf("]", start);
+            if (end < 0) return line;
+            
+            line = $"{line[..start]}{line[(end + 1)..]}".Trim();
+        }
     }
 }
