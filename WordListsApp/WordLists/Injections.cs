@@ -3,7 +3,7 @@ using WordDataAccessLibrary.CollectionBackupServices.JsonServices;
 using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsMauiHelpers.DeviceAccess;
-using WordListsMauiHelpers.Factories;
+using WordListsMauiHelpers.DependencyInjectionExtensions;
 using WordListsMauiHelpers.Logging;
 using WordListsServices.FileSystemServices;
 using WordListsServices.ProcessServices;
@@ -11,6 +11,7 @@ using WordListsViewModels;
 using WordListsViewModels.Helpers;
 using WordListsViewModels.Interfaces;
 using WordValidationLibrary;
+using WordDataAccessLibrary.Generators;
 
 namespace WordLists;
 internal static class Injections
@@ -29,6 +30,8 @@ internal static class Injections
         services.AddTransient<IProcessLauncher, ProcessLauncher>();
         services.AddSingleton<ILoggingInfoProvider, DefaultLoggingProvider>();
         services.AddSingleton<IFilePickerService, FilePickerService>();
+        services.AddTransient<IWordPairParser, OtavaWordPairParser>();
+        services.AddTransient<IWordPairParser, NewOtavaWordPairParser>();
 
         return services;
     }

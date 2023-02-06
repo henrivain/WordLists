@@ -22,3 +22,5 @@ public delegate void LogsCopiedEventHandler(object sender, LogsCopiedEventArgs e
 
 public delegate void InvalidDataEventHandler<T>(object sender, InvalidDataEventArgs<T> e);
 
+public delegate void ParserErrorEventHandler(object sender, string error);
+

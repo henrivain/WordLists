@@ -1,7 +1,7 @@
 using System.Linq;
 using WordDataAccessLibrary;
 using WordDataAccessLibrary.DataBaseActions;
-using WordListsMauiHelpers.Factories;
+using WordListsMauiHelpers.DependencyInjectionExtensions;
 using WordListsUI.Helpers;
 using WordListsViewModels.Events;
 
@@ -64,7 +64,17 @@ public partial class ListGeneratorPage : ContentPage
         Model.AddWantedEvent += OpenAddWordDialog;
         Model.EditFinished += Model_EditFinished;
         Model.FailedToSaveEvent += Model_FailedToSaveEvent;
+        Model.ParserError += Model_ParserError;
+    }
 
+    private async void Model_ParserError(object sender, string error)
+    {
+        await DisplayAlert("Parsinta ep‰onnistui",
+            $"""
+            Sanaston parsiminen ep‰onnistui. 
+            Syy: '{error}'. 
+            Jos vika toistuu, ota yhteytt‰ kehitt‰j‰‰n.
+            """, "OK");
     }
 
     private async void Model_FailedToSaveEvent(object sender, DataBaseActionArgs e)

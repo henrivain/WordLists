@@ -1,4 +1,4 @@
-﻿namespace WordListsMauiHelpers.Factories;
+﻿namespace WordListsMauiHelpers.DependencyInjectionExtensions;
 
 public class AbstractFactory<T> : IAbstractFactory<T>
 {

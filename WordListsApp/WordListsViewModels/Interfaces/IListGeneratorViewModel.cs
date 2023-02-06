@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using WordListsViewModels.Events;
+using WordListsViewModels.Helpers;
 
 namespace WordListsViewModels.Interfaces;
 public interface IListGeneratorViewModel
@@ -8,6 +9,10 @@ public interface IListGeneratorViewModel
     event PropertyChangedEventHandler? PropertyChanged;
 
     ObservableCollection<string> Words { get; set; }
+
+    List<ParserInfo> Parsers { get; }
+
+    object SelectedParser { get; set; }
 
     string CollectionName { get; set; }
 
@@ -57,4 +62,5 @@ public interface IListGeneratorViewModel
     event CollectionEditEventHandler? EditWantedEvent;
     event CollectionAddedEventHandler? EditFinished;
     event CollectionAddedEventHandler? FailedToSaveEvent;
+    event ParserErrorEventHandler? ParserError;
 }

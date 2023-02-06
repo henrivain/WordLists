@@ -1,4 +1,4 @@
-﻿namespace WordListsMauiHelpers.Factories;
+﻿namespace WordListsMauiHelpers.DependencyInjectionExtensions;
 
 #nullable disable
 public static class AbstractFactoryExtension

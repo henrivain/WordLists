@@ -4,15 +4,10 @@ namespace WordDataAccessLibrary.Generators;
 
 public class OtavaWordPairParser : WordParser, IWordPairParser
 {
-    public OtavaWordPairParser(string vocabularyList)
+    public List<string> ToStringList(string vocabulary)
     {
-        VocabularyList = vocabularyList;
-    }
-    private string VocabularyList { get; set; }
-    public List<string> ToStringList()
-    {
-        var pairs = GetList();
-        List<string> result = Enumerable.Empty<string>().ToList();
+        var pairs = GetList(vocabulary);
+        List<string> result = new();
 
         foreach(var pair in pairs)
         {
@@ -21,14 +16,17 @@ public class OtavaWordPairParser : WordParser, IWordPairParser
         }
         return result;
     }
-    public List<WordPair> GetList()
+    public List<WordPair> GetList(string vocabulary)
     {
-        if (string.IsNullOrWhiteSpace(VocabularyList)) return new();
-
-        string[] lines = VocabularyList.Replace('\r', '\n').Split('\n');
+        if (string.IsNullOrWhiteSpace(vocabulary))
+        {
+            return new();
+        }
+        string[] lines = vocabulary.Replace('\r', '\n').Split('\n');
         lines = CleanLines(lines);
         return PairWords(lines);
     }
+
     private static string[] CleanLines(string[] lines)
     {
         return lines.Select(RemovePronunciation)

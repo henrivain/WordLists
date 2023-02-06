@@ -27,7 +27,7 @@
                 <TapGestureRecognizer Tapped="HideMenu" />
             </ScrollView.GestureRecognizers>
             <VerticalStackLayout>
-                <VerticalStackLayout Padding="30"
+                <VerticalStackLayout Padding="30,30,30,0"
                                      HorizontalOptions="{OnIdiom Default=Center, Phone=FillAndExpand}">
                     <Label Text="Otsikko"
                            Margin="0,0,0,5"
@@ -50,6 +50,32 @@
                                                     WidthRequest="120"
                                                     FontSize="{OnPlatform WinUI=Micro, Default=Small}"
                                                     HorizontalOptions="Start" />
+
+
+                </VerticalStackLayout>
+                <VerticalStackLayout HorizontalOptions="{OnIdiom Default=End, Phone=Start}"
+                                     Margin="{OnIdiom Default='0,10,25,10', Phone='30,25'}"
+                                     IsVisible="{Binding IsEditMode, Converter={StaticResource switchBool}}">
+                    <Label Text="Parsinta-algoritmi" />
+                    <Border BackgroundColor="{OnIdiom Default=Transparent, Phone={StaticResource DarkerThanPage}}"
+                            Margin="0,5,0,0"
+                            StrokeThickness="0"
+                            Stroke="Transparent">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="{OnIdiom Default=0, Phone=8}" />
+                        </Border.StrokeShape>
+                        <Picker ItemsSource="{Binding Parsers}"
+                                TextColor="{OnIdiom Default=White, Phone={StaticResource SecondaryText}}"
+                                Margin="{OnIdiom Phone='7,0', Default=0}"
+                                WidthRequest="200"
+                                SelectedItem="{Binding SelectedParser}"
+                                >
+                            <Picker.ItemDisplayBinding>
+                                <Binding Path="Name" />
+                            </Picker.ItemDisplayBinding>
+                        </Picker>
+
+                    </Border>
                 </VerticalStackLayout>
 
                 <Grid ColumnDefinitions="*,*"
@@ -155,8 +181,7 @@
                                   ColumnDefinitions="{OnIdiom Phone='*,20,10', Default='*,60,10'}"
                                   RowDefinitions="{OnIdiom Phone='40,*', Default='*'}"
                                   x:DataType="{x:Type x:String}"
-                                  BackgroundColor="Transparent"
-                                  >
+                                  BackgroundColor="Transparent">
                                 <Border BackgroundColor="{StaticResource DarkerThanPage}"
                                         Grid.RowSpan="2"
                                         Grid.ColumnSpan="3"

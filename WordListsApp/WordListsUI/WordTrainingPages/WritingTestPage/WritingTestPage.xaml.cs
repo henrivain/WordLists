@@ -1,5 +1,5 @@
 using WordDataAccessLibrary;
-using WordListsMauiHelpers.Factories;
+using WordListsMauiHelpers.DependencyInjectionExtensions;
 using WordListsMauiHelpers.PageRouting;
 using WordListsUI.WordTrainingPages.WritingTestPage.GridManagement;
 using WordListsViewModels.Events;

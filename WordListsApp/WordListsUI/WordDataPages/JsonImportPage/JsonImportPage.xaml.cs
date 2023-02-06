@@ -1,6 +1,6 @@
 using WordDataAccessLibrary.CollectionBackupServices;
 using WordDataAccessLibrary.CollectionBackupServices.ActionResults;
-using WordListsMauiHelpers.Factories;
+using WordListsMauiHelpers.DependencyInjectionExtensions;
 
 namespace WordListsUI.WordDataPages.JsonImportPage;
 
