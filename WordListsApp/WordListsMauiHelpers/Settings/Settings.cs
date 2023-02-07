@@ -35,18 +35,17 @@ public class Settings : ISettings
             Logger.LogError("Cannot get setting value, because key is empty.");
             throw new ArgumentNullException("Cannot get value from preferences, because key is empty", nameof(key));
         }
-#if ANDROID
         if (typeof(T) == typeof(bool?))
         {
             if (Default.ContainsKey(key) is false)
             {
                 return default;
             }
-            // have to box this, because java in android device crashes whilst trying convert bool to string
+            // app crashes whilst trying convert bool to string (because of nullability)
+            // Need to fix this later
             // Because of boxing, I can always return the bool coming from get
             return (T?)(object)Default.Get(key, false);
         }
-#endif
 #pragma warning disable CS8604 // Possible null reference argument.
         var result = Default.Get<T>(key, default);
 #pragma warning restore CS8604 // Possible null reference argument.
