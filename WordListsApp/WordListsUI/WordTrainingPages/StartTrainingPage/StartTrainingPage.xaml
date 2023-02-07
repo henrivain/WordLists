@@ -144,7 +144,8 @@
                         <!-- placeholderHider hides all collections with name "^^_$Placeholder$_^^" without ""-->
                         <DataTemplate x:Key="windowsTemplate">
                             <Border x:DataType="{x:Type wordData:WordCollectionOwner}"
-                                    IsVisible="{OnPlatform WinUI={Binding Name, Converter={StaticResource placeholderHider}}, Default=True}">
+                                    Loaded="OwnerTemplate_Loaded"
+                                    >
                                 <Grid ColumnDefinitions="*, 80">
                                     <VerticalStackLayout>
                                         <Label Text="{Binding Name}" />

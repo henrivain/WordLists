@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using WordDataAccessLibrary;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsMauiHelpers.PageRouting;
 using WordListsUI.WordTrainingPages.WritingTestPage;
@@ -72,6 +73,15 @@ public partial class StartTrainingPage : ContentPage
 #else
             collectionView.ItemTemplate = (DataTemplate)collectionView.Resources["defaultTemplate"];
 #endif
+        }
+    }
+
+ 
+    private void OwnerTemplate_Loaded(object sender, EventArgs e)
+    {
+        if (sender is Border border && border.BindingContext is WordCollectionOwner { Name: "^^_$Placeholder$_^^" })
+        {
+            border.IsVisible = false;
         }
     }
 }
