@@ -35,7 +35,7 @@ Finally I was able to make release build for Windows. YOU MIGHT NEED TO INSTALL 
 
 ##### To install for Windows using setup exe
 1) Go to Releases > Latest in the Github page right side
-2) Download file which name contains "Windows10Setup.exe" from the release assets.
+2) Download file which name contains "WindowsSetup.exe" from the release assets.
 3) Double click the downloaded file and follow the instructions.
 
 #### IOS
