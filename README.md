@@ -31,12 +31,8 @@ This was also a great opportunity to learn new ui framework .NET MAUI which I am
 <img width="250" align="right" alt="image" src="https://user-images.githubusercontent.com/89461562/202189770-b4a60536-8fb5-454d-963a-458c8d254f36.png">  
 
 #### Windows  
-Releasing to windows is currently a bit hard in .NET MAUI. 
-Most recent release contains a DEBUG build of the application.
+Finally I was able to make release build for Windows. YOU MIGHT NEED TO INSTALL [winui app sdk](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/downloads) to run the app. If app runs without, that's great!
 
-- The debug build is fully functional an its preformance is ok.
-- YOU MIGHT NEED TO INSTALL [WINUI APP SDK](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/downloads) to run the app
-- You might want to consider building the app yourself. (see [microsoft instructions](https://learn.microsoft.com/en-us/dotnet/maui/windows/deployment/publish-visual-studio-folder?view=net-maui-7.0))
 ##### To install for Windows using setup exe
 1) Go to Releases > Latest in the Github page right side
 2) Download file which name contains "Windows10Setup.exe" from the release assets.
