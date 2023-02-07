@@ -10,7 +10,7 @@
         <Setter Property="Padding"
                 Value="0" />
         <Setter Property="Margin"
-                Value="10,0,0,0" />
+                Value="{OnIdiom Phone=0, Default='10,0,0,0'}" />
         <Setter Property="StrokeShape">
             <Setter.Value>
                 <RoundRectangle CornerRadius="8" />

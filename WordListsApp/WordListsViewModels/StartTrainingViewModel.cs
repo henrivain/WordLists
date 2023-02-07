@@ -1,10 +1,10 @@
-﻿using Microsoft.VisualBasic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsMauiHelpers.Extensions;
+using WordListsMauiHelpers.Settings;
 using WordListsViewModels.Events;
-using WordListsViewModels.Helpers;
 
 namespace WordListsViewModels;
 
@@ -14,17 +14,25 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
     public StartTrainingViewModel(
         IWordCollectionOwnerService ownerService, 
         IWordCollectionService wordCollectionService,
-        ILogger logger)
+        ILogger logger,
+        ISettings settings)
     {
         OwnerService = ownerService;
         WordCollectionService = wordCollectionService;
         Logger = logger;
-        AllCollections = Enumerable.Empty<WordCollectionOwner>().ToList();
+        Settings = settings;
+        AllCollections = new();
+        _showLearnedWords = settings.ShowLearnedWords ?? true;
+        _showWeaklyKnownWords = settings.ShowWeakWords ?? true;
+        _showUnheardWords = settings.ShowUnheardWords ?? true;
+        _shuffleWords  = settings.ShuffleTrainingWords ?? false;
+        PropertyChanged += UpdateSavedSettingValue;
     }
 
     IWordCollectionOwnerService OwnerService { get; }
     IWordCollectionService WordCollectionService { get; }
     public ILogger Logger { get; }
+    public ISettings Settings { get; }
     List<WordCollectionOwner> AllCollections { get; set; }
 
     [ObservableProperty]
@@ -43,8 +51,6 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
                 VisibleCollections.Add(collection);
             }
         }
-
-       
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && 
             VisibleCollections.Count < 4 && 
             VisibleCollections.Count > 0)
@@ -62,8 +68,6 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
             }
         }
     });
-
-
     public IAsyncRelayCommand UpdateCollections => new AsyncRelayCommand(async () =>
     {
         SearchTerm = string.Empty;
@@ -71,31 +75,21 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
     });
 
     [ObservableProperty]
-    bool _showLearnedWords = true;
+    bool _showLearnedWords;
 
     [ObservableProperty]
-    bool _showMightKnowWords = true;
+    bool _showWeaklyKnownWords;
 
     [ObservableProperty]
-    bool _showNeverHeardKnowWords = true;
+    bool _showUnheardWords;
 
     [ObservableProperty]
-    int _showWords = 1;
-
-    [ObservableProperty]
-    bool _removeLearnedWords;
-
-    [ObservableProperty]
-    bool _removeMightKnowWords;
-
-    [ObservableProperty]
-    bool _removeNeverHeardWords;
-
+    bool _shuffleWords;
+    
     [ObservableProperty]
     bool _isRefreshing = false;
 
-    [ObservableProperty]
-    bool _randomizeWordPairsOrder = false;
+
 
     [ObservableProperty]
     WordCollectionOwner _selectedItem = new();
@@ -124,10 +118,7 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
             CollectionDoesNotExistEvent?.Invoke(this, selectionId, "Collection does not exit anymore. Try again.");
             return;
         }
-        WriteTrainingRequestedEvent?.Invoke(this, new()
-        {
-            WordCollection = collection
-        });
+        WriteTrainingRequestedEvent?.Invoke(this, new(collection));
     });
 
     public event TrainingRequestedEventHandler? CardsTrainingRequestedEvent;
@@ -156,19 +147,19 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
                 .Where(x => x.LearnState is not WordLearnState.Learned)
                     .ToList();
         }
-        if (ShowMightKnowWords is false)
+        if (ShowWeaklyKnownWords is false)
         {
             collection.WordPairs = collection.WordPairs
                 .Where(x => x.LearnState is not WordLearnState.MightKnow)
                     .ToList();
         }
-        if (ShowNeverHeardKnowWords is false)
+        if (ShowUnheardWords is false)
         {
             collection.WordPairs = collection.WordPairs
                 .Where(x => x.LearnState is not WordLearnState.NeverHeard)
                     .ToList();
         }
-        if (RandomizeWordPairsOrder)
+        if (ShuffleWords)
         {
             collection.WordPairs = collection.WordPairs.Shuffle();
         }
@@ -188,6 +179,28 @@ public partial class StartTrainingViewModel : IStartTrainingViewModel
         if (param is null) return false;
         return param.LanguageHeaders.Contains(SearchTerm ?? string.Empty, StringComparison.OrdinalIgnoreCase) ||
             param.Name.Contains(SearchTerm ?? string.Empty, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private void UpdateSavedSettingValue(object? sender, PropertyChangedEventArgs e)
+    {
+        switch (e.PropertyName)
+        {
+            case nameof(ShowLearnedWords):
+                Settings.ShowLearnedWords = ShowLearnedWords;
+                return;
+            
+            case nameof(ShowWeaklyKnownWords):
+                Settings.ShowWeakWords = ShowWeaklyKnownWords;
+                return;
+            
+            case nameof(ShowUnheardWords):
+                Settings.ShowUnheardWords = ShowUnheardWords;
+                return;
+
+            case nameof(ShuffleWords):
+                Settings.ShuffleTrainingWords = ShuffleWords;
+                return;
+        }
     }
 
 }

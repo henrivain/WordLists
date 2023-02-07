@@ -58,13 +58,13 @@
                         <Switch IsToggled="{Binding ShowLearnedWords}"
                                 VerticalOptions="Center"
                                 Grid.Row="0" />
-                        <Switch IsToggled="{Binding ShowMightKnowWords}"
+                        <Switch IsToggled="{Binding ShowWeaklyKnownWords}"
                                 VerticalOptions="Center"
                                 Grid.Row="1" />
-                        <Switch IsToggled="{Binding ShowNeverHeardKnowWords}"
+                        <Switch IsToggled="{Binding ShowUnheardWords}"
                                 VerticalOptions="Center"
                                 Grid.Row="2" />
-                        <Switch IsToggled="{Binding RandomizeWordPairsOrder}"
+                        <Switch IsToggled="{Binding ShuffleWords}"
                                 VerticalOptions="Center"
                                 Grid.Row="3" />
                     </Grid>
@@ -174,8 +174,7 @@
                     <CollectionView.EmptyView>
                         <Grid>
                             <Label Text="Sopivia sanastoja ei löytynyt"
-                                   FontSize="Medium"
-                                   TextColor="{StaticResource NormalText}" />
+                                   FontSize="Medium" />
                         </Grid>
                     </CollectionView.EmptyView>
                     <!--ItemsLayout cant be changed after init even in code behind-->

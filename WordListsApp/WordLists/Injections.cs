@@ -12,6 +12,7 @@ using WordListsViewModels.Helpers;
 using WordListsViewModels.Interfaces;
 using WordValidationLibrary;
 using WordDataAccessLibrary.Generators;
+using WordListsMauiHelpers.Settings;
 
 namespace WordLists;
 internal static class Injections
@@ -32,6 +33,7 @@ internal static class Injections
         services.AddSingleton<IFilePickerService, FilePickerService>();
         services.AddTransient<IWordPairParser, OtavaWordPairParser>();
         services.AddTransient<IWordPairParser, NewOtavaWordPairParser>();
+        services.AddSingleton<ISettings, Settings>();
 
         return services;
     }

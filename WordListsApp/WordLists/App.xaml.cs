@@ -1,4 +1,5 @@
 ﻿using Microsoft.Maui.Handlers;
+using Microsoft.Extensions.Logging;
 #if WINDOWS
 using Microsoft.UI;
 using Windows.UI.Text;
@@ -12,13 +13,12 @@ namespace WordLists;
 
 public partial class App : Application
 {
-    public App()
+    public App(ILogger logger)
     {
         InitializeComponent();
         SetUIHandlers();
-        MainPage = new AppShell();
+        MainPage = new AppShell(logger);
     }
-
     private static void SetUIHandlers()
     {
 #if WINDOWS
@@ -39,4 +39,7 @@ public partial class App : Application
         });
 #endif
     }
+
+
+   
 }

@@ -24,9 +24,8 @@ public partial class WriteWordViewModel : IWriteWordViewModel
     [ObservableProperty]
     WordCollectionOwner _info = new();
 
-
     [ObservableProperty]
-    List<WordPairQuestion> _questions = Enumerable.Empty<WordPairQuestion>().ToList();
+    List<WordPairQuestion> _questions = new();
 
     [ObservableProperty]
     uint _questionCount = 0;
@@ -78,7 +77,7 @@ public partial class WriteWordViewModel : IWriteWordViewModel
         QuestionCount = count;
 
         // convert word pairs to word pair questions
-        List<WordPairQuestion> questions = Enumerable.Empty<WordPairQuestion>().ToList();
+        List<WordPairQuestion> questions = new();
         for (int i = 0; i < count; i++)
         {
             questions.Add(new(collection.WordPairs[i], (uint)i + 1, count));

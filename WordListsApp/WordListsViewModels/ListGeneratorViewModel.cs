@@ -1,7 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordDataAccessLibrary.Generators;
 using WordListsMauiHelpers.DeviceAccess;
+using WordListsMauiHelpers.Settings;
 using WordListsViewModels.Events;
 using WordListsViewModels.Helpers;
 
@@ -13,20 +16,26 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     public ListGeneratorViewModel(
         IWordCollectionService collectionService,
         ILogger<IListGeneratorViewModel> logger,
-        IEnumerable<IWordPairParser> parsers)
+        IEnumerable<IWordPairParser> parsers, 
+        ISettings settings)
     {
         CollectionService = collectionService;
         Logger = logger;
+        Settings = settings;
         Parsers = parsers.Select(x => new ParserInfo { Name = GetParserName(x), Parser = x }).ToList();
         if (Parsers.Count < 1)
         {
             throw new ArgumentException("At least on parser must be defined.", nameof(parsers));
         }
-        _selectedParser = Parsers[0];
+        _selectedParser = Parsers.FirstOrGivenDefault(x => x.Name == (settings.DefaultParserName ?? ""), Parsers[0]);
+        _languageHeaders = settings.DefaultWordCollectionLanguage ?? "fi-en";
+        PropertyChanged += UpdateSettingValue;
     }
+
 
     IWordCollectionService CollectionService { get; }
     ILogger<IListGeneratorViewModel> Logger { get; }
+    ISettings Settings { get; }
     public List<ParserInfo> Parsers { get; }
 
     [ObservableProperty]
@@ -42,13 +51,15 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     string _description = "Description";
 
     [ObservableProperty]
-    string _languageHeaders = "fi-en";
+    string _languageHeaders;
 
     [ObservableProperty]
     bool _isEditMode = false;
 
     [ObservableProperty]
     bool _isBusy = false;
+
+    public bool ShowUnEvenWordCountWarning => Words.Count < 10 || Words.Count % 2 is 0;
 
     public bool CanSave => Words.Count / 2 > 0;
 
@@ -58,6 +69,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         async () =>
         {
             IsBusy = true;
+            bool isAndroid = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
 
             IWordPairParser parser;
             if (SelectedParser is ParserInfo info)
@@ -75,7 +87,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
             {
                 Words.Add(word);
             }
-            OnPropertyChanged(nameof(CanSave));
+            OnPropertyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
             IsBusy = false;
         });
 
@@ -97,6 +109,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
             }
             int id = await CollectionService.AddWordCollection(ParseData());
 
+            Settings.DefaultWordCollectionLanguage = LanguageHeaders;
             CollectionAddedEvent?.Invoke(this, new DataBaseActionArgs
             {
                 Text = "Added wordCollection successfully",
@@ -121,23 +134,6 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         IsBusy = false;
     });
 
-    public WordCollection ParseData()
-    {
-        return new()
-        {
-            WordPairs = WordParser.PairWords(Words.ToArray()),
-            Owner = new()
-            {
-                Name = CollectionName ?? string.Empty,
-                Description = Description ?? string.Empty,
-                LanguageHeaders = LanguageHeaders ?? string.Empty,
-            }
-        };
-    }
-
-
-
-
     public IRelayCommand<string> Delete => new RelayCommand<string>(value =>
     {
         if (value is null)
@@ -147,7 +143,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         }
 
         Words.Remove(value);
-        OnPropertyChanged(nameof(CanSave));
+        OnPropertyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
     });
 
     public IRelayCommand<string> Edit => new RelayCommand<string>(value =>
@@ -180,6 +176,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
         }
         int newId = await CollectionService.AddWordCollection(newData);
 
+        Settings.DefaultWordCollectionLanguage = LanguageHeaders;
         EditFinished?.Invoke(this, new()
         {
             RefIds = new[] { newId },
@@ -219,7 +216,7 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
     {
         if (string.IsNullOrEmpty(result)) return;
         Words.Add(result);
-        OnPropertyChanged(nameof(CanSave));
+        OnPropertyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
     }
     public void StartEditProcess(WordCollection collection)
     {
@@ -244,7 +241,20 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
             Words.Add(wordPair.NativeLanguageWord);
             Words.Add(wordPair.ForeignLanguageWord);
         }
-        OnPropertyChanged(nameof(CanSave));
+        OnPropertyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
+    }
+    public WordCollection ParseData()
+    {
+        return new()
+        {
+            WordPairs = WordParser.PairWords(Words.ToArray()),
+            Owner = new()
+            {
+                Name = CollectionName ?? string.Empty,
+                Description = Description ?? string.Empty,
+                LanguageHeaders = LanguageHeaders ?? string.Empty,
+            }
+        };
     }
 
 
@@ -282,6 +292,28 @@ public partial class ListGeneratorViewModel : IListGeneratorViewModel
             return Array.Empty<string>();
         }
     }
-
+    private void OnPropertyChanged(params string[] propertyNames)
+    {
+        if (propertyNames is null)
+        {
+            return;
+        }
+        foreach (var name in propertyNames)
+        {
+            OnPropertyChanged(name);
+        }
+    }
+    private void UpdateSettingValue(object? sender, PropertyChangedEventArgs e)
+    {
+        switch (e.PropertyName)
+        {
+            case nameof(SelectedParser):
+                if (SelectedParser is ParserInfo info)
+                {
+                    Settings.DefaultParserName = info.Name;
+                }
+                return;
+        }
+    }
 }
 

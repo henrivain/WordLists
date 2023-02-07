@@ -12,6 +12,7 @@
              xmlns:entry="clr-namespace:WordListsUI.Components.Entry"
              xmlns:base="clr-namespace:WordListsUI.WordDataPages"
              xmlns:local="clr-namespace:WordListsUI.WordDataPages.JsonExportPage"
+             xmlns:system="clr-namespace:System;assembly=netstandard"
              BindingContextChanged="ContentPage_BindingContextChanged">
     <ContentPage.Resources>
         <local:ExportPageStyles />
@@ -22,13 +23,12 @@
                 <Setter Property="TextColor"
                         Value="{OnIdiom Phone={StaticResource UnImportantText}, Default={StaticResource NormalText}}" />
             </Style>
-
         </Grid.Resources>
         <ScrollView Margin="40,0,0,0">
-            <ScrollView.GestureRecognizers>
-                <TapGestureRecognizer Tapped="HideMenu" />
-            </ScrollView.GestureRecognizers>
-            <VerticalStackLayout>
+            <VerticalStackLayout >
+                <VerticalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="HideMenu" />
+                </VerticalStackLayout.GestureRecognizers>
                 <VerticalStackLayout.Resources>
                     <Style TargetType="VerticalStackLayout">
                         <Setter Property="VisualStateManager.VisualStateGroups">
@@ -89,7 +89,7 @@
                                 SelectedItems="{Binding SelectedCollections}"
                                 ItemsSource="{Binding VisibleCollections}"
                                 SelectionMode="Multiple"
-                                Margin="{OnIdiom Default='20', Desktop='60,20'}"
+                                Margin="{OnIdiom Default='30,20', Desktop='60,20'}"
                                 SelectionChangedCommand="{Binding SelectionChangedCommand}">
                     <CollectionView.Resources>
                         <Style TargetType="{x:Type CheckBox}">
@@ -156,28 +156,35 @@
                     </CollectionView.ItemsLayout>
                 </CollectionView>
 
-                <Grid ColumnDefinitions="auto,*"
-                      Margin="30,0,30,50"
-                      HorizontalOptions="Center">
-                    <HorizontalStackLayout VerticalOptions="Center">
+                <Grid ColumnDefinitions="{OnIdiom Phone='*', Default='auto,*'}"
+                      RowDefinitions="{OnIdiom Phone='auto,auto', Default=*}"
+                      Margin="{OnIdiom Phone='30,20,30,20', Default='30,0,30,50'}"
+                      HorizontalOptions="{OnIdiom Phone=FillAndExpand, Default=Center}">
+                    <StackLayout VerticalOptions="Center"
+                                 Margin="{OnIdiom Phone='0,5,0,0'}"
+                                 Orientation="{OnIdiom Phone=Vertical, Default=Horizontal}"
+                                 Grid.Row="{OnIdiom Phone='1'}">
                         <Button Command="{Binding ChooseExportFolderCommand}"
                                 IsVisible="{OnPlatform Default=false, WinUI=true}"
-                                Text="Valitse kansio" />
+                                Text="Valitse kansio"
+                                />
                         <Button Text="Vaihda nimi"
                                 Clicked="ChangeFileName_Clicked" />
-                    </HorizontalStackLayout>
+                    </StackLayout>
                     <Border Style="{DynamicResource PathSelectorBackground}"
                             Grid.Column="1"
                             Padding="10"
-                            HorizontalOptions="Start">
+                            HorizontalOptions="{OnIdiom Phone=FillAndExpand, Default=Start}">
                         <Grid ColumnDefinitions="*,35">
                             <Label LineBreakMode="CharacterWrap"
                                    VerticalOptions="Center"
+                                   VerticalTextAlignment="Center"
                                    MaxLines="4">
                                 <Label.FormattedText>
                                     <FormattedString>
-                                        <Span Text="{OnIdiom Desktop={Binding ExportFolderPath}, Default='Downloads'}" />
-                                        <Span Text="\" />
+                                        <Span Text="{OnIdiom Desktop={Binding ExportFolderPath}, Default='Lataukset'}" />
+                                        <Span Text="{OnIdiom Default='\\', Phone='/'}" />
+                                        <Span Text="{OnIdiom Default='', Phone={x:Static system:Environment.NewLine}}" />
                                         <Span Text="{Binding ExportFileName}" />
                                         <Span Text="{Binding ExportFileExtension}" />
                                     </FormattedString>
@@ -187,14 +194,14 @@
                                     Stroke="Transparent"
                                     VerticalOptions="Center"
                                     Padding="3"
+                                    Background="Transparent"
                                     HorizontalOptions="End">
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding CopyPathToClipBoardCommand}" />
                                 </Border.GestureRecognizers>
                                 <Image Source="copy_icon.png"
                                        WidthRequest="22"
-                                       HeightRequest="22"
-                                        />
+                                       HeightRequest="22" />
                             </Border>
                         </Grid>
                     </Border>

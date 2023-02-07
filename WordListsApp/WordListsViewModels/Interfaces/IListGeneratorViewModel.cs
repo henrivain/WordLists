@@ -26,6 +26,8 @@ public interface IListGeneratorViewModel
 
     bool IsBusy { get; }
 
+    bool ShowUnEvenWordCountWarning { get; }
+
     IAsyncRelayCommand GeneratePairsCommand { get; }
 
     IAsyncRelayCommand Save { get; }

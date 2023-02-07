@@ -1,4 +1,3 @@
-using System.Linq;
 using WordDataAccessLibrary;
 using WordDataAccessLibrary.DataBaseActions;
 using WordListsMauiHelpers.DependencyInjectionExtensions;

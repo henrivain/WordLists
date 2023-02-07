@@ -13,7 +13,7 @@ public partial class TestResultViewModel : ITestResultViewModel
         WordPairService = wordPairService;
     }
 
-    List<WordPairQuestion> _answeredQuestions = Enumerable.Empty<WordPairQuestion>().ToList();
+    List<WordPairQuestion> _answeredQuestions = new();
 
     public List<WordPairQuestion> AnsweredQuestions 
     { 

@@ -6,7 +6,9 @@ namespace WordListsViewModels;
 [INotifyPropertyChanged]
 public partial class WordDataViewModel : IWordDataViewModel
 {
-    public WordDataViewModel(IWordCollectionService collectionService, IWordPairService pairService)
+    public WordDataViewModel(
+        IWordCollectionService collectionService, 
+        IWordPairService pairService)
     {
         CollectionService = collectionService;
         PairService = pairService;

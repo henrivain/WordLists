@@ -1,9 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using WordDataAccessLibrary.CollectionBackupServices;
-using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsMauiHelpers;
 using WordListsMauiHelpers.DeviceAccess;
+using WordListsMauiHelpers.Settings;
 using WordListsViewModels.Helpers;
 using static WordDataAccessLibrary.CollectionBackupServices.BackupDelegates;
 
@@ -16,7 +17,8 @@ public partial class JsonExportViewModel : IJsonExportViewModel
         ICollectionExportService exportService,
         IWordCollectionInfoService collectionInfoService,
         IFilePickerService filePickerService,
-        ILogger logger
+        ILogger logger,
+        ISettings settings
         )
     {
         string folder = PathHelper.GetDownloadsFolderPath();
@@ -24,21 +26,24 @@ public partial class JsonExportViewModel : IJsonExportViewModel
         _exportFileExtension = extension;
         _exportFolderPath = folder;
         _exportFileName = GetNewExportFileName(folder, "wordlist_export_", extension);
+        _removeUserDataFromWordPairs = settings.RemoveUserDataWhenExporting ?? true;
 
         ExportService = exportService;
         CollectionInfoService = collectionInfoService;
         FilePickerService = filePickerService;
         Logger = logger;
+        Settings = settings;
+        PropertyChanged += UpdateSettingValue;
         _ = ResetCollections();
     }
 
- 
 
     ICollectionExportService ExportService { get; }
     IWordCollectionInfoService CollectionInfoService { get; }
     IFilePickerService FilePickerService { get; }
-    public ILogger Logger { get; }
-    List<WordCollectionInfo> AvailableCollections { get; set; } = Enumerable.Empty<WordCollectionInfo>().ToList();
+    ILogger Logger { get; }
+    ISettings Settings { get; }
+    List<WordCollectionInfo> AvailableCollections { get; set; } = new();
 
     [ObservableProperty]
     ObservableCollection<WordCollectionInfo> _visibleCollections = new();
@@ -48,7 +53,7 @@ public partial class JsonExportViewModel : IJsonExportViewModel
     List<object> _selectedCollections = new();
 
     [ObservableProperty]
-    bool _removeUserDataFromWordPairs = true;
+    bool _removeUserDataFromWordPairs;
 
     [ObservableProperty]
     bool _canExportAllVisible = false;
@@ -61,7 +66,6 @@ public partial class JsonExportViewModel : IJsonExportViewModel
 
     [ObservableProperty]
     string _languageFilter = string.Empty;
-
 
     [ObservableProperty]
     string _exportFileName;
@@ -194,6 +198,14 @@ public partial class JsonExportViewModel : IJsonExportViewModel
         }
         while (Path.Exists(newPath));
         return $"{nameStart}{num}";
+    }
+    private void UpdateSettingValue(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(RemoveUserDataFromWordPairs))
+        {
+            Settings.RemoveUserDataWhenExporting = RemoveUserDataFromWordPairs;
+            return;
+        }
     }
 
 }

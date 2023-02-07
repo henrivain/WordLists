@@ -68,8 +68,7 @@
                                 TextColor="{OnIdiom Default=White, Phone={StaticResource SecondaryText}}"
                                 Margin="{OnIdiom Phone='7,0', Default=0}"
                                 WidthRequest="200"
-                                SelectedItem="{Binding SelectedParser}"
-                                >
+                                SelectedItem="{Binding SelectedParser}">
                             <Picker.ItemDisplayBinding>
                                 <Binding Path="Name" />
                             </Picker.ItemDisplayBinding>
@@ -113,6 +112,13 @@
                             IsVisible="{Binding Path=IsEditMode, Converter={StaticResource switchBool}}"
                             Clicked="StartAgainBtn_Click" />
                 </Grid>
+                <VerticalStackLayout Margin="0,5,0,0"
+                                     HeightRequest="15">
+                    <Label Text="Sanastossa on pariton määrä sanoja"
+                           HorizontalTextAlignment="Center"
+                           TextColor="{StaticResource Warning}"
+                           IsVisible="{Binding ShowUnEvenWordCountWarning, Converter={StaticResource switchBool}}" />
+                </VerticalStackLayout>
 
                 <Button ImageSource="new_icon_dark.png"
                         Text="uusi sana"
@@ -127,7 +133,7 @@
                         BackgroundColor="{StaticResource DarkerThanPage}"
                         Stroke="Transparent"
                         Padding="7"
-                        Margin="0,20,25,0">
+                        Margin="0,15,25,0">
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="8" />
                     </Border.StrokeShape>
