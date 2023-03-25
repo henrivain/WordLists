@@ -1,6 +1,8 @@
 ﻿// using ImageRecognisionLibrary;
 using Serilog;
 using WordListsMauiHelpers.Logging;
+using ImageRecognisionLibrary;
+using System.Diagnostics;
 
 namespace WordLists;
 
@@ -8,6 +10,15 @@ public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
+
+        Task.Run(async () =>
+        {
+            var engine = new ImageRecognisionEngine();
+            await engine.Read();
+            Debug.WriteLine(engine.Result);
+        });
+
+
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()

@@ -15,7 +15,6 @@ public class ImageRecognisionEngine : IImageRecognisionEngine
 
     private const string ImagePath = @"C:\1 Henri\github\WordLists\WordListsApp\ImageRecognisionLibrary\ImageContainer\camera_image.png";
 
-
     public string Result { get; private set; } = "String not read yet!";
 
     private static async Task<(bool success, string Path)> MakeSureThatTrainedDataExist()

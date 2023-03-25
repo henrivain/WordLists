@@ -18,7 +18,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Tesseract" Version="4.1.1" />
+		<PackageReference Include="Tesseract" Version="5.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -42,5 +42,16 @@
 		<Folder Include="lib\armeabi-v7a\" />
 		<Folder Include="lib\x86_64\" />
 		<Folder Include="lib\x86\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="C:\Users\henri\.nuget\packages\tesseract\5.2.0\build\\..\x64\tesseract50.dll" Link="lib\x86_64\tesseract50.dll" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="C:\Users\henri\.nuget\packages\tesseract\5.2.0\build\\..\x64\leptonica-1.82.0.dll" Link="lib\x86_64\leptonica-1.82.0.dll" />
+	  <None Update="lib\arm64-v8a\libtesseract.so">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 </Project>
