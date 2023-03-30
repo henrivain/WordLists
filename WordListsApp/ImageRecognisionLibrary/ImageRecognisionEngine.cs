@@ -64,7 +64,7 @@ public class ImageRecognisionEngine : IImageRecognisionEngine
 
     public async Task Read()
     {
-        var (success, path) = await ImageRecognisionEngine.MakeSureThatTrainedDataExist();
+        var (success, path) = await MakeSureThatTrainedDataExist();
         if (success && File.Exists(path))
         {
             string dirName = Path.GetDirectoryName(path);
