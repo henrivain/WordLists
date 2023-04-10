@@ -1,12 +1,18 @@
+using WordListsMauiHelpers.DependencyInjectionExtensions;
+
 namespace WordListsUI.WordDataPages.OcrListGeneratorPage;
 
 public partial class OcrListGeneratorPage : ContentPage
 {
-	public OcrListGeneratorPage(IOcrListGeneratorViewModel viewModel)
+	public OcrListGeneratorPage(IAbstractFactory<IOcrListGeneratorViewModel> vmFactory)
 	{
 		InitializeComponent();
-        BindingContext = viewModel;
+        ViewModelFactory = vmFactory;
+        BindingContext = vmFactory.Create();
+
+        
     }
 
-    public IOcrListGeneratorViewModel ViewModel => (IOcrListGeneratorViewModel)BindingContext;
+    IOcrListGeneratorViewModel ViewModel => (IOcrListGeneratorViewModel)BindingContext;
+    IAbstractFactory<IOcrListGeneratorViewModel> ViewModelFactory { get; }
 }
