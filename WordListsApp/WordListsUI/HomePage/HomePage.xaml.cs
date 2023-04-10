@@ -2,6 +2,7 @@ using WordDataAccessLibrary.Helpers;
 using WordListsMauiHelpers.PageRouting;
 using WordListsUI.WordDataPages.JsonImportPage;
 using WordListsUI.WordDataPages.ListGeneratorPage;
+using WordListsUI.WordDataPages.OcrListGeneratorPage;
 using WordListsUI.WordTrainingPages.StartTrainingPage;
 
 namespace WordListsUI.HomePage;
@@ -36,8 +37,9 @@ public partial class HomePage : ContentPage
         await Shell.Current.GoToAsync($"{PageRoutes.Get(Route.Training)}/{nameof(StartTrainingPage)}");
     }
 
-    private void CreateNewOCrField_Tapped(object sender, EventArgs e)
+    private async void CreateNewOCrField_Tapped(object sender, EventArgs e)
     {
-
+        Logger.LogInformation("Goto '{destination}' from '{this}'", nameof(StartTrainingPage), nameof(OcrListGeneratorPage));
+        await Shell.Current.GoToAsync($"{PageRoutes.Get(Route.WordHandling)}/{PageRoutes.Get(Route.LifeTime)}/{nameof(OcrListGeneratorPage)}");
     }
 }

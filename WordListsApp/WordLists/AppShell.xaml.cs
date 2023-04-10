@@ -57,15 +57,22 @@ public partial class AppShell : Shell
     /// </param>
     private static void Register<T>(params string[]? routePieces) where T : ContentPage
     {
+        string route;
         if (routePieces is null || routePieces.Length is 0)
         {
-            // No route pieces
-            Routing.RegisterRoute(typeof(T).Name, typeof(T));
-            return;
+            route = typeof(T).Name;
         }
-        string path = string.Join('/', routePieces);
-        Routing.RegisterRoute($"{path}/{typeof(T).Name}", typeof(T));
+        else
+        {
+            route = $"{string.Join('/', routePieces)}/{typeof(T).Name}";
+        }
+        Routing.RegisterRoute(route, typeof(T));
     }
+
+
+
+
+
 
     private async void Shell_Loaded(object sender, EventArgs e) => await CheckCommandLineArgs();
     private async Task CheckCommandLineArgs()

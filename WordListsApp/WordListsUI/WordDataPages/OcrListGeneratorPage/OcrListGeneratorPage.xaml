@@ -4,7 +4,6 @@
              x:Class="WordListsUI.WordDataPages.OcrListGeneratorPage.OcrListGeneratorPage"
              xmlns:vm="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
              Title="Luo kuvasta"
-             
              x:DataType="{x:Type vm:IOcrListGeneratorViewModel}"
              
              >

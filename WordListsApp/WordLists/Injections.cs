@@ -9,6 +9,7 @@ using WordListsMauiHelpers.Logging;
 using WordListsMauiHelpers.Settings;
 using WordListsServices.FileSystemServices;
 using WordListsServices.ProcessServices;
+using WordListsUI.WordDataPages.OcrListGeneratorPage;
 using WordListsViewModels;
 using WordListsViewModels.Helpers;
 using WordListsViewModels.Interfaces;
@@ -62,6 +63,7 @@ internal static class Injections
         services.AddTransient<JsonImportPage>();
         services.AddTransient<WordListPage>();
         services.AddTransient<TrainingConfigPage>();
+        services.AddTransient<OcrListGeneratorPage>();
 
         return services;
     }
