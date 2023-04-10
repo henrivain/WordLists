@@ -81,6 +81,7 @@ internal static class Injections
         services.AddAbstractFactory<IJsonImportViewModel, JsonImportViewModel>();
         services.AddAbstractFactory<IWriteWordViewModel, WriteWordViewModel>();
         services.AddAbstractFactory<IWritingTestConfigurationViewModel, WritingTestConfigurationViewModel>();
+        services.AddAbstractFactory<IOcrListGeneratorViewModel, OcrListGeneratorViewModel>();
 
         return services;
     }

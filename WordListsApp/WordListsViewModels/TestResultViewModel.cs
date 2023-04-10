@@ -4,7 +4,6 @@ using WordListsViewModels.Helpers;
 
 namespace WordListsViewModels;
 
-//[INotifyPropertyChanged]
 public partial class TestResultViewModel : ObservableObject, ITestResultViewModel
 {
     public TestResultViewModel(IWordPairService wordPairService)

@@ -35,4 +35,9 @@ public partial class HomePage : ContentPage
         Logger.LogInformation("Goto '{destination}' from '{this}'", nameof(StartTrainingPage), nameof(HomePage));
         await Shell.Current.GoToAsync($"{PageRoutes.Get(Route.Training)}/{nameof(StartTrainingPage)}");
     }
+
+    private void CreateNewOCrField_Tapped(object sender, EventArgs e)
+    {
+
+    }
 }

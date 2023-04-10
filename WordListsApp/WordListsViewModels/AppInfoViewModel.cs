@@ -24,7 +24,7 @@ public partial class AppInfoViewModel : ObservableObject, IAppInfoViewModel
     }
 
     [ObservableProperty]
-    string _appVersion = VersionTracking.CurrentVersion ?? "Ei saatavilla"; // AssemblyHelper.EntryAssembly.VersionString ?? "Ei saatavilla";
+    string _appVersion = VersionTracking.CurrentVersion ?? "Ei saatavilla";
 
     [ObservableProperty]
     string _appEnvironment = GetAppEnvironment();

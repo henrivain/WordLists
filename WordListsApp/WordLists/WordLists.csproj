@@ -153,7 +153,6 @@
 		<None Remove="Resources\Images\ok_icon.svg" />
 		<None Remove="Resources\Images\pencil_icon.svg" />
 		<None Remove="Resources\Images\training_icon.svg" />
-		<None Remove="Resources\Raw\fin_4.1.0.traineddata" />
 	</ItemGroup>
 
 	<ItemGroup>

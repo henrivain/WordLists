@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using WordDataAccessLibrary.Helpers;
 using WordListsMauiHelpers.PageRouting;
-
+using WordListsUI.WordDataPages.OcrListGeneratorPage;
 
 namespace WordLists;
 
@@ -17,28 +17,57 @@ public partial class AppShell : Shell
         string lifetime = PageRoutes.Get(Route.LifeTime);
         string backup = PageRoutes.Get(Route.Backup);
 
-        Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
-        Routing.RegisterRoute(nameof(AppInfoPage), typeof(AppInfoPage));
+        // main pages
+        Register<HomePage>();
+        Register<AppInfoPage>();
 
-        Routing.RegisterRoute($"{training}/{nameof(StartTrainingPage)}", typeof(StartTrainingPage));
-		Routing.RegisterRoute($"{training}/{nameof(FlipCardTrainingPage)}", typeof(FlipCardTrainingPage));
-		Routing.RegisterRoute($"{training}/{nameof(WritingTestPage)}", typeof(WritingTestPage));
-		Routing.RegisterRoute($"{training}/{nameof(WritingTestConfigurationPage)}", typeof(WritingTestConfigurationPage));
-		Routing.RegisterRoute($"{training}/{nameof(WriteTestResultPage)}", typeof(WriteTestResultPage));
-		Routing.RegisterRoute($"{training}/{nameof(WordListPage)}", typeof(WordListPage));
-		Routing.RegisterRoute($"{training}/{nameof(TrainingConfigPage)}", typeof(TrainingConfigPage));
+        //  training
+        Register<StartTrainingPage>(training);
+        Register<FlipCardTrainingPage>(training);
+        Register<WritingTestPage>(training);
+        Register<WritingTestConfigurationPage>(training);
+        Register<WriteTestResultPage>(training);
+        Register<WordListPage>(training);
+        Register<TrainingConfigPage>(training);
 
-        Routing.RegisterRoute($"{handling}/{nameof(WordDataPage)}", typeof(WordDataPage));
-		Routing.RegisterRoute($"{handling}/{lifetime}/{nameof(ListGeneratorPage)}", typeof(ListGeneratorPage));
-		Routing.RegisterRoute($"{handling}/{lifetime}/{nameof(ImageRecognisionPage)}", typeof(ImageRecognisionPage));
-        Routing.RegisterRoute($"{handling}/{lifetime}/{nameof(WordCollectionEditPage)}", typeof(WordCollectionEditPage));
-        Routing.RegisterRoute($"{handling}/{backup}/{nameof(JsonExportPage)}", typeof(JsonExportPage));
-		Routing.RegisterRoute($"{handling}/{backup}/{nameof(JsonImportPage)}", typeof(JsonImportPage));
+        //  handling
+        Register<WordDataPage>(handling);
+
+        //  handling/backup
+        Register<JsonImportPage>(handling, backup);
+        Register<JsonExportPage>(handling, backup);
+
+        //  handling/lifetime
+        Register<ListGeneratorPage>(handling, lifetime);
+        Register<OcrListGeneratorPage>(handling, lifetime);
+        Register<WordCollectionEditPage>(handling, lifetime);
     }
 
     ILogger Logger { get; }
     bool CommandLineArgsChecked { get; set; } = false;
 
+    /// <summary>
+    /// Register T type to shell. Route will be type: 'Route/Pieces/TName'
+    /// <para/>Example: Register&lt;MyType&gt;("home") =&gt; home/MyType
+    /// </summary>
+    /// <typeparam name="T">Type to register to shell</typeparam>
+    /// <param name="routePieces">
+    /// Will be separated with '/', order will be the same. 
+    /// Leave null or empty if no route pieces need to be added.
+    /// </param>
+    private static void Register<T>(params string[]? routePieces) where T : ContentPage
+    {
+        if (routePieces is null || routePieces.Length is 0)
+        {
+            // No route pieces
+            Routing.RegisterRoute(typeof(T).Name, typeof(T));
+            return;
+        }
+        string path = string.Join('/', routePieces);
+        Routing.RegisterRoute($"{path}/{typeof(T).Name}", typeof(T));
+    }
+
+    private async void Shell_Loaded(object sender, EventArgs e) => await CheckCommandLineArgs();
     private async Task CheckCommandLineArgs()
     {
         if (CommandLineArgsChecked)
@@ -74,11 +103,5 @@ public partial class AppShell : Shell
             Logger.LogError("Cannot get command line args in current platform.");
             return;
         }
-    }
-
-  
-    private async void Shell_Loaded(object sender, EventArgs e)
-    {
-        await CheckCommandLineArgs();
     }
 }

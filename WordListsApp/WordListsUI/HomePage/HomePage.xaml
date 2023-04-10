@@ -76,6 +76,8 @@
                                          Tapped="CreateNewField_Tapped" />
                     <linkField:LinkField Text="Tuo uusi sanasto ulkoisesta .wordlist-tiedostosta"
                                          Tapped="ImportField_Tapped" />
+                    <linkField:LinkField Text="Luo uusi sanasto kuvasta"
+                                         Tapped="CreateNewOCrField_Tapped" />
                 </VerticalStackLayout>
             </VerticalStackLayout>
         </VerticalStackLayout>
