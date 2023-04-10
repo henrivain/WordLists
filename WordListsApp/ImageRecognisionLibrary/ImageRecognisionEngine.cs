@@ -1,8 +1,4 @@
 ﻿using Tesseract;
-using System.IO;
-using System.Reflection;
-using System.Diagnostics;
-using System.Security;
 
 namespace ImageRecognisionLibrary;
 public class ImageRecognisionEngine : IImageRecognisionEngine
@@ -10,7 +6,6 @@ public class ImageRecognisionEngine : IImageRecognisionEngine
 
     public ImageRecognisionEngine()
     {
-
     }
 
     private const string ImagePath = @"C:\1 Henri\github\WordLists\WordListsApp\ImageRecognisionLibrary\ImageContainer\camera_image.png";
