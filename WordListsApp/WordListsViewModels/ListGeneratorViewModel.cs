@@ -10,8 +10,7 @@ using WordListsViewModels.Helpers;
 
 namespace WordListsViewModels;
 
-[INotifyPropertyChanged]
-public partial class ListGeneratorViewModel : IListGeneratorViewModel
+public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorViewModel
 {
     public ListGeneratorViewModel(
         IWordCollectionService collectionService,

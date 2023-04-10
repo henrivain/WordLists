@@ -8,8 +8,7 @@ using WordListsViewModels.Events;
 
 namespace WordListsViewModels;
 
-[INotifyPropertyChanged]
-public partial class StartTrainingViewModel : IStartTrainingViewModel
+public partial class StartTrainingViewModel : ObservableObject, IStartTrainingViewModel
 {
     public StartTrainingViewModel(
         IWordCollectionOwnerService ownerService, 

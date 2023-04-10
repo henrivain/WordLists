@@ -2,17 +2,19 @@
 using WordDataAccessLibrary.CollectionBackupServices.JsonServices;
 using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
-using WordListsMauiHelpers.DeviceAccess;
+using WordDataAccessLibrary.Generators;
 using WordListsMauiHelpers.DependencyInjectionExtensions;
+using WordListsMauiHelpers.DeviceAccess;
 using WordListsMauiHelpers.Logging;
+using WordListsMauiHelpers.Settings;
 using WordListsServices.FileSystemServices;
 using WordListsServices.ProcessServices;
 using WordListsViewModels;
 using WordListsViewModels.Helpers;
 using WordListsViewModels.Interfaces;
 using WordValidationLibrary;
-using WordDataAccessLibrary.Generators;
-using WordListsMauiHelpers.Settings;
+
+
 
 namespace WordLists;
 internal static class Injections
@@ -35,6 +37,12 @@ internal static class Injections
         services.AddTransient<IWordPairParser, NewOtavaWordPairParser>();
         services.AddSingleton<ISettings, Settings>();
 
+        // Platform specific implementations
+#if WINDOWS
+        services.AddSingleton<IMediaPicker, WordListsMauiHelpers.Platforms.Windows.WindowsMediaPicker>();
+#else
+        services.AddSingleton<IMediaPicker>(MediaPicker.Default);
+#endif
         return services;
     }
 

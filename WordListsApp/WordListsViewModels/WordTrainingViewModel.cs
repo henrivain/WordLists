@@ -1,8 +1,7 @@
 ﻿using WordDataAccessLibrary.DataBaseActions.Interfaces;
 namespace WordListsViewModels;
 
-[INotifyPropertyChanged]
-public partial class WordTrainingViewModel : IWordTrainingViewModel
+public partial class WordTrainingViewModel : ObservableObject, IWordTrainingViewModel
 {
     public WordTrainingViewModel(IWordCollectionService collectionService)
     {

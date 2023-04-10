@@ -2,8 +2,7 @@
 
 namespace WordListsViewModels;
 
-[INotifyPropertyChanged]
-public partial class WordListViewModel : IWordListViewModel
+public partial class WordListViewModel : ObservableObject, IWordListViewModel
 {
     public WordListViewModel(IWordCollectionService collectionService, IWordCollectionOwnerService ownerService)
     {

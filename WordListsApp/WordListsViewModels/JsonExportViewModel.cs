@@ -10,8 +10,7 @@ using static WordDataAccessLibrary.CollectionBackupServices.BackupDelegates;
 
 namespace WordListsViewModels;
 
-[INotifyPropertyChanged]
-public partial class JsonExportViewModel : IJsonExportViewModel
+public partial class JsonExportViewModel :  ObservableObject, IJsonExportViewModel
 {
     public JsonExportViewModel(
         ICollectionExportService exportService,
@@ -49,7 +48,8 @@ public partial class JsonExportViewModel : IJsonExportViewModel
     ObservableCollection<WordCollectionInfo> _visibleCollections = new();
 
     [ObservableProperty]
-    [AlsoNotifyChangeFor(nameof(CanExportSelected))]
+    //[AlsoNotifyChangeFor(nameof(CanExportSelected))]
+    [NotifyPropertyChangedFor(nameof(CanExportSelected))]
     List<object> _selectedCollections = new();
 
     [ObservableProperty]

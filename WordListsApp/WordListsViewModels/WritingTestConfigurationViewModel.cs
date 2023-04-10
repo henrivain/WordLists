@@ -3,8 +3,7 @@ using WordListsViewModels.Events;
 
 namespace WordListsViewModels;
 
-[INotifyPropertyChanged]
-public partial class WritingTestConfigurationViewModel : IWritingTestConfigurationViewModel
+public partial class WritingTestConfigurationViewModel : ObservableObject, IWritingTestConfigurationViewModel
 {
 
     [ObservableProperty]

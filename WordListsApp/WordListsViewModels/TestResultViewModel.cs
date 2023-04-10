@@ -1,12 +1,11 @@
 ﻿using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsViewModels.Events;
-using WordListsViewModels.Extensions;
 using WordListsViewModels.Helpers;
 
 namespace WordListsViewModels;
 
-[INotifyPropertyChanged]
-public partial class TestResultViewModel : ITestResultViewModel
+//[INotifyPropertyChanged]
+public partial class TestResultViewModel : ObservableObject, ITestResultViewModel
 {
     public TestResultViewModel(IWordPairService wordPairService)
     {
@@ -52,7 +51,8 @@ public partial class TestResultViewModel : ITestResultViewModel
     string _sessionId = "#0000000";
 
     [ObservableProperty]
-    [AlsoNotifyChangeFor(nameof(ProgressionNotSaved))]
+    //[AlsoNotifyChangeFor(nameof(ProgressionNotSaved))]
+    [NotifyPropertyChangedFor(nameof(ProgressionNotSaved))]
     bool _progressionSaved = false;
     
     public bool ProgressionNotSaved => !ProgressionSaved;

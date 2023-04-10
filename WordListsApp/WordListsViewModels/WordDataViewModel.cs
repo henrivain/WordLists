@@ -3,8 +3,7 @@ using WordDataAccessLibrary.DataBaseActions.Interfaces;
 
 namespace WordListsViewModels;
 
-[INotifyPropertyChanged]
-public partial class WordDataViewModel : IWordDataViewModel
+public partial class WordDataViewModel : ObservableObject, IWordDataViewModel
 {
     public WordDataViewModel(
         IWordCollectionService collectionService, 

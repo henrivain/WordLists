@@ -107,6 +107,9 @@
 		<MauiXaml Update="WordDataPages\JsonImportPage\JsonImportPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="WordDataPages\OcrListGeneratorPage\OcrListGeneratorPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="WordTrainingPages\StartTrainingPage\StartTrainingPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

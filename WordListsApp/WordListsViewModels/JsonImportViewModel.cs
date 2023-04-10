@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using WordDataAccessLibrary.CollectionBackupServices;
+﻿using WordDataAccessLibrary.CollectionBackupServices;
 using WordDataAccessLibrary.CollectionBackupServices.ActionResults;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordDataAccessLibrary.Extensions;
@@ -8,9 +7,7 @@ using WordListsMauiHelpers.DeviceAccess;
 using static WordDataAccessLibrary.CollectionBackupServices.BackupDelegates;
 
 namespace WordListsViewModels;
-
-[INotifyPropertyChanged]
-public partial class JsonImportViewModel : IJsonImportViewModel
+public partial class JsonImportViewModel : ObservableObject, IJsonImportViewModel
 {
     // import checks, that path value is not this when starting import
     const string DefaultPathInfo = "Valitse tiedosto...";
@@ -49,8 +46,7 @@ public partial class JsonImportViewModel : IJsonImportViewModel
         SetPathIfValid(path);
     });
 
-    public IAsyncRelayCommand Import => new AsyncRelayCommand(
-        async () => await ImportAndSaveCollectionsAsync());
+    public IAsyncRelayCommand Import => new AsyncRelayCommand(ImportAndSaveCollectionsAsync);
 
     public void SetDefaultImportPath(string path)
     {

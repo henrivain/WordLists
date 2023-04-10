@@ -1,8 +1,6 @@
 ﻿// using ImageRecognisionLibrary;
 using Serilog;
 using WordListsMauiHelpers.Logging;
-using ImageRecognisionLibrary;
-using System.Diagnostics;
 
 namespace WordLists;
 
@@ -10,14 +8,6 @@ public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
-
-        Task.Run(async () =>
-        {
-            var engine = new ImageRecognisionEngine();
-            await engine.Read();
-            Debug.WriteLine(engine.Result);
-        });
-
 
         var builder = MauiApp.CreateBuilder();
         builder
@@ -45,12 +35,6 @@ public static class MauiProgram
         builder.Services.AddAppPages();
         builder.Services.AddAppServices();
         builder.Services.AddAppViewModels();
-
-        // injecting appshell will make app buggy and starts to change visual element visibility
-        // Add image recognision page with these and adding usings and project references
-        // builder.Services.AddTransient<ImageRecognisionPage>();
-        // builder.Services.AddTransient<IImageRecognisionViewModel, ImageRecognisionViewModel>();
-        // builder.Services.AddTransient<IImageRecognisionEngine, ImageRecognisionEngine>();
         return builder.Build();
     }
 }

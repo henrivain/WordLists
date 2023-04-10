@@ -8,8 +8,7 @@ using WordListsViewModels.Events;
 
 namespace WordListsViewModels;
 
-[INotifyPropertyChanged]
-public partial class AppInfoViewModel : IAppInfoViewModel
+public partial class AppInfoViewModel : ObservableObject, IAppInfoViewModel
 {
     public AppInfoViewModel(
         ILogger<AppInfoViewModel> logger,
