@@ -143,7 +143,7 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
 
 
 
-
+    // public methods
     public bool SetWordValueWithIndex(int indexInList, string value)
     {
         if (string.IsNullOrEmpty(value))
@@ -164,8 +164,6 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
             return false;
         }
     }
-
-    
     public void AddWord(string word)
     {
         if (string.IsNullOrEmpty(word))
@@ -176,8 +174,6 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
         Words.Add(word);
         OnPropertyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
     }
-
-    
     public void ResetWordPairs(string[] words)
     {
         Words.Clear();
@@ -187,8 +183,6 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
         }
         OnPropertyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
     }
-
-    
     public void OpenInEditMode(WordCollection collection)
     {
         IsEditMode = true;
@@ -214,8 +208,6 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
         }
         OnPropertyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
     }
-
-    
     public WordCollection ParseToWordCollection()
     {
         return new()

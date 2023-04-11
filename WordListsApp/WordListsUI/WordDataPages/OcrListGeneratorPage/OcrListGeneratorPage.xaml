@@ -5,11 +5,68 @@
              xmlns:vm="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
              Title="Luo kuvasta"
              x:DataType="{x:Type vm:IOcrListGeneratorViewModel}"
-             
-             >
-    <VerticalStackLayout>
-        <Label Text="Welcome to .NET MAUI!"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Background="{StaticResource PageBackground}">
+    <ScrollView>
+        <VerticalStackLayout>
+            <Label Text="Luo kuvasta"
+                   Margin="30,20"
+                   FontSize="Large"
+                   FontAttributes="Bold" />
+            <Grid ColumnDefinitions="*, auto, *"
+                  >
+                <Button Text="Ota kuva"
+                        IsEnabled="{Binding IsImageCaptureSupported}"
+                        Command="{Binding CaptureAndRecognizeCommand}"
+                        HorizontalOptions="End"
+                        />
+                <Label Text="tai"
+                       Margin="10,0"
+                       VerticalTextAlignment="Center"
+                       Grid.Column="1" />
+                <Button Text="Valitse kuva"
+                        HorizontalOptions="Start"
+                        Grid.Column="2"
+                        Command="{Binding SelectAndRecognizeCommand}" />
+            </Grid>
+
+            <Button Text="Parsi"
+                    IsEnabled="{Binding CanParse}"
+                    Command="{Binding ParseAndShowCommand}"
+                    HorizontalOptions="Center"/>
+
+            <Border BackgroundColor="DarkCyan"
+                    Margin="30"
+                    Stroke="Transparent"
+                    StrokeThickness="0"
+                    >
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12" />
+                </Border.StrokeShape>
+                <VerticalStackLayout>
+                    <VerticalStackLayout.Resources>
+                        <Style TargetType="{x:Type Label}">
+                            <Setter Property="HorizontalTextAlignment"
+                                    Value="Center" />
+                        </Style>
+                    </VerticalStackLayout.Resources>
+                    <Grid ColumnDefinitions="*,*" >
+                        <Label Text="Kuvan teksti" Grid.RowSpan="2"/>
+                        <Label Grid.Column="1">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Varmuus: " />
+                                    <Span Text="{Binding RecogizionConfidence}" />
+                                    <Span Text="%" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>
+                    <Label Text="{Binding RecognizedText}"
+                           HorizontalTextAlignment="Start" />
+                    
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

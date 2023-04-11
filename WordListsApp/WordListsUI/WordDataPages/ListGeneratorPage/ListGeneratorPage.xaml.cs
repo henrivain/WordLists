@@ -7,7 +7,6 @@ using WordListsViewModels.Events;
 namespace WordListsUI.WordDataPages.ListGeneratorPage;
 
 [QueryProperty(nameof(PageModeParameter),  nameof(PageModeParameter))]
-[QueryProperty(nameof(EditParameter), nameof(EditParameter))]
 public partial class ListGeneratorPage : ContentPage
 {
     public ListGeneratorPage(IAbstractFactory<IListGeneratorViewModel> modelFactory)
@@ -27,7 +26,6 @@ public partial class ListGeneratorPage : ContentPage
     }
 
     public PageModeParameter<ListGeneratorMode> PageModeParameter { set => UseMode(value); }
-
     private void UseMode(PageModeParameter<ListGeneratorMode> value)
     {
         switch (value)
@@ -51,10 +49,7 @@ public partial class ListGeneratorPage : ContentPage
         }
     }
 
-    public WordCollection EditParameter
-    {
-        set => Model.OpenInEditMode(value);
-    }
+  
 
     IAbstractFactory<IListGeneratorViewModel> ModelFactory { get; }
 
