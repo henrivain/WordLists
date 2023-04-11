@@ -99,7 +99,7 @@
                     <Button Text="Päivitä"
                             Grid.Row="1"
                             IsVisible="{Binding IsEditMode}"
-                            Command="{Binding FinishEdit}" />
+                            Command="{Binding Save}" />
 
                     <Button Text="Peruuta"
                             Grid.Row="1"

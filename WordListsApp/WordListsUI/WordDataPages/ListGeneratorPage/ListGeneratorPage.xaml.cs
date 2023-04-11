@@ -30,29 +30,30 @@ public partial class ListGeneratorPage : ContentPage
 
     private void UseMode(PageModeParameter<ListGeneratorMode> value)
     {
-        switch (value.Mode)
+        switch (value)
         {
-            case ListGeneratorMode.Edit:
-                if (value.Data is WordCollection collection)
+            case { Mode: ListGeneratorMode.Default }:
+                return;
+            
+            case { Mode: ListGeneratorMode.Edit, Data: WordCollection collection }:
+                Model.OpenInEditMode(collection);
+                return;
+            
+            case { Mode: ListGeneratorMode.EditNew, Data: string[] words }:
+                foreach (var word in words)
                 {
-                    Model.StartEditProcess(collection);
-                    return;
+                    Model.AddWord(word);
                 }
-                break;
-            case ListGeneratorMode.FromString:
-                
                 return;
-            case ListGeneratorMode.Default:
-                // Same as PageModeParameter not provided.
-                return;
+            
+            default:
+                throw new ArgumentException("Mode and Data combination not supported", nameof(value));
         }
-        throw new NotImplementedException(nameof(ListGeneratorMode));
-
     }
 
     public WordCollection EditParameter
     {
-        set => Model.StartEditProcess(value);
+        set => Model.OpenInEditMode(value);
     }
 
     IAbstractFactory<IListGeneratorViewModel> ModelFactory { get; }

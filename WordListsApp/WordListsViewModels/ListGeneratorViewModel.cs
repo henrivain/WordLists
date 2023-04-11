@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordDataAccessLibrary.Generators;
 using WordListsMauiHelpers.Settings;
@@ -14,7 +13,7 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
     public ListGeneratorViewModel(
         IWordCollectionService collectionService,
         ILogger<IListGeneratorViewModel> logger,
-        IEnumerable<IWordPairParser> parsers, 
+        IEnumerable<IWordPairParser> parsers,
         ISettings settings,
         IClipboard clipboard
         )
@@ -38,6 +37,9 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
     ILogger<IListGeneratorViewModel> Logger { get; }
     ISettings Settings { get; }
     IClipboard Clipboard { get; }
+
+
+
     public List<ParserInfo> Parsers { get; }
 
     [ObservableProperty]
@@ -62,16 +64,15 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
     bool _isBusy = false;
 
     public bool ShowUnEvenWordCountWarning => Words.Count < 10 || Words.Count % 2 is 0;
-
     public bool CanSave => Words.Count / 2 > 0;
 
     private WordCollection? OldWordCollectionValue { get; set; }
 
+    // Database commands 
     public IAsyncRelayCommand GeneratePairsCommand => new AsyncRelayCommand(
         async () =>
         {
             IsBusy = true;
-            bool isAndroid = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
 
             IWordPairParser parser;
             if (SelectedParser is ParserInfo info)
@@ -84,42 +85,20 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
             }
 
             var words = await ParseFromClipBoard(parser);
-            Words.Clear();
-            foreach (var word in words)
-            {
-                Words.Add(word);
-            }
-            OnPropertyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
+            ResetWordPairs(words);
             IsBusy = false;
         });
-
-
-    public IAsyncRelayCommand Save => new AsyncRelayCommand(
-        async () =>
+    public IAsyncRelayCommand Save => new AsyncRelayCommand(async () =>
+    {
+        if (IsEditMode)
         {
-            IsBusy = true;
-            if (Words.Count < 2)
-            {
-                Logger.LogWarning("{class}.{method}: Can't add empty word collection",
-                    nameof(ListGeneratorViewModel), nameof(Save));
-                FailedToSaveEvent?.Invoke(this, new DataBaseActionArgs
-                {
-                    Text = "Collection was empty or had less than 2 words."
-                });
-                IsBusy = false;
-                return;
-            }
-            int id = await CollectionService.AddWordCollection(ParseData());
+            await SaveEdit();
+            return;
+        }
+        await SaveNew();
+    });
 
-            Settings.DefaultWordCollectionLanguage = LanguageHeaders;
-            CollectionAddedEvent?.Invoke(this, new DataBaseActionArgs
-            {
-                Text = "Added wordCollection successfully",
-                RefIds = new[] { id },
-                CollectionNames = new[] { CollectionName }
-            });
-            IsBusy = false;
-        });
+    // List commands
     public IAsyncRelayCommand FlipSides => new AsyncRelayCommand(async () =>
     {
         IsBusy = true;
@@ -136,6 +115,7 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
         IsBusy = false;
     });
 
+    // Word commands
     public IRelayCommand<string> Delete => new RelayCommand<string>(value =>
     {
         if (value is null)
@@ -147,7 +127,6 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
         Words.Remove(value);
         OnPropertyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
     });
-
     public IRelayCommand<string> Edit => new RelayCommand<string>(value =>
     {
         if (value is null)
@@ -159,48 +138,19 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
         int index = Words.IndexOf(value);
         EditWantedEvent?.Invoke(this, new(value, index));
     });
-
     public IRelayCommand New => new RelayCommand(() => AddWantedEvent?.Invoke(this, EventArgs.Empty));
 
-    public IAsyncRelayCommand FinishEdit => new AsyncRelayCommand(async () =>
-    {
-        if (IsEditMode is false)
-        {
-            throw new InvalidOperationException("Cannot update word collection, when edit mode is not true");
-        }
-        IsBusy = true;
-
-        var newData = ParseData();
-        int oldId = OldWordCollectionValue?.Owner.Id ?? -1;
-        if (oldId is not -1)
-        {
-            await CollectionService.DeleteWordCollection(oldId);
-        }
-        int newId = await CollectionService.AddWordCollection(newData);
-
-        Settings.DefaultWordCollectionLanguage = LanguageHeaders;
-        EditFinished?.Invoke(this, new()
-        {
-            RefIds = new[] { newId },
-            CollectionNames = new[] { newData.Owner.Name },
-            Text = "Successfully removed old word collection and added new edited one."
-        });
-        IsBusy = false;
-    });
 
 
 
 
-
-    /// <summary>
-    /// Try set string collection of specific index in Words ObservableCollection
-    /// </summary>
-    /// <param name="indexInList"></param>
-    /// <param name="value"></param>
-    /// <returns>boolean collection reprcenting if action was success</returns>
     public bool SetWordValueWithIndex(int indexInList, string value)
     {
-        if (string.IsNullOrEmpty(value)) return false;
+        if (string.IsNullOrEmpty(value))
+        {
+            return false;
+        }
+
         try
         {
             Words[indexInList] = value;
@@ -214,20 +164,39 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
             return false;
         }
     }
-    public void AddWord(string result)
+
+    
+    public void AddWord(string word)
     {
-        if (string.IsNullOrEmpty(result)) return;
-        Words.Add(result);
+        if (string.IsNullOrEmpty(word))
+        {
+            return;
+        }
+
+        Words.Add(word);
         OnPropertyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
     }
-    public void StartEditProcess(WordCollection collection)
+
+    
+    public void ResetWordPairs(string[] words)
+    {
+        Words.Clear();
+        foreach (var word in words)
+        {
+            Words.Add(word);
+        }
+        OnPropertyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
+    }
+
+    
+    public void OpenInEditMode(WordCollection collection)
     {
         IsEditMode = true;
         if (collection is null)
         {
             CollectionName = "Jotain meni pieleen...";
             Logger.LogError("Cannot edit WordCollection that is null in [{type}.{method}]",
-                nameof(ListGeneratorViewModel), nameof(StartEditProcess));
+                nameof(ListGeneratorViewModel), nameof(OpenInEditMode));
             return;
         }
         Logger.LogInformation("Start editing {type} with name {name}",
@@ -245,7 +214,9 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
         }
         OnPropertyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
     }
-    public WordCollection ParseData()
+
+    
+    public WordCollection ParseToWordCollection()
     {
         return new()
         {
@@ -259,7 +230,7 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
         };
     }
 
-
+    // Events
     public event CollectionAddedEventHandler? CollectionAddedEvent;
     public event CollectionAddedEventHandler? FailedToSaveEvent;
     public event CollectionEditEventHandler? EditWantedEvent;
@@ -268,7 +239,7 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
     public event CollectionAddedEventHandler? EditFinished;
 
 
-
+    // private methods
     private async Task<string[]> ParseFromClipBoard(IWordPairParser parser)
     {
         try
@@ -278,7 +249,7 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
         }
         catch (Exception ex)
         {
-            Logger.LogInformation("Exception whilst trying to parse word list with '{parser}'. '{ex}': '{msg}'",
+            Logger.LogWarning("Exception whilst trying to parse word list with '{parser}'. '{ex}': '{msg}'",
                 parser.GetType().Name, ex.GetType().Name, ex.Message);
 
             ParserError?.Invoke(this, "Invalid parser error");
@@ -307,6 +278,63 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
                 }
                 return;
         }
+    }
+    private async Task SaveNew()
+    {
+        if (IsEditMode)
+        {
+            Logger.LogWarning("Used {mth} when edit mode was TRUE, " +
+                "consider using {mth2} instead to update database", nameof(SaveNew), nameof(SaveEdit));
+        }
+
+        IsBusy = true;
+        if (Words.Count < 2)
+        {
+            Logger.LogWarning("{cls}.{method}: Can't add empty word collection",
+                nameof(ListGeneratorViewModel), nameof(SaveNew));
+            FailedToSaveEvent?.Invoke(this, new DataBaseActionArgs
+            {
+                Text = "Collection was empty or had less than 2 words."
+            });
+            IsBusy = false;
+            return;
+        }
+        int id = await CollectionService.AddWordCollection(ParseToWordCollection());
+
+        Settings.DefaultWordCollectionLanguage = LanguageHeaders;
+        CollectionAddedEvent?.Invoke(this, new DataBaseActionArgs
+        {
+            Text = "Added wordCollection successfully",
+            RefIds = new[] { id },
+            CollectionNames = new[] { CollectionName }
+        });
+        IsBusy = false;
+    }
+    private async Task SaveEdit()
+    {
+        if (IsEditMode is false)
+        {
+            Logger.LogError("Used {mth} when edit mode was FALSE, cannot update non existent collection.",
+                nameof(SaveEdit));
+            throw new InvalidOperationException("Cannot update word collection, when edit mode is false");
+        }
+        IsBusy = true;
+        var newData = ParseToWordCollection();
+        int oldId = OldWordCollectionValue?.Owner.Id ?? -1;
+        if (oldId is not -1)
+        {
+            await CollectionService.DeleteWordCollection(oldId);
+        }
+        int newId = await CollectionService.AddWordCollection(newData);
+
+        Settings.DefaultWordCollectionLanguage = LanguageHeaders;
+        EditFinished?.Invoke(this, new()
+        {
+            RefIds = new[] { newId },
+            CollectionNames = new[] { newData.Owner.Name },
+            Text = "Successfully removed old word collection and added new edited one."
+        });
+        IsBusy = false;
     }
 }
 

@@ -15,9 +15,8 @@ using WordListsViewModels.Helpers;
 using WordListsViewModels.Interfaces;
 using WordValidationLibrary;
 
-
-
 namespace WordLists;
+
 internal static class Injections
 {
     public static IServiceCollection AddAppServices(this IServiceCollection services)
@@ -90,8 +89,4 @@ internal static class Injections
 
         return services;
     }
-
-
-
-
 }
