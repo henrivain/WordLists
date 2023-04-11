@@ -36,6 +36,7 @@ internal static class Injections
         services.AddSingleton<IFilePickerService, FilePickerService>();
         services.AddTransient<IWordPairParser, OtavaWordPairParser>();
         services.AddTransient<IWordPairParser, NewOtavaWordPairParser>();
+        services.AddTransient<IWordPairParser, OcrWordPairParser>();
         services.AddSingleton<ISettings, Settings>();
         services.AddSingleton(Clipboard.Default); 
         services.AddSingleton(FilePicker.Default);

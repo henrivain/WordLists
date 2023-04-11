@@ -11,6 +11,7 @@ public class Settings : ISettings
     }
 
     public string? DefaultParserName { get => Get<string?>(); set => Set(value ?? string.Empty); }
+    public string? DefaultOcrParserName { get => Get<string?>(); set => Set(value ?? string.Empty); }
     public string? DefaultWordCollectionLanguage { get => Get<string?>(); set => Set(value ?? string.Empty); }
     public bool? ShuffleTrainingWords { get => Get<bool?>(); set => Set(value ?? false); }
     public bool? ShowLearnedWords { get => Get<bool?>();  set => Set(value ?? false); }

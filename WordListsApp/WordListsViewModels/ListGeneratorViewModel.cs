@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordDataAccessLibrary.Generators;
-using WordListsMauiHelpers.DeviceAccess;
 using WordListsMauiHelpers.Settings;
 using WordListsViewModels.Events;
 using WordListsViewModels.Helpers;
@@ -24,7 +23,7 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
         Logger = logger;
         Settings = settings;
         Clipboard = clipboard;
-        Parsers = parsers.Select(x => new ParserInfo { Name = GetParserName(x), Parser = x }).ToList();
+        Parsers = parsers.ToParserInfos().ToList();
         if (Parsers.Count < 1)
         {
             throw new ArgumentException("At least on parser must be defined.", nameof(parsers));
@@ -270,15 +269,6 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
 
 
 
-    private static string GetParserName(IWordPairParser parser)
-    {
-        return parser switch
-        {
-            NewOtavaWordPairParser => "Otava uusi",
-            OtavaWordPairParser => "Otava vanha",
-            _ => parser.GetType().Name,
-        };
-    }
     private async Task<string[]> ParseFromClipBoard(IWordPairParser parser)
     {
         try

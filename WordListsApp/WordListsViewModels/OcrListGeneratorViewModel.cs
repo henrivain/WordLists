@@ -1,16 +1,36 @@
-﻿using TesseractOcrMaui;
+﻿using System.Collections.ObjectModel;
+using TesseractOcrMaui;
 using TesseractOcrMaui.Extensions;
 using TesseractOcrMaui.Results;
+using WordDataAccessLibrary.Generators;
+using WordListsMauiHelpers.Settings;
+using WordListsViewModels.Helpers;
 
 namespace WordListsViewModels;
-public class OcrListGeneratorViewModel : ObservableObject, IOcrListGeneratorViewModel
+public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGeneratorViewModel
 {
-    public OcrListGeneratorViewModel(ITesseract tesseract, IMediaPicker mediaPicker, IFilePicker filePicker, ILogger<OcrListGeneratorViewModel> logger)
+    public OcrListGeneratorViewModel(
+        ITesseract tesseract, 
+        IMediaPicker mediaPicker, 
+        IFilePicker filePicker,
+        IEnumerable<IWordPairParser> parsers,
+        ILogger<OcrListGeneratorViewModel> logger,
+        ISettings settings
+        )
     {
         Tesseract = tesseract;
         MediaPicker = mediaPicker;
         FilePicker = filePicker;
         Logger = logger;
+        Settings = settings;
+        Parsers = new(parsers.Where(x => x is IOcrWordPairParser).ToParserInfos());
+        if (Parsers.Count < 1)
+        {
+            throw new ArgumentException("At least one ocr parser must be defined.", nameof(parsers));
+        }
+
+        _selectedParser = Parsers.FirstOrGivenDefault(x => x.Name == (Settings.DefaultOcrParserName ?? string.Empty), Parsers[0]);
+        _isImageCaptureSupported = MediaPicker.IsCaptureSupported;
     }
 
     static string[] SupportedImageTypes { get; } = new[] { "png", "jpeg", "jpg" };
@@ -21,13 +41,19 @@ public class OcrListGeneratorViewModel : ObservableObject, IOcrListGeneratorView
         [DevicePlatform.WinUI] = SupportedImageTypes,
     };
 
-
-
     ITesseract Tesseract { get; }
     IMediaPicker MediaPicker { get; }
     IFilePicker FilePicker { get; }
     ILogger<IOcrListGeneratorViewModel> Logger { get; }
+    ISettings Settings { get; }
 
+    [ObservableProperty]
+    bool _isImageCaptureSupported;
+
+    [ObservableProperty]
+    object _selectedParser;
+    
+    public ObservableCollection<ParserInfo> Parsers { get; private set; }
     public IAsyncRelayCommand CaptureAndRecognizeCommand => new AsyncRelayCommand(async () =>
     {
         FileResult fileResult = await MediaPicker.CapturePhotoAsync();

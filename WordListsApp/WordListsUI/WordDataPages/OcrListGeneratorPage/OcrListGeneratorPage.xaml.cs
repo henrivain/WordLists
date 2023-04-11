@@ -9,8 +9,6 @@ public partial class OcrListGeneratorPage : ContentPage
 		InitializeComponent();
         ViewModelFactory = vmFactory;
         BindingContext = vmFactory.Create();
-
-        
     }
 
     IOcrListGeneratorViewModel ViewModel => (IOcrListGeneratorViewModel)BindingContext;
