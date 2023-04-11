@@ -17,7 +17,8 @@ public partial class JsonExportViewModel :  ObservableObject, IJsonExportViewMod
         IWordCollectionInfoService collectionInfoService,
         IFilePickerService filePickerService,
         ILogger logger,
-        ISettings settings
+        ISettings settings,
+        IClipboard clipboard
         )
     {
         string folder = PathHelper.GetDownloadsFolderPath();
@@ -32,6 +33,7 @@ public partial class JsonExportViewModel :  ObservableObject, IJsonExportViewMod
         FilePickerService = filePickerService;
         Logger = logger;
         Settings = settings;
+        Clipboard = clipboard;
         PropertyChanged += UpdateSettingValue;
         _ = ResetCollections();
     }
@@ -42,13 +44,13 @@ public partial class JsonExportViewModel :  ObservableObject, IJsonExportViewMod
     IFilePickerService FilePickerService { get; }
     ILogger Logger { get; }
     ISettings Settings { get; }
+    IClipboard Clipboard { get; }
     List<WordCollectionInfo> AvailableCollections { get; set; } = new();
 
     [ObservableProperty]
     ObservableCollection<WordCollectionInfo> _visibleCollections = new();
 
     [ObservableProperty]
-    //[AlsoNotifyChangeFor(nameof(CanExportSelected))]
     [NotifyPropertyChangedFor(nameof(CanExportSelected))]
     List<object> _selectedCollections = new();
 
@@ -112,9 +114,9 @@ public partial class JsonExportViewModel :  ObservableObject, IJsonExportViewMod
         Logger.LogInformation("User changed export folder to be '{path}'.", exportFolder);
         ExportFolderPath = exportFolder;
     });
-    public IAsyncRelayCommand CopyPathToClipBoardCommand => new AsyncRelayCommand(async () =>
+    public IAsyncRelayCommand CopyPathToClipBoardCommand => new AsyncRelayCommand(() =>
     {
-        await ClipboardAccess.SetStringAsync(ExportPath);
+        return Clipboard.SetTextAsync(ExportPath);
     });
     public IRelayCommand SelectionChangedCommand => new RelayCommand(() =>
     {

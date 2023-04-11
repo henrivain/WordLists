@@ -16,11 +16,14 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
         IWordCollectionService collectionService,
         ILogger<IListGeneratorViewModel> logger,
         IEnumerable<IWordPairParser> parsers, 
-        ISettings settings)
+        ISettings settings,
+        IClipboard clipboard
+        )
     {
         CollectionService = collectionService;
         Logger = logger;
         Settings = settings;
+        Clipboard = clipboard;
         Parsers = parsers.Select(x => new ParserInfo { Name = GetParserName(x), Parser = x }).ToList();
         if (Parsers.Count < 1)
         {
@@ -35,6 +38,7 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
     IWordCollectionService CollectionService { get; }
     ILogger<IListGeneratorViewModel> Logger { get; }
     ISettings Settings { get; }
+    IClipboard Clipboard { get; }
     public List<ParserInfo> Parsers { get; }
 
     [ObservableProperty]
@@ -279,7 +283,7 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
     {
         try
         {
-            string text = await ClipboardAccess.GetStringAsync();
+            string text = await Clipboard.GetTextAsync() ?? string.Empty;
             return await Task.Run(parser.ToStringList(text).ToArray);
         }
         catch (Exception ex)
