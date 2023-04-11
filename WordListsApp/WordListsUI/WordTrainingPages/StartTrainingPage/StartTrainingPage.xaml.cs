@@ -8,11 +8,12 @@ namespace WordListsUI.WordTrainingPages.StartTrainingPage;
 
 public partial class StartTrainingPage : ContentPage
 {
-    public StartTrainingPage(IStartTrainingViewModel model, IWordCollectionService collectionService)
+    public StartTrainingPage(IStartTrainingViewModel model, IWordCollectionService collectionService, ILogger<ContentPage> logger)
     {
         BindingContext = model;
         InitializeComponent();
         CollectionService = collectionService;
+        Logger = logger;
         Model.WriteTrainingRequestedEvent += Model_WriteTrainingRequestedEvent;
         Model.CardsTrainingRequestedEvent += Model_CardsTrainingRequestedEvent;
         Model.CollectionDoesNotExistEvent += Model_CollectionDoesNotExistEvent;
@@ -22,7 +23,8 @@ public partial class StartTrainingPage : ContentPage
     {
         await DisplayAlert("Sanastoa ei löydy :(", 
             """
-            Valitsemaasi sanastoa ei enää löydy, joten se on todennäköisesti ehditty poistaa.
+            Valitsemaasi sanastoa ei enää löydy. 
+            Se on todennäköisesti ehditty poistaa.
             Näkymä on nyt päivitetty, joten kannattaa yrittää uudelleen.
             """, 
             "OK");
@@ -32,21 +34,38 @@ public partial class StartTrainingPage : ContentPage
     {
         if (e.WordCollection is null)
         {
-            Debug.WriteLine($"{nameof(StartTrainingPage)} Cannot navigate to training page, because given parameter {nameof(e.WordCollection)} is null");
+            Logger.LogError("{cls} Cannot navigate to training page, because event argument '{arg}' is null",
+                nameof(StartTrainingPage), nameof(e.WordCollection));
+            string msg = """
+                Valitulla sanastolla ei ole arvoa, joten sitä ei voi harjoitella.
+                Sanasto on ehkä ehditty poistaa. 
+                Päivitä näkymä ja kokeile uudelleen.
+                Jos ongelma toistuu, ota yhteyttä kehittäjään.
+                """;
+            await DisplayAlert("Tapahtui virhe", msg, "OK");
+            return;
         }
 
         await Shell.Current.GoToAsync($"{PageRoutes.Get(Route.Training)}/{nameof(FlipCardTrainingPage.FlipCardTrainingPage)}", new Dictionary<string, object>()
         {
-            ["StartCollection"] = e.WordCollection
+            ["StartCollection"] = e.WordCollection!
         });
 
     }
-
     private async void Model_WriteTrainingRequestedEvent(object sender, WordListsViewModels.Events.StartTrainingEventArgs e)
     {
         if (e.WordCollection is null)
         {
-            Debug.WriteLine($"{nameof(StartTrainingPage)} Cannot navigate to training page, because given parameter {nameof(e.WordCollection)} is null");
+            Logger.LogError("{cls} Cannot navigate to training page, because event argument '{arg}' is null",
+                nameof(StartTrainingPage), nameof(e.WordCollection));
+            string msg = """
+                Valitulla sanastolla ei ole arvoa, joten sitä ei voi harjoitella.
+                Sanasto on ehkä ehditty poistaa. 
+                Päivitä näkymä ja kokeile uudelleen.
+                Jos ongelma toistuu, ota yhteyttä kehittäjään.
+                """;
+            await DisplayAlert("Tapahtui virhe", msg, "OK");
+            return;
         }
 
         await Shell.Current.GoToAsync($"{PageRoutes.Get(Route.Training)}/{nameof(WritingTestConfigurationPage)}", new Dictionary<string, object>()
@@ -55,9 +74,9 @@ public partial class StartTrainingPage : ContentPage
         });
     }
 
-    public IStartTrainingViewModel Model => (IStartTrainingViewModel)BindingContext;
-
-    public IWordCollectionService CollectionService { get; }
+    IStartTrainingViewModel Model => (IStartTrainingViewModel)BindingContext;
+    IWordCollectionService CollectionService { get; }
+    ILogger<ContentPage> Logger { get; }
 
     private async void ContentPage_Loaded(object sender, EventArgs e)
     {

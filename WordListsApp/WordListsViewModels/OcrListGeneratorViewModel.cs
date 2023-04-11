@@ -26,10 +26,12 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
         Parsers = new(parsers.Where(x => x is IOcrWordPairParser).ToParserInfos());
         if (Parsers.Count < 1)
         {
-            throw new ArgumentException("At least one ocr parser must be defined.", nameof(parsers));
+            throw new ArgumentException("At least one ocr parser must be defined.", 
+                nameof(parsers));
         }
 
-        _selectedParser = Parsers.FirstOrGivenDefault(x => x.Name == (Settings.DefaultOcrParserName ?? string.Empty), Parsers[0]);
+        _selectedParser = Parsers.FirstOrGivenDefault(
+            x => x.Name == (Settings.DefaultOcrParserName ?? string.Empty), Parsers[0]);
         _isImageCaptureSupported = MediaPicker.IsCaptureSupported;
     }
 
@@ -109,4 +111,7 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
         RecognizedText = textResult.RecognisedText ?? string.Empty;
         RecogizionConfidence = textResult.Confidence > 0 ? (int)Math.Ceiling(textResult.Confidence) : 0;
     }
+
+
+    
 }

@@ -1,7 +1,8 @@
-﻿// using ImageRecognisionLibrary;
-using Serilog;
+﻿using Serilog;
 using TesseractOcrMaui;
 using WordListsMauiHelpers.Logging;
+
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 
 namespace WordLists;
 

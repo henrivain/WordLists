@@ -6,7 +6,7 @@ using WordListsViewModels.Events;
 
 namespace WordListsUI.WordDataPages.ListGeneratorPage;
 
-[XamlCompilation(XamlCompilationOptions.Compile)]
+[QueryProperty(nameof(PageModeParameter),  nameof(PageModeParameter))]
 [QueryProperty(nameof(EditParameter), nameof(EditParameter))]
 public partial class ListGeneratorPage : ContentPage
 {
@@ -24,6 +24,30 @@ public partial class ListGeneratorPage : ContentPage
             "Onnistuneesti poistettiin vanha sanasto ja lis‰ttiin sen uusi muokattu versio. " +
             "Huomaa, ett‰ n‰kym‰ pit‰‰ ehk‰ p‰ivitt‰‰, jotta muutettu sanasto n‰kyy oikein.", "OK");
         await Shell.Current.Navigation.PopAsync();
+    }
+
+    public PageModeParameter<ListGeneratorMode> PageModeParameter { set => UseMode(value); }
+
+    private void UseMode(PageModeParameter<ListGeneratorMode> value)
+    {
+        switch (value.Mode)
+        {
+            case ListGeneratorMode.Edit:
+                if (value.Data is WordCollection collection)
+                {
+                    Model.StartEditProcess(collection);
+                    return;
+                }
+                break;
+            case ListGeneratorMode.FromString:
+                
+                return;
+            case ListGeneratorMode.Default:
+                // Same as PageModeParameter not provided.
+                return;
+        }
+        throw new NotImplementedException(nameof(ListGeneratorMode));
+
     }
 
     public WordCollection EditParameter
@@ -75,7 +99,6 @@ public partial class ListGeneratorPage : ContentPage
             Jos vika toistuu, ota yhteytt‰ kehitt‰j‰‰n.
             """, "OK");
     }
-
     private async void Model_FailedToSaveEvent(object sender, DataBaseActionArgs e)
     {
         await DisplayAlert("Tallentaminen ep‰onnistui!", $"Sanaston tallentaminen ep‰onnistui. \n\nSyy: \n'{e.Text}'", "OK");
@@ -106,6 +129,4 @@ public partial class ListGeneratorPage : ContentPage
     {
         await Shell.Current.Navigation.PopAsync();
     }
-
-  
 }

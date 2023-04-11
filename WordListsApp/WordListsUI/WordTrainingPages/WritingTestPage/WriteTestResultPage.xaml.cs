@@ -8,7 +8,7 @@ namespace WordListsUI.WordTrainingPages.WritingTestPage;
 [QueryProperty(nameof(SessionId), nameof(SessionId))]
 public partial class WriteTestResultPage : ContentPage
 {
-    readonly WriteTestResultGridHelper _gridHelper;
+    readonly WriteTestResultGridHelper? _gridHelper;
     public WriteTestResultPage(ITestResultViewModel model)
 	{
 		BindingContext = model;

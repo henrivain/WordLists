@@ -1,7 +1,3 @@
-#if WINDOWS
-using WordListsUI.Platforms.Windows;
-#endif
-
 namespace WordListsUI.WordDataPages.ImageRecognisionPage;
 
 public partial class ImageRecognisionPage : ContentPage
@@ -17,13 +13,9 @@ public partial class ImageRecognisionPage : ContentPage
 
 	private async void Button_Clicked(object sender, EventArgs e)
 	{
-		string filePath = null;
+		string? filePath = null;
 
-#if WINDOWS
-        var picker = new WordListsUI.Platforms.Windows.WindowsMediaPicker(Application.Current.Windows[0]);
-        var file = await picker.CaptureFileAsync();
-		filePath = file.Path;
-#else
+
         if (MediaPicker.Default.IsCaptureSupported)
 		{
 			FileResult photo = await MediaPicker.Default.CapturePhotoAsync();
@@ -35,7 +27,6 @@ public partial class ImageRecognisionPage : ContentPage
 				await sourceStream.CopyToAsync(localFileStream);
 			}
 		}
-#endif
 		if (string.IsNullOrEmpty(filePath))
 		{
 

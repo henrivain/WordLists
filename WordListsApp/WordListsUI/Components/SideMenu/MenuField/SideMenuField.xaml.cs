@@ -41,7 +41,7 @@ public partial class SideMenuField : Grid
         set => SetValue(BackgroundColorProperty, value);
     }
 
-    public string TargetUIRoute { get; set; } = null;
+    public string? TargetUIRoute { get; set; } = null;
 
 
     private async void Field_Tapped(object sender, EventArgs e)

@@ -7,33 +7,45 @@ namespace WordListsUI.WordDataPages.WordCollectionEditPage;
 
 public partial class WordCollectionEditPage : ContentPage
 {
-	public WordCollectionEditPage(IWordCollectionHandlingViewModel model)
+	public WordCollectionEditPage(IWordCollectionHandlingViewModel model, ILogger<ContentPage> logger)
 	{
 		BindingContext = model;
 		InitializeComponent();
         Model.CollectionsDeleted += Model_CollectionDeleted;
 		Model.DeleteRequested += Model_DeleteRequested;
         Model.EditRequested += Model_EditRequested;
+        Logger = logger;
     }
 
     private async void Model_DeleteRequested(object sender, DeleteWantedEventArgs e)
 	{
+		if (e.ItemsToDelete is null)
+		{
+			Logger.LogWarning("{cls}: Cannot delete wordcollections, none where provided.", 
+				nameof(WordCollectionEditPage));
+			return;
+		}
 		bool proceed;
 		if (e.DeletesAll)
 		{
 			proceed = await DisplayAlert("Poista kaikki sanastot?", 
-				$"Haluatko varmasti poistaa kaikki {e.ItemsToDelete.Length} sanastoa lopullisesti.", "Jatka", "Peruuta");
+				$"Haluatko varmasti poistaa kaikki '{e.ItemsToDelete.Length}' sanastoa lopullisesti.", "Jatka", "Peruuta");
 		}
 		else
 		{
-			string message = $"Haluatko varmasti poistaa {e.ItemsToDelete.Length} sanastoa lopullisesti? " +
-				$"Painamalla 'Jatka', sanastot '{string.Join(", ", e.ItemsToDelete.Select(x => x.Name))}' poistetaan.";
+
+		
+            string message = $"""
+				Haluatko varmasti poistaa {e.ItemsToDelete.Length} sanastoa lopullisesti?
+				Painamalla 'Jatka', seuraavat sanastot poistetaan: 
+				{string.Join("\n", e.ItemsToDelete.Select(x => x.Name))}
+				""";
 
 			proceed = await DisplayAlert("Poista sanastoja", message, "Jatka", "Peruuta");
 		}
 		if (proceed)
 		{
-            await Model.DeleteCollections(e.ItemsToDelete);
+            await Model.DeleteCollections(e!.ItemsToDelete!);
         }
     }
 
@@ -56,7 +68,9 @@ public partial class WordCollectionEditPage : ContentPage
 
     public IWordCollectionHandlingViewModel Model => (IWordCollectionHandlingViewModel)BindingContext;
 
-	private async void ContentPage_Loaded(object sender, EventArgs e)
+    public ILogger<ContentPage> Logger { get; }
+
+    private async void ContentPage_Loaded(object sender, EventArgs e)
 	{
 		await Model.ResetCollections();
 	}
