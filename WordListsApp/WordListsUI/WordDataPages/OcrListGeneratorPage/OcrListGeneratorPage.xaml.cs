@@ -25,13 +25,14 @@ public partial class OcrListGeneratorPage : ContentPage
     {
         ViewModel.ParseFailed += ViewModel_ParseFailed;
         ViewModel.RecognizionFailed += ViewModel_RecognizionFailed;
-        ViewModel.ParseSucceeded += ViewModel_ParseSucceeded;
+        ViewModel.NoTextWasRecognized += ViewModel_NoTextWasRecognized;
     }
 
-    private void ViewModel_ParseSucceeded(object sender, List<WordPair> e)
+    private void ViewModel_NoTextWasRecognized(object sender, TesseractFailedEventArgs e)
     {
         throw new NotImplementedException();
     }
+
 
     private void ViewModel_RecognizionFailed(object sender, TesseractFailedEventArgs e)
     {
@@ -43,10 +44,8 @@ public partial class OcrListGeneratorPage : ContentPage
         throw new NotImplementedException();
     }
 
+    private void ProceedToEdit_Clicked(object sender, EventArgs e)
+    {
 
-
-
-
-
-
+    }
 }

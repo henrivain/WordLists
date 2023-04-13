@@ -8,17 +8,18 @@ public interface IOcrListGeneratorViewModel
     object SelectedParser { get; set; }
     bool IsImageCaptureSupported { get; }
     bool IsBusy { get; }
-    bool CanParse { get; }
-    string RecognizedText { get; }
+    bool HasValidPairs { get; } 
     int RecogizionConfidence { get; }
 
     ObservableCollection<ParserInfo> Parsers { get; }
+    ObservableCollection<WordPair> Pairs { get; }
 
-    IAsyncRelayCommand CaptureAndRecognizeCommand { get; }
-    IAsyncRelayCommand SelectAndRecognizeCommand { get; }
-    IAsyncRelayCommand ParseAndShowCommand { get; }
+    IAsyncRelayCommand NewListFromCamera { get; }
+    IAsyncRelayCommand NewListFromFile { get; }
+    IAsyncRelayCommand AddListSpanFromCamera { get; }
+    IAsyncRelayCommand AddListSpanFromFile { get; }
     
-    public event ParserErrorEventHandler ParseFailed;
-    public event TesseractFailedEventHandler RecognizionFailed;
-    public event WordPairGenSuccessEventHandler ParseSucceeded;
+    event ParserErrorEventHandler ParseFailed;
+    event TesseractFailedEventHandler RecognizionFailed;
+    event TesseractFailedEventHandler NoTextWasRecognized;
 }

@@ -59,90 +59,67 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
     [ObservableProperty]
     bool _isBusy = false;
 
-    public bool CanParse => string.IsNullOrWhiteSpace(RecognizedText) is false;
-
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanParse))]
-    string _recognizedText = string.Empty;
+    bool _hasValidPairs = false;
 
     [ObservableProperty]
     int _recogizionConfidence = 0;
+    
+    // Uses Clear() and Add() methods instead of setters
+    public ObservableCollection<WordPair> Pairs { get; } = new();
+    public ObservableCollection<ParserInfo> Parsers { get; }
 
 
-    public ObservableCollection<ParserInfo> Parsers { get; private set; }
-    public IAsyncRelayCommand CaptureAndRecognizeCommand => new AsyncRelayCommand(async () =>
+    public IAsyncRelayCommand NewListFromCamera => new AsyncRelayCommand(async () =>
     {
-
-        FileResult fileResult = await MediaPicker.CapturePhotoAsync();
-        if (fileResult is null)
+        OcrResult? result = await CaptureImageAndRecognize();
+        if (result.HasValue)
         {
-            Logger.LogInformation("User did not take photo.");
-            return;
+            RecogizionConfidence = result.Value.Confidence;
+            await ParseAndAdd(result.Value.Text, true);
         }
-        await RecognizeTextAsync(fileResult.FullPath);
     });
-    public IAsyncRelayCommand SelectAndRecognizeCommand => new AsyncRelayCommand(async () =>
+    public IAsyncRelayCommand NewListFromFile => new AsyncRelayCommand(async () =>
     {
-        PickOptions options = new()
+        OcrResult? result = await PickImageAndRecognize();
+        if (result.HasValue)
         {
-            PickerTitle = "Valitse kuva.",
-            FileTypes = new(ImageFilePickerFileTypes)
-        };
-
-        FileResult? fileResult = await FilePicker.PickAsync(options);
-        if (fileResult is null)
-        {
-            Logger.LogInformation("User did not choose file.");
-            return;
+            RecogizionConfidence = result.Value.Confidence;
+            await ParseAndAdd(result.Value.Text, true);
         }
-        await RecognizeTextAsync(fileResult.FullPath);
     });
-    public IAsyncRelayCommand ParseAndShowCommand => new AsyncRelayCommand(async () =>
+    public IAsyncRelayCommand AddListSpanFromCamera => new AsyncRelayCommand(async () =>
     {
-        Logger.LogInformation("Parse ocr string to word pairs.");
-        if (string.IsNullOrWhiteSpace(RecognizedText))
+        OcrResult? result = await CaptureImageAndRecognize();
+        if (result.HasValue)
         {
-            Logger.LogWarning("{cls} No text to parse.", nameof(OcrListGeneratorViewModel));
-            ParseFailed?.Invoke(this, "No text to parse.");
-            return;
+            RecogizionConfidence = result.Value.Confidence;
+            await ParseAndAdd(result.Value.Text);
         }
-        IWordPairParser? parser = null;
-        if (SelectedParser is ParserInfo parserInfo)
+    });
+    public IAsyncRelayCommand AddListSpanFromFile => new AsyncRelayCommand(async () =>
+    {
+        OcrResult? result = await PickImageAndRecognize();
+        if (result.HasValue)
         {
-            parser = parserInfo.Parser;
+            RecogizionConfidence = result.Value.Confidence;
+            await ParseAndAdd(result.Value.Text);
         }
-        parser ??= Parsers[0].Parser;
-
-        List<WordPair>? pairs = await Task.Run(() =>
-        {
-            try
-            {
-                return parser.GetList(RecognizedText);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError("Failed to parse ocr text, because of '{ex}': '{msg}'",
-                    ex.GetType().Name, ex.Message);
-                return null;
-            }
-        });
-
-        if (pairs is null)
-        {
-            ParseFailed?.Invoke(this, "Parser failed, see logs.");
-            return;
-        }
-        Logger.LogInformation("Parsed '{count}' ocr word pairs.", pairs.Count);
-        ParseSucceeded?.Invoke(this, pairs);
     });
 
 
     public event ParserErrorEventHandler? ParseFailed;
     public event TesseractFailedEventHandler? RecognizionFailed;
-    public event WordPairGenSuccessEventHandler? ParseSucceeded;
+    public event TesseractFailedEventHandler? NoTextWasRecognized;
 
-    
-    private async Task RecognizeTextAsync(string? filePath)
+    private record struct OcrResult(string Text, int Confidence);
+
+    /// <summary>
+    /// Recognizes ocrText from image file. 
+    /// </summary>
+    /// <param name="filePath"></param>
+    /// <returns>OcrResult if successful, otherwise rises RecognizionFailed event and returns null.</returns>
+    private async Task<OcrResult?> RecognizeTextAsync(string? filePath)
     {
         Logger.LogInformation("Recongize text from image '{path}'", filePath);
         if (File.Exists(filePath) is false)
@@ -153,9 +130,9 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
                 ImagePath = filePath,
                 Message = "File does not exist."
             });
-            return;
+            return null;
         }
-        
+
         string extension = Path.GetExtension(filePath);
         if (SupportedFileExtensions.Contains(extension) is false)
         {
@@ -168,7 +145,7 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
                 ImagePath = filePath,
                 Message = $"Invalid file format. Extension must be one of '{supported}', was given '{extension}'."
             });
-            return;
+            return null;
         }
 
         IsBusy = true;
@@ -178,23 +155,129 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
         if (result.NotSuccess())
         {
             Logger.LogWarning("Failed to recognize text in image: '{msg}'.", result.Message);
-            RecognizedText = string.Empty;
-            RecogizionConfidence = 0;
-
             RecognizionFailed?.Invoke(this, new()
             {
                 ImagePath = filePath,
                 Message = "Ocr failed.",
                 Output = result
             });
-            return;
+            return null;
         }
         string text = result.RecognisedText ?? string.Empty;
-
         Logger.LogInformation("Ocr found '{count}' characters with confidence '{conf}'.",
             text.Length, result.Confidence);
 
-        RecognizedText = text;
-        RecogizionConfidence = result.Confidence > 0 ? (int)Math.Ceiling(result.Confidence) : 0;
+        if (result.RecognisedText?.Length <= 0)
+        {
+            Logger.LogInformation("No text recognized in given image.");
+            NoTextWasRecognized?.Invoke(this, new TesseractFailedEventArgs
+            {
+                ImagePath = filePath,
+                Message = "No text recognized, image might not have any text.",
+                Output = result
+            });
+            return null;
+        }
+
+        return new OcrResult
+        {
+            Text = text,
+            Confidence = result.Confidence > 0 ? (int)Math.Ceiling(result.Confidence * 100) : 0
+        };
+
+    }
+
+    /// <summary>
+    /// Let user pick file and recognize it. Handles errors.
+    /// </summary>
+    /// <returns>OcrResult if success, otherwise null.</returns>
+    private async Task<OcrResult?> PickImageAndRecognize()
+    {
+        PickOptions options = new()
+        {
+            PickerTitle = "Valitse kuva...",
+            FileTypes = new(ImageFilePickerFileTypes)
+        };
+
+        FileResult? fileResult = await FilePicker.PickAsync(options);
+        if (fileResult is null)
+        {
+            Logger.LogInformation("User did not choose file.");
+            return null;
+        }
+        return await RecognizeTextAsync(fileResult.FullPath);
+    }
+
+    /// <summary>
+    /// Let user capture image and recognize it. Handles errors.
+    /// </summary>
+    /// <returns>OcrResult if success, otherwise null.</returns>
+    private async Task<OcrResult?> CaptureImageAndRecognize()
+    {
+        FileResult fileResult = await MediaPicker.CapturePhotoAsync();
+        if (fileResult is null)
+        {
+            Logger.LogInformation("User did not take photo.");
+            return null;
+        }
+        return await RecognizeTextAsync(fileResult.FullPath);
+    }
+
+    /// <summary>
+    /// Parse string to word pairs and add them to RightWords and LeftWords.
+    /// <para/>Clears output properties before adding new values if clearsOutput is true.
+    /// </summary>
+    /// <param name="ocrText"></param>
+    /// <param name="clearsOutput"></param>
+    /// <returns>awaitable Task</returns>
+    private async Task ParseAndAdd(string ocrText, bool clearsOutput = false)
+    {
+        Logger.LogInformation("Parse ocr string to word pairs.");
+        if (string.IsNullOrWhiteSpace(ocrText))
+        {
+            Logger.LogWarning("{cls} Parser was given empty string.", nameof(OcrListGeneratorViewModel));
+            ParseFailed?.Invoke(this, "No text to parse.");
+            return;
+        }
+        
+        // Select parser
+        IWordPairParser? parser = null;
+        if (SelectedParser is ParserInfo parserInfo)
+        {
+            parser = parserInfo.Parser;
+        }
+        parser ??= Parsers[0].Parser;
+
+        // Parse
+        var pairs = await Task.Run(() =>
+        {
+            try
+            {
+                return parser.GetList(ocrText);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("Failed to parse ocr text, because of '{ex}': '{msg}'",
+                    ex.GetType().Name, ex.Message);
+                return null;
+            }
+        });
+        if (pairs is null)
+        {
+            ParseFailed?.Invoke(this, "Parser failed, see logs.");
+            return;
+        }
+        if (clearsOutput)
+        {
+            Pairs.Clear();
+            HasValidPairs = pairs.Count > 0;
+        }
+        Logger.LogInformation("Parsed ocr text to '{count}' word pairs.", pairs.Count);
+        
+        foreach (var pair in pairs)
+        {
+            Pairs.Add(pair);
+        }
+        HasValidPairs = true;
     }
 }

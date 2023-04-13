@@ -12,61 +12,70 @@
                    Margin="30,20"
                    FontSize="Large"
                    FontAttributes="Bold" />
-            <Grid ColumnDefinitions="*, auto, *"
-                  >
-                <Button Text="Ota kuva"
+            <Label Text="Uusi lista"
+                   HorizontalTextAlignment="Center" 
+                   Margin="0,20"
+                   />
+            <Grid ColumnDefinitions="*, auto, *">
+                <Button Text="kamerasta"
                         IsEnabled="{Binding IsImageCaptureSupported}"
-                        Command="{Binding CaptureAndRecognizeCommand}"
-                        HorizontalOptions="End"
-                        />
+                        Command="{Binding NewListFromCamera}"
+                        HorizontalOptions="End" />
                 <Label Text="tai"
-                       Margin="10,0"
+                       Margin="20,0"
                        VerticalTextAlignment="Center"
                        Grid.Column="1" />
-                <Button Text="Valitse kuva"
+                <Button Text="kuvasta"
                         HorizontalOptions="Start"
                         Grid.Column="2"
-                        Command="{Binding SelectAndRecognizeCommand}" />
+                        Command="{Binding NewListFromFile}" />
+
+            </Grid>
+            <Label Text="Lisää listaan lisää sanoja"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,20" />
+            <Grid ColumnDefinitions="*, auto, *">
+                <Button Text="kamerasta"
+                        IsEnabled="{Binding IsImageCaptureSupported}"
+                        Command="{Binding AddListSpanFromCamera}"
+                        HorizontalOptions="End" />
+                <Label Text="tai"
+                       Margin="20,0"
+                       VerticalTextAlignment="Center"
+                       Grid.Column="1" />
+                <Button Text="kuvasta"
+                        HorizontalOptions="Start"
+                        Grid.Column="2"
+                        Command="{Binding AddListSpanFromFile}" />
             </Grid>
 
-            <Button Text="Parsi"
-                    IsEnabled="{Binding CanParse}"
-                    Command="{Binding ParseAndShowCommand}"
-                    HorizontalOptions="Center"/>
+            <Button Text="Jatka listan muokkaukseen"
+                    IsEnabled="{Binding HasValidPairs}"
+                    Clicked="ProceedToEdit_Clicked"
+                    HorizontalOptions="Center" 
+                    Margin="0,20"
+                    />
 
-            <Border BackgroundColor="DarkCyan"
-                    Margin="30"
-                    Stroke="Transparent"
-                    StrokeThickness="0"
-                    >
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="12" />
-                </Border.StrokeShape>
-                <VerticalStackLayout>
-                    <VerticalStackLayout.Resources>
-                        <Style TargetType="{x:Type Label}">
-                            <Setter Property="HorizontalTextAlignment"
-                                    Value="Center" />
-                        </Style>
-                    </VerticalStackLayout.Resources>
-                    <Grid ColumnDefinitions="*,*" >
-                        <Label Text="Kuvan teksti" Grid.RowSpan="2"/>
-                        <Label Grid.Column="1">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="Varmuus: " />
-                                    <Span Text="{Binding RecogizionConfidence}" />
-                                    <Span Text="%" />
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                    </Grid>
-                    <Label Text="{Binding RecognizedText}"
-                           Padding="20"
-                           HorizontalTextAlignment="Start" />
-                    
-                </VerticalStackLayout>
-            </Border>
+            <Label Grid.Column="1"
+                   HorizontalTextAlignment="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Varmuus: " />
+                        <Span Text="{Binding RecogizionConfidence}" />
+                        <Span Text="%" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <Grid ColumnDefinitions="*,*"
+                  Margin="30">
+                <CollectionView ItemsSource="{Binding LeftWords}">
+
+                </CollectionView>
+                <CollectionView ItemsSource="{Binding RightWords}">
+
+                </CollectionView>
+            </Grid>
 
         </VerticalStackLayout>
     </ScrollView>
