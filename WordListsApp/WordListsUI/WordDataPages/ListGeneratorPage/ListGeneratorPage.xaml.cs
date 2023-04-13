@@ -37,11 +37,8 @@ public partial class ListGeneratorPage : ContentPage
                 Model.OpenInEditMode(collection);
                 return;
             
-            case { Mode: ListGeneratorMode.EditNew, Data: string[] words }:
-                foreach (var word in words)
-                {
-                    Model.AddWord(word);
-                }
+            case { Mode: ListGeneratorMode.EditNew, Data: IEnumerable<string> words }:
+                Model.ResetWordPairs(words.ToArray());
                 return;
             
             default:

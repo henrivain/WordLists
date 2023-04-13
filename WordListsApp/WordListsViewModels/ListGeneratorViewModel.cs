@@ -125,7 +125,7 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
         }
 
         Words.Remove(value);
-        OnPropertyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
+        NotifyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
     });
     public IRelayCommand<string> Edit => new RelayCommand<string>(value =>
     {
@@ -172,7 +172,7 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
         }
 
         Words.Add(word);
-        OnPropertyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
+        NotifyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
     }
     public void ResetWordPairs(string[] words)
     {
@@ -181,7 +181,7 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
         {
             Words.Add(word);
         }
-        OnPropertyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
+        NotifyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
     }
     public void OpenInEditMode(WordCollection collection)
     {
@@ -206,7 +206,7 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
             Words.Add(wordPair.NativeLanguageWord);
             Words.Add(wordPair.ForeignLanguageWord);
         }
-        OnPropertyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
+        NotifyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
     }
     public WordCollection ParseToWordCollection()
     {
@@ -248,7 +248,7 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
             return Array.Empty<string>();
         }
     }
-    private void OnPropertyChanged(params string[] propertyNames)
+    private void NotifyChanged(params string[] propertyNames)
     {
         if (propertyNames is null)
         {

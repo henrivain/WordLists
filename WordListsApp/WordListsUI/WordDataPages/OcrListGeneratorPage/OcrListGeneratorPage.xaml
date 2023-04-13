@@ -3,80 +3,139 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.WordDataPages.OcrListGeneratorPage.OcrListGeneratorPage"
              xmlns:vm="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
+             xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
              Title="Luo kuvasta"
              x:DataType="{x:Type vm:IOcrListGeneratorViewModel}"
              Background="{StaticResource PageBackground}">
-    <ScrollView>
-        <VerticalStackLayout>
-            <Label Text="Luo kuvasta"
-                   Margin="30,20"
-                   FontSize="Large"
-                   FontAttributes="Bold" />
-            <Label Text="Uusi lista"
-                   HorizontalTextAlignment="Center" 
-                   Margin="0,20"
-                   />
-            <Grid ColumnDefinitions="*, auto, *">
-                <Button Text="kamerasta"
-                        IsEnabled="{Binding IsImageCaptureSupported}"
-                        Command="{Binding NewListFromCamera}"
-                        HorizontalOptions="End" />
-                <Label Text="tai"
-                       Margin="20,0"
-                       VerticalTextAlignment="Center"
-                       Grid.Column="1" />
-                <Button Text="kuvasta"
-                        HorizontalOptions="Start"
-                        Grid.Column="2"
-                        Command="{Binding NewListFromFile}" />
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Margin="0,0,0,150">
+                <Label Text="Luo kuvasta"
+                       Margin="30,20"
+                       FontSize="Large"
+                       FontAttributes="Bold" />
 
-            </Grid>
-            <Label Text="Lisää listaan lisää sanoja"
-                   HorizontalTextAlignment="Center"
-                   Margin="0,20" />
-            <Grid ColumnDefinitions="*, auto, *">
-                <Button Text="kamerasta"
-                        IsEnabled="{Binding IsImageCaptureSupported}"
-                        Command="{Binding AddListSpanFromCamera}"
-                        HorizontalOptions="End" />
-                <Label Text="tai"
-                       Margin="20,0"
-                       VerticalTextAlignment="Center"
-                       Grid.Column="1" />
-                <Button Text="kuvasta"
-                        HorizontalOptions="Start"
-                        Grid.Column="2"
-                        Command="{Binding AddListSpanFromFile}" />
-            </Grid>
+                <VerticalStackLayout  WidthRequest="200"
+                                      HorizontalOptions="Center"
+                                      x:Name="parserParent">
+                    <Label Text="Parsin"
+                           FontSize="Small"
+                           Margin="0,0,0,5" />
+                    <Picker ItemsSource="{Binding Parsers}"
+                            WidthRequest="{Binding Source={x:Reference parserParent}, Path=Width, Mode=OneWay}"
+                            TextColor="{OnIdiom Default=White, Phone={StaticResource SecondaryText}}"
+                            Margin="{OnIdiom Phone='7,0', Default=0}"
+                            SelectedItem="{Binding SelectedParser}">
+                        <Picker.ItemDisplayBinding>
+                            <Binding Path="Name" />
+                        </Picker.ItemDisplayBinding>
+                    </Picker>
+                </VerticalStackLayout>
 
-            <Button Text="Jatka listan muokkaukseen"
-                    IsEnabled="{Binding HasValidPairs}"
-                    Clicked="ProceedToEdit_Clicked"
-                    HorizontalOptions="Center" 
-                    Margin="0,20"
-                    />
+                <Label Text="Uusi lista"
+                       HorizontalTextAlignment="Center"
+                       Margin="0,20"
+                       FontSize="Small" />
+                <Grid ColumnDefinitions="*, auto, *">
+                    <Button Text="kamerasta"
+                            IsEnabled="{Binding IsImageCaptureSupported}"
+                            Command="{Binding NewListFromCamera}"
+                            HorizontalOptions="End" />
+                    <Label Text="tai"
+                           Margin="20,0"
+                           VerticalTextAlignment="Center"
+                           Grid.Column="1" />
+                    <Button Text="kuvasta"
+                            HorizontalOptions="Start"
+                            Grid.Column="2"
+                            Command="{Binding NewListFromFile}" />
 
-            <Label Grid.Column="1"
-                   HorizontalTextAlignment="Center">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="Varmuus: " />
-                        <Span Text="{Binding RecogizionConfidence}" />
-                        <Span Text="%" />
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
+                </Grid>
+                <Label Text="Lisää listaan sanoja"
+                       HorizontalTextAlignment="Center"
+                       Margin="0,20"
+                       FontSize="Small" />
+                <Grid ColumnDefinitions="*, auto, *">
+                    <Button Text="kamerasta"
+                            IsEnabled="{Binding IsImageCaptureSupported}"
+                            Command="{Binding AddListSpanFromCamera}"
+                            HorizontalOptions="End" />
+                    <Label Text="tai"
+                           Margin="20,0"
+                           VerticalTextAlignment="Center"
+                           Grid.Column="1" />
+                    <Button Text="kuvasta"
+                            HorizontalOptions="Start"
+                            Grid.Column="2"
+                            Command="{Binding AddListSpanFromFile}" />
+                </Grid>
 
-            <Grid ColumnDefinitions="*,*"
-                  Margin="30">
-                <CollectionView ItemsSource="{Binding LeftWords}">
 
-                </CollectionView>
-                <CollectionView ItemsSource="{Binding RightWords}">
+                <Button ImageSource="continue_icon.png"
+                        BackgroundColor="{StaticResource DarkerThanPage}"
+                        Text="Jatka muokkaamaan sanoja"
+                        HorizontalOptions="Center"
+                        HeightRequest="45"
+                        Margin="0,20"
+                        ContentLayout="Right, 20"
+                        IsEnabled="{Binding HasValidPairs}"
+                        Clicked="ProceedToEdit_Clicked" />
 
-                </CollectionView>
-            </Grid>
 
-        </VerticalStackLayout>
-    </ScrollView>
+                <Label Grid.Column="1"
+                       HorizontalTextAlignment="Center"
+                       FontSize="Small"
+                       IsVisible="{Binding HasValidPairs}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Optisen tunnistuksen varmuus: " />
+                            <Span Text="{Binding RecogizionConfidence}" />
+                            <Span Text="%" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+                <Label Text="Muokkaa sanoja ja niiden järjestystä painamalla 'Jatka muokkaamaan sanoja'."
+                       HorizontalTextAlignment="Center"
+                       LineBreakMode="WordWrap"
+                       TextColor="{StaticResource SecondaryText}"/>
+
+                <Border BackgroundColor="{StaticResource DarkerThanPage}"
+                        Padding="20"
+                        Margin="30"
+                        Stroke="Transparent"
+                        StrokeThickness="0"
+                        MaximumWidthRequest="1000">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <CollectionView ItemsSource="{Binding Pairs}">
+                        <CollectionView.EmptyView>
+                            <Label Text="Et ole vielä lisännyt yhtää sanoja."
+                                   HorizontalTextAlignment="Center" />
+                        </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid x:DataType="{x:Type wordData:WordPair}"
+                                      ColumnDefinitions="*,*">
+                                    <Label Text="{Binding NativeLanguageWord}"
+                                           LineBreakMode="TailTruncation" />
+                                    <Label Text="{Binding ForeignLanguageWord}"
+                                           LineBreakMode="TailTruncation"
+                                           Grid.Column="1" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+        <ActivityIndicator HeightRequest="{OnPlatform WinUI=30, Default=10}"
+                           WidthRequest="{OnPlatform WinUI=30, Default=10}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           Color="Orange"
+                           IsRunning="{Binding IsBusy}" />
+    </Grid>
+
 </ContentPage>

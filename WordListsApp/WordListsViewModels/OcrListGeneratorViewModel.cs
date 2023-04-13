@@ -72,39 +72,47 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
 
     public IAsyncRelayCommand NewListFromCamera => new AsyncRelayCommand(async () =>
     {
+        IsBusy = true;
         OcrResult? result = await CaptureImageAndRecognize();
         if (result.HasValue)
         {
             RecogizionConfidence = result.Value.Confidence;
             await ParseAndAdd(result.Value.Text, true);
         }
+        IsBusy = false;
     });
     public IAsyncRelayCommand NewListFromFile => new AsyncRelayCommand(async () =>
     {
+        IsBusy = true;
         OcrResult? result = await PickImageAndRecognize();
         if (result.HasValue)
         {
             RecogizionConfidence = result.Value.Confidence;
             await ParseAndAdd(result.Value.Text, true);
         }
+        IsBusy = false;
     });
     public IAsyncRelayCommand AddListSpanFromCamera => new AsyncRelayCommand(async () =>
     {
+        IsBusy = true;
         OcrResult? result = await CaptureImageAndRecognize();
         if (result.HasValue)
         {
             RecogizionConfidence = result.Value.Confidence;
             await ParseAndAdd(result.Value.Text);
         }
+        IsBusy = false;
     });
     public IAsyncRelayCommand AddListSpanFromFile => new AsyncRelayCommand(async () =>
     {
+        IsBusy = true;
         OcrResult? result = await PickImageAndRecognize();
         if (result.HasValue)
         {
             RecogizionConfidence = result.Value.Confidence;
             await ParseAndAdd(result.Value.Text);
         }
+        IsBusy = false;
     });
 
 
@@ -148,9 +156,7 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
             return null;
         }
 
-        IsBusy = true;
         RecognizionResult result = await Tesseract.RecognizeTextAsync(filePath);
-        IsBusy = false;
 
         if (result.NotSuccess())
         {
@@ -264,6 +270,7 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
         });
         if (pairs is null)
         {
+            Logger.LogError("Failed to parse ocr text, parser failed.");
             ParseFailed?.Invoke(this, "Parser failed, see logs.");
             return;
         }
