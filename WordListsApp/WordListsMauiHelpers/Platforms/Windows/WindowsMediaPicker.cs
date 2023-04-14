@@ -103,6 +103,7 @@ public class WindowsMediaPicker : IMediaPicker
 #nullable disable
         var uri = new Uri("microsoft.windows.camera.picker:");
         var result = await Launcher.LaunchUriForResultsAsync(uri, LauncherOptions, set);
+        IsNativeCaptureSupported = true;
         if (result.Result is null)
         {
             return null;
