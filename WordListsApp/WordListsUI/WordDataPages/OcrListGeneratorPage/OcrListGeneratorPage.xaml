@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:BaseOcrListGeneratorPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WordListsUI.WordDataPages.OcrListGeneratorPage.OcrListGeneratorPage"
+             xmlns:vm="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
+             xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
+             xmlns:local="clr-namespace:WordListsUI.WordDataPages.OcrListGeneratorPage"
+             x:DataType="{x:Type vm:IOcrListGeneratorViewModel}"
+             Background="{StaticResource PageBackground}">
+    <!-- Title set in base class -->
+    <local:BaseOcrListGeneratorPage.Resources>
+        <Style x:Key="TextImageButton"
+               TargetType="{x:Type Button}">
+            <Setter Property="ContentLayout"
+                    Value="Right, 20" />
+            <Setter Property="BackgroundColor"
+                    Value="{StaticResource DarkerThanPage}" />
+            <Setter Property="HeightRequest"
+                    Value="45" />
+        </Style>
+
+    </local:BaseOcrListGeneratorPage.Resources>
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Margin="0,0,0,150"
+                                 MaximumWidthRequest="{OnIdiom Desktop=1400}"
+                                 >
+                <Grid ColumnDefinitions="*,auto"
+                      Margin="30,20,30,0">
+                    <Label Text="Luo kuvasta"
+                           FontSize="Large"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource SecondaryText}" />
+
+                    <Button ImageSource="again_icon.png"
+                            Grid.Column="1"
+                            Style="{StaticResource TextImageButton}"
+                            Text="Aloita alusta"
+                            Command="{Binding ClearWordsCommand}" />
+                </Grid>
+                <Grid ColumnDefinitions="*,10,210"
+                      Margin="30,20"
+                      VerticalOptions="Center"
+                      RowDefinitions="auto,*">
+                    <VerticalStackLayout  Grid.Column="2"
+                                          x:Name="parserParent"
+                                          VerticalOptions="Start">
+                        <Label Text="Parsin"
+                               FontSize="Small"
+                               Margin="0,0,0,5" />
+                        <Picker ItemsSource="{Binding Parsers}"
+                                WidthRequest="{Binding Source={x:Reference parserParent}, Path=Width, Mode=OneWay}"
+                                TextColor="{OnIdiom Default=White, Phone={StaticResource SecondaryText}}"
+                                Margin="{OnIdiom Phone='7,0', Default=0}"
+                                SelectedItem="{Binding SelectedParser}">
+                            <Picker.ItemDisplayBinding>
+                                <Binding Path="Name" />
+                            </Picker.ItemDisplayBinding>
+                        </Picker>
+                    </VerticalStackLayout>
+
+                    <Button Margin="0,20,0,0"
+                            ImageSource="continue_icon.png"
+                            Style="{StaticResource TextImageButton}"
+                            Text="Jatka muokkaamiseen"
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            IsEnabled="{Binding HasValidPairs}"
+                            Clicked="ProceedToEdit_Clicked" />
+
+                    <Label Grid.RowSpan="2"
+                           HorizontalOptions="Start"
+                           MaximumWidthRequest="600"
+                           MaxLines="10"
+                           TextColor="{StaticResource SecondaryText}"
+                           >
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Täällä voit luoda sanastoja ottamalla kameralla kuvan sanastostasi " />
+                                <Span Text="tai valitsemalla kuvistasi haluamasi sanaston. " />
+                                <Span Text="Sanastojen kirjaimet havaitaan optisella kirjaintunnistuksella, " />
+                                <Span Text="joten pidä huolta siitä, että kuvat ovat selkeitä ja hyvin valaistuja. " />
+                                <Span Text="Havaittu teksti ei ehkä välttämättä parsivoidu oikein, " />
+                                <Span Text="joten tallentaaksesi tai muokataksesi muodostettua listaa, " />
+                                <Span Text="paina 'Jatka muokkaamaan' -painiketta." />
+                                <Span Text="Kuvista kannattaa rajata otsikot ja muut turhat tekstit pois." />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Grid>
+
+                <VerticalStackLayout Margin="0,0,0,20">
+                    <VerticalStackLayout.Resources>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="WidthRequest"
+                                    Value="200" />
+                        </Style>
+                    </VerticalStackLayout.Resources>
+
+                    <Label Text="Lisää listaan sanoja"
+                           HorizontalTextAlignment="Center"
+                           FontSize="Small"
+                           Margin="0,10" />
+                    <Grid ColumnDefinitions="*, auto, *"
+                          VerticalOptions="Start">
+                        <Button Text="kamerasta"
+                                IsEnabled="{Binding IsImageCaptureSupported}"
+                                Command="{Binding AddListSpanFromCameraCommand}"
+                                HorizontalOptions="End" />
+                        <Label Text="tai"
+                               Margin="20,0"
+                               VerticalTextAlignment="Center"
+                               Grid.Column="1" />
+                        <Button Text="kuvasta"
+                                HorizontalOptions="Start"
+                                Grid.Column="2"
+                                Command="{Binding AddListSpanFromFileCommand}" />
+                    </Grid>
+                </VerticalStackLayout>
+
+
+                <Label Grid.Column="1"
+                       HorizontalTextAlignment="Center"
+                       FontSize="Small"
+                       IsVisible="{Binding HasValidPairs}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Optisen tunnistuksen varmuus: " />
+                            <Span Text="{Binding RecogizionConfidence}" />
+                            <Span Text="%" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+                <Label Text="Muokkaa sanoja ja niiden järjestystä painamalla 'Jatka muokkaamaan'."
+                       HorizontalTextAlignment="Center"
+                       LineBreakMode="WordWrap"
+                       TextColor="{StaticResource SecondaryText}" />
+
+                <Border BackgroundColor="{StaticResource DarkerThanPage}"
+                        Padding="20"
+                        Margin="30"
+                        Stroke="Transparent"
+                        StrokeThickness="0"
+                        MaximumWidthRequest="1000">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <CollectionView ItemsSource="{Binding Pairs}">
+                        <CollectionView.EmptyView>
+                            <Label Text="Et ole vielä lisännyt yhtään sanoja."
+                                   HorizontalTextAlignment="Center" />
+                        </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid x:DataType="{x:Type wordData:WordPair}"
+                                      ColumnDefinitions="*,*">
+                                    <Label Text="{Binding NativeLanguageWord}"
+                                           LineBreakMode="TailTruncation" />
+                                    <Label Text="{Binding ForeignLanguageWord}"
+                                           LineBreakMode="TailTruncation"
+                                           Grid.Column="1" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+        <ActivityIndicator HeightRequest="{OnPlatform WinUI=30, Default=10}"
+                           WidthRequest="{OnPlatform WinUI=30, Default=10}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           Color="Orange"
+                           IsRunning="{Binding IsBusy}" />
+    </Grid>
+
+</local:BaseOcrListGeneratorPage>

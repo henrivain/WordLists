@@ -27,38 +27,54 @@ public interface IListGeneratorViewModel
     bool IsBusy { get; }
 
     bool ShowUnEvenWordCountWarning { get; }
+    
 
+    // Database commands
     IAsyncRelayCommand GeneratePairsCommand { get; }
-
     IAsyncRelayCommand Save { get; }
 
+    // Word list commands
     IAsyncRelayCommand FlipSides { get; }
 
+    // Word commands
     IRelayCommand<string> Delete { get; }
-
     IRelayCommand<string> Edit { get; }
-
-    IAsyncRelayCommand FinishEdit { get; }
-
     IRelayCommand New { get; }
 
-    WordCollection ParseData();
+    
+    /// <summary>
+    /// Get all data from this object as wordcollection.
+    /// </summary>
+    /// <returns>Instance's data as wordcollection</returns>
+    WordCollection ParseToWordCollection();
 
     /// <summary>
-    /// Try set string value of specific index in Words ObservableCollection
+    /// Set value of word in given index.
     /// </summary>
     /// <param name="indexInList"></param>
     /// <param name="value"></param>
-    /// <returns>boolean value reprcenting if action was success</returns>
+    /// <returns>True if success, otherwise false.</returns>
     bool SetWordValueWithIndex(int indexInList, string value);
 
     /// <summary>
-    /// Adds new word to Words ObservableCollection
+    /// Add new word to Words -list.
     /// </summary>
-    /// <param name="result"></param>
+    /// <param name="word"></param>
     void AddWord(string result);
-    void StartEditProcess(WordCollection value);
 
+    /// <summary>
+    /// Replace all old words with new ones.
+    /// </summary>
+    /// <param name="words"></param>
+    void ResetWordPairs(string[] words);
+
+    /// <summary>
+    /// Open already existing collection for user to edit.
+    /// </summary>
+    /// <param name="value"></param>
+    void OpenInEditMode(WordCollection value);
+
+    
     event CollectionAddedEventHandler? CollectionAddedEvent;
     event AddWantedEventHandler? AddWantedEvent;
     event CollectionEditEventHandler? EditWantedEvent;

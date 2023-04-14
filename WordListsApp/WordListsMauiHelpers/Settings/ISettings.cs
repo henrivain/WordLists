@@ -2,6 +2,7 @@
 public interface ISettings
 {
     string? DefaultParserName { get; set; }
+    string? DefaultOcrParserName { get; set; }
     bool? ShuffleTrainingWords { get; set; }
     bool? ShowLearnedWords { get; set; }
     bool? ShowWeakWords { get; set; }

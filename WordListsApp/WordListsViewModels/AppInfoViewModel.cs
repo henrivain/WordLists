@@ -8,8 +8,7 @@ using WordListsViewModels.Events;
 
 namespace WordListsViewModels;
 
-[INotifyPropertyChanged]
-public partial class AppInfoViewModel : IAppInfoViewModel
+public partial class AppInfoViewModel : ObservableObject, IAppInfoViewModel
 {
     public AppInfoViewModel(
         ILogger<AppInfoViewModel> logger,
@@ -25,7 +24,7 @@ public partial class AppInfoViewModel : IAppInfoViewModel
     }
 
     [ObservableProperty]
-    string _appVersion = VersionTracking.CurrentVersion ?? "Ei saatavilla"; // AssemblyHelper.EntryAssembly.VersionString ?? "Ei saatavilla";
+    string _appVersion = VersionTracking.CurrentVersion ?? "Ei saatavilla";
 
     [ObservableProperty]
     string _appEnvironment = GetAppEnvironment();

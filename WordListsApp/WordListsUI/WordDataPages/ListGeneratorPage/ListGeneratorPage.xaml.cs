@@ -6,8 +6,7 @@ using WordListsViewModels.Events;
 
 namespace WordListsUI.WordDataPages.ListGeneratorPage;
 
-[XamlCompilation(XamlCompilationOptions.Compile)]
-[QueryProperty(nameof(EditParameter), nameof(EditParameter))]
+[QueryProperty(nameof(PageModeParameter),  nameof(PageModeParameter))]
 public partial class ListGeneratorPage : ContentPage
 {
     public ListGeneratorPage(IAbstractFactory<IListGeneratorViewModel> modelFactory)
@@ -26,10 +25,28 @@ public partial class ListGeneratorPage : ContentPage
         await Shell.Current.Navigation.PopAsync();
     }
 
-    public WordCollection EditParameter
+    public PageModeParameter<ListGeneratorMode> PageModeParameter { set => UseMode(value); }
+    private void UseMode(PageModeParameter<ListGeneratorMode> value)
     {
-        set => Model.StartEditProcess(value);
+        switch (value)
+        {
+            case { Mode: ListGeneratorMode.Default }:
+                return;
+            
+            case { Mode: ListGeneratorMode.Edit, Data: WordCollection collection }:
+                Model.OpenInEditMode(collection);
+                return;
+            
+            case { Mode: ListGeneratorMode.EditNew, Data: IEnumerable<string> words }:
+                Model.ResetWordPairs(words.ToArray());
+                return;
+            
+            default:
+                throw new ArgumentException("Mode and Data combination not supported", nameof(value));
+        }
     }
+
+  
 
     IAbstractFactory<IListGeneratorViewModel> ModelFactory { get; }
 
@@ -75,7 +92,6 @@ public partial class ListGeneratorPage : ContentPage
             Jos vika toistuu, ota yhteytt‰ kehitt‰j‰‰n.
             """, "OK");
     }
-
     private async void Model_FailedToSaveEvent(object sender, DataBaseActionArgs e)
     {
         await DisplayAlert("Tallentaminen ep‰onnistui!", $"Sanaston tallentaminen ep‰onnistui. \n\nSyy: \n'{e.Text}'", "OK");
@@ -106,6 +122,4 @@ public partial class ListGeneratorPage : ContentPage
     {
         await Shell.Current.Navigation.PopAsync();
     }
-
-  
 }

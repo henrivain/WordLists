@@ -1,14 +1,11 @@
-﻿using Serilog.Filters;
-using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.ObjectModel;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsViewModels.Events;
 using WordListsViewModels.Helpers;
 
 namespace WordListsViewModels;
 
-[INotifyPropertyChanged]
-public partial class WordCollectionHandlingViewModel : IWordCollectionHandlingViewModel
+public partial class WordCollectionHandlingViewModel : ObservableObject, IWordCollectionHandlingViewModel
 {
     public WordCollectionHandlingViewModel(IWordCollectionService collectionService, ILogger<IWordCollectionHandlingViewModel> logger)
     {

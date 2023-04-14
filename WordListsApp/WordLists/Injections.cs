@@ -2,19 +2,21 @@
 using WordDataAccessLibrary.CollectionBackupServices.JsonServices;
 using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
-using WordListsMauiHelpers.DeviceAccess;
+using WordDataAccessLibrary.Generators;
 using WordListsMauiHelpers.DependencyInjectionExtensions;
+using WordListsMauiHelpers.DeviceAccess;
 using WordListsMauiHelpers.Logging;
+using WordListsMauiHelpers.Settings;
 using WordListsServices.FileSystemServices;
 using WordListsServices.ProcessServices;
+using WordListsUI.WordDataPages.OcrListGeneratorPage;
 using WordListsViewModels;
 using WordListsViewModels.Helpers;
 using WordListsViewModels.Interfaces;
 using WordValidationLibrary;
-using WordDataAccessLibrary.Generators;
-using WordListsMauiHelpers.Settings;
 
 namespace WordLists;
+
 internal static class Injections
 {
     public static IServiceCollection AddAppServices(this IServiceCollection services)
@@ -33,8 +35,17 @@ internal static class Injections
         services.AddSingleton<IFilePickerService, FilePickerService>();
         services.AddTransient<IWordPairParser, OtavaWordPairParser>();
         services.AddTransient<IWordPairParser, NewOtavaWordPairParser>();
+        services.AddTransient<IWordPairParser, OcrWordPairParser>();
         services.AddSingleton<ISettings, Settings>();
+        services.AddSingleton(Clipboard.Default); 
+        services.AddSingleton(FilePicker.Default);
 
+        // Platform specific implementations
+#if WINDOWS
+        services.AddSingleton<IMediaPicker, WordListsMauiHelpers.Platforms.Windows.WindowsMediaPicker>();
+#else
+        services.AddSingleton<IMediaPicker>(MediaPicker.Default);
+#endif
         return services;
     }
 
@@ -54,6 +65,8 @@ internal static class Injections
         services.AddTransient<JsonImportPage>();
         services.AddTransient<WordListPage>();
         services.AddTransient<TrainingConfigPage>();
+        services.AddSingleton<OcrListGeneratorPage>();
+        services.AddSingleton<PhoneOcrListGeneratorPage>();
 
         return services;
     }
@@ -68,6 +81,7 @@ internal static class Injections
         services.AddTransient<ITestResultViewModel, TestResultViewModel>();
         services.AddTransient<IWordListViewModel, WordListViewModel>();
         services.AddTransient<ITrainingConfigViewModel, TrainingConfigViewModel>();
+        services.AddTransient<IOcrListGeneratorViewModel, OcrListGeneratorViewModel>();
         services.AddAbstractFactory<IListGeneratorViewModel, ListGeneratorViewModel>();
         services.AddAbstractFactory<IJsonExportViewModel, JsonExportViewModel>();
         services.AddAbstractFactory<IJsonImportViewModel, JsonImportViewModel>();
@@ -76,8 +90,4 @@ internal static class Injections
 
         return services;
     }
-
-
-
-
 }

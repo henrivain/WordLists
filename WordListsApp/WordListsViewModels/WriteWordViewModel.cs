@@ -6,10 +6,7 @@ using WordValidationLibrary;
 
 namespace WordListsViewModels;
 
-
-
-[INotifyPropertyChanged]
-public partial class WriteWordViewModel : IWriteWordViewModel
+public partial class WriteWordViewModel : ObservableObject, IWriteWordViewModel
 {
     public WriteWordViewModel(IUserInputWordValidator inputValidator, IWordPairService wordPairService)
     {

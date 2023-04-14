@@ -24,3 +24,7 @@ public delegate void InvalidDataEventHandler<T>(object sender, InvalidDataEventA
 
 public delegate void ParserErrorEventHandler(object sender, string error);
 
+public delegate void TesseractFailedEventHandler(object sender, TesseractFailedEventArgs e);
+
+public delegate void WordPairGenSuccessEventHandler(object sender, List<WordPair> e);
+

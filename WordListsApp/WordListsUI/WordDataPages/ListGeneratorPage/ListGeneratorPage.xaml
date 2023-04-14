@@ -23,9 +23,6 @@
     </ContentPage.Resources>
     <Grid>
         <ScrollView Margin="40,0,0,0">
-            <ScrollView.GestureRecognizers>
-                <TapGestureRecognizer Tapped="HideMenu" />
-            </ScrollView.GestureRecognizers>
             <VerticalStackLayout>
                 <VerticalStackLayout Padding="30,30,30,0"
                                      HorizontalOptions="{OnIdiom Default=Center, Phone=FillAndExpand}">
@@ -99,7 +96,7 @@
                     <Button Text="Päivitä"
                             Grid.Row="1"
                             IsVisible="{Binding IsEditMode}"
-                            Command="{Binding FinishEdit}" />
+                            Command="{Binding Save}" />
 
                     <Button Text="Peruuta"
                             Grid.Row="1"

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using WordDataAccessLibrary.Helpers;
 using WordListsMauiHelpers.PageRouting;
-
+using WordListsUI.WordDataPages.OcrListGeneratorPage;
 
 namespace WordLists;
 
@@ -17,28 +17,97 @@ public partial class AppShell : Shell
         string lifetime = PageRoutes.Get(Route.LifeTime);
         string backup = PageRoutes.Get(Route.Backup);
 
-        Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
-        Routing.RegisterRoute(nameof(AppInfoPage), typeof(AppInfoPage));
+        // main pages
+        Register<HomePage>();
+        Register<AppInfoPage>();
 
-        Routing.RegisterRoute($"{training}/{nameof(StartTrainingPage)}", typeof(StartTrainingPage));
-		Routing.RegisterRoute($"{training}/{nameof(FlipCardTrainingPage)}", typeof(FlipCardTrainingPage));
-		Routing.RegisterRoute($"{training}/{nameof(WritingTestPage)}", typeof(WritingTestPage));
-		Routing.RegisterRoute($"{training}/{nameof(WritingTestConfigurationPage)}", typeof(WritingTestConfigurationPage));
-		Routing.RegisterRoute($"{training}/{nameof(WriteTestResultPage)}", typeof(WriteTestResultPage));
-		Routing.RegisterRoute($"{training}/{nameof(WordListPage)}", typeof(WordListPage));
-		Routing.RegisterRoute($"{training}/{nameof(TrainingConfigPage)}", typeof(TrainingConfigPage));
+        //  training
+        Register<StartTrainingPage>(training);
+        Register<FlipCardTrainingPage>(training);
+        Register<WritingTestPage>(training);
+        Register<WritingTestConfigurationPage>(training);
+        Register<WriteTestResultPage>(training);
+        Register<WordListPage>(training);
+        Register<TrainingConfigPage>(training);
 
-        Routing.RegisterRoute($"{handling}/{nameof(WordDataPage)}", typeof(WordDataPage));
-		Routing.RegisterRoute($"{handling}/{lifetime}/{nameof(ListGeneratorPage)}", typeof(ListGeneratorPage));
-		Routing.RegisterRoute($"{handling}/{lifetime}/{nameof(ImageRecognisionPage)}", typeof(ImageRecognisionPage));
-        Routing.RegisterRoute($"{handling}/{lifetime}/{nameof(WordCollectionEditPage)}", typeof(WordCollectionEditPage));
-        Routing.RegisterRoute($"{handling}/{backup}/{nameof(JsonExportPage)}", typeof(JsonExportPage));
-		Routing.RegisterRoute($"{handling}/{backup}/{nameof(JsonImportPage)}", typeof(JsonImportPage));
+        //  handling
+        Register<WordDataPage>(handling);
+
+        //  handling/backup
+        Register<JsonImportPage>(handling, backup);
+        Register<JsonExportPage>(handling, backup);
+
+        //  handling/lifetime
+        Register<ListGeneratorPage>(handling, lifetime);
+        Register<WordCollectionEditPage>(handling, lifetime);
+
+        // Idiom specific registering
+        if (DeviceInfo.Current.Idiom == DeviceIdiom.Phone)
+        {
+            Register<BaseOcrListGeneratorPage, PhoneOcrListGeneratorPage>(handling, lifetime);
+        }
+        else
+        {
+            Register<BaseOcrListGeneratorPage, OcrListGeneratorPage>(handling, lifetime);
+        }
     }
 
     ILogger Logger { get; }
     bool CommandLineArgsChecked { get; set; } = false;
 
+    /// <summary>
+    /// Register T type to shell. Route will be type: 'Route/Pieces/TName'
+    /// <para/>Example: Register&lt;MyType&gt;("home") =&gt; home/MyType
+    /// </summary>
+    /// <typeparam name="T">Type to register to shell</typeparam>
+    /// <param name="routePieces">
+    /// Will be separated with '/', order will be the same. 
+    /// Leave null or empty if no route pieces need to be added.
+    /// </param>
+    private static void Register<T>(params string[]? routePieces) where T : ContentPage
+    {
+        string route;
+        if (routePieces is null || routePieces.Length is 0)
+        {
+            route = typeof(T).Name;
+        }
+        else
+        {
+            route = $"{string.Join('/', routePieces)}/{typeof(T).Name}";
+        }
+        Routing.RegisterRoute(route, typeof(T));
+    }
+
+    /// <summary>
+    /// Register TImplementation type to shell. Route will be type: 'Route/Pieces/TBase'
+    /// Handles many implementations for page.
+    /// <para/>Example: Register&lt;MyBaseType,MyType&gt;("home") =&gt; home/MyBaseType Gives 
+    /// </summary>
+    /// <typeparam name="TBase">Type to be used in route.</typeparam>
+    /// <typeparam name="TImplementation">Type to be registered.</typeparam>
+    /// <param name="routePieces">
+    /// Will be separated with '/', order will be the same. 
+    /// Leave null or empty if no route pieces need to be added.
+    /// </param>
+    private static void Register<TBase, TImplementation>(params string[]? routePieces) 
+        where TBase : ContentPage where TImplementation : TBase
+    {
+        string route;
+        if (routePieces is null || routePieces.Length is 0)
+        {
+            route = typeof(TBase).Name;
+        }
+        else
+        {
+            route = $"{string.Join('/', routePieces)}/{typeof(TBase).Name}";
+        }
+        Routing.RegisterRoute(route, typeof(TImplementation));
+    }
+
+
+
+
+    private async void Shell_Loaded(object sender, EventArgs e) => await CheckCommandLineArgs();
     private async Task CheckCommandLineArgs()
     {
         if (CommandLineArgsChecked)
@@ -74,11 +143,5 @@ public partial class AppShell : Shell
             Logger.LogError("Cannot get command line args in current platform.");
             return;
         }
-    }
-
-  
-    private async void Shell_Loaded(object sender, EventArgs e)
-    {
-        await CheckCommandLineArgs();
     }
 }
