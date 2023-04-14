@@ -39,7 +39,7 @@ public partial class HomePage : ContentPage
 
     private async void CreateNewOCrField_Tapped(object sender, EventArgs e)
     {
-        Logger.LogInformation("Goto '{destination}' from '{this}'", nameof(OcrListGeneratorPage), nameof(HomePage));
-        await Shell.Current.GoToAsync($"{PageRoutes.Get(Route.WordHandling)}/{PageRoutes.Get(Route.LifeTime)}/{nameof(OcrListGeneratorPage)}");
+        Logger.LogInformation("Goto '{destination}' from '{this}'", nameof(BaseOcrListGeneratorPage), nameof(HomePage));
+        await Shell.Current.GoToAsync($"{PageRoutes.Get(Route.WordHandling)}/{PageRoutes.Get(Route.LifeTime)}/{nameof(BaseOcrListGeneratorPage)}");
     }
 }

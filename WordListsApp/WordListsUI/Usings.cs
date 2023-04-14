@@ -1,3 +1,3 @@
-﻿global using WordListsViewModels.Interfaces;
-global using Microsoft.Extensions.Logging.Abstractions;
-global using Microsoft.Extensions.Logging;
+﻿global using Microsoft.Extensions.Logging;
+global using WordListsMauiHelpers.DependencyInjectionExtensions;
+global using WordListsViewModels.Interfaces;

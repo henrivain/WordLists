@@ -65,7 +65,8 @@ internal static class Injections
         services.AddTransient<JsonImportPage>();
         services.AddTransient<WordListPage>();
         services.AddTransient<TrainingConfigPage>();
-        services.AddTransient<OcrListGeneratorPage>();
+        services.AddSingleton<OcrListGeneratorPage>();
+        services.AddSingleton<PhoneOcrListGeneratorPage>();
 
         return services;
     }
@@ -80,12 +81,12 @@ internal static class Injections
         services.AddTransient<ITestResultViewModel, TestResultViewModel>();
         services.AddTransient<IWordListViewModel, WordListViewModel>();
         services.AddTransient<ITrainingConfigViewModel, TrainingConfigViewModel>();
+        services.AddTransient<IOcrListGeneratorViewModel, OcrListGeneratorViewModel>();
         services.AddAbstractFactory<IListGeneratorViewModel, ListGeneratorViewModel>();
         services.AddAbstractFactory<IJsonExportViewModel, JsonExportViewModel>();
         services.AddAbstractFactory<IJsonImportViewModel, JsonImportViewModel>();
         services.AddAbstractFactory<IWriteWordViewModel, WriteWordViewModel>();
         services.AddAbstractFactory<IWritingTestConfigurationViewModel, WritingTestConfigurationViewModel>();
-        services.AddAbstractFactory<IOcrListGeneratorViewModel, OcrListGeneratorViewModel>();
 
         return services;
     }

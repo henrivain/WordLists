@@ -39,8 +39,17 @@ public partial class AppShell : Shell
 
         //  handling/lifetime
         Register<ListGeneratorPage>(handling, lifetime);
-        Register<OcrListGeneratorPage>(handling, lifetime);
         Register<WordCollectionEditPage>(handling, lifetime);
+
+        // Idiom specific registering
+        if (DeviceInfo.Current.Idiom == DeviceIdiom.Phone)
+        {
+            Register<BaseOcrListGeneratorPage, PhoneOcrListGeneratorPage>(handling, lifetime);
+        }
+        else
+        {
+            Register<BaseOcrListGeneratorPage, OcrListGeneratorPage>(handling, lifetime);
+        }
     }
 
     ILogger Logger { get; }
@@ -69,7 +78,31 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(route, typeof(T));
     }
 
-
+    /// <summary>
+    /// Register TImplementation type to shell. Route will be type: 'Route/Pieces/TBase'
+    /// Handles many implementations for page.
+    /// <para/>Example: Register&lt;MyBaseType,MyType&gt;("home") =&gt; home/MyBaseType Gives 
+    /// </summary>
+    /// <typeparam name="TBase">Type to be used in route.</typeparam>
+    /// <typeparam name="TImplementation">Type to be registered.</typeparam>
+    /// <param name="routePieces">
+    /// Will be separated with '/', order will be the same. 
+    /// Leave null or empty if no route pieces need to be added.
+    /// </param>
+    private static void Register<TBase, TImplementation>(params string[]? routePieces) 
+        where TBase : ContentPage where TImplementation : TBase
+    {
+        string route;
+        if (routePieces is null || routePieces.Length is 0)
+        {
+            route = typeof(TBase).Name;
+        }
+        else
+        {
+            route = $"{string.Join('/', routePieces)}/{typeof(TBase).Name}";
+        }
+        Routing.RegisterRoute(route, typeof(TImplementation));
+    }
 
 
 

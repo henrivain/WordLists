@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<local:BaseOcrListGeneratorPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.WordDataPages.OcrListGeneratorPage.OcrListGeneratorPage"
              xmlns:vm="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
              xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
-             Title="Luo kuvasta"
+             xmlns:local="clr-namespace:WordListsUI.WordDataPages.OcrListGeneratorPage"
              x:DataType="{x:Type vm:IOcrListGeneratorViewModel}"
              Background="{StaticResource PageBackground}">
-    <ContentPage.Resources>
+    <!-- Title set in base class -->
+    <local:BaseOcrListGeneratorPage.Resources>
         <Style x:Key="TextImageButton"
                TargetType="{x:Type Button}">
             <Setter Property="ContentLayout"
@@ -18,11 +19,12 @@
                     Value="45" />
         </Style>
 
-    </ContentPage.Resources>
+    </local:BaseOcrListGeneratorPage.Resources>
     <Grid>
         <ScrollView>
             <VerticalStackLayout Margin="0,0,0,150"
-                                 MaximumWidthRequest="1400">
+                                 MaximumWidthRequest="{OnIdiom Desktop=1400}"
+                                 >
                 <Grid ColumnDefinitions="*,auto"
                       Margin="30,20,30,0">
                     <Label Text="Luo kuvasta"
@@ -172,4 +174,4 @@
                            IsRunning="{Binding IsBusy}" />
     </Grid>
 
-</ContentPage>
+</local:BaseOcrListGeneratorPage>
