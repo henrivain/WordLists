@@ -83,6 +83,7 @@
                                 <Span Text="Havaittu teksti ei ehkä välttämättä parsivoidu oikein, " />
                                 <Span Text="joten tallentaaksesi tai muokataksesi muodostettua listaa, " />
                                 <Span Text="paina 'Jatka muokkaamaan' -painiketta." />
+                                <Span Text="Kuvista kannattaa rajata otsikot ja muut turhat tekstit pois." />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>

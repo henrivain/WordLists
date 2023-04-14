@@ -5,14 +5,18 @@
                                 xmlns:local="clr-namespace:WordListsUI.WordDataPages.OcrListGeneratorPage"
                                 xmlns:vm="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
                                 xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
+                                xmlns:converters="clr-namespace:WordListsUI.ValueConverters"
                                 x:DataType="{x:Type vm:IOcrListGeneratorViewModel}"
                                 x:Name="basePage">
+    <local:BaseOcrListGeneratorPage.Resources>
+        <converters:BooleanConverter x:Key="boolConverter" />
+    </local:BaseOcrListGeneratorPage.Resources>
     <!-- Title set in base class -->
     <Grid>
         <RefreshView Command="{Binding ClearWordsCommand}"
                      IsRefreshing="{Binding IsRefreshing}">
             <ScrollView>
-                <VerticalStackLayout>
+                <VerticalStackLayout Margin="0,10,0,150">
                     <Label Grid.RowSpan="2"
                            HorizontalOptions="Start"
                            MaxLines="10"
@@ -28,6 +32,7 @@
                                 <Span Text="Havaittu teksti ei ehkä välttämättä parsivoidu oikein, " />
                                 <Span Text="joten tallentaaksesi tai muokataksesi muodostettua listaa, " />
                                 <Span Text="paina 'Jatka muokkaamaan' -painiketta." />
+                                <Span Text="Kuvista kannattaa rajata otsikot ja muut turhat tekstit pois." />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -89,23 +94,26 @@
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="8" />
                         </Border.StrokeShape>
-                        <CollectionView ItemsSource="{Binding Pairs}">
-                            <CollectionView.EmptyView>
-                                <Label Text="Et ole vielä lisännyt yhtään sanoja."
-                                       HorizontalTextAlignment="Center" />
-                            </CollectionView.EmptyView>
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="{x:Type wordData:WordPair}">
-                                    <Grid  ColumnDefinitions="*,15,*" Margin="0,5">
-                                        <Label Text="{Binding NativeLanguageWord}"
-                                               LineBreakMode="TailTruncation" />
-                                        <Label Text="{Binding ForeignLanguageWord}"
-                                               Grid.Column="2"
-                                               LineBreakMode="TailTruncation" />
-                                    </Grid>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
+                        <Grid>
+                            <Label Text="Et ole vielä lisännyt yhtään sanoja."
+                                   TextColor="{StaticResource SecondaryText}"
+                                   IsVisible="{Binding HasValidPairs, Converter={StaticResource boolConverter}}"
+                                   HorizontalTextAlignment="Center" />
+                            <CollectionView ItemsSource="{Binding Pairs}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="{x:Type wordData:WordPair}">
+                                        <Grid  ColumnDefinitions="*,15,*"
+                                               Margin="0,5">
+                                            <Label Text="{Binding NativeLanguageWord}"
+                                                   LineBreakMode="TailTruncation" />
+                                            <Label Text="{Binding ForeignLanguageWord}"
+                                                   Grid.Column="2"
+                                                   LineBreakMode="TailTruncation" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </Grid>
                     </Border>
                 </VerticalStackLayout>
             </ScrollView>
