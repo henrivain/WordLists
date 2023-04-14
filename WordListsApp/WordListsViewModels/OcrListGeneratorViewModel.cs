@@ -64,33 +64,16 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
 
     [ObservableProperty]
     int _recogizionConfidence = 0;
-    
+
     // Uses Clear() and Add() methods instead of setters
     public ObservableCollection<WordPair> Pairs { get; } = new();
     public ObservableCollection<ParserInfo> Parsers { get; }
 
 
-    public IAsyncRelayCommand NewListFromCamera => new AsyncRelayCommand(async () =>
+    public IRelayCommand ClearWords => new RelayCommand(() =>
     {
-        IsBusy = true;
-        OcrResult? result = await CaptureImageAndRecognize();
-        if (result.HasValue)
-        {
-            RecogizionConfidence = result.Value.Confidence;
-            await ParseAndAdd(result.Value.Text, true);
-        }
-        IsBusy = false;
-    });
-    public IAsyncRelayCommand NewListFromFile => new AsyncRelayCommand(async () =>
-    {
-        IsBusy = true;
-        OcrResult? result = await PickImageAndRecognize();
-        if (result.HasValue)
-        {
-            RecogizionConfidence = result.Value.Confidence;
-            await ParseAndAdd(result.Value.Text, true);
-        }
-        IsBusy = false;
+        Pairs.Clear();
+        HasValidPairs = false;
     });
     public IAsyncRelayCommand AddListSpanFromCamera => new AsyncRelayCommand(async () =>
     {
@@ -199,6 +182,7 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
     /// <returns>OcrResult if success, otherwise null.</returns>
     private async Task<OcrResult?> PickImageAndRecognize()
     {
+        Logger.LogInformation("Pick image and recognize text.");
         PickOptions options = new()
         {
             PickerTitle = "Valitse kuva...",
@@ -220,6 +204,7 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
     /// <returns>OcrResult if success, otherwise null.</returns>
     private async Task<OcrResult?> CaptureImageAndRecognize()
     {
+        Logger.LogInformation("Capture image and recognize text.");
         FileResult fileResult = await MediaPicker.CapturePhotoAsync();
         if (fileResult is null)
         {
@@ -236,7 +221,7 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
     /// <param name="ocrText"></param>
     /// <param name="clearsOutput"></param>
     /// <returns>awaitable Task</returns>
-    private async Task ParseAndAdd(string ocrText, bool clearsOutput = false)
+    private async Task ParseAndAdd(string ocrText)
     {
         Logger.LogInformation("Parse ocr string to word pairs.");
         if (string.IsNullOrWhiteSpace(ocrText))
@@ -245,7 +230,7 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
             ParseFailed?.Invoke(this, "No text to parse.");
             return;
         }
-        
+
         // Select parser
         IWordPairParser? parser = null;
         if (SelectedParser is ParserInfo parserInfo)
@@ -274,13 +259,8 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
             ParseFailed?.Invoke(this, "Parser failed, see logs.");
             return;
         }
-        if (clearsOutput)
-        {
-            Pairs.Clear();
-            HasValidPairs = pairs.Count > 0;
-        }
         Logger.LogInformation("Parsed ocr text to '{count}' word pairs.", pairs.Count);
-        
+
         foreach (var pair in pairs)
         {
             Pairs.Add(pair);

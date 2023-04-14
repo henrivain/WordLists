@@ -56,8 +56,13 @@ public class WindowsMediaPicker : IMediaPicker
 
         var uri = new Uri("microsoft.windows.camera.picker:");
         var result = await Launcher.LaunchUriForResultsAsync(uri, LauncherOptions, set);
+        if (result.Result is null)
+        {
+            return null;
+        }
         if (result.Status is not LaunchUriStatus.Success)
         {
+            Logger.LogWarning("Failed to launch camera app, status: '{status}'.", result.Status);
             return null;
         }
 #nullable enable

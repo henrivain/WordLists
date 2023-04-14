@@ -14,8 +14,7 @@ public interface IOcrListGeneratorViewModel
     ObservableCollection<ParserInfo> Parsers { get; }
     ObservableCollection<WordPair> Pairs { get; }
 
-    IAsyncRelayCommand NewListFromCamera { get; }
-    IAsyncRelayCommand NewListFromFile { get; }
+    IRelayCommand ClearWords { get; }
     IAsyncRelayCommand AddListSpanFromCamera { get; }
     IAsyncRelayCommand AddListSpanFromFile { get; }
     
