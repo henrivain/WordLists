@@ -86,6 +86,7 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
     });
     public IAsyncRelayCommand AddListSpanFromCameraCommand => new AsyncRelayCommand(async () =>
     {
+        IsImageCaptureSupported = MediaPicker.IsCaptureSupported;
         IsBusy = true;
         OcrResult? result = await CaptureImageAndRecognize();
         if (result.HasValue)

@@ -3,6 +3,7 @@ using WordDataAccessLibrary.CollectionBackupServices.JsonServices;
 using WordDataAccessLibrary.DataBaseActions;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordDataAccessLibrary.Generators;
+using WordListsMauiHelpers;
 using WordListsMauiHelpers.DependencyInjectionExtensions;
 using WordListsMauiHelpers.DeviceAccess;
 using WordListsMauiHelpers.Logging;
@@ -42,9 +43,9 @@ internal static class Injections
 
         // Platform specific implementations
 #if WINDOWS
-        services.AddSingleton<IMediaPicker, WordListsMauiHelpers.Platforms.Windows.WindowsMediaPicker>();
+        services.AddSingleton<IMediaPicker, WindowsMediaPicker>();
 #else
-        services.AddSingleton<IMediaPicker>(MediaPicker.Default);
+        services.AddSingleton(MediaPicker.Default);
 #endif
         return services;
     }

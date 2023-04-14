@@ -1,10 +1,11 @@
-﻿using WinRT.Interop;
+﻿using Windows.Storage;
+using WinRT.Interop;
+using WordListsMauiHelpers.DeviceAccess;
 using WindowsFolderPicker = Windows.Storage.Pickers.FolderPicker;
-using Windows.Storage;
 
 #nullable disable
 
-namespace WordListsMauiHelpers.DeviceAccess;
+namespace WordListsMauiHelpers;
 public class FolderPicker : IFolderPicker
 {
     public async Task<string> PickAsync()
@@ -22,15 +23,15 @@ public class FolderPicker : IFolderPicker
         }
         catch
         {
-            #if DEBUG
+#if DEBUG
             throw;
-            #endif
+#endif
         }
         if (result?.Path is null)
         {
             return null;
         }
         return result.Path;
-        
+
     }
 }

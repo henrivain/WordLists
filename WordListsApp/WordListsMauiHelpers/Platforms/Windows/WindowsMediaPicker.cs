@@ -8,7 +8,7 @@ using WinRT.Interop;
 using Launcher = Windows.System.Launcher;
 using Window = Microsoft.Maui.Controls.Window;
 
-namespace WordListsMauiHelpers.Platforms.Windows;
+namespace WordListsMauiHelpers;
 
 
 public class WindowsMediaPicker : IMediaPicker
@@ -16,10 +16,14 @@ public class WindowsMediaPicker : IMediaPicker
     public WindowsMediaPicker(ILogger? logger = null, Window? host = null)
     {
         Logger = logger ?? NullLogger.Instance;
-        TryLoadNativeCapture(host);
+        if (TryLoadNativeCapture(host) is false)
+        {
+            Logger.LogInformation("Native image capture is not supported.");
+        }
+        
     }
 
-    public bool IsCaptureSupported { get; } = true;
+    public bool IsCaptureSupported => IsNativeCaptureSupported || MediaPicker.Default.IsCaptureSupported;
     
     
     LauncherOptions? LauncherOptions { get; set; }
@@ -28,13 +32,18 @@ public class WindowsMediaPicker : IMediaPicker
 
     public async Task<FileResult> CapturePhotoAsync(MediaPickerOptions? options = null)
     {
+        Logger.LogInformation("Native capture state {}.", IsNativeCaptureSupported);
+        Logger.LogInformation("Maui capture state {}.", MediaPicker.Default.IsCaptureSupported);
+        
         // Check if native capture can be downloaded 
         if (TryLoadNativeCapture() is false)
         {
             Logger.LogInformation("Cannot use native photo capture in {cls}, use Maui implementation.", 
                 nameof(WindowsMediaPicker));
+            IsNativeCaptureSupported = false;
             return await MediaPicker.Default.CapturePhotoAsync(options);
         }
+        Logger.LogInformation("Capture photo using native implementation.");
 
 #nullable disable
         if (IsCaptureSupported is false || LauncherOptions is null)
@@ -42,10 +51,47 @@ public class WindowsMediaPicker : IMediaPicker
             Logger.LogError("Cannot capture photo, because device camera was not initialized successfully.");
             return null;
         }
+#nullable enable
 
-        var tempFolder = ApplicationData.Current.TemporaryFolder;
+        string cacheDir = FileSystem.Current.CacheDirectory;
+        string cameraFolder = Path.Combine(cacheDir, "camera");
+        try
+        {
+            Directory.CreateDirectory(cameraFolder);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Cannot create camera folder, '{ex}': {msg}", ex.GetType().Name, ex.Message);
+#nullable disable
+            return null;
+#nullable enable
+        }
+        
+        StorageFolder tempFolder;
+        try
+        {
+            tempFolder = await StorageFolder.GetFolderFromPathAsync(cameraFolder);
+        }
+        catch (FileNotFoundException ex)
+        {
+            Logger.LogError(ex, "Cannot get camera folder, '{ex}': {msg}", ex.GetType().Name, ex.Message);
+#nullable disable
+            return null;
+#nullable enable
+        }
+
         var baseFileName = "CCapture.jpg";
-        var tempFile = await tempFolder.CreateFileAsync(baseFileName, CreationCollisionOption.GenerateUniqueName);
+        StorageFile? tempFile = await tempFolder.CreateFileAsync(baseFileName, CreationCollisionOption.GenerateUniqueName);
+        if (tempFile is null)
+        {
+#nullable disable
+            Logger.LogInformation("Cannot create temporary file for camera capture.");
+            return null;
+#nullable enable
+        }
+
+        Logger.LogInformation("Created file '{file}' successfully.", tempFile.Path);
+
         var token = SharedStorageAccessManager.AddFile(tempFile);
 
         var set = new ValueSet()
@@ -54,6 +100,7 @@ public class WindowsMediaPicker : IMediaPicker
             { "PhotoFileToken", token }
         };
 
+#nullable disable
         var uri = new Uri("microsoft.windows.camera.picker:");
         var result = await Launcher.LaunchUriForResultsAsync(uri, LauncherOptions, set);
         if (result.Result is null)
@@ -126,7 +173,15 @@ public class WindowsMediaPicker : IMediaPicker
         }
 
         LauncherOptions = new();
-        InitializeWithWindow.Initialize(LauncherOptions, handle);
+        try
+        {
+            InitializeWithWindow.Initialize(LauncherOptions, handle);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogWarning("Failed to initialize windows camera, '{ex}': '{msg}'", ex.GetType().Name, ex.Message);
+            return false;
+        }
         LauncherOptions.TreatAsUntrusted = false;
         LauncherOptions.DisplayApplicationPicker = false;
         LauncherOptions.TargetApplicationPackageFamilyName = "Microsoft.WindowsCamera_8wekyb3d8bbwe";
