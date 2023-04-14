@@ -36,7 +36,7 @@
                             Grid.Column="1"
                             Style="{StaticResource TextImageButton}"
                             Text="Aloita alusta"
-                            Command="{Binding ClearWords}" />
+                            Command="{Binding ClearWordsCommand}" />
                 </Grid>
                 <Grid ColumnDefinitions="*,10,210"
                       Margin="30,20"
@@ -104,7 +104,7 @@
                           VerticalOptions="Start">
                         <Button Text="kamerasta"
                                 IsEnabled="{Binding IsImageCaptureSupported}"
-                                Command="{Binding AddListSpanFromCamera}"
+                                Command="{Binding AddListSpanFromCameraCommand}"
                                 HorizontalOptions="End" />
                         <Label Text="tai"
                                Margin="20,0"
@@ -113,7 +113,7 @@
                         <Button Text="kuvasta"
                                 HorizontalOptions="Start"
                                 Grid.Column="2"
-                                Command="{Binding AddListSpanFromFile}" />
+                                Command="{Binding AddListSpanFromFileCommand}" />
                     </Grid>
                 </VerticalStackLayout>
 

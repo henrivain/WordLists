@@ -44,6 +44,8 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
         [DevicePlatform.WinUI] = SupportedImageTypes,
     };
 
+    const int TesseractTimeoutMs = 5000;
+
     ITesseract Tesseract { get; }
     IMediaPicker MediaPicker { get; }
     IFilePicker FilePicker { get; }
@@ -60,6 +62,9 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
     bool _isBusy = false;
 
     [ObservableProperty]
+    bool _isRefreshing = false;
+
+    [ObservableProperty]
     bool _hasValidPairs = false;
 
     [ObservableProperty]
@@ -70,12 +75,14 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
     public ObservableCollection<ParserInfo> Parsers { get; }
 
 
-    public IRelayCommand ClearWords => new RelayCommand(() =>
+    public IRelayCommand ClearWordsCommand => new RelayCommand(() =>
     {
+        IsRefreshing = true;
         Pairs.Clear();
         HasValidPairs = false;
+        IsRefreshing = false;
     });
-    public IAsyncRelayCommand AddListSpanFromCamera => new AsyncRelayCommand(async () =>
+    public IAsyncRelayCommand AddListSpanFromCameraCommand => new AsyncRelayCommand(async () =>
     {
         IsBusy = true;
         OcrResult? result = await CaptureImageAndRecognize();
@@ -86,7 +93,7 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
         }
         IsBusy = false;
     });
-    public IAsyncRelayCommand AddListSpanFromFile => new AsyncRelayCommand(async () =>
+    public IAsyncRelayCommand AddListSpanFromFileCommand => new AsyncRelayCommand(async () =>
     {
         IsBusy = true;
         OcrResult? result = await PickImageAndRecognize();
@@ -139,8 +146,18 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
             return null;
         }
 
-        RecognizionResult result = await Tesseract.RecognizeTextAsync(filePath);
-
+        Task<RecognizionResult> recognizionTask = Tesseract.RecognizeTextAsync(filePath);
+        if (await Task.WhenAny(recognizionTask, Task.Delay(TesseractTimeoutMs)) != recognizionTask)
+        {
+            Logger.LogWarning("Cannot recognize, timeout.");
+            RecognizionFailed?.Invoke(this, new()
+            {
+                ImagePath = filePath,
+                Message = "Timeout, took too long to process."
+            });
+            return null;
+        }
+        RecognizionResult result = await recognizionTask;
         if (result.NotSuccess())
         {
             Logger.LogWarning("Failed to recognize text in image: '{msg}'.", result.Message);

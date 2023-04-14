@@ -6,16 +6,84 @@
                                 xmlns:vm="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
                                 xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
                                 x:DataType="{x:Type vm:IOcrListGeneratorViewModel}"
-                                x:Name="cur"
-                                >
+                                x:Name="basePage">
     <!-- Title set in base class -->
     <Grid>
-        <ScrollView>
-            <VerticalStackLayout>
-                <Label Text="{Binding Source={x:Reference cur}, Path=Title,  Mode=OneWay}" />
-                <Label Text="Adasd"/>
-            </VerticalStackLayout>
-        </ScrollView>
+        <RefreshView Command="{Binding ClearWordsCommand}"
+                     IsRefreshing="{Binding IsRefreshing}">
+            <ScrollView>
+                <VerticalStackLayout>
+                    <Label Grid.RowSpan="2"
+                           HorizontalOptions="Start"
+                           MaxLines="10"
+                           Padding="15,10"
+                           TextColor="{StaticResource SecondaryText}"
+                           HorizontalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Täällä voit luoda sanastoja ottamalla kameralla kuvan sanastostasi " />
+                                <Span Text="tai valitsemalla kuvistasi haluamasi sanaston. " />
+                                <Span Text="Sanastojen kirjaimet havaitaan optisella kirjaintunnistuksella, " />
+                                <Span Text="joten pidä huolta siitä, että kuvat ovat selkeitä ja hyvin valaistuja. " />
+                                <Span Text="Havaittu teksti ei ehkä välttämättä parsivoidu oikein, " />
+                                <Span Text="joten tallentaaksesi tai muokataksesi muodostettua listaa, " />
+                                <Span Text="paina 'Jatka muokkaamaan' -painiketta." />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Label Text="Lisää sanoja"
+                           FontSize="Medium"
+                           HorizontalTextAlignment="Center" />
+
+                    <Grid ColumnDefinitions="*,auto,*"
+                          Margin="0,15">
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="WidthRequest"
+                                        Value="120" />
+                            </Style>
+                        </Grid.Resources>
+                        <Button Text="kamerasta"
+                                IsEnabled="{Binding IsImageCaptureSupported}"
+                                HorizontalOptions="End"
+                                WidthRequest="120"
+                                Command="{Binding AddListSpanFromCameraCommand}" />
+                        <Label Text="tai"
+                               FontSize="Small"
+                               Grid.Column="1"
+                               Padding="10,0"
+                               VerticalTextAlignment="Center" />
+                        <Button Text="kuvasta"
+                                Grid.Column="2"
+                                HorizontalOptions="Start"
+                                WidthRequest="120"
+                                Command="{Binding AddListSpanFromFileCommand}" />
+                    </Grid>
+
+                    <Label HorizontalTextAlignment="Center"
+                           FontSize="Small"
+                           TextColor="{StaticResource SecondaryText}"
+                           Margin="0,0,0,15">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Optisen tunnistuksen varmuus: " />
+                                <Span Text="{Binding RecogizionConfidence}" />
+                                <Span Text="%" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Button Text="Jatka muokkaamaan"
+                            Margin="30,0"
+                            IsEnabled="{Binding HasValidPairs}"
+                            HeightRequest="35"
+                            Clicked="ProceedToEdit_Clicked" />
+
+                </VerticalStackLayout>
+            </ScrollView>
+
+        </RefreshView>
         <ActivityIndicator IsRunning="{Binding IsBusy}"
                            WidthRequest="30"
                            Color="Orange" />
