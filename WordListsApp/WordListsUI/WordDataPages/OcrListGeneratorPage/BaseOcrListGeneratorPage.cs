@@ -13,24 +13,33 @@ public class BaseOcrListGeneratorPage : ContentPage
 	protected BaseOcrListGeneratorPage (IOcrListGeneratorViewModel viewModel, ILogger<ContentPage> logger)
 	{
         Logger = logger;
+        BindingContextChanged += OnBindingContextChanged;
         BindingContext = viewModel;
         Title = "Luo kuvasta";
     }
 
+
     protected virtual IOcrListGeneratorViewModel Model => (IOcrListGeneratorViewModel)BindingContext;
     protected virtual ILogger<ContentPage> Logger { get; }
+    
+    protected virtual void OnBindingContextChanged(object? sender, EventArgs e)
+    {
+        Model.NoTextWasRecognized += OnNoTextWasRecognized;
+        Model.RecognizionFailed += OnRecognizionFailed;
+        Model.ParseFailed += OnParseFailed;
+    }
 
-    protected virtual async void ViewModel_NoTextWasRecognized(object sender, TesseractFailedEventArgs e)
+    protected virtual async void OnNoTextWasRecognized(object sender, TesseractFailedEventArgs e)
     {
         string msg = """
             Kuvasta ei havaittu yhtään tekstiä.
-            Kuva saattaa olla liian huono tai teksti liian epäselvä.
-            Tarkista myös, että kuvassa on tekstiä ja että teksti on hyvin valaistu.
+            Kuva saattaa olla liian huono tai teksti liian epäselvää.
+            Tarkista, että kuvassa on tekstiä ja että teksti on hyvin valaistu.
             """;
         await DisplayAlert("Tekstiä ei havaittu.", msg, "OK");
     }
 
-    protected virtual async void ViewModel_RecognizionFailed(object sender, TesseractFailedEventArgs e)
+    protected virtual async void OnRecognizionFailed(object sender, TesseractFailedEventArgs e)
     {
         string msg = $"""
             Tekstiä ei pystytty havaitsemaan.
@@ -42,7 +51,7 @@ public class BaseOcrListGeneratorPage : ContentPage
         await DisplayAlert("Havaitseminen epäoonistui.", msg, "OK");
     }
 
-    protected virtual async void ViewModel_ParseFailed(object sender, string error)
+    protected virtual async void OnParseFailed(object sender, string error)
     {
         string msg = $"""
             Tekstiä ei pystytty parsimaan.

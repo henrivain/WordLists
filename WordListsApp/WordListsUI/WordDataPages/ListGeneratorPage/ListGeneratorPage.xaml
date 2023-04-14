@@ -23,9 +23,6 @@
     </ContentPage.Resources>
     <Grid>
         <ScrollView Margin="40,0,0,0">
-            <ScrollView.GestureRecognizers>
-                <TapGestureRecognizer Tapped="HideMenu" />
-            </ScrollView.GestureRecognizers>
             <VerticalStackLayout>
                 <VerticalStackLayout Padding="30,30,30,0"
                                      HorizontalOptions="{OnIdiom Default=Center, Phone=FillAndExpand}">

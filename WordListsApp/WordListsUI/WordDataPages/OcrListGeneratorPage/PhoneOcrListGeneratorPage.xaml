@@ -75,11 +75,38 @@
                     </Label>
 
                     <Button Text="Jatka muokkaamaan"
-                            Margin="30,0"
+                            Margin="20,0"
                             IsEnabled="{Binding HasValidPairs}"
                             HeightRequest="35"
                             Clicked="ProceedToEdit_Clicked" />
 
+
+                    <Border BackgroundColor="{StaticResource DarkerThanPage}"
+                            Stroke="Transparent"
+                            StrokeThickness="0"
+                            Margin="20"
+                            Padding="10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <CollectionView ItemsSource="{Binding Pairs}">
+                            <CollectionView.EmptyView>
+                                <Label Text="Et ole vielä lisännyt yhtään sanoja."
+                                       HorizontalTextAlignment="Center" />
+                            </CollectionView.EmptyView>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="{x:Type wordData:WordPair}">
+                                    <Grid  ColumnDefinitions="*,15,*" Margin="0,5">
+                                        <Label Text="{Binding NativeLanguageWord}"
+                                               LineBreakMode="TailTruncation" />
+                                        <Label Text="{Binding ForeignLanguageWord}"
+                                               Grid.Column="2"
+                                               LineBreakMode="TailTruncation" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Border>
                 </VerticalStackLayout>
             </ScrollView>
 
