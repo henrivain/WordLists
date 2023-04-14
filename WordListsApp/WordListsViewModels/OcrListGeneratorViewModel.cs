@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using TesseractOcrMaui;
 using TesseractOcrMaui.Extensions;
 using TesseractOcrMaui.Results;
@@ -34,6 +35,7 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
         _selectedParser = Parsers.FirstOrGivenDefault(
             x => x.Name == (Settings.DefaultOcrParserName ?? string.Empty), Parsers[0]);
         _isImageCaptureSupported = MediaPicker.IsCaptureSupported;
+        PropertyChanged += UpdateSettingValue;
     }
 
     static string[] SupportedImageTypes { get; } = new[] { "png", "jpeg", "jpg" };
@@ -283,5 +285,18 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
             Pairs.Add(pair);
         }
         HasValidPairs = true;
+    }
+
+    private void UpdateSettingValue(object? sender, PropertyChangedEventArgs e)
+    {
+        switch (e.PropertyName)
+        {
+            case nameof(SelectedParser):
+                if (SelectedParser is ParserInfo info && Settings.DefaultOcrParserName != info.Name)
+                {
+                    Settings.DefaultOcrParserName = info.Name;
+                }
+                break;
+        }
     }
 }

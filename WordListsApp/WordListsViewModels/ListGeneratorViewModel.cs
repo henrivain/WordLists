@@ -264,7 +264,7 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
         switch (e.PropertyName)
         {
             case nameof(SelectedParser):
-                if (SelectedParser is ParserInfo info)
+                if (SelectedParser is ParserInfo info && Settings.DefaultParserName != info.Name)
                 {
                     Settings.DefaultParserName = info.Name;
                 }
