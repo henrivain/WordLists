@@ -71,7 +71,7 @@
                     <Label Grid.RowSpan="2"
                            HorizontalOptions="Start"
                            MaximumWidthRequest="600"
-                           MaxLines="10"
+                           MaxLines="12"
                            TextColor="{StaticResource SecondaryText}"
                            >
                         <Label.FormattedText>
@@ -82,8 +82,11 @@
                                 <Span Text="joten pidä huolta siitä, että kuvat ovat selkeitä ja hyvin valaistuja. " />
                                 <Span Text="Havaittu teksti ei ehkä välttämättä parsivoidu oikein, " />
                                 <Span Text="joten tallentaaksesi tai muokataksesi muodostettua listaa, " />
-                                <Span Text="paina 'Jatka muokkaamaan' -painiketta." />
-                                <Span Text="Kuvista kannattaa rajata otsikot ja muut turhat tekstit pois." />
+                                <Span Text="paina 'Jatka muokkaamaan' -painiketta. " />
+                                <Span Text="Kuvista kannattaa rajata otsikot ja muut turhat tekstit pois. " />
+                                <Span Text="Valaistuksen pitää olla myös erittäin hyvä. " />
+                                <Span Text="Ota kerrallaan kuva vain yhdestä sanastosarakkeesta, " />
+                                <Span Text="jossa eri kielet on jaettu keskellä olevalla selkeällä tyhjällä välialueella." />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>

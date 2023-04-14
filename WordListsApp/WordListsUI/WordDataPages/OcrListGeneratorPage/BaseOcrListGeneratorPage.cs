@@ -43,12 +43,12 @@ public class BaseOcrListGeneratorPage : ContentPage
     {
         string msg = $"""
             Tekstiä ei pystytty havaitsemaan.
-            Kuva ei ehkä enää ole olemassa tai se on väärässä muodossa.
+            Kuva ei ehkä enää ole olemassa, se on väärässä muodossa tai prosessointi kesti liian kauan.
             Tarkka syy:
             {e.Output?.Message}
             '{e.Message}'
             """;
-        await DisplayAlert("Havaitseminen epäoonistui.", msg, "OK");
+        await DisplayAlert("Havaitseminen epäonnistui.", msg, "OK");
     }
 
     protected virtual async void OnParseFailed(object sender, string error)

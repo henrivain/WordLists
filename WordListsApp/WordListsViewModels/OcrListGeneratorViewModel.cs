@@ -46,7 +46,7 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
         [DevicePlatform.WinUI] = SupportedImageTypes,
     };
 
-    const int TesseractTimeoutMs = 5000;
+    const int TesseractTimeoutMs = 30000;
 
     ITesseract Tesseract { get; }
     IMediaPicker MediaPicker { get; }

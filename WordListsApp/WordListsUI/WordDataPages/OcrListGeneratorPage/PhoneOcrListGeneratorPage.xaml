@@ -32,7 +32,10 @@
                                 <Span Text="Havaittu teksti ei ehkä välttämättä parsivoidu oikein, " />
                                 <Span Text="joten tallentaaksesi tai muokataksesi muodostettua listaa, " />
                                 <Span Text="paina 'Jatka muokkaamaan' -painiketta." />
-                                <Span Text="Kuvista kannattaa rajata otsikot ja muut turhat tekstit pois." />
+                                <Span Text="Kuvista kannattaa rajata otsikot ja muut turhat tekstit pois. " />
+                                <Span Text="Valaistuksen pitää olla myös erittäin hyvä. " />
+                                <Span Text="Ota kerrallaan kuva vain yhdestä sanastosarakkeesta, " />
+                                <Span Text="jossa eri kielet on jaettu keskellä olevalla selkeällä tyhjällä välialueella." />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -82,7 +85,7 @@
                     <Button Text="Jatka muokkaamaan"
                             Margin="20,0"
                             IsEnabled="{Binding HasValidPairs}"
-                            HeightRequest="35"
+                            HeightRequest="45"
                             Clicked="ProceedToEdit_Clicked" />
 
 
@@ -99,7 +102,8 @@
                                    TextColor="{StaticResource SecondaryText}"
                                    IsVisible="{Binding HasValidPairs, Converter={StaticResource boolConverter}}"
                                    HorizontalTextAlignment="Center" />
-                            <CollectionView ItemsSource="{Binding Pairs}">
+                            <CollectionView ItemsSource="{Binding Pairs}"
+                                            MinimumHeightRequest="45">
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="{x:Type wordData:WordPair}">
                                         <Grid  ColumnDefinitions="*,15,*"
