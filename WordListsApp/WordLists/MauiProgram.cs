@@ -38,11 +38,13 @@ public static class MauiProgram
         builder.Services.AddAppViewModels();
         builder.Services.AddTesseractOcr(files =>
         {
+#if ANDROID
+            files.AddFile("fin_fast.traineddata");
+#else 
             files.AddFile("fin.traineddata");
-            files.AddFile("deu.traineddata");
             files.AddFile("eng.traineddata");
             files.AddFile("swe.traineddata");
-            files.AddFile("fra.traineddata");
+#endif
         });
 
         return builder.Build();

@@ -7,6 +7,7 @@ using WordDataAccessLibrary.Generators;
 using WordListsMauiHelpers.Settings;
 using WordListsViewModels.Events;
 using WordListsViewModels.Helpers;
+using System.Diagnostics;
 
 namespace WordListsViewModels;
 public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGeneratorViewModel
@@ -46,7 +47,7 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
         [DevicePlatform.WinUI] = SupportedImageTypes,
     };
 
-    const int TesseractTimeoutMs = 30000;
+    const int TesseractTimeoutMs = 120_000;
 
     ITesseract Tesseract { get; }
     IMediaPicker MediaPicker { get; }
@@ -149,6 +150,8 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
             return null;
         }
 
+        var watch = Stopwatch.StartNew();
+        
         Task<RecognizionResult> recognizionTask = Tesseract.RecognizeTextAsync(filePath);
         if (await Task.WhenAny(recognizionTask, Task.Delay(TesseractTimeoutMs)) != recognizionTask)
         {
@@ -158,9 +161,15 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
                 ImagePath = filePath,
                 Message = "Timeout, took too long to process."
             });
+            watch.Stop();
+            Logger.LogInformation("Failed recognizion took '{time}' ms.", watch.ElapsedMilliseconds);
+
             return null;
         }
         RecognizionResult result = await recognizionTask;
+
+        watch.Stop();
+        Logger.LogInformation("Successful recognizion took '{time}' ms.", watch.ElapsedMilliseconds);
         if (result.NotSuccess())
         {
             Logger.LogWarning("Failed to recognize text in image: '{msg}'.", result.Message);
