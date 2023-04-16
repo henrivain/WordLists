@@ -8,6 +8,8 @@ using WordListsMauiHelpers.Settings;
 using WordListsViewModels.Events;
 using WordListsViewModels.Helpers;
 using System.Diagnostics;
+using WordListsMauiHelpers.Imaging;
+using WordListsMauiHelpers.Extensions;
 
 namespace WordListsViewModels;
 public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGeneratorViewModel
@@ -18,7 +20,8 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
         IFilePicker filePicker,
         IEnumerable<IWordPairParser> parsers,
         ILogger<OcrListGeneratorViewModel> logger,
-        ISettings settings
+        ISettings settings, 
+        IImageScaler imageScaler
         )
     {
         Tesseract = tesseract;
@@ -26,6 +29,7 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
         FilePicker = filePicker;
         Logger = logger;
         Settings = settings;
+        ImageScaler = imageScaler;
         Parsers = new(parsers.Where(x => x is IOcrWordPairParser).ToParserInfos());
         if (Parsers.Count < 1)
         {
@@ -48,12 +52,14 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
     };
 
     const int TesseractTimeoutMs = 120_000;
+    const int ImageMaxResolutionPx = 700;
 
     ITesseract Tesseract { get; }
     IMediaPicker MediaPicker { get; }
     IFilePicker FilePicker { get; }
     ILogger<IOcrListGeneratorViewModel> Logger { get; }
     ISettings Settings { get; }
+    IImageScaler ImageScaler { get; }
 
     [ObservableProperty]
     object _selectedParser;
@@ -150,8 +156,21 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
             return null;
         }
 
-        var watch = Stopwatch.StartNew();
+        ImageScaleResult scaleResult = await Task.Run(() =>
+        {
+            return ImageScaler.ScaleDown(filePath, ImageMaxResolutionPx, ImageMaxResolutionPx);
+        });
+        if (scaleResult.Success() && string.IsNullOrWhiteSpace(scaleResult.ImagePath) is false)
+        {
+            filePath = scaleResult.ImagePath;
+        }
+        else
+        {
+            Logger.LogWarning("Failed to scale down image: '{msg}', ocr uses original image.",
+                scaleResult.Message);
+        }
         
+        var watch = Stopwatch.StartNew();
         Task<RecognizionResult> recognizionTask = Tesseract.RecognizeTextAsync(filePath);
         if (await Task.WhenAny(recognizionTask, Task.Delay(TesseractTimeoutMs)) != recognizionTask)
         {
