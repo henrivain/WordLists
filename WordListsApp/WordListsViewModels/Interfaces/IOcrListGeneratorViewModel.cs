@@ -22,4 +22,6 @@ public interface IOcrListGeneratorViewModel
     event ParserErrorEventHandler ParseFailed;
     event TesseractFailedEventHandler RecognizionFailed;
     event TesseractFailedEventHandler NoTextWasRecognized;
+
+    Task<int> ClearImageCacheDir();
 }

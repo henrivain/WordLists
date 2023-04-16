@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using SkiaSharp;
+using WordListsMauiHelpers.Extensions;
 using static WordListsMauiHelpers.Imaging.ImageStatus;
 
 namespace WordListsMauiHelpers.Imaging;
@@ -10,9 +11,11 @@ public class ImageScaler : IImageScaler
         Logger = logger;
     }
 
+    public static string DefaultOutputDir { get; } = Path.Combine(FileSystem.Current.CacheDirectory, "scaling");
+
     ILogger<IImageScaler> Logger { get; }
 
-    public async Task<ImageScaleResult> ScaleDown(string? inputImagePath, int maxWidth, int maxHeight)
+    public async Task<ImageScaleResult> ScaleDown(string? inputImagePath, int maxWidth, int maxHeight, string? outputDir = null)
     {
         Logger.LogInformation("Scale down image from '{path}'.", inputImagePath);
 
@@ -37,7 +40,6 @@ public class ImageScaler : IImageScaler
             };
         }
 
-
         byte[] bytes;
         try
         {
@@ -45,8 +47,8 @@ public class ImageScaler : IImageScaler
         }
         catch (Exception ex)
         {
-            Logger.LogWarning("Cannot read image bytes from, '{ex}': '{msg}'.",
-                ex.GetType().Name, ex.Message);
+            Logger.LogException("Cannot read image bytes from image", ex);
+
             return new ImageScaleResult
             {
                 Success = LoadFailed,
@@ -78,7 +80,6 @@ public class ImageScaler : IImageScaler
             };
         }
 
-
         using var image = SKImage.FromEncodedData(input);
         if (image is null)
         {
@@ -102,6 +103,7 @@ public class ImageScaler : IImageScaler
                 Message = "Could not create bitmap from image."
             };
         }
+
         if (bitmap.Width < maxWidth && bitmap.Height < maxHeight)
         {
             Logger.LogInformation("Image is already small enough width dimensions '{h}x{w}'.",
@@ -116,20 +118,20 @@ public class ImageScaler : IImageScaler
             };
         }
 
-        float heightMinRatio = bitmap.Height / (float)maxHeight;
-        float widthMinRatio = bitmap.Width / (float)maxWidth;
-        float ratio = Math.Min(heightMinRatio, widthMinRatio);
+        // Calculate the new width and height
+        float heightMultiplyer = GetScaleMultiplyer(bitmap.Height, maxHeight);
+        float widthMultiplyer = GetScaleMultiplyer(bitmap.Width, maxWidth);
 
-        int targetHeight = bitmap.Height;
-        int targetWidth = bitmap.Height;
+        float multiplyer = Math.Min(heightMultiplyer, widthMultiplyer);
 
-        // Calculate final height and width
+        int targetHeight = (int)(bitmap.Height * (double)multiplyer);
+        int targetWidth = (int)(bitmap.Width * (double)multiplyer);
 
-        var outputInfo = new SKImageInfo()
-        {
-            Height = targetHeight,
-            Width = targetWidth
-        };
+        Logger.LogInformation("Scaling image from '{h}x{w}' to '{th}x{tw}'.",
+            bitmap.Height, bitmap.Width, targetHeight, targetWidth);
+
+        var outputInfo = new SKImageInfo(targetWidth, targetHeight);
+
 
         using SKBitmap outputBitmap = bitmap.Resize(outputInfo, SKFilterQuality.Medium);
         if (outputBitmap is null)
@@ -158,18 +160,27 @@ public class ImageScaler : IImageScaler
                 Width = targetWidth
             };
         }
+        
+        string outputFile = GetOutputFilePath(inputImagePath, outputDir, targetHeight, targetWidth);
 
-        string fileName = Path.GetFileNameWithoutExtension(inputImagePath);
-        string outputPath = Path.Combine(FileSystem.Current.CacheDirectory, "scaling", $"{fileName ?? "scaled"}.png");
-
+        using Stream? outputStream = CreateOrOverwrite(outputFile);
+        if (outputStream is null)
+        {
+            Logger.LogWarning("Could not create output file or delete old entry.");
+            return new ImageScaleResult
+            {
+                Success = SaveFailed,
+                ImagePath = inputImagePath,
+                Message = "Could not create output file or delete old entry."
+            };
+        }
         try
         {
-            using Stream outputStream = File.OpenWrite(outputPath);
             await outputData.AsStream().CopyToAsync(outputStream);
         }
         catch (Exception ex)
         {
-            Logger.LogWarning("Could not save scaled image, '{ex}': '{msg}'.", ex.GetType().Name, ex.Message);
+            Logger.LogException("Could not save scaled image", ex);
             return new ImageScaleResult
             {
                 Success = SaveFailed,
@@ -179,14 +190,89 @@ public class ImageScaler : IImageScaler
                 Width = targetWidth
             };
         }
-        Logger.LogInformation("Scaled image successfully, output at '{path}'.", outputPath);
+        Logger.LogInformation("Scaled image successfully, output at '{path}'.", outputFile);
         return new ImageScaleResult
         {
-            Success = NotImplemented,
-            ImagePath = outputPath,
+            Success = Success,
+            ImagePath = outputFile,
             Message = $"Successfully scaled to '{targetHeight}x{targetWidth}'",
             Height = targetHeight,
             Width = targetWidth
         };
     }
+
+    private string GetOutputFilePath(string inputPath, string? outputDir, int targetHeight, int targetWidth)
+    {
+        outputDir = GetValidOutputDirectory(outputDir);
+
+        string fileName = Path.GetFileNameWithoutExtension(inputPath);
+        string outputFile = Path.Combine(outputDir, $"{fileName ?? "image"}_scaled_{targetHeight}x{targetWidth}.png");
+        return outputFile;
+    }
+
+    private string GetValidOutputDirectory(string? outputDir)
+    {
+        if (string.IsNullOrWhiteSpace(outputDir))
+        {
+            Logger.LogWarning("Provided directory was empty and not valid output directory.");
+            return DefaultOutputDir;
+        }
+        try
+        {
+            // Validate
+            Path.GetFullPath(outputDir);
+            return outputDir;
+        }
+        catch (Exception ex)
+        {
+            Logger.LogException("Provided direcory was not valid output directory", ex);
+            return DefaultOutputDir;
+        }
+    }
+
+    private Stream? CreateOrOverwrite(string filePath)
+    {
+        string? dir = Path.GetDirectoryName(filePath);
+        try
+        {
+            if (Directory.Exists(filePath))
+            {
+                Logger.LogInformation("Directory already exists in output path, overwriting.");
+                Directory.Delete(filePath);
+            }
+            if (string.IsNullOrWhiteSpace(dir) is false)
+            {
+                Directory.CreateDirectory(dir);
+            }
+            return File.Open(filePath, FileMode.Create);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogWarning("Could not create scaled image output file, '{ex}': '{msg}'.",
+                ex.GetType().Name, ex.Message);
+            return null;
+        }
+    } 
+
+    /// <summary>
+    /// Get multiplyer to satisfy max pixel count.
+    /// </summary>
+    /// <param name="currentPx"></param>
+    /// <param name="maxPx"></param>
+    /// <returns>1 if maxPx is 0 or bigger than currentPx, otherwise a float between 0 and 1.</returns>
+    private static float GetScaleMultiplyer(int currentPx, int maxPx)
+    {
+        if (maxPx <= 0)
+        {
+            return 1;
+        }
+        if (maxPx > currentPx)
+        {
+            return 1;
+        }
+        return (float)maxPx / currentPx;
+    }
+
+
+
 }

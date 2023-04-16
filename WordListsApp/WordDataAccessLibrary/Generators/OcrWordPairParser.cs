@@ -49,4 +49,18 @@ public class OcrWordPairParser : WordParser, IOcrWordPairParser
     }
 
 
+    private protected static new string RemovePronunciation(string line)
+    {
+        int start = 0;
+        while (true)
+        {
+            start = line.IndexOfAny(new char[] { '[', '(', '{' }, start);
+            if (start < 0) return line;
+
+            int end = line.IndexOfAny(new char[] { ']', ')', '}' }, start);
+            if (end < 0) return line;
+
+            line = $"{line[..start]}{line[(end + 1)..]}";
+        }
+    }
 }

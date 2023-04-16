@@ -1,15 +1,15 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using TesseractOcrMaui;
 using TesseractOcrMaui.Extensions;
 using TesseractOcrMaui.Results;
 using WordDataAccessLibrary.Generators;
+using WordListsMauiHelpers.Extensions;
+using WordListsMauiHelpers.Imaging;
 using WordListsMauiHelpers.Settings;
 using WordListsViewModels.Events;
 using WordListsViewModels.Helpers;
-using System.Diagnostics;
-using WordListsMauiHelpers.Imaging;
-using WordListsMauiHelpers.Extensions;
 
 namespace WordListsViewModels;
 public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGeneratorViewModel
@@ -20,7 +20,7 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
         IFilePicker filePicker,
         IEnumerable<IWordPairParser> parsers,
         ILogger<OcrListGeneratorViewModel> logger,
-        ISettings settings, 
+        ISettings settings,
         IImageScaler imageScaler
         )
     {
@@ -52,7 +52,7 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
     };
 
     const int TesseractTimeoutMs = 120_000;
-    const int ImageMaxResolutionPx = 700;
+    const int ImageMaxPixels = 1000;
 
     ITesseract Tesseract { get; }
     IMediaPicker MediaPicker { get; }
@@ -82,6 +82,8 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
     // Uses Clear() and Add() methods instead of setters
     public ObservableCollection<WordPair> Pairs { get; } = new();
     public ObservableCollection<ParserInfo> Parsers { get; }
+
+    private static string DefaultImageDir { get; } = Path.Combine(FileSystem.Current.CacheDirectory, "ocr_images");
 
 
     public IRelayCommand ClearWordsCommand => new RelayCommand(() =>
@@ -156,22 +158,15 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
             return null;
         }
 
-        ImageScaleResult scaleResult = await Task.Run(() =>
-        {
-            return ImageScaler.ScaleDown(filePath, ImageMaxResolutionPx, ImageMaxResolutionPx);
-        });
-        if (scaleResult.Success() && string.IsNullOrWhiteSpace(scaleResult.ImagePath) is false)
-        {
-            filePath = scaleResult.ImagePath;
-        }
-        else
+        ImageScaleResult scaleResult = await ImageScaler.ScaleDown(filePath, ImageMaxPixels, ImageMaxPixels, DefaultImageDir);
+        if (scaleResult.NotSuccess() )
         {
             Logger.LogWarning("Failed to scale down image: '{msg}', ocr uses original image.",
                 scaleResult.Message);
         }
-        
+
         var watch = Stopwatch.StartNew();
-        Task<RecognizionResult> recognizionTask = Tesseract.RecognizeTextAsync(filePath);
+        Task<RecognizionResult> recognizionTask = Tesseract.RecognizeTextAsync(scaleResult.ImagePath ?? filePath);
         if (await Task.WhenAny(recognizionTask, Task.Delay(TesseractTimeoutMs)) != recognizionTask)
         {
             Logger.LogWarning("Cannot recognize, timeout.");
@@ -296,8 +291,7 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
             }
             catch (Exception ex)
             {
-                Logger.LogError("Failed to parse ocr text, because of '{ex}': '{msg}'",
-                    ex.GetType().Name, ex.Message);
+                Logger.LogException("Failed to parse ocr text.", ex);
                 return null;
             }
         });
@@ -327,5 +321,37 @@ public partial class OcrListGeneratorViewModel : ObservableObject, IOcrListGener
                 }
                 break;
         }
+    }
+
+    public async Task<int> ClearImageCacheDir()
+    {
+        return await Task.Run(() =>
+        {
+            string[] files = Directory.EnumerateFiles(DefaultImageDir)
+            .Where(x => SupportedFileExtensions.Contains(Path.GetExtension(x)))
+            .Where(x => string.IsNullOrWhiteSpace(x) is false)
+            .ToArray();
+
+            if (files.Length is 0)
+            {
+                Logger.LogInformation("No files to delete in cache dir.");
+                return 0;
+            }
+            int deleted = 0;
+            foreach (var file in files)
+            {
+                try
+                {
+                    File.Delete(file);
+                    deleted++;
+                }
+                catch
+                {
+                    Logger.LogWarning("Failed to delete cache file '{path}'.", file);
+                }
+            }
+            Logger.LogInformation("Deleted {count} ocr image files from cache dir.", deleted);
+            return deleted;
+        });
     }
 }

@@ -97,6 +97,8 @@
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="WidthRequest"
                                     Value="200" />
+                            <Setter Property="VerticalOptions"
+                                    Value="Center" />
                         </Style>
                     </VerticalStackLayout.Resources>
 
@@ -105,13 +107,14 @@
                            FontSize="Small"
                            Margin="0,10" />
                     <Grid ColumnDefinitions="*, auto, *"
-                          VerticalOptions="Start">
+                          MinimumHeightRequest="50"
+                          >
                         <Button Text="kamerasta"
                                 IsEnabled="{Binding IsImageCaptureSupported}"
                                 Command="{Binding AddListSpanFromCameraCommand}"
                                 HorizontalOptions="End" />
                         <Label Text="tai"
-                               Margin="20,0"
+                               Margin="20,15"
                                VerticalTextAlignment="Center"
                                Grid.Column="1" />
                         <Button Text="kuvasta"

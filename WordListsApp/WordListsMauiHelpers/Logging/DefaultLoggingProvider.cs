@@ -1,4 +1,5 @@
 ﻿using Serilog;
+
 namespace WordListsMauiHelpers.Logging;
 public class DefaultLoggingProvider : ILoggingInfoProvider
 {
@@ -43,7 +44,7 @@ public class DefaultLoggingProvider : ILoggingInfoProvider
 
     public string[] LoggingFilePaths => UsedLogPaths.ToArray();
 
-    public static ILogger GetAppDefaultLogger(long? maxSizeBytes = 512_000_000)
+    public static Serilog.ILogger GetAppDefaultLogger(long? maxSizeBytes = 512_000_000)
     {
         if (LoggerConfigured is false)
         {

@@ -16,8 +16,10 @@ public class BaseOcrListGeneratorPage : ContentPage
         BindingContextChanged += OnBindingContextChanged;
         BindingContext = viewModel;
         Title = "Luo kuvasta";
+        Unloaded += OnUnloaded; 
     }
 
+ 
 
     protected virtual IOcrListGeneratorViewModel Model => (IOcrListGeneratorViewModel)BindingContext;
     protected virtual ILogger<ContentPage> Logger { get; }
@@ -93,4 +95,6 @@ public class BaseOcrListGeneratorPage : ContentPage
         string route = $"{PageRoutes.Get(Route.WordHandling)}/{PageRoutes.Get(Route.LifeTime)}/{nameof(ListGeneratorPage.ListGeneratorPage)}";
         await Shell.Current.GoToAsync(route, queryParams);
     }
+
+    private async void OnUnloaded(object? sender, EventArgs e) => await Model.ClearImageCacheDir();
 }
