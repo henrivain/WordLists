@@ -42,7 +42,8 @@ public partial class AppShell : Shell
         Register<WordCollectionEditPage>(handling, lifetime);
 
         // Idiom specific registering
-        if (DeviceInfo.Current.Idiom == DeviceIdiom.Phone)
+        if (DeviceInfo.Current.Idiom == DeviceIdiom.Phone ||
+            DeviceInfo.Current.Platform == DevicePlatform.Android)  // Fixes image buttons in Android and Android is always phone or tablet
         {
             Register<BaseOcrListGeneratorPage, PhoneOcrListGeneratorPage>(handling, lifetime);
         }
