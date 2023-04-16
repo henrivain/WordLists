@@ -32,11 +32,5 @@
         <ShellContent Title="Tietoa"
                       Icon="info_icon.png"
                       ContentTemplate="{DataTemplate info:AppInfoPage}" />
-
-        <!-- Test -->
-        <!-- xmlns:images="clr-namespace:WordListsUI.WordDataPages.ImageRecognisionPage;assembly=WordListsUI" -->
-        <!--<ShellContent Title="Images"
-                      Icon="cards_icon.png"
-                      ContentTemplate="{DataTemplate images:ImageRecognisionPage}" />-->
     </TabBar>
 </Shell>
