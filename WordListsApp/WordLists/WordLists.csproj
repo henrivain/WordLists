@@ -185,10 +185,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Serilog" Version="2.12.0" />
-		<PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
+		<PackageReference Include="Serilog" Version="3.0.1" />
+		<PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-		<PackageReference Include="TesseractOcrMaui" Version="1.0.6" />
+		<PackageReference Include="TesseractOcrMaui" Version="1.0.7" />
 	</ItemGroup>
 
 
