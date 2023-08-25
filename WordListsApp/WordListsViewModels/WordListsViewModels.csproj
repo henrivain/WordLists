@@ -8,8 +8,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
-		<PackageReference Include="TesseractOcrMaui" Version="1.0.6" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+		<PackageReference Include="TesseractOcrMaui" Version="1.0.7" />
 	</ItemGroup>
 
 	<ItemGroup>

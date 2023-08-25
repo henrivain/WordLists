@@ -1,4 +1,7 @@
-using WordDataAccessLibrary.Helpers;
+#if WINDOWS
+using Microsoft.UI.Xaml;
+using Windows.System;
+#endif
 using WordListsMauiHelpers.PageRouting;
 using WordListsUI.WordDataPages.JsonImportPage;
 using WordListsUI.WordDataPages.ListGeneratorPage;
@@ -15,9 +18,7 @@ public partial class HomePage : ContentPage
     {
         InitializeComponent();
         Logger = logger;
-
-        // This line under is for development (automatically moving to the right page) and can be removed safely
-        // _ = Shell.Current.GoToAsync($"{PageRoutes.Get(Route.Training)}/{nameof(TrainingConfigPage)}");
+        Focus();
     }
 
 
@@ -37,9 +38,41 @@ public partial class HomePage : ContentPage
         await Shell.Current.GoToAsync($"{PageRoutes.Get(Route.Training)}/{nameof(StartTrainingPage)}");
     }
 
-    private async void CreateNewOCrField_Tapped(object sender, EventArgs e)
+    private async void CreateNewOcrField_Tapped(object sender, EventArgs e)
     {
         Logger.LogInformation("Goto '{destination}' from '{this}'", nameof(BaseOcrListGeneratorPage), nameof(HomePage));
         await Shell.Current.GoToAsync($"{PageRoutes.Get(Route.WordHandling)}/{PageRoutes.Get(Route.LifeTime)}/{nameof(BaseOcrListGeneratorPage)}");
     }
+
+ 
+
+#if WINDOWS
+    // This does not work currently, because page cannot be focused (needs entry)
+    protected override void OnHandlerChanged()
+    {
+        if (Handler?.PlatformView is UIElement element)
+        {
+            element.KeyDown += (sender, e) =>
+            {
+                switch (e.Key)
+                {
+                    case (VirtualKey.L):
+                        StartTrainingField_Tapped(sender, EventArgs.Empty);
+                        break;
+                    case (VirtualKey.N):
+                        CreateNewField_Tapped(sender, EventArgs.Empty);
+                        break;
+                    case (VirtualKey.I):
+                        ImportField_Tapped(sender, EventArgs.Empty);
+                        break;
+                    case (VirtualKey.O):
+                        CreateNewOcrField_Tapped(sender, EventArgs.Empty);
+                        break;
+                }
+            };
+
+        }
+
+    }
+#endif
 }

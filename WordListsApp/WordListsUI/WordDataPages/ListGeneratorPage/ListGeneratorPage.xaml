@@ -12,7 +12,7 @@
              x:DataType="{x:Type viewModel:IListGeneratorViewModel}"
              x:Name="listGeneratorPage"
              BackgroundColor="{StaticResource PageBackground}"
-             Title="Luo otavasta"
+             Title="Hallitse"
              BindingContextChanged="ContentPage_BindingContextChanged">
     <ContentPage.Resources>
         <converters:BooleanConverter x:Key="switchBool" />
@@ -29,7 +29,6 @@
                     <Label Text="Otsikko"
                            Margin="0,0,0,5"
                            FontSize="Medium" />
-
                     <entry:PlatformIndependantEntry Text="{Binding CollectionName}"
                                                     PlaceHolder="Minun sanastoni 1"
                                                     HorizontalOptions="{OnIdiom Default=Start, Phone=FillAndExpand}"
@@ -73,6 +72,11 @@
 
                     </Border>
                 </VerticalStackLayout>
+                <!-- This is to take room from hidden parser options-->
+                <Border IsVisible="{Binding IsEditMode}"
+                        HeightRequest="40"
+                        BackgroundColor="Transparent"
+                        Stroke="Transparent"/>
 
                 <Grid ColumnDefinitions="*,*"
                       RowDefinitions="*,*"

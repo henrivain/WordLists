@@ -12,7 +12,7 @@
     <ContentPage.Resources>
         <Style TargetType="{x:Type Label}">
             <Setter Property="TextColor"
-                    Value="White"></Setter>
+                    Value="White" />
         </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
