@@ -9,19 +9,17 @@
              >
     <ContentPage.Resources>
         <Style TargetType="{x:Type Label}">
-            <!--<Setter Property="FontFamily"
-                    Value="Poppins" />-->
             <Setter Property="TextColor"
                     Value="{StaticResource SecondaryText}" />
         </Style>
     </ContentPage.Resources>
+    
     <ScrollView Margin="20,0">
         <VerticalStackLayout Grid.Column="1">
             <Label Text="Sanastot"
                    FontSize="{OnPlatform WinUI=Large,  Android=35, Default=Title}"
                    Margin="0,5,0,5"
                    HorizontalTextAlignment="Center" />
-
             <VerticalStackLayout IsVisible="{OnPlatform Default=False, Android=True}">
                 <Grid ColumnDefinitions="80,*"
                       Margin="0,5">
@@ -77,7 +75,7 @@
                     <linkField:LinkField Text="Tuo uusi sanasto ulkoisesta .wordlist-tiedostosta"
                                          Tapped="ImportField_Tapped" />
                     <linkField:LinkField Text="Luo uusi sanasto kuvasta"
-                                         Tapped="CreateNewOCrField_Tapped" />
+                                         Tapped="CreateNewOcrField_Tapped" />
                 </VerticalStackLayout>
             </VerticalStackLayout>
         </VerticalStackLayout>
