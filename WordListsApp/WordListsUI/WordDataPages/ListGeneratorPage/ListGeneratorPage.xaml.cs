@@ -1,3 +1,7 @@
+#if WINDOWS
+using Microsoft.UI.Xaml;
+using Windows.System;
+#endif
 using WordDataAccessLibrary;
 using WordDataAccessLibrary.DataBaseActions;
 using WordListsUI.Helpers;
@@ -15,6 +19,10 @@ public partial class ListGeneratorPage : ContentPage
         ContentPage_BindingContextChanged(this, EventArgs.Empty);
         InitializeComponent();
     }
+
+
+
+
 
     private async void Model_EditFinished(object sender, DataBaseActionArgs e)
     {
@@ -95,6 +103,9 @@ public partial class ListGeneratorPage : ContentPage
     {
         await DisplayAlert("Tallentaminen epäonnistui!", $"Sanaston tallentaminen epäonnistui. \n\nSyy: \n'{e.Text}'", "OK");
     }
+
+
+
     private async void OpenEditWantedDialog(object sender, EditEventArgs e)
     {
         var initValue = e.CurrentValue;
@@ -113,14 +124,12 @@ public partial class ListGeneratorPage : ContentPage
 
         Model.SetWordValueWithIndex(e.IndexInList, result);    //e.IndexInList
     }
+
     private async void OpenAddWordDialog(object sender, EventArgs e)
     {
-        string? result;
-//#if WINDOWS
-//        result = await WordAddPage.Show("Lisää uusi sana", "kirjoita listan loppuun lisättävä sana", "OK", "peruuta", "lisättävä sana");
-//#else
-        result = await DisplayPromptAsync("Lisää uusi sana", "kirjoita listan loppuun lisättävä sana", "OK", "peruuta", "lisättävä sana");
-//#endif
+        string? result = await DisplayPromptAsync("Lisää uusi sana", "kirjoita listan loppuun lisättävä sana",
+            "OK", "peruuta", "lisättävä sana");
+
         if (string.IsNullOrEmpty(result))
         {
             return;
@@ -137,5 +146,24 @@ public partial class ListGeneratorPage : ContentPage
     }
 
 
-
+#if WINDOWS
+    protected override void OnHandlerChanged()
+    {
+        if (Handler?.PlatformView is UIElement element)
+        {
+            element.ProcessKeyboardAccelerators += (sender, args) =>
+            {
+                switch (args.Modifiers, args.Key)
+                {
+                    case (VirtualKeyModifiers.Control, VirtualKey.N):
+                        Model.New.Execute(null);
+                        break;
+                    case (VirtualKeyModifiers.Control, VirtualKey.S):
+                        Model.Save.Execute(null);
+                        break;
+                }
+            };
+        }
+    }
+#endif
 }
