@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using Microsoft.VisualBasic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordDataAccessLibrary.Generators;
@@ -85,7 +86,7 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
             }
 
             var words = await ParseFromClipBoard(parser);
-            ResetWordPairs(words);
+            await ResetWordPairs(words);
             IsBusy = false;
         });
     public IAsyncRelayCommand Save => new AsyncRelayCommand(async () =>
@@ -174,16 +175,24 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
         Words.Add(word);
         NotifyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
     }
-    public void ResetWordPairs(string[] words)
+
+   
+    public async Task ResetWordPairs(IEnumerable<string> words)
     {
+        int i = 0;
         Words.Clear();
         foreach (var word in words)
         {
+            i++;
+            if (i % 20 is 0)
+            {
+                await Task.Delay(500);
+            }
             Words.Add(word);
         }
         NotifyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
     }
-    public void OpenInEditMode(WordCollection collection)
+    public async Task OpenInEditMode(WordCollection collection)
     {
         IsEditMode = true;
         if (collection is null)
@@ -201,11 +210,15 @@ public partial class ListGeneratorViewModel : ObservableObject, IListGeneratorVi
         LanguageHeaders = collection.Owner.LanguageHeaders;
         Description = collection.Owner.Description;
 
+
+        List<string> words = new();
         foreach (var wordPair in collection.WordPairs)
         {
-            Words.Add(wordPair.NativeLanguageWord);
-            Words.Add(wordPair.ForeignLanguageWord);
+            words.Add(wordPair.NativeLanguageWord);
+            words.Add(wordPair.ForeignLanguageWord);
         }
+        await ResetWordPairs(words);
+
         NotifyChanged(nameof(CanSave), nameof(ShowUnEvenWordCountWarning));
     }
     public WordCollection ParseToWordCollection()

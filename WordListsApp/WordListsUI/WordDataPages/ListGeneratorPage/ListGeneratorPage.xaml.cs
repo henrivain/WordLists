@@ -12,9 +12,10 @@ namespace WordListsUI.WordDataPages.ListGeneratorPage;
 [QueryProperty(nameof(PageModeParameter), nameof(PageModeParameter))]
 public partial class ListGeneratorPage : ContentPage
 {
-    public ListGeneratorPage(IAbstractFactory<IListGeneratorViewModel> modelFactory)
+    public ListGeneratorPage(IAbstractFactory<IListGeneratorViewModel> modelFactory, ILogger logger)
     {
         ModelFactory = modelFactory;
+        Logger = logger;
         BindingContext = modelFactory.Create();
         ContentPage_BindingContextChanged(this, EventArgs.Empty);
         InitializeComponent();
@@ -41,11 +42,15 @@ public partial class ListGeneratorPage : ContentPage
                 return;
 
             case { Mode: ListGeneratorMode.Edit, Data: WordCollection collection }:
-                Model.OpenInEditMode(collection);
+                Logger.LogWarning($"{nameof(ListGeneratorPage)} Adding words to edit with Task.Run(resetMethdod) async, to fix UI cycling. " +
+                    $"This is might cause problems if exception occur.");
+                Task.Run(() => Model.OpenInEditMode(collection));
                 return;
 
             case { Mode: ListGeneratorMode.EditNew, Data: IEnumerable<string> words }:
-                Model.ResetWordPairs(words.ToArray());
+                Logger.LogWarning($"{nameof(ListGeneratorPage)} Adding words to edit (new) with Task.Run(resetMethdod) async, to fix UI cycling. " +
+                    $"This is might cause problems if exception occur.");
+                Task.Run(() => Model.ResetWordPairs(words));
                 return;
 
             default:
@@ -56,6 +61,7 @@ public partial class ListGeneratorPage : ContentPage
 
 
     IAbstractFactory<IListGeneratorViewModel> ModelFactory { get; }
+    ILogger Logger { get; }
 
     public IListGeneratorViewModel Model => (IListGeneratorViewModel)BindingContext;
 
