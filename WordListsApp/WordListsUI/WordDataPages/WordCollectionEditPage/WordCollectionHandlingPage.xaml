@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WordListsUI.WordDataPages.WordCollectionEditPage.WordCollectionEditPage"
-             Title="Poista sanastoja"
+             Title="Muokkaa ja poista sanastoja"
              xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
              xmlns:viewModelHelpers="clr-namespace:WordListsViewModels.Helpers;assembly=WordListsViewModels"
              BackgroundColor="{StaticResource PageBackground}"
@@ -26,13 +26,11 @@
                 <TapGestureRecognizer Tapped="HideMenu" />
             </ScrollView.GestureRecognizers>
             <VerticalStackLayout>
-
                 <Label Text="Muokkaa tai poista sanastoja"
                        FontSize="Title"
                        FontAttributes="Bold"
-                       TextColor="{StaticResource UnImportantText}"
                        HorizontalTextAlignment="Center"
-                       Margin="0,20,0,30" />
+                       Margin="0,30" />
 
                 <!-- Android needs Height request for some reason or collection view will not be shown. -->
                 <!-- resizing collectionview horizontally causes memory leak (Mauibug #9162) -->
@@ -41,10 +39,13 @@
                                 ItemsLayout="{OnPlatform WinUI='VerticalGrid,3', Default='VerticalGrid,1'}"
                                 Margin="{OnPlatform Android='20,0', Default='20'}"
                                 MinimumHeightRequest="{OnPlatform Android=400, Default=0}">
-                    <CollectionView.EmptyView>
+                    <!-- Android crashes when adding new items to empty view (MauiBug #12219)
+                        Empty view can be added, when the bug is fixed
+                    -->
+                    <!--<CollectionView.EmptyView>
                         <Label Text="Yhtäkään sanastoa ei ole vielä lisätty"
-                               HorizontalTextAlignment="Center" />
-                    </CollectionView.EmptyView>
+                                HorizontalTextAlignment="Center" />
+                    </CollectionView.EmptyView>-->
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Border BackgroundColor="{StaticResource DarkerThanPage}"
@@ -54,9 +55,24 @@
                                     <RoundRectangle CornerRadius="8" />
                                 </Border.StrokeShape>
                                 <Grid Padding="{OnIdiom Phone='20,10,0,10', Default='20,5,0,5'}"
-                                      ColumnDefinitions="{OnIdiom Phone='*,45', Default='*, 40'}">
+                                      ColumnDefinitions="{OnIdiom Phone='*,45,45', Default='*,40,40'}">
+                                    <Grid.Resources>
+                                        <Style TargetType="{x:Type ImageButton}">
+                                            <Setter Property="HeightRequest"
+                                                    Value="{OnIdiom Phone=35, Default=30}" />
+                                            <Setter Property="WidthRequest"
+                                                    Value="{Binding Source={RelativeSource Self}, Path=HeightRequest}" />
+                                            <Setter Property="Padding"
+                                                    Value="3" />
+                                            <Setter Property="CornerRadius"
+                                                    Value="15" />
+                                            <Setter Property="HorizontalOptions"
+                                                    Value="Start" />
+                                        </Style>
+                                    </Grid.Resources>
                                     <VerticalStackLayout>
-                                        <Label Text="{Binding Owner.Name}" />
+                                        <Label Text="{Binding Owner.Name}"
+                                               LineBreakMode="TailTruncation" />
                                         <Label Margin="0,5,0,0"
                                                LineBreakMode="TailTruncation">
                                             <Label.FormattedText>
@@ -69,26 +85,31 @@
                                             </Label.FormattedText>
                                         </Label>
                                     </VerticalStackLayout>
-                                    <ImageButton Source="bin_simpler_icon.png"
+                                    <ImageButton Source="pencil_icon.png"
                                                  Grid.Column="1"
-                                                 HeightRequest="{OnIdiom Phone=35, Default=30}"
-                                                 WidthRequest="{Binding Source={RelativeSource Self}, Path=HeightRequest}"
                                                  BackgroundColor="{StaticResource DarkerThanPage}"
                                                  CommandParameter="{Binding Owner.Id}"
-                                                 Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:IWordCollectionHandlingViewModel}}, Path=RequestDelete}"
-                                                 Padding="3"
-                                                 CornerRadius="15"
-                                                 HorizontalOptions="Start" />
+                                                 Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:IWordCollectionHandlingViewModel}}, Path=Edit}" />
+                                    <ImageButton Source="bin_simpler_icon.png"
+                                                 Grid.Column="2"
+                                                 BackgroundColor="{StaticResource DarkerThanPage}"
+                                                 CommandParameter="{Binding Owner.Id}"
+                                                 Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:IWordCollectionHandlingViewModel}}, Path=VerifyDeleteCommand}" />
                                 </Grid>
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
-
                 </CollectionView>
-                <Button Text="Päivitä näkymä"
-                        Command="{Binding UpdateCollectionInfos}"
-                        HorizontalOptions="Center"
-                        Margin="0,30" />
+                <Grid MaximumWidthRequest="800"
+                      Margin="{OnPlatform WinUI='0,5,0,100',Default='20,5,20,100'}"
+                      ColumnDefinitions="*,*"
+                      ColumnSpacing="5">
+                    <Button Text="Poista kaikki sanastot"
+                            Command="{Binding VerifyDeleteAllCommand}" />
+                    <Button Text="Päivitä näkymä"
+                            Grid.Column="1"
+                            Command="{Binding UpdateCollectionInfos}" />
+                </Grid>
             </VerticalStackLayout>
         </ScrollView>
         <menu:SideMenu x:Name="menu"
@@ -99,5 +120,12 @@
                 <base:WordDataMenuItems SelectedItem="{x:Static base:SelectedMenuItem.Delete}" />
             </menu:SideMenu.MenuItems>
         </menu:SideMenu>
+        <ActivityIndicator HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           HeightRequest="50"
+                           Color="MediumPurple"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           WidthRequest="{Binding Source={RelativeSource Self}, Path=HeightRequest}" />
     </Grid>
 </ContentPage>

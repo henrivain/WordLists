@@ -2,7 +2,7 @@
 
 public static class PageRoutes
 {
-    public static string GetRoute(Route route)
+    public static string Get(Route route)
     {
         return route switch
         {

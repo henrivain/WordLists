@@ -1,75 +1,53 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using Microsoft.Extensions.Logging;
+using System.Collections.ObjectModel;
 using WordDataAccessLibrary.Helpers;
 
-[assembly: InternalsVisibleTo("WordListsMauiHelpersTests")]
-
 namespace WordListsMauiHelpers.DeviceAccess;
-public static class FilePickerService
+public class FilePickerService : IFilePickerService
 {
-
-    /// <param name="fileExtensions"></param>
-    /// <returns>full path to selected file or null if user exits or something fails</returns>
-    public static async Task<string> GetUserSelectedFullPath(List<string> fileExtensions)
+    public FilePickerService(ILogger logger)
     {
-        try
-        {
-            FileResult result = await FilePicker.Default.PickAsync(new()
-            {
-                PickerTitle = "Valitse sijainti vietävälle tiedostolle",
-#if ANDROID
-                FileTypes = GetFileTypesWithExtension(null)     // file extension don't work currently 7.8.2022
-#else
-                FileTypes = GetFileTypesWithExtension(fileExtensions)
-#endif
-            });
-            if (string.IsNullOrWhiteSpace(result?.FullPath)) return null;
-            return result.FullPath;
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"Try pick file: exception: {ex.Message}");
-            return null;
-        }
+        Logger = logger;
     }
 
-    /// <summary>
-    /// Get path to .json file. In windows, user choose folder and filename is automatically generated. 
-    /// On other platforms user choose .json file and its path will be returned;
-    /// </summary>
-    /// <returns>path to json file or null, if fails or user exits</returns>
-    public static async Task<string> GetUserSelectedExportPath()
+    public ReadOnlyDictionary<FileExtension, string> AppFileExtensions { get; } = GetExtensions();
+
+    public async Task<string?> PickFile(List<string> acceptableExtensions)
     {
+        Logger.LogInformation("Let user select file location.");
+        return await DeviceSpecificFilePicker.GetUserSelectedFullPath(acceptableExtensions);
+    }
+
+
 #if WINDOWS
-        string resultPath = await new FolderPicker().PickAsync();
-        if (string.IsNullOrWhiteSpace(resultPath)) return null;
-        return Path.Combine(resultPath, PathHelper.GetNewBackupFileName());
+    public async Task<string?> PickFolder()
+    {
+        Logger.LogInformation("Let user pick folder location from their device.");
+        return await DeviceSpecificFilePicker.GetUserSelectedFolder();
+    }
 #else
-        return await GetUserSelectedFullPath(new()
-        {
-            AppFileExtension.Get(FileExtension.Wordlist)
-        });
+    public Task<string?> PickFolder()
+    {
+        Logger.LogError("Cannot pick folder in platform other than Windows currently.");
+        throw new PlatformNotSupportedException();
+    }
 #endif
-    }
-    internal static List<string> GetValidFileExtensions(List<string> extensions)
-    {
-        extensions ??= new();
-        return extensions.Where(x => string.IsNullOrWhiteSpace(x) is false)
-                         .Select(x => x.StartsWith(".") ? x : $".{x}")
-                         .ToList();
-    }
-    private static FilePickerFileType GetFileTypesWithExtension(List<string> extensions)
-    {
-        extensions ??= new();
 
-        return new(new Dictionary<DevicePlatform, IEnumerable<string>>
-                {
-                    { DevicePlatform.iOS, extensions },
-                    { DevicePlatform.Android, extensions },
-                    { DevicePlatform.WinUI, extensions },
-                    { DevicePlatform.Tizen, extensions },
-                    { DevicePlatform.macOS, extensions }
-                });
+    public string GetAppFileExtension()
+    {
+        return AppFileExtensions[FileExtension.Wordlist];
     }
 
+    ILogger Logger { get; }
+    private static ReadOnlyDictionary<FileExtension, string> GetExtensions()
+    {
+        var dictionary = new Dictionary<FileExtension, string>()
+        {
+            [FileExtension.Json] = ".json",
+            [FileExtension.Zip] = ".zip",
+            [FileExtension.Wordlist] = ".wordlist",
+        };
+        return new(dictionary);
+        
+    }
 }

@@ -1,44 +1,81 @@
+using WordDataAccessLibrary;
+using WordDataAccessLibrary.DataBaseActions;
+using WordListsMauiHelpers.PageRouting;
+using WordListsUI.WordDataPages.ListGeneratorPage;
+using WordListsViewModels.Events;
+
 namespace WordListsUI.WordDataPages.WordCollectionEditPage;
 
 public partial class WordCollectionEditPage : ContentPage
 {
-	public WordCollectionEditPage(IWordCollectionHandlingViewModel model)
+	public WordCollectionEditPage(IWordCollectionHandlingViewModel model, ILogger<ContentPage> logger)
 	{
 		BindingContext = model;
 		InitializeComponent();
-        Model.CollectionDeleted += Model_CollectionDeleted;
+        Model.CollectionsDeleted += Model_CollectionDeleted;
 		Model.DeleteRequested += Model_DeleteRequested;
+        Model.EditRequested += Model_EditRequested;
+        Logger = logger;
     }
 
-	private async void Model_DeleteRequested(object sender, WordListsViewModels.Events.DeleteWantedEventArgs e)
+    IWordCollectionHandlingViewModel Model => (IWordCollectionHandlingViewModel)BindingContext;
+    ILogger<ContentPage> Logger { get; }
+
+    private async void Model_EditRequested(object sender, WordCollection collection)
+    {
+        string path = $"{PageRoutes.Get(Route.WordHandling)}/{PageRoutes.Get(Route.LifeTime)}/{nameof(ListGeneratorPage.ListGeneratorPage)}";
+
+        await Shell.Current.GoToAsync(path, new Dictionary<string, object>()
+        {
+            [nameof(ListGeneratorPage.ListGeneratorPage.PageModeParameter)] = new PageModeParameter<ListGeneratorMode>()
+            {
+                Mode = ListGeneratorMode.Edit,
+                Data = collection
+            }
+        });
+    }
+
+    private async void Model_DeleteRequested(object sender, DeleteWantedEventArgs e)
 	{
-        bool proceed = await DisplayAlert(
-                title: "Poista sanasto?",
-                message: $"Haluatko varmasti poistaa sanaston: '{e.WordCollectionOwner.Name}', id {e.WordCollectionOwner.Id}",
-                cancel: "peruuta",
-                accept: "jatka"
-                );
+		if (e.ItemsToDelete is null)
+		{
+			Logger.LogWarning("{cls}: Cannot delete wordcollections, none where provided.", 
+				nameof(WordCollectionEditPage));
+			return;
+		}
+		bool proceed;
+		if (e.DeletesAll)
+		{
+			proceed = await DisplayAlert("Poista kaikki sanastot?", 
+				$"Haluatko varmasti poistaa kaikki '{e.ItemsToDelete.Length}' sanastoa lopullisesti.", "Jatka", "Peruuta");
+		}
+		else
+		{
+            string message = $"""
+				Haluatko varmasti poistaa {e.ItemsToDelete.Length} sanastoa lopullisesti?
+				Painamalla 'Jatka', seuraavat sanastot poistetaan: 
+				{string.Join("\n", e.ItemsToDelete.Select(x => x.Name))}
+				""";
+
+			proceed = await DisplayAlert("Poista sanastoja", message, "Jatka", "Peruuta");
+		}
 		if (proceed)
 		{
-            await Model.DeleteCollection(e.WordCollectionOwner);
+            await Model.DeleteCollections(e.ItemsToDelete);
         }
     }
 
-    private async void Model_CollectionDeleted(object sender, WordDataAccessLibrary.DataBaseActions.DataBaseActionArgs e)
+    private async void Model_CollectionDeleted(object sender, DataBaseActionArgs e)
 	{
-        await DisplayAlert("Poistettu onnistuneest!", $"Sanasto id:llä: {e.RefId} poistettiin onnistuneesti", "OK");
+		int amountDeleted = e.CollectionNames.Length;
+
+        await DisplayAlert("Poistettu onnistuneesti!", $"{amountDeleted} sanastoa poistettiin onnistuneesti.", "OK");
     }
 
-    public IWordCollectionHandlingViewModel Model => (IWordCollectionHandlingViewModel)BindingContext;
-
-	private async void ContentPage_Loaded(object sender, EventArgs e)
+    private async void ContentPage_Loaded(object sender, EventArgs e)
 	{
 		await Model.ResetCollections();
 	}
 
-
-	private void HideMenu(object sender, EventArgs e)
-	{
-		menu.Collapse(sender, e);
-	}
+    private void HideMenu(object sender, EventArgs e) => menu.Collapse(sender, e);
 }

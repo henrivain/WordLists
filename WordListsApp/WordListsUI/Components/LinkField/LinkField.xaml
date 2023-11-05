@@ -5,7 +5,6 @@
         x:Class="WordListsUI.Components.LinkField.LinkField"
         Stroke="Transparent"
         x:Name="linkField"
-        BindingContext="{Binding Source={RelativeSource Self}, Path=DefaultViewModel}"
         x:DataType="{x:Type local:LinkField}"
         BackgroundColor="{StaticResource DarkerThanPage}">
     <Border.StrokeShape>

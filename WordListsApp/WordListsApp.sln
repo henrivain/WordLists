@@ -20,6 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordListsViewModels", "Word
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{AC1754A4-454D-43B3-966F-5B323561E1C4}"
 	ProjectSection(SolutionItems) = preProject
+		ListOfCurrentMauiBugsCausingProblems.xml = ListOfCurrentMauiBugsCausingProblems.xml
 		RoadMap.xml = RoadMap.xml
 	EndProjectSection
 EndProject
@@ -29,9 +30,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModelTests", "ViewModel
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordListsMauiHelpersTests", "WordListsMauiHelpersTests\WordListsMauiHelpersTests.csproj", "{6077199D-EBD5-4688-97ED-30CA82E7501E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordValidationLibrary", "WordValidationLibrary\WordValidationLibrary.csproj", "{E0526EA6-6E0F-4220-95E3-4761DE7BD4F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordValidationLibrary", "WordValidationLibrary\WordValidationLibrary.csproj", "{E0526EA6-6E0F-4220-95E3-4761DE7BD4F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordValidationLibraryTests", "WordValidationLibraryTests\WordValidationLibraryTests.csproj", "{2472422C-5E86-457B-B3BB-7CBA407410B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordValidationLibraryTests", "WordValidationLibraryTests\WordValidationLibraryTests.csproj", "{2472422C-5E86-457B-B3BB-7CBA407410B8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordListsServices", "WordListsServices\WordListsServices.csproj", "{457C9D2C-B60A-4174-A084-3166B19E7A06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +84,10 @@ Global
 		{2472422C-5E86-457B-B3BB-7CBA407410B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2472422C-5E86-457B-B3BB-7CBA407410B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2472422C-5E86-457B-B3BB-7CBA407410B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{457C9D2C-B60A-4174-A084-3166B19E7A06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{457C9D2C-B60A-4174-A084-3166B19E7A06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{457C9D2C-B60A-4174-A084-3166B19E7A06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{457C9D2C-B60A-4174-A084-3166B19E7A06}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

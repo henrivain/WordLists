@@ -17,8 +17,8 @@
                 <resources:ResultPageResources />
                 <ResourceDictionary>
                     <Style TargetType="{x:Type Span}">
-                        <Setter Property="FontFamily"
-                                Value="Poppins" />
+                        <!--<Setter Property="FontFamily"
+                                Value="Poppins" />-->
                         <Setter Property="TextColor"
                                 Value="{StaticResource NormalText}" />
                         <Setter Property="FontAttributes"

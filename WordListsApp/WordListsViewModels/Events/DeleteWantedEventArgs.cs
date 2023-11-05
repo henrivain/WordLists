@@ -3,10 +3,17 @@
 public class DeleteWantedEventArgs : EventArgs
 {
 	public DeleteWantedEventArgs() { }
-	public DeleteWantedEventArgs(WordCollectionOwner owner)
+	public DeleteWantedEventArgs(WordCollectionOwner[] owners)
 	{
-		WordCollectionOwner = owner;
+        ItemsToDelete = owners;
 	}
 
-    public WordCollectionOwner? WordCollectionOwner { get; set; }
+    public DeleteWantedEventArgs(WordCollectionOwner[] owners, bool deletesAll) : this(owners)
+    {
+        DeletesAll = deletesAll;
+    }
+  
+
+    public WordCollectionOwner[]? ItemsToDelete { get; set; }
+    public bool DeletesAll { get; set; }
 }

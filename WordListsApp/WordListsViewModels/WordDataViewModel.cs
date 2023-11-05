@@ -3,10 +3,11 @@ using WordDataAccessLibrary.DataBaseActions.Interfaces;
 
 namespace WordListsViewModels;
 
-[INotifyPropertyChanged]
-public partial class WordDataViewModel : IWordDataViewModel
+public partial class WordDataViewModel : ObservableObject, IWordDataViewModel
 {
-    public WordDataViewModel(IWordCollectionService collectionService, IWordPairService pairService)
+    public WordDataViewModel(
+        IWordCollectionService collectionService, 
+        IWordPairService pairService)
     {
         CollectionService = collectionService;
         PairService = pairService;
@@ -14,22 +15,22 @@ public partial class WordDataViewModel : IWordDataViewModel
     }
 
     [ObservableProperty]
-    int wordListCount = 0;
+    int _wordListCount = 0;
 
     [ObservableProperty]
-    int wordCount = 0;
+    int _wordCount = 0;
     
     [ObservableProperty]
-    int learnedWordCount = 0;
+    int _learnedWordCount = 0;
 
     [ObservableProperty]
-    int neverHeardWordCount = 0;
+    int _neverHeardWordCount = 0;
 
     [ObservableProperty]
-    int mightKnowWordCount = 0;
+    int _mightKnowWordCount = 0;
 
     [ObservableProperty]
-    int notSetWordCount = 0;
+    int _notSetWordCount = 0;
 
     public IAsyncRelayCommand UpdateData => new AsyncRelayCommand(async () =>
     {

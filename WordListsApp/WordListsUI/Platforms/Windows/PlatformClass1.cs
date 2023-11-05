@@ -1,5 +1,6 @@
-﻿namespace WordListsUI.Platforms.Windows;
+﻿using System;
 
+namespace WordListsUI;
 // All the code in this file is only included on Windows.
 public class PlatformClass1
 {

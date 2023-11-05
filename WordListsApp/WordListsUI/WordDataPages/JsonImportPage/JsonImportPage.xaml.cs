@@ -1,9 +1,10 @@
 using WordDataAccessLibrary.CollectionBackupServices;
 using WordDataAccessLibrary.CollectionBackupServices.ActionResults;
-using WordListsMauiHelpers.Factories;
+using WordListsMauiHelpers.DependencyInjectionExtensions;
 
 namespace WordListsUI.WordDataPages.JsonImportPage;
 
+[QueryProperty(nameof(DefaultImportPath), nameof(DefaultImportPath))]
 public partial class JsonImportPage : ContentPage
 {
 	public JsonImportPage(IAbstractFactory<IJsonImportViewModel> modelFactory)
@@ -13,7 +14,13 @@ public partial class JsonImportPage : ContentPage
         ContentPage_BindingContextChanged(this, EventArgs.Empty);
         InitializeComponent();
     }
-
+    public string DefaultImportPath
+    {
+        set
+        {
+            Model.SetDefaultImportPath(value);
+        }
+    }
 
     public IJsonImportViewModel Model => (IJsonImportViewModel)BindingContext;
     private IAbstractFactory<IJsonImportViewModel> ModelFactory { get; }
@@ -41,6 +48,13 @@ public partial class JsonImportPage : ContentPage
             ShowOpacityAnimation(wrongFileTypeLabel);
         }
     }
+    private void ContentPage_BindingContextChanged(object sender, EventArgs e)
+    {
+        Model.EmptyImportAttempted += Model_EmptyImportAttempted;
+        Model.ImportActionFailed += Model_ImportActionFailed;
+        Model.ImportSuccessfull += Model_ImportSuccessfull;
+        Model.SelectFileAttempted += Model_SelectFileAttempted;
+    }
     private void ShowOpacityAnimation(View view)
     {
         Animation fadeIn = new(o =>
@@ -56,18 +70,8 @@ public partial class JsonImportPage : ContentPage
         };
         parent.Commit(this, "opacityAnimation", 16, 6000);
     }
-
     private void HideMenu(object sender, EventArgs e)
     {
         menu.Collapse(sender, e);
-    }
-   
-
-    private void ContentPage_BindingContextChanged(object sender, EventArgs e)
-    {
-        Model.EmptyImportAttempted += Model_EmptyImportAttempted;
-        Model.ImportActionFailed += Model_ImportActionFailed;
-        Model.ImportSuccessfull += Model_ImportSuccessfull;
-        Model.SelectFileAttempted += Model_SelectFileAttempted;
     }
 }

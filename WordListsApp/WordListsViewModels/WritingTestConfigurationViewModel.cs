@@ -1,21 +1,19 @@
-﻿using System.Reflection.PortableExecutable;
-using WordListsMauiHelpers.Extensions;
+﻿using WordListsMauiHelpers.Extensions;
 using WordListsViewModels.Events;
 
 namespace WordListsViewModels;
 
-[INotifyPropertyChanged]
-public partial class WritingTestConfigurationViewModel : IWritingTestConfigurationViewModel
+public partial class WritingTestConfigurationViewModel : ObservableObject, IWritingTestConfigurationViewModel
 {
 
     [ObservableProperty]
-    WordCollection collection = new();
+    WordCollection _collection = new();
 
     [ObservableProperty]
-    bool questionsFromNativeToForeign = true;
+    bool _questionsFromNativeToForeign = true;
 
     [ObservableProperty]
-    bool saveProgression = false;
+    bool _saveProgression = false;
 
     string _selectedPairCount = "10";
 
@@ -30,7 +28,7 @@ public partial class WritingTestConfigurationViewModel : IWritingTestConfigurati
     }
 
     [ObservableProperty]
-    bool isBusy = false;
+    bool _isBusy = false;
 
 
     public event StartWordCollectionEventHandler? StartWordCollection;

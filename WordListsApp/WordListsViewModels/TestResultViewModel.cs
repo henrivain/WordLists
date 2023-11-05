@@ -1,19 +1,17 @@
 ﻿using WordDataAccessLibrary.DataBaseActions.Interfaces;
 using WordListsViewModels.Events;
-using WordListsViewModels.Extensions;
 using WordListsViewModels.Helpers;
 
 namespace WordListsViewModels;
 
-[INotifyPropertyChanged]
-public partial class TestResultViewModel : ITestResultViewModel
+public partial class TestResultViewModel : ObservableObject, ITestResultViewModel
 {
     public TestResultViewModel(IWordPairService wordPairService)
     {
         WordPairService = wordPairService;
     }
 
-    List<WordPairQuestion> _answeredQuestions = Enumerable.Empty<WordPairQuestion>().ToList();
+    List<WordPairQuestion> _answeredQuestions = new();
 
     public List<WordPairQuestion> AnsweredQuestions 
     { 
@@ -43,17 +41,18 @@ public partial class TestResultViewModel : ITestResultViewModel
     }
 
     [ObservableProperty]
-    int score = 0;
+    int _score = 0;
 
     [ObservableProperty]
-    double charMatchPercentage = 0d;
+    double _charMatchPercentage = 0d;
 
     [ObservableProperty]
-    string sessionId = "#0000000";
+    string _sessionId = "#0000000";
 
     [ObservableProperty]
-    [AlsoNotifyChangeFor(nameof(ProgressionNotSaved))]
-    bool progressionSaved = false;
+    //[AlsoNotifyChangeFor(nameof(ProgressionNotSaved))]
+    [NotifyPropertyChangedFor(nameof(ProgressionNotSaved))]
+    bool _progressionSaved = false;
     
     public bool ProgressionNotSaved => !ProgressionSaved;
 

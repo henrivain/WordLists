@@ -8,7 +8,7 @@ internal static class ListExtensions
         return owners.OrderBy(x => x.Name);
     }
 
-    internal static List<WordCollectionInfo> SortByName(this List<WordCollectionInfo> owners)
+    internal static IEnumerable<WordCollectionInfo> SortByName(this IEnumerable<WordCollectionInfo> owners)
     {
         return owners.OrderBy(x => x.Owner.Name).ToList();
     }

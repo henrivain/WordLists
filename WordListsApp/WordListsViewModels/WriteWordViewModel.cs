@@ -6,10 +6,7 @@ using WordValidationLibrary;
 
 namespace WordListsViewModels;
 
-
-
-[INotifyPropertyChanged]
-public partial class WriteWordViewModel : IWriteWordViewModel
+public partial class WriteWordViewModel : ObservableObject, IWriteWordViewModel
 {
     public WriteWordViewModel(IUserInputWordValidator inputValidator, IWordPairService wordPairService)
     {
@@ -22,20 +19,19 @@ public partial class WriteWordViewModel : IWriteWordViewModel
     IWordPairService WordPairService { get; }
 
     [ObservableProperty]
-    WordCollectionOwner info = new();
-
-
-    [ObservableProperty]
-    List<WordPairQuestion> questions = Enumerable.Empty<WordPairQuestion>().ToList();
+    WordCollectionOwner _info = new();
 
     [ObservableProperty]
-    uint questionCount = 0;
+    List<WordPairQuestion> _questions = new();
 
     [ObservableProperty]
-    string sessionId = GenerateSessionId();
+    uint _questionCount = 0;
 
     [ObservableProperty]
-    bool saveProgression = false;
+    string _sessionId = GenerateSessionId();
+
+    [ObservableProperty]
+    bool _saveProgression = false;
 
     public IAsyncRelayCommand ValidateAll => new AsyncRelayCommand(async () =>
     {
@@ -57,11 +53,11 @@ public partial class WriteWordViewModel : IWriteWordViewModel
         }
         if (SaveProgression)
         {
-            await questions.SaveLearnStates(WordPairService);
+            await Questions.SaveLearnStates(WordPairService);
         }
         TestValidated?.Invoke(this, new()
         {
-            Questions = questions,
+            Questions = Questions,
             SessionId = SessionId,
             ProgressionSaved = SaveProgression
         });
@@ -78,7 +74,7 @@ public partial class WriteWordViewModel : IWriteWordViewModel
         QuestionCount = count;
 
         // convert word pairs to word pair questions
-        List<WordPairQuestion> questions = Enumerable.Empty<WordPairQuestion>().ToList();
+        List<WordPairQuestion> questions = new();
         for (int i = 0; i < count; i++)
         {
             questions.Add(new(collection.WordPairs[i], (uint)i + 1, count));

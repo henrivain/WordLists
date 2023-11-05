@@ -3,6 +3,11 @@ using Android.Runtime;
 
 [assembly: UsesPermission(Android.Manifest.Permission.ReadExternalStorage)]
 [assembly: UsesPermission(Android.Manifest.Permission.WriteExternalStorage)]
+[assembly: UsesPermission(Android.Manifest.Permission.Camera)]
+
+[assembly: UsesFeature("android.hardware.camera", Required = true)]
+[assembly: UsesFeature("android.hardware.autofocus", Required = true)]
+
 namespace WordLists.Platforms.Android;
 
 [Application]

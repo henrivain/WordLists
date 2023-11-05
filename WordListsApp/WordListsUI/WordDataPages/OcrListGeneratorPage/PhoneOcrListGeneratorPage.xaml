@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:BaseOcrListGeneratorPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                                x:Class="WordListsUI.WordDataPages.OcrListGeneratorPage.PhoneOcrListGeneratorPage"
+                                xmlns:local="clr-namespace:WordListsUI.WordDataPages.OcrListGeneratorPage"
+                                xmlns:vm="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
+                                xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
+                                xmlns:converters="clr-namespace:WordListsUI.ValueConverters"
+                                x:DataType="{x:Type vm:IOcrListGeneratorViewModel}"
+                                x:Name="basePage">
+    <local:BaseOcrListGeneratorPage.Resources>
+        <converters:BooleanConverter x:Key="boolConverter" />
+    </local:BaseOcrListGeneratorPage.Resources>
+    <!-- Title set in base class -->
+    <Grid>
+        <RefreshView Command="{Binding ClearWordsCommand}"
+                     IsRefreshing="{Binding IsRefreshing}">
+            <ScrollView>
+                <VerticalStackLayout Margin="0,10,0,150">
+                    <Label Grid.RowSpan="2"
+                           HorizontalOptions="Start"
+                           MaxLines="16"
+                           Padding="15,10"
+                           TextColor="{StaticResource SecondaryText}"
+                           HorizontalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Täällä voit luoda sanastoja ottamalla kameralla kuvan sanastostasi " />
+                                <Span Text="tai valitsemalla kuvistasi haluamasi sanaston. " />
+                                <Span Text="Sanastojen kirjaimet havaitaan optisella kirjaintunnistuksella, " />
+                                <Span Text="joten pidä huolta siitä, että kuvat ovat selkeitä ja hyvin valaistuja. " />
+                                <Span Text="Havaittu teksti ei ehkä välttämättä parsivoidu oikein, " />
+                                <Span Text="joten tallentaaksesi tai muokataksesi muodostettua listaa, " />
+                                <Span Text="paina 'Jatka muokkaamaan' -painiketta." />
+                                <Span Text="Kuvista kannattaa rajata otsikot ja muut turhat tekstit pois. " />
+                                <Span Text="Valaistuksen pitää olla myös erittäin hyvä. " />
+                                <Span Text="Ota kerrallaan kuva vain yhdestä sanastosarakkeesta, " />
+                                <Span Text="jossa eri kielet on jaettu keskellä olevalla selkeällä tyhjällä välialueella." />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Label Text="Lisää sanoja"
+                           FontSize="Medium"
+                           HorizontalTextAlignment="Center" />
+
+                    <Grid ColumnDefinitions="*,auto,*"
+                          Margin="0,15">
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="WidthRequest"
+                                        Value="120" />
+                            </Style>
+                        </Grid.Resources>
+                        <Button Text="kamerasta"
+                                IsEnabled="{Binding IsImageCaptureSupported}"
+                                HorizontalOptions="End"
+                                WidthRequest="120"
+                                Command="{Binding AddListSpanFromCameraCommand}" />
+                        <Label Text="tai"
+                               FontSize="Small"
+                               Grid.Column="1"
+                               Padding="10,0"
+                               VerticalTextAlignment="Center" />
+                        <Button Text="kuvasta"
+                                Grid.Column="2"
+                                HorizontalOptions="Start"
+                                WidthRequest="120"
+                                Command="{Binding AddListSpanFromFileCommand}" />
+                    </Grid>
+
+                    <Label HorizontalTextAlignment="Center"
+                           FontSize="Small"
+                           IsVisible="{Binding HasValidPairs}"
+                           TextColor="{StaticResource SecondaryText}"
+                           Margin="0,0,0,15">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Optisen tunnistuksen varmuus: " />
+                                <Span Text="{Binding RecogizionConfidence}" />
+                                <Span Text="%" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Button Text="Jatka muokkaamaan"
+                            Margin="20,0"
+                            IsEnabled="{Binding HasValidPairs}"
+                            HeightRequest="45"
+                            Clicked="ProceedToEdit_Clicked" />
+
+
+                    <Border BackgroundColor="{StaticResource DarkerThanPage}"
+                            Stroke="Transparent"
+                            StrokeThickness="0"
+                            Margin="20"
+                            Padding="10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Grid>
+                            <Label Text="Et ole vielä lisännyt yhtään sanoja."
+                                   TextColor="{StaticResource SecondaryText}"
+                                   IsVisible="{Binding HasValidPairs, Converter={StaticResource boolConverter}}"
+                                   HorizontalTextAlignment="Center" />
+                            <CollectionView ItemsSource="{Binding Pairs}"
+                                            MinimumHeightRequest="45">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="{x:Type wordData:WordPair}">
+                                        <Grid  ColumnDefinitions="*,15,*"
+                                               Margin="0,5">
+                                            <Label Text="{Binding NativeLanguageWord}"
+                                                   LineBreakMode="TailTruncation" />
+                                            <Label Text="{Binding ForeignLanguageWord}"
+                                                   Grid.Column="2"
+                                                   LineBreakMode="TailTruncation" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+            </ScrollView>
+
+        </RefreshView>
+        <ActivityIndicator IsRunning="{Binding IsBusy}"
+                           WidthRequest="30"
+                           Color="Orange" />
+    </Grid>
+</local:BaseOcrListGeneratorPage>

@@ -1,6 +1,10 @@
+using System.ComponentModel;
+using System.Windows.Input;
 using WordListsUI.Helpers;
 
 namespace WordListsUI.Components.Entry;
+
+#nullable enable
 
 public partial class PlatformIndependantEntry : Border
 {
@@ -39,6 +43,24 @@ public partial class PlatformIndependantEntry : Border
     public static readonly BindableProperty MaxLengthProperty =
         BindableProperty.Create(nameof(MaxLength), typeof(int), typeof(PlatformIndependantEntry), int.MaxValue);
 
+    [TypeConverter(typeof(FontSizeConverter))]
+    public double FontSize
+    {
+        get { return (double)GetValue(FontSizeProperty); }
+        set { SetValue(FontSizeProperty, value); }
+    }
+
+    public static readonly BindableProperty FontSizeProperty =
+        BindableProperty.Create(nameof(FontSize), typeof(double), typeof(PlatformIndependantEntry));
+
+    public ICommand? TextChangedCommand
+    {
+        get { return (ICommand?)GetValue(TextChangedCommandProperty); }
+        set { SetValue(TextChangedCommandProperty, value); }
+    }
+    public static readonly BindableProperty TextChangedCommandProperty =
+        BindableProperty.Create(nameof(TextChangedCommand), typeof(ICommand), typeof(PlatformIndependantEntry), default(ICommand?));
+
 
     public Keyboard Keyboard
     {
@@ -56,5 +78,10 @@ public partial class PlatformIndependantEntry : Border
         {
             UIInteractionHelper.FocusITextInputText(input, this);
         }
+    }
+
+    private void Entry_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        TextChangedCommand?.Execute(null);
     }
 }

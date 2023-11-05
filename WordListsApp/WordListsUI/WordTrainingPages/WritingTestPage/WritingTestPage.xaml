@@ -12,8 +12,8 @@
 
     <ContentPage.Resources>
         <Style TargetType="{x:Type Label}">
-            <Setter Property="FontFamily"
-                    Value="Poppins" />
+            <!--<Setter Property="FontFamily"
+                    Value="Poppins" />-->
             <Setter Property="TextColor"
                     Value="{StaticResource NormalText}" />
         </Style>
@@ -93,11 +93,11 @@
                                     Text="Tarkista"
                                     FontSize="Small"
                                     TextColor="{StaticResource NormalText}"
-                                    FontFamily="Poppins"
                                     FontAttributes="Bold"
                                     BackgroundColor="{StaticResource Blue800Accent}"
                                     BorderColor="Transparent"
                                     BorderWidth="0" />
+                            <!--FontFamily="Poppins"-->
                             <Label Text="Painettuasi 'tarkista', et voi enää muokata vastauksiasi"
                                    HorizontalTextAlignment="Center"
                                    TextColor="{StaticResource SecondaryText}"

@@ -1,6 +1,6 @@
-using WordListsUI.Helpers;
 using WordDataAccessLibrary.CollectionBackupServices;
-using WordListsMauiHelpers.Factories;
+using WordListsMauiHelpers.DependencyInjectionExtensions;
+using WordListsUI.Helpers;
 
 namespace WordListsUI.WordDataPages.JsonExportPage;
 
@@ -17,11 +17,9 @@ public partial class JsonExportPage : ContentPage
     private async void Model_EmptyExportAttempted(object sender, ExportActionResult e)
     {
         await DisplayAlert("Sanastoja ei valittu!", "Et voi vied‰ tyhj‰‰ sanastokokonaisuutta", "OK");
-        // have to add again because these don't fire again (dotnet/maui bug)
     }
     private async void Model_ExportCompleted(object sender, ExportActionResult e)
     {
-        // have to add again because these don't fire again (dotnet/maui bug)
         if (e.Success)
         {
             await DisplayAlert("Sanastot viety!", $"Sanastot on viety onnistuneesti hakemistoon: {e.UsedPath}", "OK");
@@ -51,5 +49,31 @@ public partial class JsonExportPage : ContentPage
     {
         Model.ExportCompleted += Model_ExportCompleted;
         Model.EmptyExportAttempted += Model_EmptyExportAttempted;
+    }
+
+    private async void ChangeFileName_Clicked(object sender, EventArgs e)
+    {
+        string result;
+        bool isFirstAttempt = true;
+        do
+        {
+            string title = isFirstAttempt ? "Vaihda tiedostonimi" 
+                : "Anna kelvollinen tiedostonimi";
+            string msg = isFirstAttempt ? "Anna haluamasi nimi viet‰v‰lle tiedostolle."
+                : "Nime‰ ei voi j‰tt‰‰ tyhj‰ksi. Lis‰‰ nimi tai paina peruuta.";
+
+            result = await DisplayPromptAsync(title,
+               msg, "OK", "Peruuta", "tiedoston nimi", 48, null, Model.ExportFileName);
+
+            if (result is null)
+            {
+                return;
+            }
+            isFirstAttempt = false;
+        }
+        while (string.IsNullOrWhiteSpace(result));
+
+        Model.ExportFileName = string.Join("_", 
+            result.Split(Path.GetInvalidFileNameChars()));
     }
 }

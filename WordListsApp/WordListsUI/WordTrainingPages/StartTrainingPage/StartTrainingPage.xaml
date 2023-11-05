@@ -6,12 +6,15 @@
              xmlns:viewModel="clr-namespace:WordListsViewModels.Interfaces;assembly=WordListsViewModels"
              xmlns:wordData="clr-namespace:WordDataAccessLibrary;assembly=WordDataAccessLibrary"
              xmlns:local="clr-namespace:WordListsUI.WordTrainingPages.StartTrainingPage"
+             xmlns:converters="clr-namespace:WordListsUI.ValueConverters"
              xmlns:entry="clr-namespace:WordListsUI.Components.Entry"
              x:DataType="{x:Type viewModel:IStartTrainingViewModel}"
              BackgroundColor="{StaticResource PageBackground}"
              Loaded="ContentPage_Loaded"
-             x:Name="startTrainingPage"
-             >
+             x:Name="this">
+    <ContentPage.Resources>
+        <converters:StartTrainingWorkaroundVisibilityConverter x:Key="placeholderHider" />
+    </ContentPage.Resources>
     <Grid>
         <!--<RefreshView Command="{Binding UpdateCollections}" IsRefreshing="{Binding IsRefreshing}">-->
         <!-- Add refresh view when bug #5772 is fixed -->
@@ -30,22 +33,10 @@
                 <entry:PlatformIndependantEntry WidthRequest="300"
                                                 Margin="0,20"
                                                 HorizontalOptions="Center"
-                                                Text="{Binding DataParameter}"
+                                                Text="{Binding SearchTerm}"
                                                 PlaceHolder="Avainsana"
-                                                MaxLength="36" />
-                <VerticalStackLayout>
-
-                    <Grid ColumnDefinitions="*, *">
-                        <Button Text="Etsi nimen perusteella"
-                                Command="{Binding UpdateCollectionsByName}"
-                                HorizontalOptions="End" />
-                        <Button Text="Etsi kielen perusteella"
-                                Grid.Column="1"
-                                HorizontalOptions="Start"
-                                Command="{Binding UpdateCollectionsByLanguage}" />
-                    </Grid>
-                </VerticalStackLayout>
-
+                                                MaxLength="36"
+                                                TextChangedCommand="{Binding FilterCollections}" />
                 <HorizontalStackLayout HorizontalOptions="Center"
                                        Padding="10">
                     <VerticalStackLayout Margin="0,0,20,0">
@@ -54,7 +45,7 @@
                                 <Setter Property="Margin"
                                         Value="0,14" />
                                 <Setter Property="TextColor"
-                                        Value="{StaticResource UnImportantText}" />
+                                        Value="{StaticResource SecondaryText}" />
                             </Style>
 
                         </VerticalStackLayout.Resources>
@@ -67,109 +58,127 @@
                         <Switch IsToggled="{Binding ShowLearnedWords}"
                                 VerticalOptions="Center"
                                 Grid.Row="0" />
-                        <Switch IsToggled="{Binding ShowMightKnowWords}"
+                        <Switch IsToggled="{Binding ShowWeaklyKnownWords}"
                                 VerticalOptions="Center"
                                 Grid.Row="1" />
-                        <Switch IsToggled="{Binding ShowNeverHeardKnowWords}"
+                        <Switch IsToggled="{Binding ShowUnheardWords}"
                                 VerticalOptions="Center"
                                 Grid.Row="2" />
-                        <Switch IsToggled="{Binding RandomizeWordPairsOrder}"
+                        <Switch IsToggled="{Binding ShuffleWords}"
                                 VerticalOptions="Center"
                                 Grid.Row="3" />
                     </Grid>
                 </HorizontalStackLayout>
-
 
                 <Button Text="Näytä kaikki"
                         HorizontalOptions="Center"
                         Margin="0,20"
                         Command="{Binding UpdateCollections}" />
 
-
-
-                <CollectionView ItemsSource="{Binding AvailableCollections}"
+                <CollectionView ItemsSource="{Binding VisibleCollections}"
                                 Margin="20,0,20,100"
-                                HorizontalOptions="Center">
-                    <!-- SelectionMode="Single" crashes if selection null (MauiBug #9060) -->
-                    <CollectionView.EmptyView>
-                        <Grid>
-                            <Label Text="Sopivia sanastoja ei löytynyt"
-                                   FontSize="Medium"
-                                   HorizontalTextAlignment="Center"
-                                   BackgroundColor="{StaticResource DarkerThanPage}"
-                                   TextColor="{StaticResource NormalText}" />
-                        </Grid>
-                    </CollectionView.EmptyView>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-
-                            <SwipeView VerticalOptions="Start"
-                                       x:DataType="{x:Type wordData:WordCollectionOwner}">
-                                <SwipeView.Resources>
-                                    <Style TargetType="{x:Type Label}">
-                                        <Setter Property="TextColor"
-                                                Value="{StaticResource SecondaryText}" />
-                                    </Style>
-                                </SwipeView.Resources>
+                                HorizontalOptions="Center"
+                                Loaded="CollectionView_Loaded">
+                    <!--Swipe view crashes in winui if filtering observable collection (MauiBug #8870)
+                        Currently data template is chosen in code behind and winui does not have SwipeView -->
+                    <CollectionView.Resources>
+                        <!--#region Item Template Styles -->
+                        <Style TargetType="{x:Type Label}">
+                            <Setter Property="TextColor"
+                                    Value="{StaticResource SecondaryText}" />
+                            <Setter Property="LineBreakMode"
+                                    Value="TailTruncation" />
+                        </Style>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="Stroke"
+                                    Value="Transparent" />
+                            <Setter Property="StrokeThickness"
+                                    Value="0" />
+                            <Setter Property="BackgroundColor"
+                                    Value="{StaticResource DarkerThanPage}" />
+                            <Setter Property="StrokeShape">
+                                <Setter.Value>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style TargetType="{x:Type ImageButton}">
+                            <Setter Property="Padding"
+                                    Value="2" />
+                            <Setter Property="CornerRadius"
+                                    Value="15" />
+                            <Setter Property="WidthRequest"
+                                    Value="30" />
+                            <Setter Property="HeightRequest"
+                                    Value="30" />
+                        </Style>
+                        <Style TargetType="{x:Type Grid}">
+                            <Setter Property="Padding"
+                                    Value="20,5,0,5" />
+                        </Style>
+                        <!--#endregion-->
+                        <!--#region Item Templates -->
+                        <DataTemplate x:Key="defaultTemplate">
+                            <SwipeView x:DataType="{x:Type wordData:WordCollectionOwner}">
                                 <SwipeView.RightItems>
                                     <SwipeItem BackgroundColor="Green"
                                                IconImageSource="cards_icon.png"
                                                CommandParameter="{Binding Id}"
-                                               Command="{Binding Source={x:Reference startTrainingPage}, Path=BindingContext.RequestCardsTraining}" />
+                                               Command="{Binding Source={x:Reference this}, Path=BindingContext.RequestCardsTraining}" />
                                     <SwipeItem BackgroundColor="#0A092D"
                                                IconImageSource="pencil_icon.png"
                                                CommandParameter="{Binding Id}"
-                                               Command="{Binding Source={x:Reference startTrainingPage}, Path=BindingContext.RequestWriteTraining}">
-                                      
+                                               Command="{Binding Source={x:Reference this}, Path=BindingContext.RequestWriteTraining}">
                                     </SwipeItem>
                                 </SwipeView.RightItems>
-                                <Border BackgroundColor="{StaticResource DarkerThanPage}"
-                                        Stroke="Transparent"
-                                        StrokeThickness="0"
-                                        >
-                                    <Border.StrokeShape>
-                                        <RoundRectangle CornerRadius="8" />
-                                    </Border.StrokeShape>
-                                    <Grid Padding="20,5,0,5"
-                                          x:DataType="{x:Type wordData:WordCollectionOwner}"
-                                          ColumnDefinitions="{OnPlatform Default=*, WinUI='*, 80'}">
+                                <Border>
+                                    <Grid>
                                         <VerticalStackLayout>
-                                            <Label Text="{Binding Name}"
-                                                   LineBreakMode="TailTruncation" />
-                                            <Label Text="{Binding LanguageHeaders}"
-                                                   LineBreakMode="TailTruncation" />
+                                            <Label Text="{Binding Name}" />
+                                            <Label Text="{Binding LanguageHeaders}" />
                                         </VerticalStackLayout>
-                                        <HorizontalStackLayout Grid.Column="{OnPlatform WinUI=1}"
-                                                               IsVisible="{OnPlatform WinUI=true, Default=false}">
-                                            <HorizontalStackLayout.Resources>
-                                                <Style TargetType="{x:Type ImageButton}">
-                                                    <Setter Property="IsVisible"
-                                                            Value="{OnPlatform WinUI=true, Default=false}" />
-                                                    <Setter Property="Padding"
-                                                            Value="2" />
-                                                    <Setter Property="CornerRadius"
-                                                            Value="15" />
-                                                    <Setter Property="WidthRequest"
-                                                            Value="30" />
-                                                    <Setter Property="HeightRequest"
-                                                            Value="30" />
-                                                </Style>
-                                            </HorizontalStackLayout.Resources>
-                                            <ImageButton Source="letsgoicon.png"
-                                                         BackgroundColor="Transparent"
-                                                         Command="{Binding Source={x:Reference startTrainingPage}, Path=BindingContext.RequestCardsTraining}"
-                                                         CommandParameter="{Binding Id}" />
-                                            <ImageButton Source="pencil_icon.png"
-                                                         Margin="5,0,0,0"
-                                                         Command="{Binding Source={x:Reference startTrainingPage}, Path=BindingContext.RequestWriteTraining}"
-                                                         BackgroundColor="#35000000"
-                                                         CommandParameter="{Binding Id}" />
-                                        </HorizontalStackLayout>
                                     </Grid>
                                 </Border>
                             </SwipeView>
                         </DataTemplate>
-                    </CollectionView.ItemTemplate>
+                        <!-- placeholderHider hides all collections with name "^^_$Placeholder$_^^" without ""-->
+                        <DataTemplate x:Key="windowsTemplate">
+                            <Border x:DataType="{x:Type wordData:WordCollectionOwner}"
+                                    Loaded="OwnerTemplate_Loaded"
+                                    >
+                                <Grid ColumnDefinitions="*, 80">
+                                    <VerticalStackLayout>
+                                        <Label Text="{Binding Name}" />
+                                        <Label Text="{Binding LanguageHeaders}" />
+                                    </VerticalStackLayout>
+                                    <HorizontalStackLayout Grid.Column="{OnPlatform WinUI=1}"
+                                                           IsVisible="{OnPlatform WinUI=true, Default=false}">
+
+                                        <ImageButton Source="cards_icon_coloured.png"
+                                                     BackgroundColor="#35000000"
+                                                     Padding="3"
+                                                     Command="{Binding Source={x:Reference this}, Path=BindingContext.RequestCardsTraining}"
+                                                     CommandParameter="{Binding Id}" />
+                                        <ImageButton Source="pencil_icon.png"
+                                                     Margin="5,0,0,0"
+                                                     Command="{Binding Source={x:Reference this}, Path=BindingContext.RequestWriteTraining}"
+                                                     BackgroundColor="#35000000"
+                                                     CommandParameter="{Binding Id}" />
+                                    </HorizontalStackLayout>
+                                </Grid>
+                            </Border>
+
+                        </DataTemplate>
+                        <!--#endregion-->
+                    </CollectionView.Resources>
+                    <!--SelectionMode="Single" crashes if selection null (MauiBug #9060)-->
+                    <CollectionView.EmptyView>
+                        <Grid>
+                            <Label Text="Sopivia sanastoja ei löytynyt"
+                                   FontSize="Medium" />
+                        </Grid>
+                    </CollectionView.EmptyView>
+                    <!--ItemsLayout cant be changed after init even in code behind-->
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical"
                                          HorizontalItemSpacing="{OnIdiom Phone=0, Default=2}"

@@ -8,14 +8,14 @@
       x:DataType="{x:Type itemModel:WordPairQuestion}">
     <Grid.Resources>
         <Style TargetType="{x:Type Label}">
-            <Setter Property="FontFamily"
-                    Value="Poppins" />
+            <!--<Setter Property="FontFamily"
+                    Value="Poppins" />-->
             <Setter Property="TextColor"
                     Value="{StaticResource NormalText}" />
         </Style>
         <Style TargetType="{x:Type Entry}">
-            <Setter Property="FontFamily"
-                    Value="Poppins" />
+            <!--<Setter Property="FontFamily"
+                    Value="Poppins" />-->
             <Setter Property="BackgroundColor"
                     Value="{StaticResource PageBackground}" />
             <Setter Property="PlaceholderColor"

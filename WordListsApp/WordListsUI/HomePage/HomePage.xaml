@@ -5,25 +5,40 @@
              x:Class="WordListsUI.HomePage.HomePage"
              Title="koti"
              xmlns:linkField="clr-namespace:WordListsUI.Components.LinkField"
-             BindingContext="{Binding Source={RelativeSource Self}, Path=DefaultViewModel}"
              x:DataType="{x:Type local:HomePage}"
-             BackgroundColor="{StaticResource PageBackground}">
+             >
     <ContentPage.Resources>
         <Style TargetType="{x:Type Label}">
-            <Setter Property="FontFamily"
-                    Value="Poppins" />
             <Setter Property="TextColor"
                     Value="{StaticResource SecondaryText}" />
         </Style>
     </ContentPage.Resources>
+    
     <ScrollView Margin="20,0">
         <VerticalStackLayout Grid.Column="1">
             <Label Text="Sanastot"
                    FontSize="{OnPlatform WinUI=Large,  Android=35, Default=Title}"
                    Margin="0,5,0,5"
                    HorizontalTextAlignment="Center" />
-
+            <VerticalStackLayout IsVisible="{OnPlatform Default=False, Android=True}">
+                <Grid ColumnDefinitions="80,*"
+                      Margin="0,5">
+                    <Image Source="dotnet_bot.png" />
+                    <Label Text="Tervetuloa sanastojen ihmeelliseen maailmaan!"
+                           FontSize="Large"
+                           HorizontalTextAlignment="Center"
+                           Margin="20,10,20,0"
+                           VerticalOptions="Center"
+                           Grid.Column="1" />
+                </Grid>
+                <Label Text="Sovellus auttaa eri kielten sanastojen opettelussa ja hahmottamisessa."
+                       FontSize="16"
+                       HorizontalTextAlignment="Center"
+                       Margin="0,10,0,0"
+                       LineBreakMode="WordWrap" />
+            </VerticalStackLayout>
             <Grid MaximumWidthRequest="{OnPlatform WinUI=600}"
+                  IsVisible="{OnPlatform Default=True, Android=False}"
                   Margin="0,5"
                   ColumnDefinitions="100,*">
                 <Image Source="dotnet_bot.png"
@@ -35,15 +50,16 @@
                            FontSize="{OnPlatform WinUI=Small, Default=Large}"
                            HorizontalTextAlignment="{OnPlatform WinUI=Start, Default=Center}" />
                     <Label Text="Sovellus auttaa eri kielten sanastojen opettelussa ja hahmottamisessa."
-                           FontSize="{OnPlatform WinUI=Default, Android=16,Default=Medium}"
                            Margin="0,10,0,0"
                            LineBreakMode="WordWrap" />
                 </VerticalStackLayout>
             </Grid>
+
             <VerticalStackLayout MaximumWidthRequest="{OnPlatform WinUI=600}"
                                  Margin="0,30">
                 <Label Text="Mitä haluat tehdä seuraavaksi?"
                        FontSize="{OnPlatform WinUI=Micro, Default=Medium}"
+                       HorizontalTextAlignment="Center"
                        Margin="0,0,0,30" />
                 <VerticalStackLayout>
                     <VerticalStackLayout.Resources>
@@ -58,6 +74,8 @@
                                          Tapped="CreateNewField_Tapped" />
                     <linkField:LinkField Text="Tuo uusi sanasto ulkoisesta .wordlist-tiedostosta"
                                          Tapped="ImportField_Tapped" />
+                    <linkField:LinkField Text="Luo uusi sanasto kuvasta"
+                                         Tapped="CreateNewOcrField_Tapped" />
                 </VerticalStackLayout>
             </VerticalStackLayout>
         </VerticalStackLayout>

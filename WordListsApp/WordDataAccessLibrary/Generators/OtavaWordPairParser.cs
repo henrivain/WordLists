@@ -4,46 +4,21 @@ namespace WordDataAccessLibrary.Generators;
 
 public class OtavaWordPairParser : WordParser, IWordPairParser
 {
-    public OtavaWordPairParser(string vocabularyList)
+    public virtual List<string> ToStringList(string vocabulary)
     {
-        VocabularyList = vocabularyList;
-    }
-    private string VocabularyList { get; set; }
-    public List<string> ToStringList()
-    {
-        var pairs = GetList();
-        List<string> result = Enumerable.Empty<string>().ToList();
-
-        foreach(var pair in pairs)
+        if (string.IsNullOrWhiteSpace(vocabulary))
         {
-            result.Add(pair.NativeLanguageWord);
-            result.Add(pair.ForeignLanguageWord);
+            return new();
         }
-        return result;
-    }
-    public List<WordPair> GetList()
-    {
-        if (string.IsNullOrWhiteSpace(VocabularyList)) return new();
 
-        string[] lines = VocabularyList.Replace('\r', '\n').Split('\n');
-        lines = CleanLines(lines);
-        return PairWords(lines);
+        return vocabulary
+            .Replace('\r', '\n')
+            .Split('\n')
+            .CleanLines()
+            .ToList();
     }
-    private static string[] CleanLines(string[] lines)
+    public virtual List<WordPair> GetList(string vocabulary)
     {
-        return lines.Select(RemovePronunciation)
-                    .Where(x => string.IsNullOrWhiteSpace(x) is false)
-                    .Select(x => x.Trim())
-                    .ToArray();
-    }
-    private static string RemovePronunciation(string line)
-    {
-        int start = line.IndexOf('[');
-        if (start < 1) return line;
-
-        int end = line.IndexOf("]");
-        if (end < 1) return line;
-
-        return string.Concat(line[..start], line[(end + 1)..]).Trim();
+        return PairWords(ToStringList(vocabulary).ToArray());
     }
 }
