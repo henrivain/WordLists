@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using TesseractOcrMaui;
-using TesseractOcrMaui.Extensions;
 using TesseractOcrMaui.Results;
 using WordDataAccessLibrary.Generators;
 using WordListsMauiHelpers.Extensions;

@@ -66,13 +66,13 @@ public interface IListGeneratorViewModel
     /// Replace all old words with new ones.
     /// </summary>
     /// <param name="words"></param>
-    void ResetWordPairs(string[] words);
+    Task ResetWordPairs(IEnumerable<string> words);
 
     /// <summary>
     /// Open already existing collection for user to edit.
     /// </summary>
     /// <param name="value"></param>
-    void OpenInEditMode(WordCollection value);
+    Task OpenInEditMode(WordCollection value);
 
     
     event CollectionAddedEventHandler? CollectionAddedEvent;
